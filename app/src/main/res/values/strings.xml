@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">ps_inspection</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="oru_220">ОРУ-220</string>
+    <string name="oru_35">ОРУ-35</string>
+    <string name="buidings">Здания и помещения</string>
+    <string name="oru_500">ОРУ-500</string>
+    <string name="title_inspections">Осмотры</string>
 </resources>
