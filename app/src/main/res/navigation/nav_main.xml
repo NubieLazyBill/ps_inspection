@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/homeScreen">
+
+    <fragment
+        android:id="@+id/homeScreen"
+        android:name="com.example.ps_inspection.HomeScreen"
+        android:label="fragment_home_screen"
+        tools:layout="@layout/fragment_home_screen" >
+        <action
+            android:id="@+id/action_homeScreen_to_inspectionORU35"
+            app:destination="@id/inspectionORU35" />
+        <action
+            android:id="@+id/action_homeScreen_to_inspectionORU2202"
+            app:destination="@id/inspectionORU220" />
+        <action
+            android:id="@+id/action_homeScreen_to_inspectionORU500"
+            app:destination="@id/inspectionORU500" />
+        <action
+            android:id="@+id/action_homeScreen_to_inspectionBuildings"
+            app:destination="@id/inspectionBuildings" />
+    </fragment>
+    <fragment
+        android:id="@+id/inspectionORU35"
+        android:name="com.example.ps_inspection.InspectionORU35"
+        android:label="fragment_inspection_o_r_u35"
+        tools:layout="@layout/fragment_inspection_o_r_u35" />
+    <fragment
+        android:id="@+id/inspectionORU220"
+        android:name="com.example.ps_inspection.InspectionORU220"
+        android:label="fragment_inspection_o_r_u220"
+        tools:layout="@layout/fragment_inspection_o_r_u220" />
+    <fragment
+        android:id="@+id/inspectionORU500"
+        android:name="com.example.ps_inspection.InspectionORU500"
+        android:label="fragment_inspection_o_r_u500"
+        tools:layout="@layout/fragment_inspection_o_r_u500" />
+    <fragment
+        android:id="@+id/inspectionBuildings"
+        android:name="com.example.ps_inspection.InspectionBuildings"
+        android:label="fragment_inspection_buildings"
+        tools:layout="@layout/fragment_inspection_buildings" />
+</navigation>
