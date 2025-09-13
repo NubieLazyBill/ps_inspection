@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/homeScreen"
         android:name="com.example.ps_inspection.HomeScreen"
-        android:label="fragment_home_screen"
+        android:label="Главная"
         tools:layout="@layout/fragment_home_screen" >
         <action
             android:id="@+id/action_homeScreen_to_inspectionORU35"
@@ -26,21 +26,21 @@
     <fragment
         android:id="@+id/inspectionORU35"
         android:name="com.example.ps_inspection.InspectionORU35"
-        android:label="fragment_inspection_o_r_u35"
+        android:label="Осмотр ОРУ-35"
         tools:layout="@layout/fragment_inspection_o_r_u35" />
     <fragment
         android:id="@+id/inspectionORU220"
         android:name="com.example.ps_inspection.InspectionORU220"
-        android:label="fragment_inspection_o_r_u220"
+        android:label="Осмотр ОРУ-220"
         tools:layout="@layout/fragment_inspection_o_r_u220" />
     <fragment
         android:id="@+id/inspectionORU500"
         android:name="com.example.ps_inspection.InspectionORU500"
-        android:label="fragment_inspection_o_r_u500"
+        android:label="Осмотр ОРУ-500"
         tools:layout="@layout/fragment_inspection_o_r_u500" />
     <fragment
         android:id="@+id/inspectionBuildings"
         android:name="com.example.ps_inspection.InspectionBuildings"
-        android:label="fragment_inspection_buildings"
+        android:label="Осмотр зданий и сооружений"
         tools:layout="@layout/fragment_inspection_buildings" />
 </navigation>
