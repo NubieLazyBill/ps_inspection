@@ -6,4 +6,8 @@
     <string name="buidings">Здания и помещения</string>
     <string name="oru_500">ОРУ-500</string>
     <string name="title_inspections">Осмотры</string>
+    <string name="tsn4">4ТСН</string>
+    <string name="tsn_2">2ТСН</string>
+    <string name="tsn_3">3ТСН</string>
+    <string name="oil_level">Уровень масла</string>
 </resources>
