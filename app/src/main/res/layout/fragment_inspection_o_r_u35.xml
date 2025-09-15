@@ -122,7 +122,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tsn_4_layout">
+        app:layout_constraintTop_toBottomOf="@+id/divider_after_tsn">
 
         <TextView
             android:id="@+id/tt_35_2_tsn_A_txt"
@@ -232,7 +232,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tt_35_2_tsn_C_layout">
+        app:layout_constraintTop_toBottomOf="@+id/divider_after_tt_35_2">
 
         <TextView
             android:id="@+id/tt_35_3_tsn_A_txt"
@@ -319,7 +319,7 @@
             tools:layout_editor_absoluteY="415dp" />
 
         <EditText
-            android:id="@+id/tt_35__tsn_C_input"
+            android:id="@+id/tt_35_tsn_C_input"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -332,6 +332,30 @@
             tools:layout_editor_absoluteX="103dp"
             tools:layout_editor_absoluteY="415dp" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider_after_tsn"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/purple_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tsn_4_layout" />
+
+    <View
+        android:id="@+id/divider_after_tt_35_2"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/purple_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tt_35_2_tsn_C_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
