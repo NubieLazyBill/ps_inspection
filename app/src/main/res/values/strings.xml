@@ -10,4 +10,9 @@
     <string name="tsn_2">2ТСН</string>
     <string name="tsn_3">3ТСН</string>
     <string name="oil_level">Уровень масла</string>
+    <string name="tt_35_2_tsn">ТТ-35 2ТСН</string>
+    <string name="tt_35_3_tsn">ТТ-35 3ТСН</string>
+    <string name="tt_35_2_tsn_A">ТТ-35 2ТСН ф.А</string>
+    <string name="tt_35_2_tsn_B">ТТ-35 2ТСН ф.В</string>
+    <string name="tt_35_2_tsn_C">ТТ-35 2ТСН ф.С</string>
 </resources>
