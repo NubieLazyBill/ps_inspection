@@ -113,6 +113,18 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <View
+        android:id="@+id/divider_after_tsn"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/purple_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tsn_4_layout" />
+
     <LinearLayout
         android:id="@+id/tt_35_2_tsn_A_layout"
         android:layout_width="match_parent"
@@ -222,6 +234,18 @@
             tools:layout_editor_absoluteX="103dp"
             tools:layout_editor_absoluteY="415dp" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider_after_tt_35_2"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/purple_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tt_35_2_tsn_C_layout" />
 
     <LinearLayout
         android:id="@+id/tt_35_3_tsn_A_layout"
@@ -334,7 +358,7 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/divider_after_tsn"
+        android:id="@+id/divider_after_tt_35_3"
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_marginStart="16dp"
@@ -343,19 +367,117 @@
         android:background="@color/purple_700"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tsn_4_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/tt_35_3_tsn_C_layout" />
 
-    <View
-        android:id="@+id/divider_after_tt_35_2"
+    <LinearLayout
+        android:id="@+id/v_35_2_tsn_A_layout"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="87dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/purple_700"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tt_35_2_tsn_C_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/divider_after_tt_35_3">
+
+        <TextView
+            android:id="@+id/v_35_2_tsn_A_txt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/v_35_2_tsn_A"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/v_35_2_tsn_A_input"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:autofillHints=""
+            android:gravity="center"
+            android:hint="@string/purging_level"
+            android:inputType="number|numberSigned"
+            android:textStyle="bold"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/v_35_2_tsn_B_layout"
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_35_2_tsn_A_layout">
+
+        <TextView
+            android:id="@+id/v_35_2_tsn_B_txt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/v_35_2_tsn_B"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="-87dp"
+            tools:layout_editor_absoluteY="415dp" />
+
+        <EditText
+            android:id="@+id/v_35_2_tsn_B_input"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:autofillHints=""
+            android:gravity="center"
+            android:hint="@string/purging_level"
+            android:inputType="number|numberSigned"
+            android:textStyle="bold"
+            tools:ignore="DuplicateSpeakableTextCheck"
+            tools:layout_editor_absoluteX="103dp"
+            tools:layout_editor_absoluteY="415dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/v_35_2_tsn_C_layout"
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/v_35_2_tsn_B_layout">
+
+        <TextView
+            android:id="@+id/v_35_2_tsn_C_txt"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/v_35_2_tsn_C"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="-87dp"
+            tools:layout_editor_absoluteY="415dp" />
+
+        <EditText
+            android:id="@+id/v_35_2_tsn_C_input"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:autofillHints=""
+            android:gravity="center"
+            android:hint="@string/purging_level"
+            android:inputType="number|numberSigned"
+            android:textStyle="bold"
+            tools:ignore="DuplicateSpeakableTextCheck"
+            tools:layout_editor_absoluteX="103dp"
+            tools:layout_editor_absoluteY="415dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
