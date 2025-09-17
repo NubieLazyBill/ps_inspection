@@ -22,4 +22,7 @@
     <string name="v_35_2_tsn_A">В-35 2ТСН ф.А</string>
     <string name="v_35_2_tsn_B">В-35 2ТСН ф.В</string>
     <string name="v_35_2_tsn_C">В-35 2ТСН ф.С</string>
+    <string name="v_35_3_tsn_A">В-35 3ТСН ф.А</string>
+    <string name="v_35_3_tsn_B">В-35 3ТСН ф.В</string>
+    <string name="v_35_3_tsn_C">В-35 3ТСН ф.С</string>
 </resources>
