@@ -122,5 +122,93 @@
             app:layout_constraintEnd_toEndOf="@+id/tt_220_header"
             app:layout_constraintTop_toBottomOf="@+id/divider1" />
 
+        <!-- Разделитель -->
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/purging_topaz" />
+
+        <!-- Четвёртая строка: ОВ-220 -->
+        <TextView
+            android:id="@+id/o_v_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/o_v"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintEnd_toEndOf="@+id/connection_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider2"
+            app:layout_constraintBottom_toBottomOf="@+id/purging_o_v" />
+
+        <Spinner
+            android:id="@+id/purging_o_v"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/pressure_and_oil_readings"
+            app:layout_constraintStart_toStartOf="@+id/v_220_header"
+            app:layout_constraintEnd_toEndOf="@+id/v_220_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+        <Spinner
+            android:id="@+id/oil_ov"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:entries="@array/pressure_and_oil_readings"
+            app:layout_constraintStart_toStartOf="@+id/tt_220_header"
+            app:layout_constraintEnd_toEndOf="@+id/tt_220_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+        <!-- Разделитель -->
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/purging_o_v" />
+
+        <!-- Пятая строка: 2АТГ -->
+        <TextView
+            android:id="@+id/atg_2_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/atg_2"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintEnd_toEndOf="@+id/connection_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider3"
+            app:layout_constraintBottom_toBottomOf="@+id/purging_atg_2" />
+
+        <Spinner
+            android:id="@+id/purging_atg_2"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/pressure_and_oil_readings"
+            app:layout_constraintStart_toStartOf="@+id/v_220_header"
+            app:layout_constraintEnd_toEndOf="@+id/v_220_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+        <Spinner
+            android:id="@+id/oil_atg_2"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:entries="@array/pressure_and_oil_readings"
+            app:layout_constraintStart_toStartOf="@+id/tt_220_header"
+            app:layout_constraintEnd_toEndOf="@+id/tt_220_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
