@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.compose.material3.Button
 import androidx.navigation.fragment.findNavController
 
 class HomeScreen : Fragment() {
@@ -39,6 +41,10 @@ class HomeScreen : Fragment() {
         view.findViewById<View>(R.id.inspect_buildings).setOnClickListener {
             // Переход к InspectionBuildings
             findNavController().navigate(R.id.action_homeScreen_to_inspectionBuildings)
+        }
+
+        view.findViewById<Button>(R.id.inspect_ATG).setOnClickListener {
+            findNavController().navigate(R.id.action_homeScreen_to_inspectionATG)
         }
     }
 

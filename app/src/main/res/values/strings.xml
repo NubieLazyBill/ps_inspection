@@ -25,4 +25,9 @@
     <string name="v_35_3_tsn_A">В-35 3ТСН ф.А</string>
     <string name="v_35_3_tsn_B">В-35 3ТСН ф.В</string>
     <string name="v_35_3_tsn_C">В-35 3ТСН ф.С</string>
+    <string name="atg_r_500_2_s">АТГ, Р-500 2С</string>
+    <string name="mirnaya">Мирная</string>
+    <string name="v_220">В-220</string>
+    <string name="tt_220">ТТ-220</string>
+    <string name="topaz">Топаз</string>
 </resources>

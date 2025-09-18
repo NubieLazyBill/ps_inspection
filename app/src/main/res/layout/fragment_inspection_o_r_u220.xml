@@ -2,20 +2,81 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout3"
+    android:id="@+id/inspection_ORU_220"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".InspectionORU220">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/mirnaya_text"
+        android:layout_width="87dp"
+        android:layout_height="25dp"
+        android:text="@string/mirnaya"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="53dp" />
+
+    <Spinner
+        android:id="@+id/purging_lvl_v_220_Mirnaya"
+        android:layout_width="119dp"
+        android:layout_height="37dp"
+        tools:layout_editor_absoluteX="103dp"
+        tools:layout_editor_absoluteY="49dp" />
+
+    <TextView
+        android:id="@+id/v_220_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/v_220"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="139dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/tt_220"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tt_220"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="265dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Spinner
+        android:id="@+id/oil_lvl_tt_220_Mirnaya"
+        android:layout_width="133dp"
+        android:layout_height="37dp"
+        tools:layout_editor_absoluteX="234dp"
+        tools:layout_editor_absoluteY="49dp" />
+
+    <TextView
+        android:id="@+id/topaz_text"
+        android:layout_width="87dp"
+        android:layout_height="34dp"
+        android:text="@string/topaz"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="111dp" />
+
+    <Spinner
+        android:id="@+id/purging_lvl_v_220_Topaz"
+        android:layout_width="118dp"
+        android:layout_height="37dp"
+        tools:layout_editor_absoluteX="103dp"
+        tools:layout_editor_absoluteY="108dp" />
+
+    <Spinner
+        android:id="@+id/oil_lvl_tt_220_Topaz"
+        android:layout_width="133dp"
+        android:layout_height="37dp"
+        tools:layout_editor_absoluteX="234dp"
+        tools:layout_editor_absoluteY="108dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

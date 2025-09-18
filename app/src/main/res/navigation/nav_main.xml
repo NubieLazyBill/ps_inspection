@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeScreen_to_inspectionBuildings"
             app:destination="@id/inspectionBuildings" />
+        <action
+            android:id="@+id/action_homeScreen_to_inspectionATG"
+            app:destination="@id/inspectionATG" />
     </fragment>
     <fragment
         android:id="@+id/inspectionORU35"
@@ -43,4 +46,9 @@
         android:name="com.example.ps_inspection.InspectionBuildings"
         android:label="Осмотр зданий и сооружений"
         tools:layout="@layout/fragment_inspection_buildings" />
+    <fragment
+        android:id="@+id/inspectionATG"
+        android:name="com.example.ps_inspection.InspectionATG"
+        android:label="fragment_inspection_a_t_g"
+        tools:layout="@layout/fragment_inspection_a_t_g" />
 </navigation>
