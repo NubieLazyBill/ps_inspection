@@ -3,13 +3,15 @@
     <string name="hello_blank_fragment">Осмотры</string>
     <string name="oru_220">ОРУ-220</string>
     <string name="oru_35">ОРУ-35</string>
-    <string name="buidings">Здания и помещения</string>
     <string name="oru_500">ОРУ-500</string>
+    <string name="buidings">Здания и помещения</string>
     <string name="title_inspections">Осмотры</string>
     <string name="tsn4">4ТСН</string>
     <string name="tsn_2">2ТСН</string>
     <string name="tsn_3">3ТСН</string>
     <string name="oil_level">Уровень масла</string>
+    <string name="purging">Продувка</string>
+    <string name="purging_level">Уровень продувки</string>
     <string name="tt_35_2_tsn">ТТ-35 2ТСН</string>
     <string name="tt_35_3_tsn">ТТ-35 3ТСН</string>
     <string name="tt_35_2_tsn_A">ТТ-35 2ТСН ф.А</string>
@@ -18,7 +20,6 @@
     <string name="tt_35_3_tsn_A">ТТ-35 3ТСН ф.А</string>
     <string name="tt_35_3_tsn_B">ТТ-35 3ТСН ф.В</string>
     <string name="tt_35_3_tsn_C">ТТ-35 3ТСН ф.С</string>
-    <string name="purging_level">Уровень продувки</string>
     <string name="v_35_2_tsn_A">В-35 2ТСН ф.А</string>
     <string name="v_35_2_tsn_B">В-35 2ТСН ф.В</string>
     <string name="v_35_2_tsn_C">В-35 2ТСН ф.С</string>
@@ -27,7 +28,18 @@
     <string name="v_35_3_tsn_C">В-35 3ТСН ф.С</string>
     <string name="atg_r_500_2_s">АТГ, Р-500 2С</string>
     <string name="mirnaya">Мирная</string>
+    <string name="topaz">Топаз</string>
+    <string name="o_v">ОВ</string>
+    <string name="atg_2">2АТГ</string>
+    <string name="sh_s_v">ШСВ</string>
+    <string name="atg_3">3АТГ</string>
+    <string name="orbita">Орбита</string>
+    <string name="fakel">Факел</string>
+    <string name="comet_2">Комета-2</string>
+    <string name="comet_1">Комета-1</string>
     <string name="v_220">В-220</string>
     <string name="tt_220">ТТ-220</string>
-    <string name="topaz">Топаз</string>
+    <string name="feeder">Присоединение</string>
+    <string name="v_220_header"><![CDATA[В-220\nПродувка]]></string>
+    <string name="tt_220_header"><![CDATA[ТТ-220\nУровень масла]]></string>
 </resources>
