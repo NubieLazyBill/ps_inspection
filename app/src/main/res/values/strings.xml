@@ -42,4 +42,5 @@
     <string name="feeder">Присоединение</string>
     <string name="v_220_header"><![CDATA[В-220\nПродувка]]></string>
     <string name="tt_220_header"><![CDATA[ТТ-220\nУровень масла]]></string>
+    <string name="sh_s_v_220">ШСВ-220</string>
 </resources>

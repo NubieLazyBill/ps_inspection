@@ -51,14 +51,15 @@
             android:id="@+id/mirnaya_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:text="@string/mirnaya"
+            android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="center_vertical"
-            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintBottom_toBottomOf="@+id/purging_mirnaya"
             app:layout_constraintEnd_toEndOf="@+id/connection_header"
-            app:layout_constraintTop_toBottomOf="@+id/connection_header"
-            app:layout_constraintBottom_toBottomOf="@+id/purging_mirnaya" />
+            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintTop_toBottomOf="@+id/connection_header" />
 
         <Spinner
             android:id="@+id/purging_mirnaya"
@@ -94,14 +95,15 @@
             android:id="@+id/topaz_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:text="@string/topaz"
+            android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="center_vertical"
-            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintBottom_toBottomOf="@+id/purging_topaz"
             app:layout_constraintEnd_toEndOf="@+id/connection_header"
-            app:layout_constraintTop_toBottomOf="@+id/divider1"
-            app:layout_constraintBottom_toBottomOf="@+id/purging_topaz" />
+            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider1" />
 
         <Spinner
             android:id="@+id/purging_topaz"
@@ -138,14 +140,15 @@
             android:id="@+id/o_v_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:text="@string/o_v"
+            android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="center_vertical"
-            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintBottom_toBottomOf="@+id/purging_o_v"
             app:layout_constraintEnd_toEndOf="@+id/connection_header"
-            app:layout_constraintTop_toBottomOf="@+id/divider2"
-            app:layout_constraintBottom_toBottomOf="@+id/purging_o_v" />
+            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
         <Spinner
             android:id="@+id/purging_o_v"
@@ -182,17 +185,18 @@
             android:id="@+id/atg_2_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:text="@string/atg_2"
+            android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="center_vertical"
-            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintBottom_toBottomOf="@+id/purging_v_220_atg_2"
             app:layout_constraintEnd_toEndOf="@+id/connection_header"
-            app:layout_constraintTop_toBottomOf="@+id/divider3"
-            app:layout_constraintBottom_toBottomOf="@+id/purging_atg_2" />
+            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
         <Spinner
-            android:id="@+id/purging_atg_2"
+            android:id="@+id/purging_v_220_atg_2"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginTop="8dp"
@@ -202,13 +206,58 @@
             app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
         <Spinner
-            android:id="@+id/oil_atg_2"
+            android:id="@+id/oil_V_220_atg_2"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:entries="@array/pressure_and_oil_readings"
             app:layout_constraintStart_toStartOf="@+id/tt_220_header"
             app:layout_constraintEnd_toEndOf="@+id/tt_220_header"
             app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+        <!-- Разделитель -->
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/purging_v_220_atg_2" />
+
+        <!-- Шестая строка: ШСВ-220 -->
+        <TextView
+            android:id="@+id/sh_s_v_220_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/sh_s_v_220"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/purging_sh_s_v_220"
+            app:layout_constraintEnd_toEndOf="@+id/connection_header"
+            app:layout_constraintStart_toStartOf="@+id/connection_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+        <Spinner
+            android:id="@+id/purging_sh_s_v_220"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/pressure_and_oil_readings"
+            app:layout_constraintStart_toStartOf="@+id/v_220_header"
+            app:layout_constraintEnd_toEndOf="@+id/v_220_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+        <Spinner
+            android:id="@+id/oil_sh_s_v_220"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:entries="@array/pressure_and_oil_readings"
+            app:layout_constraintStart_toStartOf="@+id/tt_220_header"
+            app:layout_constraintEnd_toEndOf="@+id/tt_220_header"
+            app:layout_constraintTop_toBottomOf="@+id/divider4" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
