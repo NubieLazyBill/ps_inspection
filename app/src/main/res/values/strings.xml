@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ps_inspection</string>
+    <string name="app_name">Осмотр ПС Кустовая</string>
     <string name="hello_blank_fragment">Осмотры</string>
     <string name="oru_220">ОРУ-220</string>
     <string name="oru_35">ОРУ-35</string>
@@ -50,4 +50,6 @@
     <string name="f_A">А</string>
     <string name="f_B">В</string>
     <string name="f_C">С</string>
+    <string name="ov_220">ОВ-220</string>
+    <string name="tt_220_ov">ТТ-220 ОВ</string>
 </resources>

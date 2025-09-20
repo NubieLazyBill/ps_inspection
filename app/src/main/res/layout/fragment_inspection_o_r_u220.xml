@@ -22,7 +22,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="А"
+                android:text="@string/f_A"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -31,7 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="В"
+                android:text="@string/f_B"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -40,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="С"
+                android:text="@string/f_C"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </TableRow>
@@ -48,15 +51,17 @@
         <!-- Секция: Мирная - Выключатель -->
         <!-- Заголовок В-220 Мирная -->
         <TableRow>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="3"
                 android:gravity="center"
-                android:text="В-220 Мирная"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="@string/v_220_mirnaya_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </TableRow>
 
         <!-- Спиннеры выключателя -->
@@ -98,15 +103,17 @@
 
         <!-- Заголовок ТТ-220 Мирная -->
         <TableRow>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="3"
                 android:gravity="center"
-                android:text="ТТ-220 Мирная"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="@string/tt_220_mirnaya_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </TableRow>
 
         <!-- Спиннеры трансформатора тока -->
@@ -149,15 +156,17 @@
         <!-- Секция: Топаз - Выключатель -->
         <!-- Заголовок В-220 Топаз -->
         <TableRow>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="3"
                 android:gravity="center"
-                android:text="В-220 Топаз"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="@string/v_220_topaz_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </TableRow>
 
         <!-- Спиннеры выключателя -->
@@ -199,15 +208,17 @@
 
         <!-- Заголовок ТТ-220 Топаз -->
         <TableRow>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="3"
                 android:gravity="center"
-                android:text="ТТ-220 Топаз"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:text="@string/tt_220_topaz_text"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </TableRow>
 
         <!-- Спиннеры трансформатора тока -->
@@ -232,6 +243,112 @@
 
             <Spinner
                 android:id="@+id/oil_topaz_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: ОВ - Выключатель -->
+        <!-- Заголовок ОВ-220 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/ov_220"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры выключателя -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_ov_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_ov_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_ov_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель после выключателя -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Заголовок ТТ-220 ОВ -->
+        <TableRow>
+
+            <TextView
+                android:id="@+id/tt_220_ov"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_220_ov"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры трансформатора тока -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_ov_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_ov_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_ov_c"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
