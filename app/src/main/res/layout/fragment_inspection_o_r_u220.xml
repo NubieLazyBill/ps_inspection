@@ -1,261 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:stretchColumns="0,1,2"
+        android:shrinkColumns="*">
 
-        <!-- Заголовки колонок -->
-        <TextView
-            android:id="@+id/connection_header"
-            android:layout_width="0dp"
+        <!-- Заголовок таблицы - фазы -->
+        <TableRow
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="@string/feeder"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/phase_a_header"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginBottom="16dp">
 
-        <TextView
-            android:id="@+id/phase_a_header"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/f_A"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/phase_b_header"
-            app:layout_constraintStart_toEndOf="@+id/connection_header"
-            app:layout_constraintTop_toTopOf="parent" />
+            <!-- Заголовки фаз -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="А"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/phase_b_header"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/f_B"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/phase_c_header"
-            app:layout_constraintStart_toEndOf="@+id/phase_a_header"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="В"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/phase_c_header"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/f_C"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/phase_b_header"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="С"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </TableRow>
 
-        <!-- Секция: Мирная - В-220 -->
-        <TextView
-            android:id="@+id/v_220_mirnaya_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/v_220_mirnaya_text"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/purging_mirnaya_a"
-            app:layout_constraintEnd_toEndOf="@+id/connection_header"
-            app:layout_constraintStart_toStartOf="@+id/connection_header"
-            app:layout_constraintTop_toBottomOf="@+id/phase_a_header" />
+        <!-- Секция: Мирная - Выключатель -->
+        <!-- Заголовок В-220 Мирная -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:text="В-220 Мирная"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:padding="8dp" />
+        </TableRow>
 
-        <!-- Фаза A -->
-        <Spinner
-            android:id="@+id/purging_mirnaya_a"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_a_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_a_header"
-            app:layout_constraintTop_toBottomOf="@+id/phase_a_header" />
+        <!-- Спиннеры выключателя -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_mirnaya_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
 
-        <!-- Фаза B -->
-        <Spinner
-            android:id="@+id/purging_mirnaya_b"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_b_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_b_header"
-            app:layout_constraintTop_toBottomOf="@+id/phase_b_header" />
+            <Spinner
+                android:id="@+id/purging_mirnaya_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
 
-        <!-- Фаза C -->
-        <Spinner
-            android:id="@+id/purging_mirnaya_c"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_c_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_c_header"
-            app:layout_constraintTop_toBottomOf="@+id/phase_c_header" />
+            <Spinner
+                android:id="@+id/purging_mirnaya_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
 
-        <!-- Секция: Мирная - ТТ-220 -->
-        <TextView
-            android:id="@+id/tt_220_mirnaya_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/tt_220_mirnaya_text"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/oil_mirnaya_a"
-            app:layout_constraintEnd_toEndOf="@+id/connection_header"
-            app:layout_constraintStart_toStartOf="@+id/connection_header"
-            app:layout_constraintTop_toBottomOf="@+id/purging_mirnaya_a" />
-
-        <!-- Фаза A -->
-        <Spinner
-            android:id="@+id/oil_mirnaya_a"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_a_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_a_header"
-            app:layout_constraintTop_toBottomOf="@+id/purging_mirnaya_a" />
-
-        <!-- Фаза B -->
-        <Spinner
-            android:id="@+id/oil_mirnaya_b"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_b_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_b_header"
-            app:layout_constraintTop_toBottomOf="@+id/purging_mirnaya_b" />
-
-        <!-- Фаза C -->
-        <Spinner
-            android:id="@+id/oil_mirnaya_c"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_c_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_c_header"
-            app:layout_constraintTop_toBottomOf="@+id/purging_mirnaya_c" />
-
-        <!-- Разделитель -->
+        <!-- Разделитель после выключателя -->
         <View
-            android:id="@+id/divider1"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#CCC"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/oil_mirnaya_a" />
+            android:layout_marginVertical="8dp" />
 
-        <!-- Секция: Топаз - В-220 -->
-        <TextView
-            android:id="@+id/v_220_topaz_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/v_220_topaz_text"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/purging_topaz_a"
-            app:layout_constraintEnd_toEndOf="@+id/connection_header"
-            app:layout_constraintStart_toStartOf="@+id/connection_header"
-            app:layout_constraintTop_toBottomOf="@+id/divider1" />
+        <!-- Заголовок ТТ-220 Мирная -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:text="ТТ-220 Мирная"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:padding="8dp" />
+        </TableRow>
 
-        <!-- Фаза A -->
-        <Spinner
-            android:id="@+id/purging_topaz_a"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_a_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_a_header"
-            app:layout_constraintTop_toBottomOf="@+id/divider1" />
+        <!-- Спиннеры трансформатора тока -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_mirnaya_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
 
-        <!-- Фаза B -->
-        <Spinner
-            android:id="@+id/purging_topaz_b"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_b_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_b_header"
-            app:layout_constraintTop_toBottomOf="@+id/divider1" />
+            <Spinner
+                android:id="@+id/oil_mirnaya_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
 
-        <!-- Фаза C -->
-        <Spinner
-            android:id="@+id/purging_topaz_c"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_c_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_c_header"
-            app:layout_constraintTop_toBottomOf="@+id/divider1" />
+            <Spinner
+                android:id="@+id/oil_mirnaya_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
 
-        <!-- Секция: Топаз - ТТ-220 -->
-        <TextView
-            android:id="@+id/tt_220_topaz_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:text="@string/tt_220_topaz_text"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/oil_topaz_a"
-            app:layout_constraintEnd_toEndOf="@+id/connection_header"
-            app:layout_constraintStart_toStartOf="@+id/connection_header"
-            app:layout_constraintTop_toBottomOf="@+id/purging_topaz_a" />
-
-        <!-- Фаза A -->
-        <Spinner
-            android:id="@+id/oil_topaz_a"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_a_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_a_header"
-            app:layout_constraintTop_toBottomOf="@+id/purging_topaz_a" />
-
-        <!-- Фаза B -->
-        <Spinner
-            android:id="@+id/oil_topaz_b"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_b_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_b_header"
-            app:layout_constraintTop_toBottomOf="@+id/purging_topaz_b" />
-
-        <!-- Фаза C -->
-        <Spinner
-            android:id="@+id/oil_topaz_c"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:entries="@array/pressure_and_oil_readings"
-            app:layout_constraintEnd_toEndOf="@+id/phase_c_header"
-            app:layout_constraintStart_toStartOf="@+id/phase_c_header"
-            app:layout_constraintTop_toBottomOf="@+id/purging_topaz_c" />
-
-        <!-- Разделитель -->
+        <!-- Толстый разделитель между секциями -->
         <View
-            android:id="@+id/divider2"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: Топаз - Выключатель -->
+        <!-- Заголовок В-220 Топаз -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:text="В-220 Топаз"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:padding="8dp" />
+        </TableRow>
+
+        <!-- Спиннеры выключателя -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_topaz_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_topaz_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_topaz_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель после выключателя -->
+        <View
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#CCC"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/oil_topaz_a" />
+            android:layout_marginVertical="8dp" />
 
-        <!-- Продолжить аналогично для остальных секций: -->
-        <!-- ОВ-220 В-220, ОВ-220 ТТ-220 -->
-        <!-- 2АТГ В-220, 2АТГ ТТ-220 -->
-        <!-- ШСВ-220 В-220, ШСВ-220 ТТ-220 -->
+        <!-- Заголовок ТТ-220 Топаз -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:text="ТТ-220 Топаз"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:padding="8dp" />
+        </TableRow>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Спиннеры трансформатора тока -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_topaz_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_topaz_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_topaz_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+    </TableLayout>
 </ScrollView>
