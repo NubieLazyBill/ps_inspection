@@ -58,7 +58,7 @@
                 android:layout_span="3"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="@string/v_220_mirnaya_text"
+                android:text="@string/tt_220_mirnaya"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -110,7 +110,7 @@
                 android:layout_span="3"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="@string/tt_220_mirnaya_text"
+                android:text="@string/tt_220_mirnaya"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -163,7 +163,7 @@
                 android:layout_span="3"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="@string/v_220_topaz_text"
+                android:text="@string/v_220_topaz"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -215,7 +215,7 @@
                 android:layout_span="3"
                 android:gravity="center"
                 android:padding="8dp"
-                android:text="@string/tt_220_topaz_text"
+                android:text="@string/tt_220_topaz"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -364,7 +364,86 @@
             android:background="#999"
             android:layout_marginVertical="16dp" />
 
-        <!-- Секция: ОВ - Выключатель -->
+        <!-- Секция: ТН-220 ОСШ ф.В -->
+        <!-- Заголовок ТН-220 ОСШ ф.В -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tn_220_o_s_sh"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Первая строка спиннеров: Верх -->
+        <TableRow>
+            <!-- Пустая ячейка для фазы А -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/up"
+                android:textColor="@color/black" />
+
+            <Spinner
+                android:id="@+id/tn_ossh_fv_upper"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <!-- Пустая ячейка для фазы C -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Вторая строка спиннеров: Низ -->
+        <TableRow>
+            <!-- Пустая ячейка для фазы А -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/down"
+                android:textColor="@color/black" />
+
+            <Spinner
+                android:id="@+id/tn_ossh_fv_lower"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <!-- Пустая ячейка для фазы C -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: В-220 2АТГ - Выключатель -->
         <!-- Заголовок В-220 2АТГ -->
         <TableRow>
 
@@ -436,7 +515,7 @@
         <!-- Спиннеры трансформатора тока -->
         <TableRow>
             <Spinner
-                android:id="@+id/oil_v_2atg_a"
+                android:id="@+id/oil_tt_2atg_a"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
@@ -445,7 +524,7 @@
                 android:gravity="center" />
 
             <Spinner
-                android:id="@+id/oil_v_2atg_b"
+                android:id="@+id/oil_tt_2atg_b"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
@@ -454,7 +533,113 @@
                 android:gravity="center" />
 
             <Spinner
-                android:id="@+id/oil_v_2atg_c"
+                android:id="@+id/oil_tt_2atg_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: ШСВ-200 - Выключатель -->
+        <!-- Заголовок ШСВ-220 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/sh_s_v_220"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры выключателя -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_sh_s_v_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_sh_s_v_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_sh_s_v_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель после выключателя -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Заголовок ТТ-220 2АТГ -->
+        <TableRow>
+
+            <TextView
+                android:id="@+id/tt_220_sh_s_v"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_220_sh_s_v"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры трансформатора тока -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_tt_sh_s_v_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_sh_s_v_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_sh_s_v_c"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
