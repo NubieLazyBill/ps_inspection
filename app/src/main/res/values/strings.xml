@@ -52,4 +52,6 @@
     <string name="f_C">С</string>
     <string name="ov_220">ОВ-220</string>
     <string name="tt_220_ov">ТТ-220 ОВ</string>
+    <string name="v_220_2atg">В-220 2АТГ</string>
+    <string name="tt_220_2atg">ТТ-220 2АТГ</string>
 </resources>
