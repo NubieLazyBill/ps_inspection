@@ -648,5 +648,111 @@
                 android:gravity="center" />
         </TableRow>
 
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: В-220 3АТГ - Выключатель -->
+        <!-- Заголовок В-220 3АТГ -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_220_3atg"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры выключателя -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_v_3atg_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_v_3atg_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_v_3atg_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель после выключателя -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Заголовок ТТ-220 3АТГ -->
+        <TableRow>
+
+            <TextView
+                android:id="@+id/tt_220_3atg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_220_3atg"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры трансформатора тока -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_tt_3atg_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_3atg_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_3atg_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
     </TableLayout>
 </ScrollView>
