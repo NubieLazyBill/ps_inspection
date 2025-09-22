@@ -754,5 +754,425 @@
                 android:gravity="center" />
         </TableRow>
 
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: Орбита - Выключатель -->
+        <!-- Заголовок В-220 Орбита -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_220_orbita"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры выключателя -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_orbita_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_orbita_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_orbita_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель после выключателя -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Заголовок ТТ-220 Орбита -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_220_orbita"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры трансформатора тока -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_orbita_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_orbita_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_orbita_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: Факел - Выключатель -->
+        <!-- Заголовок В-220 Факел -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_220_fakel"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры выключателя -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_fakel_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_fakel_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_fakel_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель после выключателя -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Заголовок ТТ-220 Факел -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_220_fakel"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры трансформатора тока -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_fakel_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_fakel_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_fakel_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: Комета-1 - Выключатель -->
+        <!-- Заголовок В-220 Комета-1 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_220_cometa1"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры выключателя -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_cometa1_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_cometa1_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_cometa1_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель после выключателя -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Заголовок ТТ-220 Комета-1 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_220_cometa1"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры трансформатора тока -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_cometa1_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_cometa1_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_cometa1_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: Комета-2 - Выключатель -->
+        <!-- Заголовок В-220 Комета-2 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_220_cometa2"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры выключателя -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_cometa2_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_cometa2_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_cometa2_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель после выключателя -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Заголовок ТТ-220 Комета-2 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_220_cometa2"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Спиннеры трансформатора тока -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_cometa2_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_cometa2_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_cometa2_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/pressure_and_oil_readings"
+                android:minWidth="120dp"
+                android:gravity="center" />
+        </TableRow>
+
     </TableLayout>
 </ScrollView>

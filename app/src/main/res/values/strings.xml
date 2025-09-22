@@ -47,17 +47,26 @@
     <string name="tt_220_mirnaya">ТТ-220 Мирная</string>
     <string name="v_220_topaz">В-220 Топаз</string>
     <string name="tt_220_topaz">ТТ-220 Топаз</string>
-    <string name="f_A">А</string>
-    <string name="f_B">В</string>
-    <string name="f_C">С</string>
     <string name="ov_220">ОВ-220</string>
     <string name="tt_220_ov">ТТ-220 ОВ</string>
     <string name="v_220_2atg">В-220 2АТГ</string>
     <string name="tt_220_2atg">ТТ-220 2АТГ</string>
     <string name="tt_220_sh_s_v">ТТ-220 ШСВ</string>
     <string name="tn_220_o_s_sh">ТН-220 ОСШ ф.В</string>
-    <string name="up">верх</string>
-    <string name="down">низ</string>
     <string name="v_220_3atg">В-220 3АТГ</string>
     <string name="tt_220_3atg">ТТ-220 3АТГ</string>
+    <string name="v_220_orbita">В-220 Орбита</string>
+    <string name="tt_220_orbita">ТТ-220 Орбита</string>
+    <string name="v_220_fakel">В-220 Факел</string>
+    <string name="tt_220_fakel">ТТ-220 Факел</string>
+    <string name="v_220_cometa1">В-220 Комета-1</string>
+    <string name="tt_220_cometa1">ТТ-220 Комета-1</string>
+    <string name="v_220_cometa2">В-220 Комета-2</string>
+    <string name="tt_220_cometa2">ТТ-220 Комета-2</string>
+
+    <string name="f_A">А</string>
+    <string name="f_B">В</string>
+    <string name="f_C">С</string>
+    <string name="up">верх</string>
+    <string name="down">низ</string>
 </resources>
