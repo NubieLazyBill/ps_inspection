@@ -1174,5 +1174,175 @@
                 android:gravity="center" />
         </TableRow>
 
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- Секция: 1ТН-220 -->
+        <!-- Заголовок 1ТН-220 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tn_220_1"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Первая строка спиннеров 1ТН-220 -->
+        <TableRow>
+
+            <Spinner
+                android:id="@+id/tn_1_upper_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_up"
+                android:gravity="center"
+                android:minWidth="120dp" />
+
+            <Spinner
+                android:id="@+id/tn_1_upper_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_up"
+                android:gravity="center"
+                android:minWidth="120dp" />
+
+            <Spinner
+                android:id="@+id/tn_1_upper_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_up"
+                android:gravity="center"
+                android:minWidth="120dp" />
+        </TableRow>
+
+        <!-- Вторая строка спиннеров 1ТН-220 -->
+        <TableRow>
+
+            <Spinner
+                android:id="@+id/tn_1_lower_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_down"
+                android:gravity="center"
+                android:minWidth="120dp" />
+
+            <Spinner
+                android:id="@+id/tn_1_lower_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_down"
+                android:gravity="center"
+                android:minWidth="120dp" />
+
+            <Spinner
+                android:id="@+id/tn_1_lower_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_down"
+                android:gravity="center"
+                android:minWidth="120dp" />
+        </TableRow>
+
+        <!-- Разделитель после 1ТН-220 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Секция: 2ТН-220 -->
+        <!-- Заголовок 2ТН-220 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tn_220_2"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Первая строка спиннеров 2ТН-220 -->
+        <TableRow>
+
+            <Spinner
+                android:id="@+id/tn_2_upper_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_up"
+                android:gravity="center"
+                android:minWidth="120dp" />
+
+            <Spinner
+                android:id="@+id/tn_2_upper_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_up"
+                android:gravity="center"
+                android:minWidth="120dp" />
+
+            <Spinner
+                android:id="@+id/tn_2_upper_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_up"
+                android:gravity="center"
+                android:minWidth="120dp" />
+        </TableRow>
+
+        <!-- Вторая строка спиннеров 2ТН-220 -->
+        <TableRow>
+
+            <Spinner
+                android:id="@+id/tn_2_lower_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_down"
+                android:gravity="center"
+                android:minWidth="120dp" />
+
+            <Spinner
+                android:id="@+id/tn_2_lower_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_down"
+                android:gravity="center"
+                android:minWidth="120dp" />
+
+            <Spinner
+                android:id="@+id/tn_2_lower_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/oil_readings_tn_220_down"
+                android:gravity="center"
+                android:minWidth="120dp" />
+        </TableRow>
+
     </TableLayout>
 </ScrollView>
