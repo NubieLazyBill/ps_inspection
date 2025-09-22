@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Массив для показаний от 0.0 до 1.0 с шагом 0.1 -->
+    <!-- Массив для показаний уровня масла или продувки от 0.0 до 1.0 с шагом 0.1 -->
     <string-array name="pressure_and_oil_readings">
         <item>- - - -</item>
         <item>0.0</item>
@@ -16,7 +16,7 @@
         <item>1.0</item>
     </string-array>
 
-    <!-- Массив для показаний от 0.0 до 1.0 с шагом 0.1 -->
+    <!-- Массив для показаний ТН-220 верхний каскад от 0.0 до 1.0 с шагом 0.1 -->
     <string-array name="oil_readings_tn_220_up">
         <item>верх</item>
         <item>0.0</item>
@@ -32,7 +32,23 @@
         <item>1.0</item>
     </string-array>
 
-    <!-- Массив для показаний от 0.0 до 1.0 с шагом 0.1 -->
+    <!-- Массив для показаний ТН-220 нижний каскад от 0.0 до 1.0 с шагом 0.1 -->
+    <string-array name="oil_readings_tn_220_down">
+        <item>низ</item>
+        <item>0.0</item>
+        <item>0.1</item>
+        <item>0.2</item>
+        <item>0.3</item>
+        <item>0.4</item>
+        <item>0.5</item>
+        <item>0.6</item>
+        <item>0.7</item>
+        <item>0.8</item>
+        <item>0.9</item>
+        <item>1.0</item>
+    </string-array>
+
+    <!-- Массив для показаний ТН-220 нижний каскад от 0.0 до 1.0 с шагом 0.1 -->
     <string-array name="oil_readings_tn_220_down">
         <item>низ</item>
         <item>0.0</item>

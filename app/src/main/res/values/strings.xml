@@ -30,6 +30,12 @@
     <string name="tn_35_3atg">ТН-35 3АТГ</string>
 
     <string name="atg_r_500_2_s">АТГ, Р-500 2С</string>
+    <string name="v_500_r_500_2s">В-500 Р-500 2С</string>
+    <string name="v_500_vsht_31">В-500 ВШТ-31</string>
+    <string name="tt_500_vsht_31">ТТ-500 ВШТ-31</string>
+    <string name="v_500_vlt_30">В-500 ВЛТ-30</string>
+    <string name="tt_500_vlt_30">ТТ-500 ВЛТ-30</string>
+
 
     <string name="feeder">Присоединение</string>
     <string name="v_220_header"><![CDATA[В-220\nПродувка]]></string>
