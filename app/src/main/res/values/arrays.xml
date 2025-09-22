@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Массив для показаний уровня масла или продувки от 0.0 до 1.0 с шагом 0.1 -->
-    <string-array name="pressure_and_oil_readings">
+    <!-- Массив для показаний уровня масла, продувки от 0.0 до 1.0 с шагом 0.1 -->
+    <string-array name="purging_and_oil_readings">
         <item>- - - -</item>
         <item>0.0</item>
         <item>0.1</item>
