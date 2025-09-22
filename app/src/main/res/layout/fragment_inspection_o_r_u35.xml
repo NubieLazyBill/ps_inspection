@@ -563,7 +563,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/v_35_3_tsn_C_layout" />
 
-        <!-- ТН-35 2АТГ -->
+        <!-- ТН-35 2АТГ  -->
         <LinearLayout
             android:id="@+id/tn_35_2atg_layout"
             android:layout_width="match_parent"
