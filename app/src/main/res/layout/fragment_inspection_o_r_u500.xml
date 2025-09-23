@@ -321,5 +321,152 @@
                 android:gravity="center" />
         </TableRow>
 
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ТТ-500 Трачуковская -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_500_trachukovskaya"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_tt_trachukovskaya_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_trachukovskaya_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_trachukovskaya_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- 2ТН-500 Трачуковская -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tn2_500_trachukovskaya"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_2tn_trachukovskaya_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_2tn_trachukovskaya_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_2tn_trachukovskaya_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- 1ТН-500 Трачуковская -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tn1_500_trachukovskaya"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_1tn_trachukovskaya_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_1tn_trachukovskaya_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_1tn_trachukovskaya_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
     </TableLayout>
 </ScrollView>

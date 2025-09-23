@@ -83,4 +83,7 @@
     <string name="f_C">С</string>
     <string name="up">верх</string>
     <string name="down">низ</string>
+    <string name="tt_500_trachukovskaya">ТТ-500 Трачуковская</string>
+    <string name="tn2_500_trachukovskaya">2ТН-500 Трачуковская</string>
+    <string name="tn1_500_trachukovskaya">1ТН-500 Трачуковская</string>
 </resources>
