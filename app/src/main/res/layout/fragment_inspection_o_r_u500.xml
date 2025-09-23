@@ -477,5 +477,1224 @@
                 android:gravity="center" />
         </TableRow>
 
+        <!-- Толстый разделитель между ячейками -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- ЯЧЕЙКА 4: В-500 ВШЛ-32 (воздушный) -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_500_vshl_32"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- I элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vshl_32_a1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_32_b1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_32_c1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- II элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vshl_32_a2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_32_b2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_32_c2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ТТ-500 ВШЛ-32 -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_500_vshl_32"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_tt_vshl_32_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vshl_32_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vshl_32_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между ячейками -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- ЯЧЕЙКА 5: В-500 ВШЛ-21 (воздушный) -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_500_vshl_21"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- I элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vshl_21_a1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_21_b1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_21_c1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- II элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vshl_21_a2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_21_b2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_21_c2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ТТ-500 ВШЛ-21 -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_500_vshl_21"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_tt_vshl_21_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vshl_21_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vshl_21_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между ячейками -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- ЯЧЕЙКА 6: В-500 ВШТ-22 (воздушный) -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_500_vsht_22"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- I элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vsht_22_a1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vsht_22_b1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vsht_22_c1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- II элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vsht_22_a2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vsht_22_b2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vsht_22_c2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ТТ-500 ВШТ-22 -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_500_vsht_22"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_tt_vsht_22_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vsht_22_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vsht_22_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между ячейками -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- ЯЧЕЙКА 7: В-500 ВШТ-11 (воздушный) -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_500_vsht_11"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- I элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vsht_11_a1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vsht_11_b1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vsht_11_c1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- II элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vsht_11_a2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vsht_11_b2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vsht_11_c2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ТТ-500 ВШТ-11 -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_500_vsht_11"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_tt_vsht_11_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vsht_11_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vsht_11_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между ячейками -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- ЯЧЕЙКА 8: В-500 ВШЛ-12 (воздушный) -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/v_500_vshl_12"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- I элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vshl_12_a1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_12_b1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_12_c1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- II элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vshl_12_a2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_12_b2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vshl_12_c2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ТТ-500 ВШЛ-12 -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tt_500_vshl_12"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_tt_vshl_12_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vshl_12_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vshl_12_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ТН-500 Белозёрная -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tn_500_belozernaya"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_2tn_belozernaya_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_2tn_belozernaya_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_2tn_belozernaya_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между секциями -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#666"
+            android:layout_marginVertical="20dp" />
+
+        <!-- СЕКЦИЯ ТН-500 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:background="#E0E0E0"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="@string/tn_500_header"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Толстый разделитель между ячейками -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
+        <!-- 1ТН-500 -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tn1_500"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Каскад 1 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade1"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade1_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade1_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade1_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Каскад 2 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade2"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade2_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade2_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade2_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Каскад 3 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade3"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade3_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade3_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade3_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Каскад 4 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade4"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade4_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade4_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn1_500_cascade4_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- 2ТН-500 -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tn2_500"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Каскад 1 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade1"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade1_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade1_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade1_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Каскад 2 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade2"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade2_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade2_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade2_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Каскад 3 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade3"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade3_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade3_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade3_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Каскад 4 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade4"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade4_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade4_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn2_500_cascade4_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ТН-500 СГРЭС-1 -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/tn_500_sgres_1"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Каскад 1 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade1"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade1_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade1_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade1_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Каскад 2 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade2"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade2_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade2_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade2_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Каскад 3 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade3"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade3_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade3_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade3_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Каскад 4 -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:gravity="center|left"
+                android:padding="8dp"
+                android:text="@string/cascade4"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade4_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade4_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/tn_500_sgres_1_cascade4_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
     </TableLayout>
 </ScrollView>

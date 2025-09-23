@@ -1,17 +1,25 @@
 <resources>
     <string name="app_name">Осмотр ПС Кустовая</string>
+
     <string name="hello_blank_fragment">Осмотры</string>
-    <string name="oru_220">ОРУ-220</string>
-    <string name="oru_35">ОРУ-35</string>
-    <string name="oru_500">ОРУ-500</string>
-    <string name="buildings">Здания и помещения</string>
     <string name="title_inspections">Осмотры</string>
-    <string name="tsn4">4ТСН</string>
-    <string name="tsn_2">2ТСН</string>
-    <string name="tsn_3">3ТСН</string>
     <string name="oil_level">Уровень масла</string>
     <string name="purging">Продувка</string>
     <string name="purging_level">Уровень продувки</string>
+    <string name="f_A">А</string>
+    <string name="f_B">В</string>
+    <string name="f_C">С</string>
+    <string name="up">верх</string>
+    <string name="down">низ</string>
+    <string name="zero_zero">0,0</string>
+    <string name="feeder">Присоединение</string>
+    <string name="v_220_header"><![CDATA[В-220\nПродувка]]></string>
+    <string name="tt_220_header"><![CDATA[ТТ-220\nУровень масла]]></string>
+
+    <string name="oru_35">ОРУ-35</string>
+    <string name="tsn4">4ТСН</string>
+    <string name="tsn_2">2ТСН</string>
+    <string name="tsn_3">3ТСН</string>
     <string name="tt_35_2_tsn">ТТ-35 2ТСН</string>
     <string name="tt_35_3_tsn">ТТ-35 3ТСН</string>
     <string name="tt_35_2_tsn_A">ТТ-35 2ТСН ф.А</string>
@@ -29,18 +37,33 @@
     <string name="tn_35_2atg">ТН-35 2АТГ</string>
     <string name="tn_35_3atg">ТН-35 3АТГ</string>
 
+    <string name="oru_500">ОРУ-500</string>
+    <string name="tt_500_trachukovskaya">ТТ-500 Трачуковская</string>
+    <string name="tn2_500_trachukovskaya">2ТН-500 Трачуковская</string>
+    <string name="tn1_500_trachukovskaya">1ТН-500 Трачуковская</string>
+    <string name="tn_500_belozernaya">ТН-500 Белозёрная</string>
     <string name="atg_r_500_2_s">АТГ, Р-500 2С</string>
     <string name="v_500_r_500_2s">В-500 Р-500 2С</string>
     <string name="v_500_vsht_31">В-500 ВШТ-31</string>
     <string name="tt_500_vsht_31">ТТ-500 ВШТ-31</string>
     <string name="v_500_vlt_30">В-500 ВЛТ-30</string>
     <string name="tt_500_vlt_30">ТТ-500 ВЛТ-30</string>
+    <string name="v_500_vshl_32">В-500 ВШЛ-32</string>
+    <string name="tt_500_vshl_32">ТТ-500 ВШЛ-32</string>
+    <string name="v_500_vshl_21">В-500 ВШЛ-21</string>
+    <string name="tt_500_vshl_21">ТТ-500 ВШЛ-21</string>
+    <string name="v_500_vsht_22">В-500 ВШТ-22</string>
+    <string name="tt_500_vsht_22">ТТ-500 ВШТ-22</string>
+    <string name="v_500_vsht_11">В-500 ВШТ-11</string>
+    <string name="tt_500_vsht_11">ТТ-500 ВШТ-11</string>
+    <string name="v_500_vshl_12">В-500 ВШЛ-12</string>
+    <string name="tt_500_vshl_12">ТТ-500 ВШЛ-12</string>
+    <string name="tn1_500">1ТН-500</string>
+    <string name="tn2_500">2ТН-500</string>
+    <string name="tn_500_sgres_1">ТН-500 СГРЭС-1</string>
 
 
-    <string name="feeder">Присоединение</string>
-    <string name="v_220_header"><![CDATA[В-220\nПродувка]]></string>
-    <string name="tt_220_header"><![CDATA[ТТ-220\nУровень масла]]></string>
-
+    <string name="oru_220">ОРУ-220</string>
     <string name="mirnaya">Мирная</string>
     <string name="topaz">Топаз</string>
     <string name="o_v">ОВ</string>
@@ -78,13 +101,10 @@
     <string name="tn_220_1">1ТН-220</string>
     <string name="tn_220_2">2ТН-220</string>
 
-    <string name="f_A">А</string>
-    <string name="f_B">В</string>
-    <string name="f_C">С</string>
-    <string name="up">верх</string>
-    <string name="down">низ</string>
-    <string name="tt_500_trachukovskaya">ТТ-500 Трачуковская</string>
-    <string name="tn2_500_trachukovskaya">2ТН-500 Трачуковская</string>
-    <string name="tn1_500_trachukovskaya">1ТН-500 Трачуковская</string>
-    <string name="zero_zero">0,0</string>
+    <string name="buildings">Здания и помещения</string>
+    <string name="tn_500_header">=== ТН-500 ===</string>
+    <string name="cascade1">1 каскад</string>
+    <string name="cascade2">2 каскад</string>
+    <string name="cascade3">3 каскад</string>
+    <string name="cascade4">4 каскад</string>
 </resources>
