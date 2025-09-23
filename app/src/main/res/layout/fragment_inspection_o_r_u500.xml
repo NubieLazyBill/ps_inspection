@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
@@ -140,15 +141,17 @@
 
         <!-- Давление элегаза -->
         <TableRow>
+
             <EditText
                 android:id="@+id/gas_pressure_vsht_31_a"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="0,0"
+                android:hint="@string/zero_zero"
                 android:inputType="numberDecimal"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="Autofill,DuplicateSpeakableTextCheck" />
 
             <EditText
                 android:id="@+id/gas_pressure_vsht_31_b"
@@ -156,9 +159,10 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="0,0"
+                android:hint="@string/zero_zero"
                 android:inputType="numberDecimal"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/gas_pressure_vsht_31_c"
@@ -166,9 +170,10 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="0,0"
+                android:hint="@string/zero_zero"
                 android:inputType="numberDecimal"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="Autofill" />
         </TableRow>
 
         <!-- Разделитель -->
@@ -242,15 +247,17 @@
 
         <!-- Давление элегаза -->
         <TableRow>
+
             <EditText
                 android:id="@+id/gas_pressure_vlt_30_a"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="0,0"
+                android:hint="@string/zero_zero"
                 android:inputType="numberDecimal"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/gas_pressure_vlt_30_b"
@@ -258,9 +265,10 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="0,0"
+                android:hint="@string/zero_zero"
                 android:inputType="numberDecimal"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/gas_pressure_vlt_30_c"
@@ -268,9 +276,10 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="0,0"
+                android:hint="@string/zero_zero"
                 android:inputType="numberDecimal"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:ignore="Autofill" />
         </TableRow>
 
         <!-- Разделитель -->
