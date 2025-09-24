@@ -1,20 +1,801 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/inspection_ATG"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InspectionATG">
+    android:padding="16dp"
+    android:background="#F5F5F5">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/atg_r_500_2_s"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Заголовок -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/atg_r_500_2_s"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Область ввода данных -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <!-- 2 АТГ ф.С -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/atg_2_C"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/oil_lvl_tank"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_oil_tank"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/oil_lvl_rpn"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_oil_rpn"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/pressure_500_kV"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_pressure_500"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/pressure_220_kV"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_pressure_220"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/temperature_TS_1"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_temp_ts1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="@string/temperature_TS_2"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_temp_ts2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <!-- Манометры маслонасосов -->
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/oil_pump_pressure"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_pump_group1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_pump_group2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="3 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_pump_group3"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="4 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_c_pump_group4"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+
+        <!-- 2 АТГ ф.В -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2 АТГ ф.В"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:background="#E3F2FD" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Уровень масла Бак"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_oil_tank"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Уровень масла РПН"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_oil_rpn"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Давление 500 кВ"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_pressure_500"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Давление 220 кВ"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_pressure_220"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Температура ТС1"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_temp_ts1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Температура ТС2"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_temp_ts2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <!-- Манометры маслонасосов -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:text="Давление манометров маслонасосов"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp"
+                        android:gravity="center"
+                        android:background="#F5F5F5" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_pump_group1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_pump_group2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="3 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_pump_group3"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="4 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_b_pump_group4"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- 2 АТГ ф.А -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2 АТГ ф.А"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:background="#E3F2FD" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Уровень масла Бак"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_oil_tank"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Уровень масла РПН"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_oil_rpn"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Давление 500 кВ"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_pressure_500"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Давление 220 кВ"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_pressure_220"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Температура ТС1"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_temp_ts1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Температура ТС2"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_temp_ts2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <!-- Манометры маслонасосов -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="2"
+                        android:text="Давление манометров маслонасосов"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp"
+                        android:gravity="center"
+                        android:background="#F5F5F5" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_pump_group1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_pump_group2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="3 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_pump_group3"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="4 группа"
+                        android:textSize="12sp"
+                        android:padding="4dp" />
+
+                    <EditText
+                        android:id="@+id/atg2_a_pump_group4"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Продолжаем по аналогии для остальных фаз:
+             - АТГ резер. фаза
+             - 3 АТГ ф.С
+             - 3 АТГ ф.В
+             - 3 АТГ ф.А
+             - Р-500 2С ф.С
+             - Р-500 2С ф.В
+             - Р-500 2С ф.А
+        -->
+
+        <!-- Кнопка сохранения -->
+        <Button
+            android:id="@+id/save_atg_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Сохранить данные АТГ"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/design_default_color_primary"
+            android:textColor="@color/white"
+            android:elevation="4dp" />
+
+    </LinearLayout>
+</ScrollView>

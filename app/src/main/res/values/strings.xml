@@ -107,4 +107,12 @@
     <string name="cascade2">2 каскад</string>
     <string name="cascade3">3 каскад</string>
     <string name="cascade4">4 каскад</string>
+    <string name="atg_2_C">2 АТГ ф.С</string>
+    <string name="oil_lvl_tank">Уровень масла Бак</string>
+    <string name="oil_lvl_rpn">Уровень масла РПН</string>
+    <string name="pressure_500_kV">Давление 500 кВ</string>
+    <string name="pressure_220_kV">Давление 220 кВ</string>
+    <string name="temperature_TS_1">Температура ТС1</string>
+    <string name="temperature_TS_2">Температура ТС2</string>
+    <string name="oil_pump_pressure">Давление манометров маслонасосов</string>
 </resources>
