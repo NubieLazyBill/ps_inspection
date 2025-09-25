@@ -23,8 +23,8 @@
         <!-- Компрессорная №1 -->
         <TableRow android:padding="4dp">
             <TextView android:layout_weight="2" android:text="Компрессорная №1" android:padding="12dp" android:background="@drawable/cell_border" />
-            <Button android:id="@+id/btnCompressor1Valve" android:layout_weight="1" android:padding="12dp" android:background="@drawable/cell_border" android:text="○" android:textSize="16sp" />
-            <Button android:id="@+id/btnCompressor1Heating" android:layout_weight="1" android:padding="12dp" android:background="@drawable/cell_border" android:text="○" android:textSize="16sp" />
+            <Button android:id="@+id/btnCompressor1Valve" android:layout_weight="1" android:padding="12dp" android:background="@drawable/cell_border" android:text="○" android:textSize="16sp"/>
+            <Button android:id="@+id/btnCompressor1Heating" android:layout_weight="1" android:padding="12dp" android:background="@drawable/cell_border" android:text="○" android:textSize="16sp"/>
             <EditText android:id="@+id/etCompressor1Temp" android:layout_weight="1" android:padding="12dp" android:background="@drawable/cell_border" android:hint="ºC" android:inputType="numberSigned" />
         </TableRow>
 
