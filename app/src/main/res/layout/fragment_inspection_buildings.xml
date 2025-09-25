@@ -1,21 +1,696 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/inspection_buildings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f5f5f5"
     tools:context=".InspectionBuildings">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/hello_blank_fragment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <TableLayout
+        android:id="@+id/tableBuildings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:shrinkColumns="*"
+        android:background="@android:color/white"
+        android:padding="8dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Заголовок таблицы -->
+        <TableRow
+            android:background="#3F51B5"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Помещение/Здание"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:padding="12dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Запорная арматура"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:padding="12dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Обогрев"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:padding="12dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Температура"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:padding="12dp" />
+
+        </TableRow>
+
+        <!-- Компрессорная №1 -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Компрессорная №1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- Баллоная №1 -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Баллоная №1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- Компрессорная №2 -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Компрессорная №2"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- Баллоная №2 -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Баллоная №2"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- КПЗ ОПУ -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="КПЗ ОПУ"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- КПЗ-2 -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="КПЗ-2"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- Насосная пожаротушения -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Насосная пожаротушения"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- Мастерская по ремонту ВВ -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Мастерская по ремонту ВВ"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- Артскважина -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Артскважина"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+        </TableRow>
+
+        <!-- Здание артезианской скважины -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Здание артезианской скважины"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+        </TableRow>
+
+        <!-- Помещение 1 (2) АБ -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Помещение 1 (2) АБ"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- Помещение п/этажа №1,2,3 -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Помещение п/этажа №1,2,3"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- Трубопроводы воздушной сети ПС -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Трубопроводы воздушной сети ПС"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/heating_options" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- ОРУ-500 -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="ОРУ-500"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- ОРУ-220 -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="ОРУ-220"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+        <!-- ОРУ-35 -->
+        <TableRow
+            android:padding="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="ОРУ-35"
+                android:padding="12dp"
+                android:background="@drawable/cell_border" />
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:background="@drawable/cell_border"
+                android:entries="@array/valve_position_options" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="---"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:textColor="#666" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:background="@drawable/cell_border"
+                android:hint="ºC"
+                android:inputType="numberSigned" />
+
+        </TableRow>
+
+    </TableLayout>
+
+</ScrollView>

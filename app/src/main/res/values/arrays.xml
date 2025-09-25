@@ -79,4 +79,16 @@
         <item>0.9</item>
         <item>1.0</item>
     </string-array>
+
+    <string-array name="valve_position_options">
+        <item>Выберите</item>
+        <item>Соответствует</item>
+        <item>Не соответствует</item>
+    </string-array>
+
+    <string-array name="heating_options">
+        <item>Выберите</item>
+        <item>Работоспособен</item>
+        <item>Не работоспособен</item>
+    </string-array>
 </resources>
