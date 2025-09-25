@@ -121,4 +121,13 @@
     <string name="group_4">4 группа</string>
     <string name="atg_2_B">2 АТГ ф.В</string>
     <string name="atg_2_A">2 АТГ ф.А</string>
+    <string name="atg_reserve">АТГ резер. фаза</string>
+    <string name="atg_3_C">3 АТГ ф.С</string>
+    <string name="atg_3_B">3 АТГ ф.В</string>
+    <string name="atg_3_A">3 АТГ ф.А</string>
+    <string name="reactor_500_2c_C">Реактор Р-500 2С ф.С</string>
+    <string name="temperature_TS">Температура ТС</string>
+    <string name="tt_neutral">ТТ нейтрали</string>
+    <string name="reactor_500_2s_B">Реактор Р-500 2С ф.В</string>
+    <string name="reactor_500_2s_A">Реактор Р-500 2С ф.А</string>
 </resources>
