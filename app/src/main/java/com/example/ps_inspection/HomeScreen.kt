@@ -5,53 +5,52 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.compose.material3.Button
 import androidx.navigation.fragment.findNavController
+import com.example.ps_inspection.databinding.FragmentHomeScreenBinding
 
 class HomeScreen : Fragment() {
+
+    private var _binding: FragmentHomeScreenBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_screen, container, false)
+    ): View {
+        _binding = FragmentHomeScreenBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Находим кнопки и назначаем обработчики
-        view.findViewById<View>(R.id.inspect_oru_35).setOnClickListener {
-            // Переход к InspectionORU35
+        binding.inspectOru35.setOnClickListener {
             findNavController().navigate(R.id.action_homeScreen_to_inspectionORU35)
         }
 
-        view.findViewById<View>(R.id.inspect_oru220).setOnClickListener {
-            // Переход к InspectionORU220
+        binding.inspectOru220.setOnClickListener {
             findNavController().navigate(R.id.action_homeScreen_to_inspectionORU2202)
         }
 
-        view.findViewById<View>(R.id.inspect_oru500).setOnClickListener {
-            // Переход к InspectionORU500
+        binding.inspectOru500.setOnClickListener {
             findNavController().navigate(R.id.action_homeScreen_to_inspectionORU500)
         }
 
-        view.findViewById<View>(R.id.inspect_buildings).setOnClickListener {
-            // Переход к InspectionBuildings
+        binding.inspectBuildings.setOnClickListener {
             findNavController().navigate(R.id.action_homeScreen_to_inspectionBuildings)
         }
 
-        view.findViewById<Button>(R.id.inspect_ATG).setOnClickListener {
+        binding.inspectATG.setOnClickListener {
             findNavController().navigate(R.id.action_homeScreen_to_inspectionATG)
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
-        /**
-         * Упрощенная фабрика для создания экземпляра фрагмента
-         */
         @JvmStatic
         fun newInstance() = HomeScreen()
     }
