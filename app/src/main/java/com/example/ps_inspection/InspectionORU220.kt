@@ -425,7 +425,4 @@ class InspectionORU220 : Fragment() {
         _binding = null
     }
 
-    companion object {
-        fun newInstance() = InspectionORU220()
-    }
 }
