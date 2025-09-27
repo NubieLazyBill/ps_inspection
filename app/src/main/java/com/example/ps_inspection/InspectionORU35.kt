@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.ps_inspection.databinding.FragmentInspectionORU35Binding
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class InspectionORU35 : Fragment() {
@@ -17,6 +18,9 @@ class InspectionORU35 : Fragment() {
     private val binding get() = _binding!!
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
+
+    // Флаг для отслеживания, обновляем ли мы UI программно
+    private var isUpdatingUIFromViewModel = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +34,8 @@ class InspectionORU35 : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            sharedViewModel.oru35Data.collect { data ->
+            // Используем collectLatest вместо collect чтобы избежать конфликтов
+            sharedViewModel.oru35Data.collectLatest { data ->
                 updateUIFromData(data)
             }
         }
@@ -39,11 +44,15 @@ class InspectionORU35 : Fragment() {
     }
 
     private fun updateUIFromData(data: InspectionORU35Data) {
-        binding.tsn2Input.setText(data.tsn2)
-        binding.tsn3Input.setText(data.tsn3)
-        binding.tsn4Input.setText(data.tsn4)
-        binding.tn352atgInput.setText(data.tn352atg)
-        binding.tn353atgInput.setText(data.tn353atg)
+        // Устанавливаем флаг, что мы обновляем UI программно
+        isUpdatingUIFromViewModel = true
+
+        // Обновляем только если текст действительно изменился
+        updateEditTextIfNeeded(binding.tsn2Input, data.tsn2)
+        updateEditTextIfNeeded(binding.tsn3Input, data.tsn3)
+        updateEditTextIfNeeded(binding.tsn4Input, data.tsn4)
+        updateEditTextIfNeeded(binding.tn352atgInput, data.tn352atg)
+        updateEditTextIfNeeded(binding.tn353atgInput, data.tn353atg)
 
         setSpinnerSelection(binding.tt352TsnAInput, data.tt352tsnA)
         setSpinnerSelection(binding.tt352TsnBInput, data.tt352tsnB)
@@ -57,6 +66,18 @@ class InspectionORU35 : Fragment() {
         setSpinnerSelection(binding.v353TsnAInput, data.v353tsnA)
         setSpinnerSelection(binding.v353TsnBInput, data.v353tsnB)
         setSpinnerSelection(binding.v353TsnCInput, data.v353tsnC)
+
+        // Сбрасываем флаг после обновления UI
+        isUpdatingUIFromViewModel = false
+    }
+
+    private fun updateEditTextIfNeeded(editText: android.widget.EditText, newValue: String) {
+        val currentText = editText.text.toString()
+        if (currentText != newValue) {
+            editText.setText(newValue)
+            // Перемещаем курсор в конец текста
+            editText.setSelection(editText.text.length)
+        }
     }
 
     private fun setSpinnerSelection(spinner: android.widget.Spinner, value: String) {
@@ -64,7 +85,9 @@ class InspectionORU35 : Fragment() {
             val adapter = spinner.adapter
             for (i in 0 until adapter.count) {
                 if (adapter.getItem(i).toString() == value) {
-                    spinner.setSelection(i, false)
+                    if (spinner.selectedItemPosition != i) {
+                        spinner.setSelection(i, false)
+                    }
                     break
                 }
             }
@@ -72,7 +95,7 @@ class InspectionORU35 : Fragment() {
     }
 
     private fun setupInputListeners() {
-        // Слушатели для EditText - ИСПРАВЛЕННАЯ ВЕРСИЯ
+        // Слушатели для EditText
         setupEditTextListener(binding.tsn2Input) { text ->
             sharedViewModel.updateORU35Data { tsn2 = text }
         }
@@ -134,7 +157,11 @@ class InspectionORU35 : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                onTextChanged(s?.toString() ?: "")
+                // Игнорируем изменения, вызванные программным обновлением из ViewModel
+                if (isUpdatingUIFromViewModel) return
+
+                val newText = s?.toString() ?: ""
+                onTextChanged(newText)
             }
 
             override fun afterTextChanged(s: android.text.Editable?) {}
@@ -157,9 +184,5 @@ class InspectionORU35 : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance() = InspectionORU35()
     }
 }

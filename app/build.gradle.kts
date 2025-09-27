@@ -11,8 +11,8 @@ android {
         applicationId = "com.example.ps_inspection"
         minSdk = 24
         targetSdk = 36
-        versionCode = 14
-        versionName = "0.9.5-beta"
+        versionCode = 15
+        versionName = "0.9.6-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
