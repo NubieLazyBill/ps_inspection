@@ -23,6 +23,10 @@ class SharedInspectionViewModel : ViewModel() {
     private val _buildingsData = MutableStateFlow(InspectionBuildingsData())
     val buildingsData: StateFlow<InspectionBuildingsData> = _buildingsData
 
+    // Данные для экрана ORU500
+    private val _oru500Data = MutableStateFlow(InspectionORU500Data())
+    val oru500Data: StateFlow<InspectionORU500Data> = _oru500Data
+
     // Функция для обновления данных ORU35
     fun updateORU35Data(update: InspectionORU35Data.() -> Unit) {
         val newData = _oru35Data.value.copy().apply(update)
@@ -45,5 +49,11 @@ class SharedInspectionViewModel : ViewModel() {
     fun updateBuildingsData(update: InspectionBuildingsData.() -> Unit) {
         val newData = _buildingsData.value.copy().apply(update)
         _buildingsData.value = newData
+    }
+
+    // Функция для обновления данных ORU500
+    fun updateORU500Data(update: InspectionORU500Data.() -> Unit) {
+        val newData = _oru500Data.value.copy().apply(update)
+        _oru500Data.value = newData
     }
 }
