@@ -53,4 +53,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Для работы с Excel
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
 }
