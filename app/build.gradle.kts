@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.ps_inspection"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 15
         versionName = "0.9.6-beta"

@@ -1409,13 +1409,11 @@
                         android:text="@string/pressure_220_kV"
                         android:textSize="12sp" />
 
-                    <EditText
+                    <Spinner
                         android:id="@+id/atg3_b_pressure_220"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:inputType="numberDecimal"
-                        android:hint="0"
                         android:gravity="center"
                         android:textSize="14sp" />
                 </TableRow>

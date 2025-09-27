@@ -67,6 +67,8 @@ data class InspectionORU500Data(
     var oilTtVsht22B: String = "",
     var oilTtVsht22C: String = "",
 
+
+
     // Ячейка 7: В-500 ВШТ-11
     var purgingVsht11A1: String = "",
     var purgingVsht11B1: String = "",
