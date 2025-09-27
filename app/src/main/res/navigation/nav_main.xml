@@ -50,5 +50,5 @@
         android:id="@+id/inspectionATG"
         android:name="com.example.ps_inspection.InspectionATG"
         android:label="fragment_inspection_a_t_g"
-        tools:layout="@layout/fragment_inspection_a_t_g" />
+        tools:layout="@layout/fragment_inspection_atg" />
 </navigation>

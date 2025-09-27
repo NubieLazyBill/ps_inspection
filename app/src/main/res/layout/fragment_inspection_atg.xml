@@ -2007,7 +2007,7 @@
                         android:padding="4dp" />
 
                     <EditText
-                        android:id="@+id/reactor_с_tt_neutral"
+                        android:id="@+id/reactor_c_tt_neutral"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
@@ -2415,29 +2415,5 @@
 
             </TableLayout>
         </LinearLayout>
-
-        <!-- Продолжаем по аналогии для остальных фаз:
-             - АТГ резер. фаза
-             - 3 АТГ ф.С
-             - 3 АТГ ф.В
-             - 3 АТГ ф.А
-             - Р-500 2С ф.С
-             - Р-500 2С ф.В
-             - Р-500 2С ф.А
-        -->
-
-        <!-- Кнопка сохранения -->
-        <Button
-            android:id="@+id/save_atg_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Сохранить данные АТГ"
-            android:textSize="16sp"
-            android:padding="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/design_default_color_primary"
-            android:textColor="@color/white"
-            android:elevation="4dp" />
-
     </LinearLayout>
 </ScrollView>
