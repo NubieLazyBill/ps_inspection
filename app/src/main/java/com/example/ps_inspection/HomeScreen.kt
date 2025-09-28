@@ -165,8 +165,8 @@ class ExcelExportService(private val context: Context) {
         setCellValue(sheet, 46, 2, data.purgingVsht22A1) // C47 - ВШТ-22 I эл.
         setCellValue(sheet, 47, 2, data.purgingVsht22A2) // C48 - ВШТ-22 II эл.
 
-        setCellValue(sheet, 49, 2, data.purgingVlt20A1) // C50 - ВЛТ-20 I эл.
-        setCellValue(sheet, 50, 2, data.purgingVlt20A2) // C51 - ВЛТ-20 II эл.
+        //setCellValue(sheet, 49, 2, data.purgingVlt20A1) // C50 - ВЛТ-20 I эл.
+        //setCellValue(sheet, 50, 2, data.purgingVlt20A2) // C51 - ВЛТ-20 II эл.
 
         setCellValue(sheet, 52, 2, data.purgingVsht11A1) // C53 - ВШТ-11 I эл.
         setCellValue(sheet, 53, 2, data.purgingVsht11A2) // C54 - ВШТ-11 II эл.
