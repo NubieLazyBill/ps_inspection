@@ -15,6 +15,9 @@
     <string name="feeder">Присоединение</string>
     <string name="v_220_header"><![CDATA[В-220\nПродувка]]></string>
     <string name="tt_220_header"><![CDATA[ТТ-220\nУровень масла]]></string>
+    <string name="export_to_excel">Экспорт в Excel</string>
+    <string name="clear_data">Очистить данные</string>
+
 
     <string name="oru_35">ОРУ-35</string>
     <string name="tsn4">4ТСН</string>
@@ -61,6 +64,33 @@
     <string name="tn1_500">1ТН-500</string>
     <string name="tn2_500">2ТН-500</string>
     <string name="tn_500_sgres_1">ТН-500 СГРЭС-1</string>
+    <string name="cascade1">1</string>
+    <string name="cascade2">2</string>
+    <string name="cascade3">3</string>
+    <string name="cascade4">4</string>
+    <string name="atg_2_C">2 АТГ ф.С</string>
+    <string name="oil_lvl_tank">Уровень масла Бак</string>
+    <string name="oil_lvl_rpn">Уровень масла РПН</string>
+    <string name="pressure_500_kV">Давление 500 кВ</string>
+    <string name="pressure_220_kV">Давление 220 кВ</string>
+    <string name="temperature_TS_1">Температура ТС1</string>
+    <string name="temperature_TS_2">Температура ТС2</string>
+    <string name="oil_pump_pressure">Давление манометров маслонасосов</string>
+    <string name="group_1">1 группа</string>
+    <string name="group_2">2 группа</string>
+    <string name="group_3">3 группа</string>
+    <string name="group_4">4 группа</string>
+    <string name="atg_2_B">2 АТГ ф.В</string>
+    <string name="atg_2_A">2 АТГ ф.А</string>
+    <string name="atg_reserve">АТГ резер. фаза</string>
+    <string name="atg_3_C">3 АТГ ф.С</string>
+    <string name="atg_3_B">3 АТГ ф.В</string>
+    <string name="atg_3_A">3 АТГ ф.А</string>
+    <string name="reactor_500_2c_C">Реактор Р-500 2С ф.С</string>
+    <string name="temperature_TS">Температура ТС</string>
+    <string name="tt_neutral">ТТ нейтрали</string>
+    <string name="reactor_500_2s_B">Реактор Р-500 2С ф.В</string>
+    <string name="reactor_500_2s_A">Реактор Р-500 2С ф.А</string>
 
 
     <string name="oru_220">ОРУ-220</string>
@@ -103,31 +133,5 @@
 
     <string name="buildings">Здания и помещения</string>
     <string name="tn_500_header">=== ТН-500 ===</string>
-    <string name="cascade1">1</string>
-    <string name="cascade2">2</string>
-    <string name="cascade3">3</string>
-    <string name="cascade4">4</string>
-    <string name="atg_2_C">2 АТГ ф.С</string>
-    <string name="oil_lvl_tank">Уровень масла Бак</string>
-    <string name="oil_lvl_rpn">Уровень масла РПН</string>
-    <string name="pressure_500_kV">Давление 500 кВ</string>
-    <string name="pressure_220_kV">Давление 220 кВ</string>
-    <string name="temperature_TS_1">Температура ТС1</string>
-    <string name="temperature_TS_2">Температура ТС2</string>
-    <string name="oil_pump_pressure">Давление манометров маслонасосов</string>
-    <string name="group_1">1 группа</string>
-    <string name="group_2">2 группа</string>
-    <string name="group_3">3 группа</string>
-    <string name="group_4">4 группа</string>
-    <string name="atg_2_B">2 АТГ ф.В</string>
-    <string name="atg_2_A">2 АТГ ф.А</string>
-    <string name="atg_reserve">АТГ резер. фаза</string>
-    <string name="atg_3_C">3 АТГ ф.С</string>
-    <string name="atg_3_B">3 АТГ ф.В</string>
-    <string name="atg_3_A">3 АТГ ф.А</string>
-    <string name="reactor_500_2c_C">Реактор Р-500 2С ф.С</string>
-    <string name="temperature_TS">Температура ТС</string>
-    <string name="tt_neutral">ТТ нейтрали</string>
-    <string name="reactor_500_2s_B">Реактор Р-500 2С ф.В</string>
-    <string name="reactor_500_2s_A">Реактор Р-500 2С ф.А</string>
+
 </resources>
