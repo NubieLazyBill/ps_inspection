@@ -56,4 +56,12 @@ class SharedInspectionViewModel : ViewModel() {
         val newData = _oru500Data.value.copy().apply(update)
         _oru500Data.value = newData
     }
+
+    fun clearAllData() {
+        _oru35Data.value = InspectionORU35Data()
+        _oru220Data.value = InspectionORU220Data()
+        _atgData.value = InspectionATGData()
+        _oru500Data.value = InspectionORU500Data()
+        _buildingsData.value = InspectionBuildingsData()
+    }
 }
