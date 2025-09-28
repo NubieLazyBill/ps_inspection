@@ -853,6 +853,129 @@
             android:background="#999"
             android:layout_marginVertical="16dp" />
 
+        <!-- ЯЧЕЙКА 6: В-500 ВЛТ-20 (воздушный) -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="В-500 ВЛТ-20"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- I элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vlt_20_a1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vlt_20_b1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vlt_20_c1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_I"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- II элемент - Уровень продувки -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/purging_vlt_20_a2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vlt_20_b2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/purging_vlt_20_c2"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_readings_v_500_II"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCC"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ТТ-500 ВЛТ-20 -->
+        <TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_span="3"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="В-500 ВЛТ-20"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <!-- Уровень масла ТТ -->
+        <TableRow>
+            <Spinner
+                android:id="@+id/oil_tt_vlt_20_a"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vlt_20_b"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/oil_tt_vlt_20_c"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:entries="@array/purging_and_oil_readings"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- Толстый разделитель между ячейками -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#999"
+            android:layout_marginVertical="16dp" />
+
         <!-- ЯЧЕЙКА 7: В-500 ВШТ-11 (воздушный) -->
         <TableRow>
             <TextView

@@ -111,6 +111,17 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.oilTtVsht22B, data.oilTtVsht22B)
         setSpinnerSelection(binding.oilTtVsht22C, data.oilTtVsht22C)
 
+        //В-500 ВЛТ-20
+        setSpinnerSelection(binding.purgingVlt20A1, data.purgingVlt20A1)
+        setSpinnerSelection(binding.purgingVlt20B1, data.purgingVlt20B1)
+        setSpinnerSelection(binding.purgingVlt20C1, data.purgingVlt20C1)
+        setSpinnerSelection(binding.purgingVlt20A2, data.purgingVlt20A2)
+        setSpinnerSelection(binding.purgingVlt20B2, data.purgingVlt20B2)
+        setSpinnerSelection(binding.purgingVlt20C2, data.purgingVlt20C2)
+        setSpinnerSelection(binding.oilTtVlt20A, data.oilTtVlt20A)
+        setSpinnerSelection(binding.oilTtVlt20B, data.oilTtVlt20B)
+        setSpinnerSelection(binding.oilTtVlt20C, data.oilTtVlt20C)
+
         // Ячейка 7: В-500 ВШТ-11
         setSpinnerSelection(binding.purgingVsht11A1, data.purgingVsht11A1)
         setSpinnerSelection(binding.purgingVsht11B1, data.purgingVsht11B1)
@@ -378,6 +389,43 @@ class InspectionORU500 : Fragment() {
         }
         setupSpinnerListener(binding.oilTtVsht22C) { selectedItem ->
             sharedViewModel.updateORU500Data { oilTtVsht22C = selectedItem.toString() }
+        }
+
+        //Ячейка В-500 ВЛТ-20
+        setupSpinnerListener(binding.purgingVlt20A1) { selectedItem ->
+            sharedViewModel.updateORU500Data { copy(purgingVlt20A1 = selectedItem.toString()) }
+        }
+
+        setupSpinnerListener(binding.purgingVlt20B1) { selectedItem ->
+            sharedViewModel.updateORU500Data { copy(purgingVlt20B1 = selectedItem.toString()) }
+        }
+
+        setupSpinnerListener(binding.purgingVlt20C1) { selectedItem ->
+            sharedViewModel.updateORU500Data { copy(purgingVlt20C1 = selectedItem.toString()) }
+        }
+
+        setupSpinnerListener(binding.purgingVlt20A2) { selectedItem ->
+            sharedViewModel.updateORU500Data { copy(purgingVlt20A2 = selectedItem.toString()) }
+        }
+
+        setupSpinnerListener(binding.purgingVlt20B2) { selectedItem ->
+            sharedViewModel.updateORU500Data { copy(purgingVlt20B2 = selectedItem.toString()) }
+        }
+
+        setupSpinnerListener(binding.purgingVlt20C2) { selectedItem ->
+            sharedViewModel.updateORU500Data { copy(purgingVlt20C2 = selectedItem.toString()) }
+        }
+
+        setupSpinnerListener(binding.oilTtVlt20A) { selectedItem ->
+            sharedViewModel.updateORU500Data { copy(oilTtVlt20A = selectedItem.toString()) }
+        }
+
+        setupSpinnerListener(binding.oilTtVlt20B) { selectedItem ->
+            sharedViewModel.updateORU500Data { copy(oilTtVlt20B = selectedItem.toString()) }
+        }
+
+        setupSpinnerListener(binding.oilTtVlt20C) { selectedItem ->
+            sharedViewModel.updateORU500Data { copy(oilTtVlt20C = selectedItem.toString()) }
         }
 
         // Ячейка 7: В-500 ВШТ-11
