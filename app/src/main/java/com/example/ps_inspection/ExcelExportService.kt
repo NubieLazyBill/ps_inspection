@@ -1,18 +1,21 @@
 package com.example.ps_inspection
 
+import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
-import androidx.core.net.toUri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import java.io.File
-import java.io.FileOutputStream
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
 class ExcelExportService(private val context: Context) {
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun exportToExcel(
         oru35Data: InspectionORU35Data,
         oru220Data: InspectionORU220Data,
@@ -21,15 +24,12 @@ class ExcelExportService(private val context: Context) {
         buildingsData: InspectionBuildingsData
     ): Uri? {
         return try {
-            // 1. Загружаем шаблон из assets
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
             val workbook = XSSFWorkbook(inputStream)
-            val sheet = workbook.getSheetAt(0) // Получаем первый лист
+            val sheet = workbook.getSheetAt(0)
 
-            // 2. Заполняем данные в существующий шаблон
             fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
-            // 3. Сохраняем с новым именем (не перезаписываем шаблон)
             saveWorkbookFromTemplate(workbook, inputStream)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -552,18 +552,34 @@ class ExcelExportService(private val context: Context) {
         cell.setCellValue(value)
     }
 
-    private fun saveWorkbookFromTemplate(workbook: Workbook, inputStream: InputStream): Uri {
-        inputStream.close() // Закрываем поток шаблона
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun saveWorkbookFromTemplate(workbook: Workbook, inputStream: InputStream): Uri? {
+        inputStream.close()
 
         val dateFormat = SimpleDateFormat("dd-MM-yyyy_HH-mm", Locale.getDefault())
         val fileName = "Осмотр_${dateFormat.format(Date())}.xlsx"
 
-        val file = File(context.getExternalFilesDir(null), fileName)
-        FileOutputStream(file).use { fos ->
-            workbook.write(fos)
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+            put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
         }
-        workbook.close()
 
-        return file.toUri()
+        return try {
+            val resolver = context.contentResolver
+            val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+
+            uri?.let {
+                resolver.openOutputStream(it)?.use { outputStream ->
+                    workbook.write(outputStream)
+                }
+                workbook.close()
+                it
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            workbook.close()
+            null
+        }
     }
 }
