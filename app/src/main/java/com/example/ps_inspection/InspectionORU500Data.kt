@@ -17,7 +17,7 @@ data class InspectionORU500Data(
     var oilTtVsht31B: String = "",
     var oilTtVsht31C: String = "",
 
-    // Ячейка 3: В-500 ВЛТ-30
+    // Ячейка 3: В-500 ВЛТ-30, Трачуки
     var gasPressureVlt30A: String = "",
     var gasPressureVlt30B: String = "",
     var gasPressureVlt30C: String = "",
@@ -99,6 +99,8 @@ data class InspectionORU500Data(
     var oilTtVshl12A: String = "",
     var oilTtVshl12B: String = "",
     var oilTtVshl12C: String = "",
+
+    //ТН-500 Белозёрная
     var oil2tnBelozernayaA: String = "",
     var oil2tnBelozernayaB: String = "",
     var oil2tnBelozernayaC: String = "",
