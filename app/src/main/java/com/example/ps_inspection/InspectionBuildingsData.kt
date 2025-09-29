@@ -7,7 +7,7 @@ data class InspectionBuildingsData(
     var compressor1Heating: String = "○",
     var compressor1Temp: String = "",
 
-    // Баллоная №1
+    // Баллонная №1
     var ballroom1Valve: String = "○",
     var ballroom1Heating: String = "○",
     var ballroom1Temp: String = "",
@@ -17,7 +17,7 @@ data class InspectionBuildingsData(
     var compressor2Heating: String = "○",
     var compressor2Temp: String = "",
 
-    // Баллоная №2
+    // Баллонная №2
     var ballroom2Valve: String = "○",
     var ballroom2Heating: String = "○",
     var ballroom2Temp: String = "",

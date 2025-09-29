@@ -485,6 +485,61 @@ class ExcelExportService(private val context: Context) {
         setCellValue(sheet, 20, 21, oru220Data.tn2LowerB)
         setCellValue(sheet, 20, 22, oru220Data.tn2LowerC)
 
+        //Здания/помещения
+        //Компрессорная №1
+        setCellValue(sheet, 23, 15, buildingsData.compressor1Valve)
+        setCellValue(sheet, 23, 18, buildingsData.compressor1Heating)
+        setCellValue(sheet, 23, 21, buildingsData.compressor1Temp)
+
+        // Баллонная №1
+        setCellValue(sheet, 24, 15, buildingsData.ballroom1Valve)
+        setCellValue(sheet, 24, 18, buildingsData.ballroom1Heating)
+        setCellValue(sheet, 24, 21, buildingsData.ballroom1Temp)
+
+        //Компрессорная №2
+        setCellValue(sheet, 25, 15, buildingsData.compressor2Valve)
+        setCellValue(sheet, 25, 18, buildingsData.compressor2Heating)
+        setCellValue(sheet, 25, 21, buildingsData.compressor2Temp)
+
+        // Баллонная №2
+        setCellValue(sheet, 26, 15, buildingsData.ballroom2Valve)
+        setCellValue(sheet, 26, 18, buildingsData.ballroom2Heating)
+        setCellValue(sheet, 26, 21, buildingsData.ballroom2Temp)
+
+        //КПЗ ОПУ
+        setCellValue(sheet, 27, 15, buildingsData.kpzOpuValve)
+        setCellValue(sheet, 27, 18, buildingsData.kpzOpuHeating)
+        setCellValue(sheet, 27, 21, buildingsData.kpzOpuTemp)
+
+        //КПЗ-2
+        setCellValue(sheet, 28, 15, buildingsData.kpz2Valve)
+        setCellValue(sheet, 28, 18, buildingsData.kpz2Heating)
+        setCellValue(sheet, 28, 21, buildingsData.kpz2Temp)
+
+        //Насосная
+        setCellValue(sheet, 29, 15, buildingsData.firePumpValve)
+        setCellValue(sheet, 29, 18, buildingsData.firePumpHeating)
+        setCellValue(sheet, 29, 21, buildingsData.firePumpTemp)
+
+        //Мастерская по ремонту ВВ
+        setCellValue(sheet, 30, 18, buildingsData.workshopHeating)
+        setCellValue(sheet, 30, 21, buildingsData.workshopTemp)
+
+        //Артскважина
+        setCellValue(sheet, 31, 18, buildingsData.artWellHeating)
+
+        //Здание артезиантской скважины
+        setCellValue(sheet, 32, 18, buildingsData.artesianWellHeating)
+
+        //АБ №1,2
+        setCellValue(sheet, 33, 18, buildingsData.roomAbHeating)
+        setCellValue(sheet, 33, 21, buildingsData.roomAbTemp)
+
+        //Помещение п/этажа №1,2,3
+        setCellValue(sheet, 33, 18, buildingsData.basementHeating)
+        setCellValue(sheet, 33, 21, buildingsData.basementTemp)
+
+
         // ... остальное заполнение данных как было ранее
         // ВСЁ ФОРМАТИРОВАНИЕ, РАЗМЕРЫ ЯЧЕЕК И НЕИЗМЕНЯЕМЫЕ ДАННЫЕ СОХРАНЯТСЯ!
     }
