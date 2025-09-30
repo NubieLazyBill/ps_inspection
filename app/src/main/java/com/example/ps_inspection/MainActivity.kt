@@ -45,4 +45,6 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+
 }

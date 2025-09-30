@@ -1,99 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeScreen">
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/title_homescreen"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_inspections"
-        android:textAlignment="center"
-        android:textColor="#090909"
-        android:textSize="20sp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/inspect_oru_35"
-        android:layout_width="135dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/oru_35"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_homescreen" />
+        <!-- Заголовок -->
+        <TextView
+            android:id="@+id/title_homescreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Осмотр оборудования ПС"
+            android:textAlignment="center"
+            android:textColor="#090909"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp" />
 
-    <Button
-        android:id="@+id/inspect_ATG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/atg_r_500_2_s"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inspect_oru_35" />
+        <!-- Группа ОРУ -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Открытые распределительные устройства"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
 
-    <Button
-        android:id="@+id/inspect_oru220"
-        android:layout_width="132dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/oru_220"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inspect_ATG" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:weightSum="3">
 
-    <Button
-        android:id="@+id/inspect_oru500"
-        android:layout_width="133dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/oru_500"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inspect_oru220" />
+            <Button
+                android:id="@+id/inspect_oru_35"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="ОРУ-35 кВ"
+                android:textAllCaps="false" />
 
-    <Button
-        android:id="@+id/inspect_buildings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/buildings"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inspect_oru500" />
+            <Button
+                android:id="@+id/inspect_oru220"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="ОРУ-220 кВ"
+                android:textAllCaps="false" />
 
-    <!-- Добавленные кнопки -->
-    <Button
-        android:id="@+id/btnExportExcel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Экспорт в Excel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inspect_buildings" />
+            <Button
+                android:id="@+id/inspect_oru500"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:text="ОРУ-500 кВ"
+                android:textAllCaps="false" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/btnClearData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Очистить данные"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnExportExcel" />
+        <!-- Группа АТГ и Реактор -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="АТГ и Реактор"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/inspect_ATG"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
+            android:text="АТГ + Реактор Р-500"
+            android:textAllCaps="false" />
+
+        <!-- Группа зданий -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Здания и помещения"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/inspect_buildings"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="24dp"
+            android:text="Здания/помещения"
+            android:textAllCaps="false" />
+
+        <!-- Группа действий -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginBottom="16dp" />
+
+        <Button
+            android:id="@+id/btnExportExcel"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#4CAF50"
+            android:textColor="@android:color/white"
+            android:text="Сохранить в Excel"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnClearData"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:backgroundTint="#F44336"
+            android:textColor="@android:color/white"
+            android:text="Очистить все данные"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+</ScrollView>

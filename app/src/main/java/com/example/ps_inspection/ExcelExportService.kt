@@ -12,6 +12,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.core.content.FileProvider
+import org.apache.poi.ss.usermodel.Workbook
+import java.io.File
+import java.io.FileOutputStream
+
 
 class ExcelExportService(private val context: Context) {
 
@@ -569,34 +574,51 @@ class ExcelExportService(private val context: Context) {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     private fun saveWorkbookFromTemplate(workbook: Workbook, inputStream: InputStream): Uri? {
         inputStream.close()
 
         val dateFormat = SimpleDateFormat("dd-MM-yyyy_HH-mm", Locale.getDefault())
         val fileName = "Осмотр_${dateFormat.format(Date())}.xlsx"
 
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
-            put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
-        }
-
         return try {
             val resolver = context.contentResolver
-            val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
 
-            uri?.let {
-                resolver.openOutputStream(it)?.use { outputStream ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // Для Android 10+ используем современный способ
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                }
+
+                val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+                uri?.let {
+                    resolver.openOutputStream(it)?.use { outputStream ->
+                        workbook.write(outputStream)
+                    }
+                    it
+                }
+            } else {
+                // Для старых версий Android используем File API
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                if (!downloadsDir.exists()) {
+                    downloadsDir.mkdirs()
+                }
+
+                val file = File(downloadsDir, fileName)
+
+                FileOutputStream(file).use { outputStream ->
                     workbook.write(outputStream)
                 }
-                workbook.close()
-                it
+
+                // Получаем URI через FileProvider для безопасности
+                FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            workbook.close()
             null
+        } finally {
+            workbook.close()
         }
     }
 }
