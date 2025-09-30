@@ -545,11 +545,13 @@ class ExcelExportService(private val context: Context) {
     }
 
     private fun setCellValue(sheet: Sheet, rowNum: Int, colNum: Int, value: String) {
-        val row = sheet.getRow(rowNum) ?: return // Если строки нет - просто выходим, не создаём новую
-        val cell = row.getCell(colNum) ?: return // Если ячейки нет - тоже выходим
-
-        // Просто записываем значение в существующую ячейку
-        cell.setCellValue(value)
+        try {
+            val row = sheet.getRow(rowNum) ?: sheet.createRow(rowNum)
+            val cell = row.getCell(colNum) ?: row.createCell(colNum)
+            cell.setCellValue(value)
+        } catch (e: Exception) {
+            println("Ошибка записи в ячейку [${rowNum+1}, ${colNum+1}]: ${e.message}")
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
