@@ -621,4 +621,54 @@ class ExcelExportService(private val context: Context) {
             workbook.close()
         }
     }
+
+    fun exportToExcelLegacy(
+        oru35Data: InspectionORU35Data,
+        oru220Data: InspectionORU220Data,
+        atgData: InspectionATGData,
+        oru500Data: InspectionORU500Data,
+        buildingsData: InspectionBuildingsData
+    ): Uri? {
+        return try {
+            val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
+            val workbook = XSSFWorkbook(inputStream)
+            val sheet = workbook.getSheetAt(0)
+
+            fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
+            saveWorkbookLegacy(workbook, inputStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun saveWorkbookLegacy(workbook: Workbook, inputStream: InputStream): Uri? {
+        inputStream.close()
+
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy_HH-mm", Locale.getDefault())
+        val fileName = "Осмотр_${dateFormat.format(Date())}.xlsx"
+
+        return try {
+            // Для старых версий Android используем File API
+            val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            if (!downloadsDir.exists()) {
+                downloadsDir.mkdirs()
+            }
+
+            val file = File(downloadsDir, fileName)
+
+            FileOutputStream(file).use { outputStream ->
+                workbook.write(outputStream)
+            }
+
+            // Получаем URI через FileProvider для безопасности
+            FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        } finally {
+            workbook.close()
+        }
+    }
 }
