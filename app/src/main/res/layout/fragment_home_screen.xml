@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#FAFAFA">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,52 +19,65 @@
             android:layout_height="wrap_content"
             android:text="Осмотр оборудования ПС"
             android:textAlignment="center"
-            android:textColor="#090909"
-            android:textSize="20sp"
+            android:textColor="#1A237E"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="32dp" />
 
         <!-- Группа ОРУ -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Открытые распределительные устройства"
-            android:textColor="#666666"
+            android:textColor="#455A64"
             android:textSize="14sp"
-            android:layout_marginBottom="8dp" />
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             android:weightSum="3">
 
             <Button
                 android:id="@+id/inspect_oru_35"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="52dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="ОРУ-35 кВ"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:background="@drawable/button_outline"
+                android:textColor="#1A237E" />
 
             <Button
                 android:id="@+id/inspect_oru220"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="52dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="ОРУ-220 кВ"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:background="@drawable/button_outline"
+                android:textColor="#1A237E" />
 
             <Button
                 android:id="@+id/inspect_oru500"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="52dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="ОРУ-500 кВ"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:background="@drawable/button_outline"
+                android:textColor="#1A237E" />
         </LinearLayout>
 
         <!-- Группа АТГ и Реактор -->
@@ -71,60 +85,82 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="АТГ и Реактор"
-            android:textColor="#666666"
+            android:textColor="#455A64"
             android:textSize="14sp"
-            android:layout_marginBottom="8dp" />
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
 
         <Button
             android:id="@+id/inspect_ATG"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="52dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
             android:text="АТГ + Реактор Р-500"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:background="@drawable/button_outline"
+            android:textColor="#1A237E" />
 
         <!-- Группа зданий -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Здания и помещения"
-            android:textColor="#666666"
+            android:textColor="#455A64"
             android:textSize="14sp"
-            android:layout_marginBottom="8dp" />
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
 
         <Button
             android:id="@+id/inspect_buildings"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="24dp"
+            android:layout_height="52dp"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
             android:text="Здания/помещения"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:background="@drawable/button_outline"
+            android:textColor="#1A237E" />
 
-        <!-- Группа действий -->
+        <!-- Разделитель -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#E0E0E0"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="24dp" />
 
+        <!-- Группа действий внизу С ИКОНКАМИ -->
         <Button
             android:id="@+id/btnExportExcel"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="#4CAF50"
-            android:textColor="@android:color/white"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            android:background="#4CAF50"
+            android:drawableLeft="@drawable/ic_excel"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:paddingStart="20dp"
             android:text="Сохранить в Excel"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnClearData"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:backgroundTint="#F44336"
-            android:textColor="@android:color/white"
+            android:layout_height="56dp"
+            android:background="#F44336"
+            android:drawableLeft="@drawable/ic_clear"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:paddingStart="20dp"
             android:text="Очистить все данные"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
     </LinearLayout>
 </ScrollView>
