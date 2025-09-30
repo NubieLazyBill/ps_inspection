@@ -52,35 +52,36 @@ class ExcelExportService(private val context: Context) {
         setCellValue(sheet, 0, 1, currentDate) // B1
         setCellValue(sheet, 0, 14, currentDate) // O1
 
-        // ОРУ-35 кВ данные
-        //В-35 2ТСН
-        setCellValue(sheet, 5, 2, oru35Data.v352tsnA) // C6
-        setCellValue(sheet, 5, 3, oru35Data.v352tsnB) // D6
-        setCellValue(sheet, 5, 4, oru35Data.v352tsnC) // E6
+        // ОРУ-35 кВ данные - ИСПРАВЛЕННЫЕ ИНДЕКСЫ!
 
-        //В-35 3ТСН
-        setCellValue(sheet, 6, 2, oru35Data.v353tsnA)
-        setCellValue(sheet, 6, 3, oru35Data.v353tsnB)
-        setCellValue(sheet, 6, 4, oru35Data.v353tsnC)
+        // В-35 2ТСН (строка 6 в Excel = индекс 5)
+        setCellValue(sheet, 5, 2, oru35Data.v352tsnA) // C6 - Уровень продувки ф.А
+        setCellValue(sheet, 5, 3, oru35Data.v352tsnB) // D6 - Уровень продувки ф.В
+        setCellValue(sheet, 5, 4, oru35Data.v352tsnC) // E6 - Уровень продувки ф.С
 
-        //ТСНы
-        setCellValue(sheet, 6, 4, oru35Data.tsn2) // G5
-        setCellValue(sheet, 6, 5, oru35Data.tsn3)
-        setCellValue(sheet, 6, 6, oru35Data.tsn4)
+        // В-35 3ТСН (строка 7 в Excel = индекс 6)
+        setCellValue(sheet, 6, 2, oru35Data.v353tsnA) // C7
+        setCellValue(sheet, 6, 3, oru35Data.v353tsnB) // D7
+        setCellValue(sheet, 6, 4, oru35Data.v353tsnC) // E7
 
-        //ТТ-35 2ТСН
-        setCellValue(sheet, 4, 8, oru35Data.tt352tsnA)
-        setCellValue(sheet, 4, 9, oru35Data.tt352tsnB)
-        setCellValue(sheet, 4, 10, oru35Data.tt352tsnC)
+        // ТСНы - Уровень масла (правильно!)
+        setCellValue(sheet, 4, 6, oru35Data.tsn2) // G5 - 2ТСН
+        setCellValue(sheet, 5, 6, oru35Data.tsn3) // G6 - 3ТСН
+        setCellValue(sheet, 6, 6, oru35Data.tsn4) // G7 - 4ТСН
 
-        //ТТ-35 3ТСН
-        setCellValue(sheet, 5, 8, oru35Data.tt353tsnA)
-        setCellValue(sheet, 5, 9, oru35Data.tt353tsnB)
-        setCellValue(sheet, 5, 10, oru35Data.tt353tsnC)
+        // ТТ-35 2ТСН (строка 5 в Excel = индекс 4)
+        setCellValue(sheet, 4, 8, oru35Data.tt352tsnA) // I5 - ф.А
+        setCellValue(sheet, 4, 9, oru35Data.tt352tsnB) // J5 - ф.В
+        setCellValue(sheet, 4, 10, oru35Data.tt352tsnC) // K5 - ф.С
 
-        //ТН-35
-        setCellValue(sheet, 6, 8, oru35Data.tn352atg)
-        setCellValue(sheet, 6, 10, oru35Data.tn352atg)
+        // ТТ-35 3ТСН (строка 6 в Excel = индекс 5)
+        setCellValue(sheet, 5, 8, oru35Data.tt353tsnA) // I6 - ф.А
+        setCellValue(sheet, 5, 9, oru35Data.tt353tsnB) // J6 - ф.В
+        setCellValue(sheet, 5, 10, oru35Data.tt353tsnC) // K6 - ф.С
+
+        // ТН-35 (строка 7 в Excel = индекс 6)
+        setCellValue(sheet, 6, 8, oru35Data.tn352atg) // I7 - ТН-35 2АТГ
+        setCellValue(sheet, 6, 10, oru35Data.tn353atg) // J7 - ТН-35 3АТГ
 
         //АТГ, Реактор
         //2АТГ ф.С
@@ -545,12 +546,26 @@ class ExcelExportService(private val context: Context) {
     }
 
     private fun setCellValue(sheet: Sheet, rowNum: Int, colNum: Int, value: String) {
+        println("🔍 Запись в [Строка:${rowNum+1}, Колонка:${colNum+1}] значение: '$value'")
+
         try {
             val row = sheet.getRow(rowNum) ?: sheet.createRow(rowNum)
             val cell = row.getCell(colNum) ?: row.createCell(colNum)
+
+            // Проверяем текущее значение в ячейке
+            val currentValue = cell.stringCellValue ?: "пусто"
+            println("📝 Текущее значение в ячейке: '$currentValue'")
+
             cell.setCellValue(value)
+            println("✅ Успешно записано!")
+
+            // Проверяем записанное значение
+            val writtenValue = cell.stringCellValue ?: "пусто"
+            println("📖 Проверка записи: '$writtenValue'")
+
         } catch (e: Exception) {
-            println("Ошибка записи в ячейку [${rowNum+1}, ${colNum+1}]: ${e.message}")
+            println("❌ ОШИБКА: ${e.message}")
+            e.printStackTrace()
         }
     }
 
