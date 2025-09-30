@@ -45,7 +45,7 @@
                 android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="@string/oru_35"
+                android:text="ОРУ-35 кВ"
                 android:textAllCaps="false" />
 
             <Button
@@ -54,7 +54,7 @@
                 android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="@string/oru_220"
+                android:text="ОРУ-220 кВ"
                 android:textAllCaps="false" />
 
             <Button
@@ -62,7 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:text="@string/oru_500"
+                android:text="ОРУ-500 кВ"
                 android:textAllCaps="false" />
         </LinearLayout>
 
