@@ -17,6 +17,8 @@
     <string name="tt_220_header"><![CDATA[ТТ-220\nУровень масла]]></string>
     <string name="export_to_excel">Экспорт в Excel</string>
     <string name="clear_data">Очистить данные</string>
+    <string name="breaker">Выключатель</string>
+    <string name="current_transformer">Трансформатор тока</string>
 
 
     <string name="oru_35">ОРУ-35</string>
