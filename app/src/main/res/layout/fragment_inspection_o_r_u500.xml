@@ -82,7 +82,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки I"
+                        android:text="@string/purging_level_I_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -125,7 +125,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки II"
+                        android:text="@string/purging_level_II_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -239,7 +239,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Давление элегаза"
+                        android:text="@string/gas_pressure"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -405,7 +405,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Давление элегаза"
+                        android:text="@string/gas_pressure"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -513,7 +513,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Трачуковская"
+                android:text="@string/trachukovskaya"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -771,7 +771,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки I"
+                        android:text="@string/purging_level_I_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -814,7 +814,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки II"
+                        android:text="@string/purging_level_II_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -971,7 +971,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки I"
+                        android:text="@string/purging_level_I_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1014,7 +1014,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки II"
+                        android:text="@string/purging_level_II_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1171,7 +1171,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки I"
+                        android:text="@string/purging_level_I_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1214,7 +1214,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки II"
+                        android:text="@string/purging_level_II_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1313,7 +1313,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="В-500 ВЛТ-20"
+                android:text="@string/v_500_vlt_20"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -1371,7 +1371,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки I"
+                        android:text="@string/purging_level_I_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1414,7 +1414,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки II"
+                        android:text="@string/purging_level_II_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1457,7 +1457,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="ТТ-500 ВЛТ-20"
+                        android:text="@string/tt_500_vlt_20"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1571,7 +1571,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки I"
+                        android:text="@string/purging_level_I_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1614,7 +1614,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки II"
+                        android:text="@string/purging_level_II_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1771,7 +1771,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки I"
+                        android:text="@string/purging_level_I_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1814,7 +1814,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Уровень продувки II"
+                        android:text="@string/purging_level_II_element"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>

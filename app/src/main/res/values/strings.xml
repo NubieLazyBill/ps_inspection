@@ -141,5 +141,9 @@
 
     <string name="buildings">Здания и помещения</string>
     <string name="tn_500_header">=== ТН-500 ===</string>
+    <string name="tsn">ТСН</string>
+    <string name="v_35_2_tsn">В-35 2ТСН</string>
+    <string name="v_35_3_tsn">В-35 3ТСН</string>
+    <string name="tn_35">ТН-35</string>
 
 </resources>

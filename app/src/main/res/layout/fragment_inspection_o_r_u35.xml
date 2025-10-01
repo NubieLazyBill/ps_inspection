@@ -27,12 +27,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#E3F2FD"
+                android:gravity="center"
                 android:padding="12dp"
-                android:text="ТСН"
+                android:text="@string/tsn"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -123,12 +123,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#E8F5E8"
+                android:gravity="center"
                 android:padding="12dp"
-                android:text="ТТ-35 2ТСН"
+                android:text="@string/tt_35_2_tsn"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -210,12 +210,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFF3E0"
+                android:gravity="center"
                 android:padding="12dp"
-                android:text="ТТ-35 3ТСН"
+                android:text="@string/tt_35_3_tsn"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -297,12 +297,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#F3E5F5"
+                android:gravity="center"
                 android:padding="12dp"
-                android:text="В-35 2ТСН"
+                android:text="@string/v_35_2_tsn"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -384,12 +384,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#E0F2F1"
+                android:gravity="center"
                 android:padding="12dp"
-                android:text="В-35 3ТСН"
+                android:text="@string/v_35_3_tsn"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -472,12 +472,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFEBEE"
+                android:gravity="center"
                 android:padding="12dp"
-                android:text="ТН-35"
+                android:text="@string/tn_35"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
