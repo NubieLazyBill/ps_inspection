@@ -6,6 +6,9 @@
     <string name="oil_level">Уровень масла</string>
     <string name="purging">Продувка</string>
     <string name="purging_level">Уровень продувки</string>
+    <string name="purging_level_I_element">Уровень продувки I эл.</string>
+    <string name="purging_level_II_element">Уровень продувки II эл.</string>
+    <string name="gas_pressure">Давление элегаза</string>
     <string name="f_A">А</string>
     <string name="f_B">В</string>
     <string name="f_C">С</string>
@@ -93,6 +96,9 @@
     <string name="tt_neutral">ТТ нейтрали</string>
     <string name="reactor_500_2s_B">Реактор Р-500 2С ф.В</string>
     <string name="reactor_500_2s_A">Реактор Р-500 2С ф.А</string>
+    <string name="trachukovskaya">Трачуковская</string>
+    <string name="v_500_vlt_20">В-500 ВЛТ-20</string>
+    <string name="tt_500_vlt_20">ТТ-500 ВЛТ-20</string>
 
 
     <string name="oru_220">ОРУ-220</string>
