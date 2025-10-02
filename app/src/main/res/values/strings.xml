@@ -69,10 +69,10 @@
     <string name="tn1_500">1ТН-500</string>
     <string name="tn2_500">2ТН-500</string>
     <string name="tn_500_sgres_1">ТН-500 СГРЭС-1</string>
-    <string name="cascade1">1</string>
-    <string name="cascade2">2</string>
-    <string name="cascade3">3</string>
-    <string name="cascade4">4</string>
+    <string name="cascade1">1 каскад</string>
+    <string name="cascade2">2 каскад</string>
+    <string name="cascade3">3 каскад</string>
+    <string name="cascade4">4 каскад</string>
     <string name="atg_2_C">2 АТГ ф.С</string>
     <string name="oil_lvl_tank">Уровень масла Бак</string>
     <string name="oil_lvl_rpn">Уровень масла РПН</string>

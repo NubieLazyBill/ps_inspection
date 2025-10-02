@@ -1,15 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <LinearLayout
+    <!-- ФИКСИРОВАННЫЙ ЗАГОЛОВОК ФАЗ (всегда виден) -->
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:stretchColumns="*"
+        android:padding="8dp">
+
+        <!-- Заголовки фаз A, B, C -->
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/f_A"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/f_B"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/f_C"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+    </TableLayout>
+
+    <!-- СКРОЛЛ С КОНТЕНТОМ (остальной код без заголовков фаз) -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Тут твой контент БЕЗ заголовков фаз -->
 
         <!-- Секция: В-500 Р-500 2С (воздушный) -->
         <LinearLayout
@@ -24,54 +81,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/v_500_r_500_2s"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
-
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- I элемент - Уровень продувки -->
                 <TableRow>
@@ -82,7 +104,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="@string/purging_level_I_element"
+                        android:text="@string/purging_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -116,19 +138,6 @@
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- II элемент - Уровень продувки -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_span="3"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/purging_level_II_element"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </TableRow>
 
                 <TableRow>
                     <Spinner
@@ -181,12 +190,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/v_500_vsht_31"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -194,41 +204,7 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- Давление элегаза -->
                 <TableRow>
@@ -292,6 +268,21 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/tt_500_vsht_31"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <!-- Уровень масла -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/oil_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -347,12 +338,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/v_500_vlt_30"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -360,41 +352,7 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- Давление элегаза -->
                 <TableRow>
@@ -458,6 +416,21 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/tt_500_vlt_30"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <!-- Уровень масла -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/oil_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -513,12 +486,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/trachukovskaya"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -526,41 +500,7 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- ТТ-500 Трачуковская -->
                 <TableRow>
@@ -713,12 +653,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/v_500_vshl_32"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -726,41 +667,7 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- I элемент - Уровень продувки -->
                 <TableRow>
@@ -771,7 +678,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="@string/purging_level_I_element"
+                        android:text="@string/purging_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -805,19 +712,7 @@
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- II элемент - Уровень продувки -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_span="3"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/purging_level_II_element"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </TableRow>
+                
 
                 <TableRow>
                     <Spinner
@@ -858,6 +753,21 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/tt_500_vshl_32"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <!-- Уровень масла -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/oil_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -913,12 +823,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/v_500_vshl_21"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -926,41 +837,7 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- I элемент - Уровень продувки -->
                 <TableRow>
@@ -971,7 +848,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="@string/purging_level_I_element"
+                        android:text="@string/purging_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1003,20 +880,6 @@
                         android:entries="@array/purging_readings_v_500_I"
                         android:gravity="center"
                         android:minWidth="120dp" />
-                </TableRow>
-
-                <!-- II элемент - Уровень продувки -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_span="3"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/purging_level_II_element"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
@@ -1058,6 +921,21 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/tt_500_vshl_21"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <!-- Уровень масла -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/oil_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1113,54 +991,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/v_500_vsht_22"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
-
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- I элемент - Уровень продувки -->
                 <TableRow>
@@ -1171,7 +1014,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="@string/purging_level_I_element"
+                        android:text="@string/purging_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1203,20 +1046,6 @@
                         android:entries="@array/purging_readings_v_500_I"
                         android:gravity="center"
                         android:minWidth="120dp" />
-                </TableRow>
-
-                <!-- II элемент - Уровень продувки -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_span="3"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/purging_level_II_element"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
@@ -1258,6 +1087,21 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/tt_500_vsht_22"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <!-- Уровень масла -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/oil_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1313,54 +1157,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/v_500_vlt_20"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
-
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- I элемент - Уровень продувки -->
                 <TableRow>
@@ -1371,7 +1180,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="@string/purging_level_I_element"
+                        android:text="@string/purging_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1403,20 +1212,6 @@
                         android:entries="@array/purging_readings_v_500_I"
                         android:gravity="center"
                         android:minWidth="120dp" />
-                </TableRow>
-
-                <!-- II элемент - Уровень продувки -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_span="3"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/purging_level_II_element"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
@@ -1458,7 +1253,8 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/tt_500_vlt_20"
-                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                 </TableRow>
 
@@ -1513,54 +1309,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/v_500_vsht_11"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
-
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- I элемент - Уровень продувки -->
                 <TableRow>
@@ -1571,7 +1332,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="@string/purging_level_I_element"
+                        android:text="@string/purging_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1603,20 +1364,6 @@
                         android:entries="@array/purging_readings_v_500_I"
                         android:gravity="center"
                         android:minWidth="120dp" />
-                </TableRow>
-
-                <!-- II элемент - Уровень продувки -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_span="3"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/purging_level_II_element"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
@@ -1658,6 +1405,21 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/tt_500_vsht_11"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <!-- Уровень масла -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/oil_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1713,54 +1475,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/v_500_vshl_12"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
-
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- I элемент - Уровень продувки -->
                 <TableRow>
@@ -1771,7 +1498,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="@string/purging_level_I_element"
+                        android:text="@string/purging_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1803,20 +1530,6 @@
                         android:entries="@array/purging_readings_v_500_I"
                         android:gravity="center"
                         android:minWidth="120dp" />
-                </TableRow>
-
-                <!-- II элемент - Уровень продувки -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_span="3"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/purging_level_II_element"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
                 </TableRow>
 
                 <TableRow>
@@ -1858,6 +1571,21 @@
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/tt_500_vshl_12"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <!-- Уровень масла -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/oil_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1897,10 +1625,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_span="3"
-                        android:background="#F5F5F5"
+                        android:background="#E3F2FD"
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/tn_500_belozernaya"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <!-- Уровень масла -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/oil_level"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -1956,12 +1699,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/tn1_500"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1969,41 +1713,7 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- Каскад 1 -->
                 <TableRow>
@@ -2199,12 +1909,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/tn2_500"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -2212,41 +1923,7 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- Каскад 1 -->
                 <TableRow>
@@ -2443,12 +2120,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:gravity="center"
+                android:padding="8dp"
                 android:text="@string/tn_500_sgres_1"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -2456,41 +2134,7 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
 
                 <!-- Каскад 1 -->
                 <TableRow>
@@ -2669,3 +2313,4 @@
 
     </LinearLayout>
 </ScrollView>
+</LinearLayout>
