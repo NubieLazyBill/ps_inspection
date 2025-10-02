@@ -23,12 +23,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/v_220_mirnaya"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/mirnaya"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -180,12 +180,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/v_220_topaz"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/topaz"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -337,12 +337,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ov_220"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/o_v"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -633,12 +633,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/v_220_2atg"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/atg_2"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -790,12 +790,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sh_s_v_220"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/sh_s_v"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -947,12 +947,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/v_220_3atg"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/atg_3"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1104,12 +1104,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/v_220_orbita"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/orbita"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1261,12 +1261,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/v_220_fakel"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/fakel"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1406,162 +1406,6 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- Секция: Комета-1 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/v_220_cometa1"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="*"
-                android:shrinkColumns="*">
-
-                <!-- Заголовок фаз -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_A"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_B"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/f_C"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="8dp" />
-                </TableRow>
-
-                <!-- Выключатель -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_span="3"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/breaker"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/purging_cometa1_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/purging_cometa1_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/purging_cometa1_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
-                <!-- Трансформатор тока -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_span="3"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_cometa1_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_cometa1_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_cometa1_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
-            </TableLayout>
-        </LinearLayout>
-
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
 
         <!-- Секция: Комета-2 -->
         <LinearLayout
@@ -1575,12 +1419,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/v_220_cometa2"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/comet_2"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:textStyle="bold" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1702,6 +1546,163 @@
 
                     <Spinner
                         android:id="@+id/oil_cometa2_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center"
+                        android:minWidth="120dp" />
+                </TableRow>
+
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- Секция: Комета-1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:text="@string/comet_1"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <!-- Заголовок фаз -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
+                <!-- Выключатель -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/breaker"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/purging_cometa1_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center"
+                        android:minWidth="120dp" />
+
+                    <Spinner
+                        android:id="@+id/purging_cometa1_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center"
+                        android:minWidth="120dp" />
+
+                    <Spinner
+                        android:id="@+id/purging_cometa1_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center"
+                        android:minWidth="120dp" />
+                </TableRow>
+
+                <!-- Трансформатор тока -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_cometa1_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center"
+                        android:minWidth="120dp" />
+
+                    <Spinner
+                        android:id="@+id/oil_cometa1_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center"
+                        android:minWidth="120dp" />
+
+                    <Spinner
+                        android:id="@+id/oil_cometa1_c"
                         android:layout_width="0dp"
                         android:layout_height="48dp"
                         android:layout_weight="1"
