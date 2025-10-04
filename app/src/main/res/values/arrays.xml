@@ -91,4 +91,11 @@
         <item>Работоспособен</item>
         <item>Не работоспособен</item>
     </string-array>
+
+    <!-- Массив для показаний давления во вводе 220 кВ 3АТГ ф.В -->
+    <string-array name="pressure_220_3ATG_B">
+        <item>&lt;20</item>
+        <item>20</item>
+        <item>&gt;20</item>
+    </string-array>
 </resources>
