@@ -6,7 +6,7 @@
 [![Android](https://img.shields.io/badge/Android-12%2B-brightgreen.svg)](https://www.android.com)
 [![Min SDK](https://img.shields.io/badge/Min%20SDK-26-orange.svg)](https://developer.android.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.0.5-important.svg)](https://github.com/your-username/ps-inspection)
+[![Version](https://img.shields.io/badge/Version-1.0.5-important.svg)](https://github.com/NubieLazyBill/ps_inspection)
 
 **Профессиональное решение для проведения технических инспекций на подстанциях 500кВ**
 
@@ -68,9 +68,8 @@ implementation(libs.poi.ooxml)
 <img src="Screenshot_2.jpg" width="30%" alt="Экран осмотра ОРУ-35" />
 Экран осмотра ОРУ-220
 <img src="Screenshot_3.jpg" width="30%" alt="Экран осмотра ОРУ-220" />
-
 Демо-видео работы
-https://github.com/NubieLazyBill/ps_inspection/blob/master/App_demo_psInspection.mp4
+[https://img.shields.io/badge/%F0%9F%93%B9-%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C_%D0%B4%D0%B5%D0%BC%D0%BE-blue.svg](https://github.com/NubieLazyBill/ps_inspection/blob/master/App_demo_psInspection.mp4)
 
 </div>
 🏗 Архитектура проекта
@@ -98,7 +97,6 @@ Excel Export Service - генерация отчетов в формате XLSX
 
 🚀 Установка и сборка
 Предварительные требования
-
 Android Studio Arctic Fox или новее
 
 Android SDK 26+
@@ -107,15 +105,13 @@ Kotlin 1.9.0+
 
 Сборка проекта
 bash
-git clone https://github.com/your-username/ps-inspection.git
-cd ps-inspection
+git clone https://github.com/NubieLazyBill/ps_inspection.git
+cd ps_inspection
 ./gradlew assembleDebug
 Установка на устройство
 bash
 ./gradlew installDebug
-
 📖 Как пользоваться
-
 Запустите приложение на Android устройстве
 
 Выберите тип оборудования для инспекции
@@ -145,17 +141,16 @@ InspectionATGData - данные по АТГ и реакторам
 
 Добавить навигацию в граф
 
-## 📄 Лицензия
+📄 Лицензия
+https://img.shields.io/badge/License-MIT-yellow.svg
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-Этот проект распространяется под лицензией MIT. Подробнее см. в файле [LICENSE](LICENSE).
+Этот проект распространяется под лицензией MIT. Подробнее см. в файле LICENSE.
 
 👤 Автор
 Алексей Петрович Плотников
-📧 Email: pit2007@inbox.ru  
-💼 GitHub: @LazyBill
-📱 Telegram: @Lazy Bill
+📧 Email: pit2007@inbox.ru
+💼 GitHub: @NubieLazyBill
+📱 Telegram: @LazyBill
 
 <div align="center">
 ⭐ Если проект был полезен, поставьте звезду!
