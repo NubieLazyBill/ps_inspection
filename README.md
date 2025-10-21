@@ -64,10 +64,13 @@ implementation(libs.poi.ooxml)
 <div align="center">
 Главный экран
 <img src="Screenshot_1.jpg" width="30%" alt="Главный экран" />
-Экран осмотра ТСН
-<img src="Screenshot_2.jpg" width="30%" alt="Экран осмотра ТСН" />
+Экран осмотра ОРУ-35
+<img src="Screenshot_2.jpg" width="30%" alt="Экран осмотра ОРУ-35" />
+Экран осмотра ОРУ-220
+<img src="Screenshot_3.jpg" width="30%" alt="Экран осмотра ОРУ-220" />
+
 Демо-видео работы
-https://img.shields.io/badge/%F0%9F%93%B9-%D0%A1%D0%BC%D0%BE%D1%82%D1%80%D0%B5%D1%82%D1%8C_%D0%B4%D0%B5%D0%BC%D0%BE-blue.svg
+https://github.com/NubieLazyBill/ps_inspection/blob/master/App_demo_psInspection.mp4
 
 </div>
 🏗 Архитектура проекта
@@ -149,10 +152,10 @@ InspectionATGData - данные по АТГ и реакторам
 Этот проект распространяется под лицензией MIT. Подробнее см. в файле [LICENSE](LICENSE).
 
 👤 Автор
-Твое имя
-📧 Email: твой@email.com
-💼 GitHub: @твой-ник
-📱 Telegram: @твой-ник
+Алексей Петрович Плотников
+📧 Email: pit2007@inbox.ru  
+💼 GitHub: @LazyBill
+📱 Telegram: @Lazy Bill
 
 <div align="center">
 ⭐ Если проект был полезен, поставьте звезду!
