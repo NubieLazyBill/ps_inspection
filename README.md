@@ -78,7 +78,7 @@ implementation(libs.poi.ooxml)
 <br><br>
 
 ### Демо-видео работы
-[![Demo Video](https://img.shields.io/badge/📹-Смотреть_демо-blue.svg)](https://github.com/NubieLazyBill/ps_inspection/blob/master/App_demo_psInspection.mp4)
+https://github.com/NubieLazyBill/ps_inspection/blob/master/App-demo-psInspection.gif
 
 </div>
 ## 🏗 Архитектура проекта
