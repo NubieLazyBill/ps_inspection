@@ -61,16 +61,25 @@ implementation(libs.androidx.lifecycle.runtime.ktx)
 implementation(libs.poi)
 implementation(libs.poi.ooxml)
 ```
-📸 Интерфейс приложения
+## 📸 Интерфейс приложения
+
 <div align="center">
-Главный экран
+
+### Главный экран
 <img src="Screenshot_1.jpg" width="30%" alt="Главный экран" />
-Экран осмотра ОРУ-35
+<br><br>
+
+### Экран осмотра ОРУ-35
 <img src="Screenshot_2.jpg" width="30%" alt="Экран осмотра ОРУ-35" />
-Экран осмотра ОРУ-220
+<br><br>
+
+### Экран осмотра ОРУ-220  
 <img src="Screenshot_3.jpg" width="30%" alt="Экран осмотра ОРУ-220" />
-Демо-видео работы
-https://github.com/NubieLazyBill/ps_inspection/blob/master/App_demo_psInspection.mp4
+<br><br>
+
+### Демо-видео работы
+[![Demo Video](https://img.shields.io/badge/📹-Смотреть_демо-blue.svg)](https://github.com/NubieLazyBill/ps_inspection/blob/master/App_demo_psInspection.mp4)
+
 </div>
 ## 🏗 Архитектура проекта
 
