@@ -231,9 +231,9 @@ class ExcelExportService(private val context: Context) {
 
         //Трачуки
         //ТТ-500 Трачуковская
-        setCellValue(sheet, 42, 2, oru500Data.oilTtTrachukovskayaA)
-        setCellValue(sheet, 42, 3, oru500Data.oilTtTrachukovskayaB)
-        setCellValue(sheet, 42, 4, oru500Data.oilTtTrachukovskayaC)
+        setCellValue(sheet, 42, 6, oru500Data.oilTtTrachukovskayaA)
+        setCellValue(sheet, 42, 7, oru500Data.oilTtTrachukovskayaB)
+        setCellValue(sheet, 42, 8, oru500Data.oilTtTrachukovskayaC)
 
         //2ТН-500 Трачуковская
         setCellValue(sheet, 50, 8, oru500Data.oil2tnTrachukovskayaA)
@@ -542,8 +542,8 @@ class ExcelExportService(private val context: Context) {
         setCellValue(sheet, 33, 21, buildingsData.roomAbTemp)
 
         //Помещение п/этажа №1,2,3
-        setCellValue(sheet, 33, 18, buildingsData.basementHeating)
-        setCellValue(sheet, 33, 21, buildingsData.basementTemp)
+        setCellValue(sheet, 34, 18, buildingsData.basementHeating)
+        setCellValue(sheet, 34, 21, buildingsData.basementTemp)
 
 
         // ... остальное заполнение данных как было ранее
