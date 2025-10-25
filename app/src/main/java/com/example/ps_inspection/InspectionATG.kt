@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.ps_inspection.databinding.FragmentInspectionAtgBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlin.toString
 
 class InspectionATG : Fragment() {
 
@@ -139,7 +138,7 @@ class InspectionATG : Fragment() {
         updateEditTextIfNeeded(binding.reactorCPumpGroup1, data.reactor_c_pump_group1)
         updateEditTextIfNeeded(binding.reactorCPumpGroup2, data.reactor_c_pump_group2)
         updateEditTextIfNeeded(binding.reactorCPumpGroup3, data.reactor_c_pump_group3)
-        updateEditTextIfNeeded(binding.reactorCTtNeutral, data.reactor_c_tt_neutral)
+        updateSpinnerIfNeeded(binding.reactorCTtNeutral, data.reactor_c_tt_neutral)
 
         updateEditTextIfNeeded(binding.reactorBOilTank, data.reactor_b_oil_tank)
         updateEditTextIfNeeded(binding.reactorBPressure500, data.reactor_b_pressure_500)
@@ -147,7 +146,7 @@ class InspectionATG : Fragment() {
         updateEditTextIfNeeded(binding.reactorBPumpGroup1, data.reactor_b_pump_group1)
         updateEditTextIfNeeded(binding.reactorBPumpGroup2, data.reactor_b_pump_group2)
         updateEditTextIfNeeded(binding.reactorBPumpGroup3, data.reactor_b_pump_group3)
-        updateEditTextIfNeeded(binding.reactorBTtNeutral, data.reactor_b_tt_neutral)
+        updateSpinnerIfNeeded(binding.reactorBTtNeutral, data.reactor_b_tt_neutral)
 
         updateEditTextIfNeeded(binding.reactorAOilTank, data.reactor_a_oil_tank)
         updateEditTextIfNeeded(binding.reactorAPressure500, data.reactor_a_pressure_500)
@@ -155,7 +154,7 @@ class InspectionATG : Fragment() {
         updateEditTextIfNeeded(binding.reactorAPumpGroup1, data.reactor_a_pump_group1)
         updateEditTextIfNeeded(binding.reactorAPumpGroup2, data.reactor_a_pump_group2)
         updateEditTextIfNeeded(binding.reactorAPumpGroup3, data.reactor_a_pump_group3)
-        updateEditTextIfNeeded(binding.reactorATtNeutral, data.reactor_a_tt_neutral)
+        updateSpinnerIfNeeded(binding.reactorATtNeutral, data.reactor_a_tt_neutral)
 
         isUpdatingUIFromViewModel = false
     }
@@ -165,6 +164,20 @@ class InspectionATG : Fragment() {
         if (currentText != newValue) {
             editText.setText(newValue)
             editText.setSelection(editText.text.length)
+        }
+    }
+
+    private fun updateSpinnerIfNeeded(spinner: Spinner, value: String?) {
+        if (!value.isNullOrEmpty()) {
+            val adapter = spinner.adapter
+            for (i in 0 until adapter.count) {
+                if (adapter.getItem(i).toString() == value) {
+                    if (spinner.selectedItemPosition != i) {
+                        spinner.setSelection(i)
+                    }
+                    break
+                }
+            }
         }
     }
 
@@ -424,8 +437,8 @@ class InspectionATG : Fragment() {
         setupEditTextListener(binding.reactorCPumpGroup3) { text ->
             sharedViewModel.updateATGData { reactor_c_pump_group3 = text }
         }
-        setupEditTextListener(binding.reactorCTtNeutral) { text ->
-            sharedViewModel.updateATGData { reactor_c_tt_neutral = text }
+        setupSpinnerListener(binding.reactorCTtNeutral) { selectedItem ->
+            sharedViewModel.updateATGData { reactor_c_tt_neutral = selectedItem.toString() }
         }
 
         // Реакторы ф.В
@@ -447,8 +460,8 @@ class InspectionATG : Fragment() {
         setupEditTextListener(binding.reactorBPumpGroup3) { text ->
             sharedViewModel.updateATGData { reactor_b_pump_group3 = text }
         }
-        setupEditTextListener(binding.reactorBTtNeutral) { text ->
-            sharedViewModel.updateATGData { reactor_b_tt_neutral = text }
+        setupSpinnerListener(binding.reactorBTtNeutral) { selectedItem ->
+            sharedViewModel.updateATGData { reactor_b_tt_neutral = selectedItem.toString() }
         }
 
         // Реакторы ф.А
@@ -470,8 +483,8 @@ class InspectionATG : Fragment() {
         setupEditTextListener(binding.reactorAPumpGroup3) { text ->
             sharedViewModel.updateATGData { reactor_a_pump_group3 = text }
         }
-        setupEditTextListener(binding.reactorATtNeutral) { text ->
-            sharedViewModel.updateATGData { reactor_a_tt_neutral = text }
+        setupSpinnerListener(binding.reactorATtNeutral) { selectedItem ->
+            sharedViewModel.updateATGData { reactor_a_tt_neutral = selectedItem.toString() }
         }
     }
 
