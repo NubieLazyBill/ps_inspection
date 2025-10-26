@@ -18,6 +18,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="true"
             android:theme="@style/Theme.Ps_inspection.NoActionBar">
             <intent-filter>
