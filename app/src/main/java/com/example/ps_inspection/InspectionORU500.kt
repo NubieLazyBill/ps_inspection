@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.ps_inspection.databinding.FragmentInspectionORU500Binding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import android.widget.Toast
 
 class InspectionORU500 : Fragment() {
 
@@ -21,6 +22,11 @@ class InspectionORU500 : Fragment() {
 
     // Флаг для отслеживания, обновляем ли мы UI программно
     private var isUpdatingUIFromViewModel = false
+
+    // Списки спиннеров для массового заполнения
+    private val tn1500Spinners = mutableListOf<android.widget.Spinner>()
+    private val tn2500Spinners = mutableListOf<android.widget.Spinner>()
+    private val tn500Sgres1Spinners = mutableListOf<android.widget.Spinner>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +46,139 @@ class InspectionORU500 : Fragment() {
         }
 
         setupInputListeners()
+        initSpinnerLists()
+        setupFillButtons()
+    }
+
+    private fun initSpinnerLists() {
+        // 1ТН-500
+        tn1500Spinners.addAll(listOf(
+            binding.tn1500Cascade1A, binding.tn1500Cascade1B, binding.tn1500Cascade1C,
+            binding.tn1500Cascade2A, binding.tn1500Cascade2B, binding.tn1500Cascade2C,
+            binding.tn1500Cascade3A, binding.tn1500Cascade3B, binding.tn1500Cascade3C,
+            binding.tn1500Cascade4A, binding.tn1500Cascade4B, binding.tn1500Cascade4C
+        ))
+
+        // 2ТН-500
+        tn2500Spinners.addAll(listOf(
+            binding.tn2500Cascade1A, binding.tn2500Cascade1B, binding.tn2500Cascade1C,
+            binding.tn2500Cascade2A, binding.tn2500Cascade2B, binding.tn2500Cascade2C,
+            binding.tn2500Cascade3A, binding.tn2500Cascade3B, binding.tn2500Cascade3C,
+            binding.tn2500Cascade4A, binding.tn2500Cascade4B, binding.tn2500Cascade4C
+        ))
+
+        // ТН-500 СГРЭС-1
+        tn500Sgres1Spinners.addAll(listOf(
+            binding.tn500Sgres1Cascade1A, binding.tn500Sgres1Cascade1B, binding.tn500Sgres1Cascade1C,
+            binding.tn500Sgres1Cascade2A, binding.tn500Sgres1Cascade2B, binding.tn500Sgres1Cascade2C,
+            binding.tn500Sgres1Cascade3A, binding.tn500Sgres1Cascade3B, binding.tn500Sgres1Cascade3C,
+            binding.tn500Sgres1Cascade4A, binding.tn500Sgres1Cascade4B, binding.tn500Sgres1Cascade4C
+        ))
+    }
+
+    private fun setupFillButtons() {
+        binding.btnFillAllTn1500.setOnClickListener {
+            fillAllSpinners(tn1500Spinners, "1ТН-500") { value ->
+                // Обновляем ViewModel для каждого спиннера
+                updateTn1500ViewModel(value)
+            }
+        }
+
+        binding.btnFillAllTn2500.setOnClickListener {
+            fillAllSpinners(tn2500Spinners, "2ТН-500") { value ->
+                updateTn2500ViewModel(value)
+            }
+        }
+
+        binding.btnFillAllTn500Sgres1.setOnClickListener {
+            fillAllSpinners(tn500Sgres1Spinners, "ТН-500 СГРЭС-1") { value ->
+                updateTn500Sgres1ViewModel(value)
+            }
+        }
+    }
+
+    private fun fillAllSpinners(spinners: List<android.widget.Spinner>, title: String, onUpdate: (String) -> Unit) {
+        // Берем значение из первого спиннера
+        val firstSpinner = spinners.firstOrNull() ?: return
+        val value = firstSpinner.selectedItem?.toString() ?: return
+
+        if (value.isEmpty() || value == "Выберите") {
+            Toast.makeText(requireContext(), "Сначала выберите значение в первом поле", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Временно отключаем флаг обновления UI
+        isUpdatingUIFromViewModel = true
+
+        // Заполняем все спиннеры
+        for (spinner in spinners) {
+            val adapter = spinner.adapter
+            for (i in 0 until adapter.count) {
+                if (adapter.getItem(i).toString() == value) {
+                    spinner.setSelection(i, false)
+                    break
+                }
+            }
+        }
+
+        // Восстанавливаем флаг
+        isUpdatingUIFromViewModel = false
+
+        // Обновляем ViewModel для всех спиннеров
+        onUpdate(value)
+
+        Toast.makeText(requireContext(), "Все каскады $title заполнены", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateTn1500ViewModel(value: String) {
+        sharedViewModel.updateORU500Data {
+            tn1500Cascade1A = value
+            tn1500Cascade1B = value
+            tn1500Cascade1C = value
+            tn1500Cascade2A = value
+            tn1500Cascade2B = value
+            tn1500Cascade2C = value
+            tn1500Cascade3A = value
+            tn1500Cascade3B = value
+            tn1500Cascade3C = value
+            tn1500Cascade4A = value
+            tn1500Cascade4B = value
+            tn1500Cascade4C = value
+        }
+    }
+
+    private fun updateTn2500ViewModel(value: String) {
+        sharedViewModel.updateORU500Data {
+            tn2500Cascade1A = value
+            tn2500Cascade1B = value
+            tn2500Cascade1C = value
+            tn2500Cascade2A = value
+            tn2500Cascade2B = value
+            tn2500Cascade2C = value
+            tn2500Cascade3A = value
+            tn2500Cascade3B = value
+            tn2500Cascade3C = value
+            tn2500Cascade4A = value
+            tn2500Cascade4B = value
+            tn2500Cascade4C = value
+        }
+    }
+
+    private fun updateTn500Sgres1ViewModel(value: String) {
+        sharedViewModel.updateORU500Data {
+            tn500Sgres1Cascade1A = value
+            tn500Sgres1Cascade1B = value
+            tn500Sgres1Cascade1C = value
+            tn500Sgres1Cascade2A = value
+            tn500Sgres1Cascade2B = value
+            tn500Sgres1Cascade2C = value
+            tn500Sgres1Cascade3A = value
+            tn500Sgres1Cascade3B = value
+            tn500Sgres1Cascade3C = value
+            tn500Sgres1Cascade4A = value
+            tn500Sgres1Cascade4B = value
+            tn500Sgres1Cascade4C = value
+        }
     }
 
     private fun updateUIFromData(data: InspectionORU500Data) {
@@ -642,4 +781,6 @@ class InspectionORU500 : Fragment() {
         @JvmStatic
         fun newInstance() = InspectionORU500()
     }
+
+
 }

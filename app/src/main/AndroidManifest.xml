@@ -20,6 +20,7 @@
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Ps_inspection.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
