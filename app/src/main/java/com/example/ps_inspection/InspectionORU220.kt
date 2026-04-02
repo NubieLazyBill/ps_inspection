@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +18,9 @@ class InspectionORU220 : Fragment() {
     private val binding get() = _binding!!
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
+
+    // Флаг для отслеживания, обновляем ли мы UI программно
+    private var isUpdatingUIFromViewModel = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,9 +40,12 @@ class InspectionORU220 : Fragment() {
         }
 
         setupInputListeners()
+        setupFillButtons()
     }
 
     private fun updateUIFromData(data: InspectionORU220Data) {
+        isUpdatingUIFromViewModel = true
+
         // Мирная
         setSpinnerSelection(binding.purgingMirnayaA, data.purgingMirnayaA)
         setSpinnerSelection(binding.purgingMirnayaB, data.purgingMirnayaB)
@@ -138,6 +145,8 @@ class InspectionORU220 : Fragment() {
         setSpinnerSelection(binding.tn2LowerA, data.tn2LowerA)
         setSpinnerSelection(binding.tn2LowerB, data.tn2LowerB)
         setSpinnerSelection(binding.tn2LowerC, data.tn2LowerC)
+
+        isUpdatingUIFromViewModel = false
     }
 
     private fun setSpinnerSelection(spinner: android.widget.Spinner, value: String) {
@@ -192,9 +201,6 @@ class InspectionORU220 : Fragment() {
         setupSpinnerListener(binding.oilTopazC) { selectedItem ->
             sharedViewModel.updateORU220Data { oilTopazC = selectedItem.toString() }
         }
-
-        // Остальные секции добавляются по аналогии...
-        // Для экономии времени покажу только первые секции
 
         // ОВ
         setupSpinnerListener(binding.purgingOvA) { selectedItem ->
@@ -264,7 +270,7 @@ class InspectionORU220 : Fragment() {
             sharedViewModel.updateORU220Data { oilTtShSV220C = selectedItem.toString() }
         }
 
-// В-220 3АТГ
+        // В-220 3АТГ
         setupSpinnerListener(binding.purgingV3atgA) { selectedItem ->
             sharedViewModel.updateORU220Data { purgingV3atgA = selectedItem.toString() }
         }
@@ -284,7 +290,7 @@ class InspectionORU220 : Fragment() {
             sharedViewModel.updateORU220Data { oilTt3atgC = selectedItem.toString() }
         }
 
-// Орбита
+        // Орбита
         setupSpinnerListener(binding.purgingOrbitaA) { selectedItem ->
             sharedViewModel.updateORU220Data { purgingOrbitaA = selectedItem.toString() }
         }
@@ -304,7 +310,7 @@ class InspectionORU220 : Fragment() {
             sharedViewModel.updateORU220Data { oilOrbitaC = selectedItem.toString() }
         }
 
-// Факел
+        // Факел
         setupSpinnerListener(binding.purgingFakelA) { selectedItem ->
             sharedViewModel.updateORU220Data { purgingFakelA = selectedItem.toString() }
         }
@@ -324,7 +330,7 @@ class InspectionORU220 : Fragment() {
             sharedViewModel.updateORU220Data { oilFakelC = selectedItem.toString() }
         }
 
-// Комета-1
+        // Комета-1
         setupSpinnerListener(binding.purgingCometa1A) { selectedItem ->
             sharedViewModel.updateORU220Data { purgingCometa1A = selectedItem.toString() }
         }
@@ -344,7 +350,7 @@ class InspectionORU220 : Fragment() {
             sharedViewModel.updateORU220Data { oilCometa1C = selectedItem.toString() }
         }
 
-// Комета-2
+        // Комета-2
         setupSpinnerListener(binding.purgingCometa2A) { selectedItem ->
             sharedViewModel.updateORU220Data { purgingCometa2A = selectedItem.toString() }
         }
@@ -364,7 +370,7 @@ class InspectionORU220 : Fragment() {
             sharedViewModel.updateORU220Data { oilCometa2C = selectedItem.toString() }
         }
 
-// 1ТН-220
+        // 1ТН-220
         setupSpinnerListener(binding.tn1UpperA) { selectedItem ->
             sharedViewModel.updateORU220Data { tn1UpperA = selectedItem.toString() }
         }
@@ -384,7 +390,7 @@ class InspectionORU220 : Fragment() {
             sharedViewModel.updateORU220Data { tn1LowerC = selectedItem.toString() }
         }
 
-// 2ТН-220
+        // 2ТН-220
         setupSpinnerListener(binding.tn2UpperA) { selectedItem ->
             sharedViewModel.updateORU220Data { tn2UpperA = selectedItem.toString() }
         }
@@ -403,26 +409,252 @@ class InspectionORU220 : Fragment() {
         setupSpinnerListener(binding.tn2LowerC) { selectedItem ->
             sharedViewModel.updateORU220Data { tn2LowerC = selectedItem.toString() }
         }
-
-        // Остальные секции добавляются по тому же принципу...
     }
 
-    // Функция для настройки слушателя Spinner
     private fun setupSpinnerListener(spinner: android.widget.Spinner, onItemSelected: (Any?) -> Unit) {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position > 0) {
+                if (position > 0 && !isUpdatingUIFromViewModel) {
                     onItemSelected(parent?.getItemAtPosition(position))
                 }
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
+
+    private fun setupFillButtons() {
+        // Мирная - ТТ
+        binding.btnFillAllMirnayaTT.setOnClickListener {
+            val value = binding.oilMirnayaA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilMirnayaB, binding.oilMirnayaC), value) {
+                sharedViewModel.updateORU220Data {
+                    oilMirnayaB = value
+                    oilMirnayaC = value
+                }
+            }
+        }
+
+        // Топаз - ТТ
+        binding.btnFillAllTopazTT.setOnClickListener {
+            val value = binding.oilTopazA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilTopazB, binding.oilTopazC), value) {
+                sharedViewModel.updateORU220Data {
+                    oilTopazB = value
+                    oilTopazC = value
+                }
+            }
+        }
+
+        // ОВ - ТТ
+        binding.btnFillAllOvTT.setOnClickListener {
+            val value = binding.oilOvA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilOvB, binding.oilOvC), value) {
+                sharedViewModel.updateORU220Data {
+                    oilOvB = value
+                    oilOvC = value
+                }
+            }
+        }
+
+        // В-220 2АТГ - ТТ
+        binding.btnFillAllV2atgTT.setOnClickListener {
+            val value = binding.oilTt2atgA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilTt2atgB, binding.oilTt2atgC), value) {
+                sharedViewModel.updateORU220Data {
+                    oilTt2atgB = value
+                    oilTt2atgC = value
+                }
+            }
+        }
+
+        // ШСВ-220 - ТТ
+        binding.btnFillAllShsvTT.setOnClickListener {
+            val value = binding.oilTtShSVA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilTtShSVB, binding.oilTtShSVC), value) {
+                sharedViewModel.updateORU220Data {
+                    oilTtShSV220B = value
+                    oilTtShSV220C = value
+                }
+            }
+        }
+
+        // В-220 3АТГ - ТТ
+        binding.btnFillAllV3atgTT.setOnClickListener {
+            val value = binding.oilTt3atgA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilTt3atgB, binding.oilTt3atgC), value) {
+                sharedViewModel.updateORU220Data {
+                    oilTt3atgB = value
+                    oilTt3atgC = value
+                }
+            }
+        }
+
+        // Орбита - ТТ
+        binding.btnFillAllOrbitaTT.setOnClickListener {
+            val value = binding.oilOrbitaA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilOrbitaB, binding.oilOrbitaC), value) {
+                sharedViewModel.updateORU220Data {
+                    oilOrbitaB = value
+                    oilOrbitaC = value
+                }
+            }
+        }
+
+        // Факел - ТТ
+        binding.btnFillAllFakelTT.setOnClickListener {
+            val value = binding.oilFakelA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilFakelB, binding.oilFakelC), value) {
+                sharedViewModel.updateORU220Data {
+                    oilFakelB = value
+                    oilFakelC = value
+                }
+            }
+        }
+
+        // Комета-2 - ТТ
+        binding.btnFillAllCometa2TT.setOnClickListener {
+            val value = binding.oilCometa2A.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilCometa2B, binding.oilCometa2C), value) {
+                sharedViewModel.updateORU220Data {
+                    oilCometa2B = value
+                    oilCometa2C = value
+                }
+            }
+        }
+
+        // Комета-1 - ТТ
+        binding.btnFillAllCometa1TT.setOnClickListener {
+            val value = binding.oilCometa1A.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в ТТ фазы А", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.oilCometa1B, binding.oilCometa1C), value) {
+                sharedViewModel.updateORU220Data {
+                    oilCometa1B = value
+                    oilCometa1C = value
+                }
+            }
+        }
+
+        // 1ТН-220 - Верх
+        binding.btnFillAllTn1Upper.setOnClickListener {
+            val value = binding.tn1UpperA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в верхнем A", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.tn1UpperB, binding.tn1UpperC), value) {
+                sharedViewModel.updateORU220Data {
+                    tn1UpperB = value
+                    tn1UpperC = value
+                }
+            }
+        }
+
+        // 1ТН-220 - Низ
+        binding.btnFillAllTn1Lower.setOnClickListener {
+            val value = binding.tn1LowerA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в нижнем A", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.tn1LowerB, binding.tn1LowerC), value) {
+                sharedViewModel.updateORU220Data {
+                    tn1LowerB = value
+                    tn1LowerC = value
+                }
+            }
+        }
+
+        // 2ТН-220 - Верх
+        binding.btnFillAllTn2Upper.setOnClickListener {
+            val value = binding.tn2UpperA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в верхнем A", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.tn2UpperB, binding.tn2UpperC), value) {
+                sharedViewModel.updateORU220Data {
+                    tn2UpperB = value
+                    tn2UpperC = value
+                }
+            }
+        }
+
+        // 2ТН-220 - Низ
+        binding.btnFillAllTn2Lower.setOnClickListener {
+            val value = binding.tn2LowerA.selectedItem?.toString()
+            if (value.isNullOrEmpty() || value == "Выберите") {
+                Toast.makeText(requireContext(), "Сначала выберите значение в нижнем A", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            fillSpinners(listOf(binding.tn2LowerB, binding.tn2LowerC), value) {
+                sharedViewModel.updateORU220Data {
+                    tn2LowerB = value
+                    tn2LowerC = value
+                }
+            }
+        }
+    }
+
+    private fun fillSpinners(spinners: List<android.widget.Spinner>, value: String, onUpdate: () -> Unit) {
+        isUpdatingUIFromViewModel = true
+
+        for (spinner in spinners) {
+            val adapter = spinner.adapter
+            for (i in 0 until adapter.count) {
+                if (adapter.getItem(i).toString() == value) {
+                    spinner.setSelection(i, false)
+                    break
+                }
+            }
+        }
+
+        isUpdatingUIFromViewModel = false
+        onUpdate()
+
+        Toast.makeText(requireContext(), "Заполнено ${spinners.size} полей", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }
