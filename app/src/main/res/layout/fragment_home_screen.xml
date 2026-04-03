@@ -126,5 +126,25 @@
             android:text="Очистить все данные"
             android:textAllCaps="false" />
 
+        <Button
+            android:id="@+id/btnFillFromLast"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#2196F3"
+            android:textColor="@android:color/white"
+            android:text="Заполнить из прошлого осмотра"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/btnArchive"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#9C27B0"
+            android:textColor="@android:color/white"
+            android:text="Архив осмотров"
+            android:textAllCaps="false" />
+
     </LinearLayout>
 </ScrollView>

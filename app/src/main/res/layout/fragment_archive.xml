@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F5F5F5">
+
+    <TextView
+        android:id="@+id/tvEmptyArchive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Архив пуст"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:padding="32dp"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/listArchives"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:visibility="gone" />
+
+    <!-- Кнопка временно закомментирована
+   <Button
+       android:id="@+id/btnClearArchive"
+       android:layout_width="match_parent"
+       android:layout_height="48dp"
+       android:layout_marginTop="16dp"
+       android:backgroundTint="#F44336"
+       android:textColor="@android:color/white"
+       android:text="Очистить весь архив"
+       android:textAllCaps="false"
+       android:visibility="gone" />
+   -->
+
+</LinearLayout>

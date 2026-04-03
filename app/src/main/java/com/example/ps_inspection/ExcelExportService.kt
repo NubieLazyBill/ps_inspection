@@ -29,13 +29,27 @@ class ExcelExportService(private val context: Context) {
         buildingsData: InspectionBuildingsData
     ): Uri? {
         return try {
+
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
             val workbook = XSSFWorkbook(inputStream)
             val sheet = workbook.getSheetAt(0)
+            val uri = saveWorkbookFromTemplate(workbook, inputStream)
+
 
             fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
             saveWorkbookFromTemplate(workbook, inputStream)
+
+            // СОХРАНЯЕМ ПОСЛЕДНИЙ ОСМОТР
+            val lastInspectionManager = LastInspectionManager(context)
+            lastInspectionManager.saveLastInspection(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
+            // Сохраняем в архив
+            val archiveManager = InspectionArchiveManager(context)
+            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
+            uri
+
         } catch (e: Exception) {
             e.printStackTrace()
             null
@@ -633,10 +647,21 @@ class ExcelExportService(private val context: Context) {
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
             val workbook = XSSFWorkbook(inputStream)
             val sheet = workbook.getSheetAt(0)
+            val uri = saveWorkbookLegacy(workbook, inputStream)
 
             fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
             saveWorkbookLegacy(workbook, inputStream)
+
+            // СОХРАНЯЕМ ПОСЛЕДНИЙ ОСМОТР
+            val lastInspectionManager = LastInspectionManager(context)
+            lastInspectionManager.saveLastInspection(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
+            // Сохраняем в архив
+            val archiveManager = InspectionArchiveManager(context)
+            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
+            uri
         } catch (e: Exception) {
             e.printStackTrace()
             null

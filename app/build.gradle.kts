@@ -12,7 +12,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 24
-        versionName = "1.1.3"
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -57,4 +57,6 @@ dependencies {
     // Для работы с Excel
     implementation(libs.poi)
     implementation(libs.poi.ooxml)
+
+    implementation(libs.gson)
 }

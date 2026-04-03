@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeScreen_to_inspectionATG"
             app:destination="@id/inspectionATG" />
+        <action
+            android:id="@+id/action_homeScreen_to_archiveFragment"
+            app:destination="@id/archiveFragment" />
     </fragment>
     <fragment
         android:id="@+id/inspectionORU35"
@@ -51,4 +54,10 @@
         android:name="com.example.ps_inspection.InspectionATG"
         android:label="Осмотр АТГ, Р-500 2С"
         tools:layout="@layout/fragment_inspection_atg" />
+
+    <fragment
+        android:id="@+id/archiveFragment"
+        android:name="com.example.ps_inspection.ArchiveFragment"
+        android:label="Архив осмотров"
+        tools:layout="@layout/fragment_archive" />
 </navigation>
