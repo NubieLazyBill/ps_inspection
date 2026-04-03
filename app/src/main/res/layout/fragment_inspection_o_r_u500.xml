@@ -277,7 +277,7 @@
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:text="Заполнить"
+                        android:text="@string/zapolnit"
                         android:textSize="11sp"
                         android:paddingHorizontal="8dp"
                         android:backgroundTint="#4CAF50" />
@@ -435,7 +435,7 @@
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:text="Заполнить"
+                        android:text="@string/zapolnit"
                         android:textSize="11sp"
                         android:paddingHorizontal="8dp"
                         android:backgroundTint="#4CAF50" />
@@ -782,7 +782,7 @@
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:text="Заполнить"
+                        android:text="@string/zapolnit"
                         android:textSize="11sp"
                         android:paddingHorizontal="8dp"
                         android:backgroundTint="#4CAF50" />
@@ -960,7 +960,7 @@
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:text="Заполнить"
+                        android:text="@string/zapolnit"
                         android:textSize="11sp"
                         android:paddingHorizontal="8dp"
                         android:backgroundTint="#4CAF50" />
@@ -1136,7 +1136,7 @@
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:text="Заполнить"
+                        android:text="@string/zapolnit"
                         android:textSize="11sp"
                         android:paddingHorizontal="8dp"
                         android:backgroundTint="#4CAF50" />
@@ -1312,7 +1312,7 @@
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:text="Заполнить"
+                        android:text="@string/zapolnit"
                         android:textSize="11sp"
                         android:paddingHorizontal="8dp"
                         android:backgroundTint="#4CAF50" />
@@ -1474,7 +1474,7 @@
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:text="Заполнить"
+                        android:text="@string/zapolnit"
                         android:textSize="11sp"
                         android:paddingHorizontal="8dp"
                         android:backgroundTint="#4CAF50" />
@@ -1650,7 +1650,7 @@
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:text="Заполнить"
+                        android:text="@string/zapolnit"
                         android:textSize="11sp"
                         android:paddingHorizontal="8dp"
                         android:backgroundTint="#4CAF50" />
