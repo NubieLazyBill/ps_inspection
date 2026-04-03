@@ -41,6 +41,18 @@ class InspectionORU220 : Fragment() {
 
         setupInputListeners()
         setupFillButtons()
+
+        binding.btnFillAllTn1.setOnClickListener {
+            fillAllTn220(binding.tn1UpperA, binding.tn1UpperB, binding.tn1UpperC,
+                binding.tn1LowerA, binding.tn1LowerB, binding.tn1LowerC,
+                "1ТН-220")
+        }
+
+        binding.btnFillAllTn2.setOnClickListener {
+            fillAllTn220(binding.tn2UpperA, binding.tn2UpperB, binding.tn2UpperC,
+                binding.tn2LowerA, binding.tn2LowerB, binding.tn2LowerC,
+                "2ТН-220")
+        }
     }
 
     private fun updateUIFromData(data: InspectionORU220Data) {
@@ -572,66 +584,6 @@ class InspectionORU220 : Fragment() {
                 }
             }
         }
-
-        // 1ТН-220 - Верх
-        binding.btnFillAllTn1Upper.setOnClickListener {
-            val value = binding.tn1UpperA.selectedItem?.toString()
-            if (value.isNullOrEmpty() || value == "Выберите") {
-                Toast.makeText(requireContext(), "Сначала выберите значение в верхнем A", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            fillSpinners(listOf(binding.tn1UpperB, binding.tn1UpperC), value) {
-                sharedViewModel.updateORU220Data {
-                    tn1UpperB = value
-                    tn1UpperC = value
-                }
-            }
-        }
-
-        // 1ТН-220 - Низ
-        binding.btnFillAllTn1Lower.setOnClickListener {
-            val value = binding.tn1LowerA.selectedItem?.toString()
-            if (value.isNullOrEmpty() || value == "Выберите") {
-                Toast.makeText(requireContext(), "Сначала выберите значение в нижнем A", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            fillSpinners(listOf(binding.tn1LowerB, binding.tn1LowerC), value) {
-                sharedViewModel.updateORU220Data {
-                    tn1LowerB = value
-                    tn1LowerC = value
-                }
-            }
-        }
-
-        // 2ТН-220 - Верх
-        binding.btnFillAllTn2Upper.setOnClickListener {
-            val value = binding.tn2UpperA.selectedItem?.toString()
-            if (value.isNullOrEmpty() || value == "Выберите") {
-                Toast.makeText(requireContext(), "Сначала выберите значение в верхнем A", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            fillSpinners(listOf(binding.tn2UpperB, binding.tn2UpperC), value) {
-                sharedViewModel.updateORU220Data {
-                    tn2UpperB = value
-                    tn2UpperC = value
-                }
-            }
-        }
-
-        // 2ТН-220 - Низ
-        binding.btnFillAllTn2Lower.setOnClickListener {
-            val value = binding.tn2LowerA.selectedItem?.toString()
-            if (value.isNullOrEmpty() || value == "Выберите") {
-                Toast.makeText(requireContext(), "Сначала выберите значение в нижнем A", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            fillSpinners(listOf(binding.tn2LowerB, binding.tn2LowerC), value) {
-                sharedViewModel.updateORU220Data {
-                    tn2LowerB = value
-                    tn2LowerC = value
-                }
-            }
-        }
     }
 
     private fun fillSpinners(spinners: List<android.widget.Spinner>, value: String, onUpdate: () -> Unit) {
@@ -656,5 +608,37 @@ class InspectionORU220 : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun fillAllTn220(
+        upperA: android.widget.Spinner, upperB: android.widget.Spinner, upperC: android.widget.Spinner,
+        lowerA: android.widget.Spinner, lowerB: android.widget.Spinner, lowerC: android.widget.Spinner,
+        title: String
+    ) {
+        // Берём значение из первого спиннера (верх, фаза А)
+        val value = upperA.selectedItem?.toString() ?: return
+        if (value.isEmpty() || value == "Выберите") {
+            Toast.makeText(requireContext(), "Сначала выберите значение в поле Верх А", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Заполняем все спиннеры
+        setSpinnerSilently(upperB, value)
+        setSpinnerSilently(upperC, value)
+        setSpinnerSilently(lowerA, value)
+        setSpinnerSilently(lowerB, value)
+        setSpinnerSilently(lowerC, value)
+
+        Toast.makeText(requireContext(), "Все каскады $title заполнены", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setSpinnerSilently(spinner: android.widget.Spinner, value: String) {
+        val adapter = spinner.adapter
+        for (i in 0 until adapter.count) {
+            if (adapter.getItem(i).toString() == value) {
+                spinner.setSelection(i, false)
+                break
+            }
+        }
     }
 }

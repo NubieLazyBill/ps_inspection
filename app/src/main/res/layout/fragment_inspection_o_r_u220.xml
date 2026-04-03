@@ -131,12 +131,12 @@
                     <Button
                         android:id="@+id/btnFillAllMirnayaTT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -299,12 +299,12 @@
                     <Button
                         android:id="@+id/btnFillAllTopazTT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -467,12 +467,12 @@
                     <Button
                         android:id="@+id/btnFillAllOvTT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -774,12 +774,12 @@
                     <Button
                         android:id="@+id/btnFillAllV2atgTT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -942,12 +942,12 @@
                     <Button
                         android:id="@+id/btnFillAllShsvTT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -1110,12 +1110,12 @@
                     <Button
                         android:id="@+id/btnFillAllV3atgTT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -1278,12 +1278,12 @@
                     <Button
                         android:id="@+id/btnFillAllOrbitaTT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -1446,12 +1446,12 @@
                     <Button
                         android:id="@+id/btnFillAllFakelTT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -1614,12 +1614,12 @@
                     <Button
                         android:id="@+id/btnFillAllCometa2TT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -1782,12 +1782,12 @@
                     <Button
                         android:id="@+id/btnFillAllCometa1TT"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="0dp"
                         android:backgroundTint="#4CAF50" />
                 </TableRow>
 
@@ -1839,15 +1839,32 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tn_220_1"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="#E3F2FD"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tn_220_1"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnFillAllTn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Заполнить всё"
+                    android:textSize="11sp"
+                    android:paddingHorizontal="12dp"
+                    android:backgroundTint="#4CAF50" />
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1891,36 +1908,25 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Верх с кнопкой -->
+                <!-- Верх -->
                 <TableRow>
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_span="3"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/up"
                         android:textSize="14sp"
                         android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllTn1Upper"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <TableRow>
                     <Spinner
                         android:id="@+id/tn_1_upper_a"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
                         android:gravity="center"
@@ -1929,7 +1935,7 @@
                     <Spinner
                         android:id="@+id/tn_1_upper_b"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
                         android:gravity="center"
@@ -1938,43 +1944,32 @@
                     <Spinner
                         android:id="@+id/tn_1_upper_c"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
                         android:gravity="center"
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- Низ с кнопкой -->
+                <!-- Низ -->
                 <TableRow>
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_span="3"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/down"
                         android:textSize="14sp"
                         android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllTn1Lower"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <TableRow>
                     <Spinner
                         android:id="@+id/tn_1_lower_a"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
                         android:gravity="center"
@@ -1983,7 +1978,7 @@
                     <Spinner
                         android:id="@+id/tn_1_lower_b"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
                         android:gravity="center"
@@ -1992,7 +1987,7 @@
                     <Spinner
                         android:id="@+id/tn_1_lower_c"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
                         android:gravity="center"
@@ -2018,15 +2013,32 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tn_220_2"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="#E3F2FD"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tn_220_2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnFillAllTn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Заполнить всё"
+                    android:textSize="11sp"
+                    android:paddingHorizontal="12dp"
+                    android:backgroundTint="#4CAF50" />
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -2070,36 +2082,25 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Верх с кнопкой -->
+                <!-- Верх -->
                 <TableRow>
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_span="3"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/up"
                         android:textSize="14sp"
                         android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllTn2Upper"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <TableRow>
                     <Spinner
                         android:id="@+id/tn_2_upper_a"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
                         android:gravity="center"
@@ -2108,7 +2109,7 @@
                     <Spinner
                         android:id="@+id/tn_2_upper_b"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
                         android:gravity="center"
@@ -2117,43 +2118,32 @@
                     <Spinner
                         android:id="@+id/tn_2_upper_c"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
                         android:gravity="center"
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- Низ с кнопкой -->
+                <!-- Низ -->
                 <TableRow>
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_span="3"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/down"
                         android:textSize="14sp"
                         android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllTn2Lower"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="12sp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <TableRow>
                     <Spinner
                         android:id="@+id/tn_2_lower_a"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
                         android:gravity="center"
@@ -2162,7 +2152,7 @@
                     <Spinner
                         android:id="@+id/tn_2_lower_b"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
                         android:gravity="center"
@@ -2171,7 +2161,7 @@
                     <Spinner
                         android:id="@+id/tn_2_lower_c"
                         android:layout_width="0dp"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
                         android:gravity="center"
