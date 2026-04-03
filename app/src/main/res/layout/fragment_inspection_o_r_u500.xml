@@ -258,12 +258,12 @@
                         tools:ignore="Autofill" />
                 </TableRow>
 
-                <!-- ТТ-500 ВШТ-31 -->
+                <!-- ТТ-500 ВШТ-31 с кнопкой -->
                 <TableRow>
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="3"
+                        android:layout_weight="2"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
@@ -271,6 +271,16 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnFillAllOilTtVsht31"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Заполнить"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <!-- Уровень масла -->
@@ -406,12 +416,12 @@
                         tools:ignore="Autofill" />
                 </TableRow>
 
-                <!-- ТТ-500 ВЛТ-30 -->
+                <!-- ТТ-500 ВЛТ-30 с кнопкой -->
                 <TableRow>
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="3"
+                        android:layout_weight="2"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
@@ -419,6 +429,16 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnFillAllOilTtVlt30"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Заполнить"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <!-- Уровень масла -->
@@ -743,12 +763,12 @@
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- ТТ-500 ВШЛ-32 -->
+                <!-- ТТ-500 ВШЛ-32 с кнопкой -->
                 <TableRow>
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="3"
+                        android:layout_weight="2"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
@@ -756,6 +776,16 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnFillAllOilTtVshl32"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Заполнить"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <!-- Уровень масла -->
@@ -911,12 +941,12 @@
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- ТТ-500 ВШЛ-21 -->
+                <!-- ТТ-500 ВШЛ-21 с кнопкой -->
                 <TableRow>
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="3"
+                        android:layout_weight="2"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
@@ -924,6 +954,16 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnFillAllOilTtVshl21"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Заполнить"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <!-- Уровень масла -->
@@ -1077,12 +1117,12 @@
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- ТТ-500 ВШТ-22 -->
+                <!-- ТТ-500 ВШТ-22 с кнопкой -->
                 <TableRow>
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="3"
+                        android:layout_weight="2"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
@@ -1090,6 +1130,16 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnFillAllOilTtVsht22"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Заполнить"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <!-- Уровень масла -->
@@ -1243,12 +1293,12 @@
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- ТТ-500 ВЛТ-20 -->
+                <!-- ТТ-500 ВЛТ-20 с кнопкой -->
                 <TableRow>
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="3"
+                        android:layout_weight="2"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
@@ -1256,6 +1306,16 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnFillAllOilTtVlt20"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Заполнить"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <TableRow>
@@ -1395,12 +1455,12 @@
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- ТТ-500 ВШТ-11 -->
+                <!-- ТТ-500 ВШТ-11 с кнопкой -->
                 <TableRow>
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="3"
+                        android:layout_weight="2"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
@@ -1408,6 +1468,16 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnFillAllOilTtVsht11"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Заполнить"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <!-- Уровень масла -->
@@ -1561,12 +1631,12 @@
                         android:minWidth="120dp" />
                 </TableRow>
 
-                <!-- ТТ-500 ВШЛ-12 -->
+                <!-- ТТ-500 ВШЛ-12 с кнопкой -->
                 <TableRow>
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_span="3"
+                        android:layout_weight="2"
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
@@ -1574,6 +1644,16 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnFillAllOilTtVshl12"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Заполнить"
+                        android:textSize="11sp"
+                        android:paddingHorizontal="8dp"
+                        android:backgroundTint="#4CAF50" />
                 </TableRow>
 
                 <!-- Уровень масла -->

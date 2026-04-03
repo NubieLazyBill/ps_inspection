@@ -95,6 +95,87 @@ class InspectionORU500 : Fragment() {
                 updateTn500Sgres1ViewModel(value)
             }
         }
+
+        // В-500 ВШТ-31 - ТТ
+        binding.btnFillAllOilTtVsht31.setOnClickListener {
+            fillTtSpinners(binding.oilTtVsht31A, binding.oilTtVsht31B, binding.oilTtVsht31C) { value ->
+                sharedViewModel.updateORU500Data {
+                    oilTtVsht31B = value
+                    oilTtVsht31C = value
+                }
+            }
+        }
+
+        // В-500 ВЛТ-30 - ТТ
+        binding.btnFillAllOilTtVlt30.setOnClickListener {
+            fillTtSpinners(binding.oilTtVlt30A, binding.oilTtVlt30B, binding.oilTtVlt30C) { value ->
+                sharedViewModel.updateORU500Data {
+                    oilTtVlt30B = value
+                    oilTtVlt30C = value
+                }
+            }
+        }
+
+        // В-500 ВШЛ-32 - ТТ
+        binding.btnFillAllOilTtVshl32.setOnClickListener {
+            fillTtSpinners(binding.oilTtVshl32A, binding.oilTtVshl32B, binding.oilTtVshl32C) { value ->
+                sharedViewModel.updateORU500Data {
+                    oilTtVshl32B = value
+                    oilTtVshl32C = value
+                }
+            }
+        }
+
+        // В-500 ВШЛ-21 - ТТ
+        binding.btnFillAllOilTtVshl21.setOnClickListener {
+            fillTtSpinners(binding.oilTtVshl21A, binding.oilTtVshl21B, binding.oilTtVshl21C) { value ->
+                sharedViewModel.updateORU500Data {
+                    oilTtVshl21B = value
+                    oilTtVshl21C = value
+                }
+            }
+        }
+
+        // В-500 ВШТ-22 - ТТ
+        binding.btnFillAllOilTtVsht22.setOnClickListener {
+            fillTtSpinners(binding.oilTtVsht22A, binding.oilTtVsht22B, binding.oilTtVsht22C) { value ->
+                sharedViewModel.updateORU500Data {
+                    oilTtVsht22B = value
+                    oilTtVsht22C = value
+                }
+            }
+        }
+
+        // В-500 ВЛТ-20 - ТТ
+        binding.btnFillAllOilTtVlt20.setOnClickListener {
+            fillTtSpinners(binding.oilTtVlt20A, binding.oilTtVlt20B, binding.oilTtVlt20C) { value ->
+                sharedViewModel.updateORU500Data {
+                    oilTtVlt20B = value
+                    oilTtVlt20C = value
+                }
+            }
+        }
+
+        // В-500 ВШТ-11 - ТТ
+        binding.btnFillAllOilTtVsht11.setOnClickListener {
+            fillTtSpinners(binding.oilTtVsht11A, binding.oilTtVsht11B, binding.oilTtVsht11C) { value ->
+                sharedViewModel.updateORU500Data {
+                    oilTtVsht11B = value
+                    oilTtVsht11C = value
+                }
+            }
+        }
+
+        // В-500 ВШЛ-12 - ТТ
+        binding.btnFillAllOilTtVshl12.setOnClickListener {
+            fillTtSpinners(binding.oilTtVshl12A, binding.oilTtVshl12B, binding.oilTtVshl12C) { value ->
+                sharedViewModel.updateORU500Data {
+                    oilTtVshl12B = value
+                    oilTtVshl12C = value
+                }
+            }
+        }
+
     }
 
     private fun fillAllSpinners(spinners: List<android.widget.Spinner>, title: String, onUpdate: (String) -> Unit) {
@@ -780,6 +861,39 @@ class InspectionORU500 : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = InspectionORU500()
+    }
+
+    private fun fillTtSpinners(
+        spinnerA: android.widget.Spinner,
+        spinnerB: android.widget.Spinner,
+        spinnerC: android.widget.Spinner,
+        onUpdate: (String) -> Unit
+    ) {
+        val value = spinnerA.selectedItem?.toString()
+        if (value.isNullOrEmpty() || value == "Выберите") {
+            Toast.makeText(requireContext(), "Сначала выберите значение в фазе А", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        isUpdatingUIFromViewModel = true
+
+        setSpinnerSilently(spinnerB, value)
+        setSpinnerSilently(spinnerC, value)
+
+        isUpdatingUIFromViewModel = false
+        onUpdate(value)
+
+        Toast.makeText(requireContext(), "Фазы B и C заполнены", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setSpinnerSilently(spinner: android.widget.Spinner, value: String) {
+        val adapter = spinner.adapter
+        for (i in 0 until adapter.count) {
+            if (adapter.getItem(i).toString() == value) {
+                spinner.setSelection(i, false)
+                break
+            }
+        }
     }
 
 
