@@ -24,6 +24,23 @@ class HomeScreen : Fragment() {
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
 
+    // Вспомогательные функции для проверки пустых полей
+    private fun isFieldEmpty(value: String): Boolean {
+        return value.isEmpty() ||
+                value == "Выберите" ||
+                value == "○" ||
+                value == "--" ||
+                value == "0"
+    }
+
+    private fun isFieldNotEmpty(value: String): Boolean {
+        return value.isNotEmpty() &&
+                value != "Выберите" &&
+                value != "○" &&
+                value != "--" &&
+                value != "0"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,6 +49,7 @@ class HomeScreen : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -106,8 +124,6 @@ class HomeScreen : Fragment() {
             .show()
     }
 
-    // ==================== ЗАПОЛНЕНИЕ ИЗ ПРОШЛОГО ОСМОТРА ====================
-
     private fun fillFromLastInspection() {
         val manager = LastInspectionManager(requireContext())
 
@@ -123,11 +139,9 @@ class HomeScreen : Fragment() {
             return
         }
 
-        // Получаем дату последнего осмотра из SharedPreferences
         val prefs = requireContext().getSharedPreferences("inspection_prefs", Context.MODE_PRIVATE)
         val lastDate = prefs.getString("last_inspection_date", "предыдущего")
 
-        // Показываем диалог подтверждения
         AlertDialog.Builder(requireContext())
             .setTitle("Загрузка из прошлого осмотра")
             .setMessage("Загрузить недостающие значения из осмотра от $lastDate?")
@@ -163,28 +177,85 @@ class HomeScreen : Fragment() {
     private fun fillEmptyFieldsOru35(last: InspectionORU35Data, current: InspectionORU35Data): Int {
         var count = 0
 
-        if (current.tsn2.isEmpty() && last.tsn2.isNotEmpty()) { sharedViewModel.updateORU35Data { tsn2 = last.tsn2 }; count++ }
-        if (current.tsn3.isEmpty() && last.tsn3.isNotEmpty()) { sharedViewModel.updateORU35Data { tsn3 = last.tsn3 }; count++ }
-        if (current.tsn4.isEmpty() && last.tsn4.isNotEmpty()) { sharedViewModel.updateORU35Data { tsn4 = last.tsn4 }; count++ }
+        // ТСНы - уровень масла
+        if (isFieldEmpty(current.tsn2) && isFieldNotEmpty(last.tsn2)) {
+            sharedViewModel.updateORU35Data { tsn2 = last.tsn2 }
+            count++
+        }
+        if (isFieldEmpty(current.tsn3) && isFieldNotEmpty(last.tsn3)) {
+            sharedViewModel.updateORU35Data { tsn3 = last.tsn3 }
+            count++
+        }
+        if (isFieldEmpty(current.tsn4) && isFieldNotEmpty(last.tsn4)) {
+            sharedViewModel.updateORU35Data { tsn4 = last.tsn4 }
+            count++
+        }
 
-        if (current.tt352tsnA.isEmpty() && last.tt352tsnA.isNotEmpty()) { sharedViewModel.updateORU35Data { tt352tsnA = last.tt352tsnA }; count++ }
-        if (current.tt352tsnB.isEmpty() && last.tt352tsnB.isNotEmpty()) { sharedViewModel.updateORU35Data { tt352tsnB = last.tt352tsnB }; count++ }
-        if (current.tt352tsnC.isEmpty() && last.tt352tsnC.isNotEmpty()) { sharedViewModel.updateORU35Data { tt352tsnC = last.tt352tsnC }; count++ }
+        // ТТ-35 2ТСН
+        if (isFieldEmpty(current.tt352tsnA) && isFieldNotEmpty(last.tt352tsnA)) {
+            sharedViewModel.updateORU35Data { tt352tsnA = last.tt352tsnA }
+            count++
+        }
+        if (isFieldEmpty(current.tt352tsnB) && isFieldNotEmpty(last.tt352tsnB)) {
+            sharedViewModel.updateORU35Data { tt352tsnB = last.tt352tsnB }
+            count++
+        }
+        if (isFieldEmpty(current.tt352tsnC) && isFieldNotEmpty(last.tt352tsnC)) {
+            sharedViewModel.updateORU35Data { tt352tsnC = last.tt352tsnC }
+            count++
+        }
 
-        if (current.tt353tsnA.isEmpty() && last.tt353tsnA.isNotEmpty()) { sharedViewModel.updateORU35Data { tt353tsnA = last.tt353tsnA }; count++ }
-        if (current.tt353tsnB.isEmpty() && last.tt353tsnB.isNotEmpty()) { sharedViewModel.updateORU35Data { tt353tsnB = last.tt353tsnB }; count++ }
-        if (current.tt353tsnC.isEmpty() && last.tt353tsnC.isNotEmpty()) { sharedViewModel.updateORU35Data { tt353tsnC = last.tt353tsnC }; count++ }
+        // ТТ-35 3ТСН
+        if (isFieldEmpty(current.tt353tsnA) && isFieldNotEmpty(last.tt353tsnA)) {
+            sharedViewModel.updateORU35Data { tt353tsnA = last.tt353tsnA }
+            count++
+        }
+        if (isFieldEmpty(current.tt353tsnB) && isFieldNotEmpty(last.tt353tsnB)) {
+            sharedViewModel.updateORU35Data { tt353tsnB = last.tt353tsnB }
+            count++
+        }
+        if (isFieldEmpty(current.tt353tsnC) && isFieldNotEmpty(last.tt353tsnC)) {
+            sharedViewModel.updateORU35Data { tt353tsnC = last.tt353tsnC }
+            count++
+        }
 
-        if (current.v352tsnA.isEmpty() && last.v352tsnA.isNotEmpty()) { sharedViewModel.updateORU35Data { v352tsnA = last.v352tsnA }; count++ }
-        if (current.v352tsnB.isEmpty() && last.v352tsnB.isNotEmpty()) { sharedViewModel.updateORU35Data { v352tsnB = last.v352tsnB }; count++ }
-        if (current.v352tsnC.isEmpty() && last.v352tsnC.isNotEmpty()) { sharedViewModel.updateORU35Data { v352tsnC = last.v352tsnC }; count++ }
+        // В-35 2ТСН
+        if (isFieldEmpty(current.v352tsnA) && isFieldNotEmpty(last.v352tsnA)) {
+            sharedViewModel.updateORU35Data { v352tsnA = last.v352tsnA }
+            count++
+        }
+        if (isFieldEmpty(current.v352tsnB) && isFieldNotEmpty(last.v352tsnB)) {
+            sharedViewModel.updateORU35Data { v352tsnB = last.v352tsnB }
+            count++
+        }
+        if (isFieldEmpty(current.v352tsnC) && isFieldNotEmpty(last.v352tsnC)) {
+            sharedViewModel.updateORU35Data { v352tsnC = last.v352tsnC }
+            count++
+        }
 
-        if (current.v353tsnA.isEmpty() && last.v353tsnA.isNotEmpty()) { sharedViewModel.updateORU35Data { v353tsnA = last.v353tsnA }; count++ }
-        if (current.v353tsnB.isEmpty() && last.v353tsnB.isNotEmpty()) { sharedViewModel.updateORU35Data { v353tsnB = last.v353tsnB }; count++ }
-        if (current.v353tsnC.isEmpty() && last.v353tsnC.isNotEmpty()) { sharedViewModel.updateORU35Data { v353tsnC = last.v353tsnC }; count++ }
+        // В-35 3ТСН
+        if (isFieldEmpty(current.v353tsnA) && isFieldNotEmpty(last.v353tsnA)) {
+            sharedViewModel.updateORU35Data { v353tsnA = last.v353tsnA }
+            count++
+        }
+        if (isFieldEmpty(current.v353tsnB) && isFieldNotEmpty(last.v353tsnB)) {
+            sharedViewModel.updateORU35Data { v353tsnB = last.v353tsnB }
+            count++
+        }
+        if (isFieldEmpty(current.v353tsnC) && isFieldNotEmpty(last.v353tsnC)) {
+            sharedViewModel.updateORU35Data { v353tsnC = last.v353tsnC }
+            count++
+        }
 
-        if (current.tn352atg.isEmpty() && last.tn352atg.isNotEmpty()) { sharedViewModel.updateORU35Data { tn352atg = last.tn352atg }; count++ }
-        if (current.tn353atg.isEmpty() && last.tn353atg.isNotEmpty()) { sharedViewModel.updateORU35Data { tn353atg = last.tn353atg }; count++ }
+        // ТН-35
+        if (isFieldEmpty(current.tn352atg) && isFieldNotEmpty(last.tn352atg)) {
+            sharedViewModel.updateORU35Data { tn352atg = last.tn352atg }
+            count++
+        }
+        if (isFieldEmpty(current.tn353atg) && isFieldNotEmpty(last.tn353atg)) {
+            sharedViewModel.updateORU35Data { tn353atg = last.tn353atg }
+            count++
+        }
 
         return count
     }
@@ -193,104 +264,326 @@ class HomeScreen : Fragment() {
         var count = 0
 
         // Мирная
-        if (current.purgingMirnayaA.isEmpty() && last.purgingMirnayaA.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingMirnayaA = last.purgingMirnayaA }; count++ }
-        if (current.purgingMirnayaB.isEmpty() && last.purgingMirnayaB.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingMirnayaB = last.purgingMirnayaB }; count++ }
-        if (current.purgingMirnayaC.isEmpty() && last.purgingMirnayaC.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingMirnayaC = last.purgingMirnayaC }; count++ }
-        if (current.oilMirnayaA.isEmpty() && last.oilMirnayaA.isNotEmpty()) { sharedViewModel.updateORU220Data { oilMirnayaA = last.oilMirnayaA }; count++ }
-        if (current.oilMirnayaB.isEmpty() && last.oilMirnayaB.isNotEmpty()) { sharedViewModel.updateORU220Data { oilMirnayaB = last.oilMirnayaB }; count++ }
-        if (current.oilMirnayaC.isEmpty() && last.oilMirnayaC.isNotEmpty()) { sharedViewModel.updateORU220Data { oilMirnayaC = last.oilMirnayaC }; count++ }
+        if (isFieldEmpty(current.purgingMirnayaA) && isFieldNotEmpty(last.purgingMirnayaA)) {
+            sharedViewModel.updateORU220Data { purgingMirnayaA = last.purgingMirnayaA }
+            count++
+        }
+        if (isFieldEmpty(current.purgingMirnayaB) && isFieldNotEmpty(last.purgingMirnayaB)) {
+            sharedViewModel.updateORU220Data { purgingMirnayaB = last.purgingMirnayaB }
+            count++
+        }
+        if (isFieldEmpty(current.purgingMirnayaC) && isFieldNotEmpty(last.purgingMirnayaC)) {
+            sharedViewModel.updateORU220Data { purgingMirnayaC = last.purgingMirnayaC }
+            count++
+        }
+        if (isFieldEmpty(current.oilMirnayaA) && isFieldNotEmpty(last.oilMirnayaA)) {
+            sharedViewModel.updateORU220Data { oilMirnayaA = last.oilMirnayaA }
+            count++
+        }
+        if (isFieldEmpty(current.oilMirnayaB) && isFieldNotEmpty(last.oilMirnayaB)) {
+            sharedViewModel.updateORU220Data { oilMirnayaB = last.oilMirnayaB }
+            count++
+        }
+        if (isFieldEmpty(current.oilMirnayaC) && isFieldNotEmpty(last.oilMirnayaC)) {
+            sharedViewModel.updateORU220Data { oilMirnayaC = last.oilMirnayaC }
+            count++
+        }
 
         // Топаз
-        if (current.purgingTopazA.isEmpty() && last.purgingTopazA.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingTopazA = last.purgingTopazA }; count++ }
-        if (current.purgingTopazB.isEmpty() && last.purgingTopazB.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingTopazB = last.purgingTopazB }; count++ }
-        if (current.purgingTopazC.isEmpty() && last.purgingTopazC.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingTopazC = last.purgingTopazC }; count++ }
-        if (current.oilTopazA.isEmpty() && last.oilTopazA.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTopazA = last.oilTopazA }; count++ }
-        if (current.oilTopazB.isEmpty() && last.oilTopazB.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTopazB = last.oilTopazB }; count++ }
-        if (current.oilTopazC.isEmpty() && last.oilTopazC.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTopazC = last.oilTopazC }; count++ }
+        if (isFieldEmpty(current.purgingTopazA) && isFieldNotEmpty(last.purgingTopazA)) {
+            sharedViewModel.updateORU220Data { purgingTopazA = last.purgingTopazA }
+            count++
+        }
+        if (isFieldEmpty(current.purgingTopazB) && isFieldNotEmpty(last.purgingTopazB)) {
+            sharedViewModel.updateORU220Data { purgingTopazB = last.purgingTopazB }
+            count++
+        }
+        if (isFieldEmpty(current.purgingTopazC) && isFieldNotEmpty(last.purgingTopazC)) {
+            sharedViewModel.updateORU220Data { purgingTopazC = last.purgingTopazC }
+            count++
+        }
+        if (isFieldEmpty(current.oilTopazA) && isFieldNotEmpty(last.oilTopazA)) {
+            sharedViewModel.updateORU220Data { oilTopazA = last.oilTopazA }
+            count++
+        }
+        if (isFieldEmpty(current.oilTopazB) && isFieldNotEmpty(last.oilTopazB)) {
+            sharedViewModel.updateORU220Data { oilTopazB = last.oilTopazB }
+            count++
+        }
+        if (isFieldEmpty(current.oilTopazC) && isFieldNotEmpty(last.oilTopazC)) {
+            sharedViewModel.updateORU220Data { oilTopazC = last.oilTopazC }
+            count++
+        }
 
         // ОВ
-        if (current.purgingOvA.isEmpty() && last.purgingOvA.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingOvA = last.purgingOvA }; count++ }
-        if (current.purgingOvB.isEmpty() && last.purgingOvB.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingOvB = last.purgingOvB }; count++ }
-        if (current.purgingOvC.isEmpty() && last.purgingOvC.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingOvC = last.purgingOvC }; count++ }
-        if (current.oilOvA.isEmpty() && last.oilOvA.isNotEmpty()) { sharedViewModel.updateORU220Data { oilOvA = last.oilOvA }; count++ }
-        if (current.oilOvB.isEmpty() && last.oilOvB.isNotEmpty()) { sharedViewModel.updateORU220Data { oilOvB = last.oilOvB }; count++ }
-        if (current.oilOvC.isEmpty() && last.oilOvC.isNotEmpty()) { sharedViewModel.updateORU220Data { oilOvC = last.oilOvC }; count++ }
+        if (isFieldEmpty(current.purgingOvA) && isFieldNotEmpty(last.purgingOvA)) {
+            sharedViewModel.updateORU220Data { purgingOvA = last.purgingOvA }
+            count++
+        }
+        if (isFieldEmpty(current.purgingOvB) && isFieldNotEmpty(last.purgingOvB)) {
+            sharedViewModel.updateORU220Data { purgingOvB = last.purgingOvB }
+            count++
+        }
+        if (isFieldEmpty(current.purgingOvC) && isFieldNotEmpty(last.purgingOvC)) {
+            sharedViewModel.updateORU220Data { purgingOvC = last.purgingOvC }
+            count++
+        }
+        if (isFieldEmpty(current.oilOvA) && isFieldNotEmpty(last.oilOvA)) {
+            sharedViewModel.updateORU220Data { oilOvA = last.oilOvA }
+            count++
+        }
+        if (isFieldEmpty(current.oilOvB) && isFieldNotEmpty(last.oilOvB)) {
+            sharedViewModel.updateORU220Data { oilOvB = last.oilOvB }
+            count++
+        }
+        if (isFieldEmpty(current.oilOvC) && isFieldNotEmpty(last.oilOvC)) {
+            sharedViewModel.updateORU220Data { oilOvC = last.oilOvC }
+            count++
+        }
 
         // ТН-220 ОСШ ф.В
-        if (current.tnOsshFvUpper.isEmpty() && last.tnOsshFvUpper.isNotEmpty()) { sharedViewModel.updateORU220Data { tnOsshFvUpper = last.tnOsshFvUpper }; count++ }
-        if (current.tnOsshFvLower.isEmpty() && last.tnOsshFvLower.isNotEmpty()) { sharedViewModel.updateORU220Data { tnOsshFvLower = last.tnOsshFvLower }; count++ }
+        if (isFieldEmpty(current.tnOsshFvUpper) && isFieldNotEmpty(last.tnOsshFvUpper)) {
+            sharedViewModel.updateORU220Data { tnOsshFvUpper = last.tnOsshFvUpper }
+            count++
+        }
+        if (isFieldEmpty(current.tnOsshFvLower) && isFieldNotEmpty(last.tnOsshFvLower)) {
+            sharedViewModel.updateORU220Data { tnOsshFvLower = last.tnOsshFvLower }
+            count++
+        }
 
         // В-220 2АТГ
-        if (current.purgingV2atgA.isEmpty() && last.purgingV2atgA.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingV2atgA = last.purgingV2atgA }; count++ }
-        if (current.purgingV2atgB.isEmpty() && last.purgingV2atgB.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingV2atgB = last.purgingV2atgB }; count++ }
-        if (current.purgingV2atgC.isEmpty() && last.purgingV2atgC.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingV2atgC = last.purgingV2atgC }; count++ }
-        if (current.oilTt2atgA.isEmpty() && last.oilTt2atgA.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTt2atgA = last.oilTt2atgA }; count++ }
-        if (current.oilTt2atgB.isEmpty() && last.oilTt2atgB.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTt2atgB = last.oilTt2atgB }; count++ }
-        if (current.oilTt2atgC.isEmpty() && last.oilTt2atgC.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTt2atgC = last.oilTt2atgC }; count++ }
+        if (isFieldEmpty(current.purgingV2atgA) && isFieldNotEmpty(last.purgingV2atgA)) {
+            sharedViewModel.updateORU220Data { purgingV2atgA = last.purgingV2atgA }
+            count++
+        }
+        if (isFieldEmpty(current.purgingV2atgB) && isFieldNotEmpty(last.purgingV2atgB)) {
+            sharedViewModel.updateORU220Data { purgingV2atgB = last.purgingV2atgB }
+            count++
+        }
+        if (isFieldEmpty(current.purgingV2atgC) && isFieldNotEmpty(last.purgingV2atgC)) {
+            sharedViewModel.updateORU220Data { purgingV2atgC = last.purgingV2atgC }
+            count++
+        }
+        if (isFieldEmpty(current.oilTt2atgA) && isFieldNotEmpty(last.oilTt2atgA)) {
+            sharedViewModel.updateORU220Data { oilTt2atgA = last.oilTt2atgA }
+            count++
+        }
+        if (isFieldEmpty(current.oilTt2atgB) && isFieldNotEmpty(last.oilTt2atgB)) {
+            sharedViewModel.updateORU220Data { oilTt2atgB = last.oilTt2atgB }
+            count++
+        }
+        if (isFieldEmpty(current.oilTt2atgC) && isFieldNotEmpty(last.oilTt2atgC)) {
+            sharedViewModel.updateORU220Data { oilTt2atgC = last.oilTt2atgC }
+            count++
+        }
 
         // ШСВ-220
-        if (current.purgingShSV220A.isEmpty() && last.purgingShSV220A.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingShSV220A = last.purgingShSV220A }; count++ }
-        if (current.purgingShSV220B.isEmpty() && last.purgingShSV220B.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingShSV220B = last.purgingShSV220B }; count++ }
-        if (current.purgingShSV220C.isEmpty() && last.purgingShSV220C.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingShSV220C = last.purgingShSV220C }; count++ }
-        if (current.oilTtShSV220A.isEmpty() && last.oilTtShSV220A.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTtShSV220A = last.oilTtShSV220A }; count++ }
-        if (current.oilTtShSV220B.isEmpty() && last.oilTtShSV220B.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTtShSV220B = last.oilTtShSV220B }; count++ }
-        if (current.oilTtShSV220C.isEmpty() && last.oilTtShSV220C.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTtShSV220C = last.oilTtShSV220C }; count++ }
+        if (isFieldEmpty(current.purgingShSV220A) && isFieldNotEmpty(last.purgingShSV220A)) {
+            sharedViewModel.updateORU220Data { purgingShSV220A = last.purgingShSV220A }
+            count++
+        }
+        if (isFieldEmpty(current.purgingShSV220B) && isFieldNotEmpty(last.purgingShSV220B)) {
+            sharedViewModel.updateORU220Data { purgingShSV220B = last.purgingShSV220B }
+            count++
+        }
+        if (isFieldEmpty(current.purgingShSV220C) && isFieldNotEmpty(last.purgingShSV220C)) {
+            sharedViewModel.updateORU220Data { purgingShSV220C = last.purgingShSV220C }
+            count++
+        }
+        if (isFieldEmpty(current.oilTtShSV220A) && isFieldNotEmpty(last.oilTtShSV220A)) {
+            sharedViewModel.updateORU220Data { oilTtShSV220A = last.oilTtShSV220A }
+            count++
+        }
+        if (isFieldEmpty(current.oilTtShSV220B) && isFieldNotEmpty(last.oilTtShSV220B)) {
+            sharedViewModel.updateORU220Data { oilTtShSV220B = last.oilTtShSV220B }
+            count++
+        }
+        if (isFieldEmpty(current.oilTtShSV220C) && isFieldNotEmpty(last.oilTtShSV220C)) {
+            sharedViewModel.updateORU220Data { oilTtShSV220C = last.oilTtShSV220C }
+            count++
+        }
 
         // В-220 3АТГ
-        if (current.purgingV3atgA.isEmpty() && last.purgingV3atgA.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingV3atgA = last.purgingV3atgA }; count++ }
-        if (current.purgingV3atgB.isEmpty() && last.purgingV3atgB.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingV3atgB = last.purgingV3atgB }; count++ }
-        if (current.purgingV3atgC.isEmpty() && last.purgingV3atgC.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingV3atgC = last.purgingV3atgC }; count++ }
-        if (current.oilTt3atgA.isEmpty() && last.oilTt3atgA.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTt3atgA = last.oilTt3atgA }; count++ }
-        if (current.oilTt3atgB.isEmpty() && last.oilTt3atgB.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTt3atgB = last.oilTt3atgB }; count++ }
-        if (current.oilTt3atgC.isEmpty() && last.oilTt3atgC.isNotEmpty()) { sharedViewModel.updateORU220Data { oilTt3atgC = last.oilTt3atgC }; count++ }
+        if (isFieldEmpty(current.purgingV3atgA) && isFieldNotEmpty(last.purgingV3atgA)) {
+            sharedViewModel.updateORU220Data { purgingV3atgA = last.purgingV3atgA }
+            count++
+        }
+        if (isFieldEmpty(current.purgingV3atgB) && isFieldNotEmpty(last.purgingV3atgB)) {
+            sharedViewModel.updateORU220Data { purgingV3atgB = last.purgingV3atgB }
+            count++
+        }
+        if (isFieldEmpty(current.purgingV3atgC) && isFieldNotEmpty(last.purgingV3atgC)) {
+            sharedViewModel.updateORU220Data { purgingV3atgC = last.purgingV3atgC }
+            count++
+        }
+        if (isFieldEmpty(current.oilTt3atgA) && isFieldNotEmpty(last.oilTt3atgA)) {
+            sharedViewModel.updateORU220Data { oilTt3atgA = last.oilTt3atgA }
+            count++
+        }
+        if (isFieldEmpty(current.oilTt3atgB) && isFieldNotEmpty(last.oilTt3atgB)) {
+            sharedViewModel.updateORU220Data { oilTt3atgB = last.oilTt3atgB }
+            count++
+        }
+        if (isFieldEmpty(current.oilTt3atgC) && isFieldNotEmpty(last.oilTt3atgC)) {
+            sharedViewModel.updateORU220Data { oilTt3atgC = last.oilTt3atgC }
+            count++
+        }
 
         // Орбита
-        if (current.purgingOrbitaA.isEmpty() && last.purgingOrbitaA.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingOrbitaA = last.purgingOrbitaA }; count++ }
-        if (current.purgingOrbitaB.isEmpty() && last.purgingOrbitaB.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingOrbitaB = last.purgingOrbitaB }; count++ }
-        if (current.purgingOrbitaC.isEmpty() && last.purgingOrbitaC.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingOrbitaC = last.purgingOrbitaC }; count++ }
-        if (current.oilOrbitaA.isEmpty() && last.oilOrbitaA.isNotEmpty()) { sharedViewModel.updateORU220Data { oilOrbitaA = last.oilOrbitaA }; count++ }
-        if (current.oilOrbitaB.isEmpty() && last.oilOrbitaB.isNotEmpty()) { sharedViewModel.updateORU220Data { oilOrbitaB = last.oilOrbitaB }; count++ }
-        if (current.oilOrbitaC.isEmpty() && last.oilOrbitaC.isNotEmpty()) { sharedViewModel.updateORU220Data { oilOrbitaC = last.oilOrbitaC }; count++ }
+        if (isFieldEmpty(current.purgingOrbitaA) && isFieldNotEmpty(last.purgingOrbitaA)) {
+            sharedViewModel.updateORU220Data { purgingOrbitaA = last.purgingOrbitaA }
+            count++
+        }
+        if (isFieldEmpty(current.purgingOrbitaB) && isFieldNotEmpty(last.purgingOrbitaB)) {
+            sharedViewModel.updateORU220Data { purgingOrbitaB = last.purgingOrbitaB }
+            count++
+        }
+        if (isFieldEmpty(current.purgingOrbitaC) && isFieldNotEmpty(last.purgingOrbitaC)) {
+            sharedViewModel.updateORU220Data { purgingOrbitaC = last.purgingOrbitaC }
+            count++
+        }
+        if (isFieldEmpty(current.oilOrbitaA) && isFieldNotEmpty(last.oilOrbitaA)) {
+            sharedViewModel.updateORU220Data { oilOrbitaA = last.oilOrbitaA }
+            count++
+        }
+        if (isFieldEmpty(current.oilOrbitaB) && isFieldNotEmpty(last.oilOrbitaB)) {
+            sharedViewModel.updateORU220Data { oilOrbitaB = last.oilOrbitaB }
+            count++
+        }
+        if (isFieldEmpty(current.oilOrbitaC) && isFieldNotEmpty(last.oilOrbitaC)) {
+            sharedViewModel.updateORU220Data { oilOrbitaC = last.oilOrbitaC }
+            count++
+        }
 
         // Факел
-        if (current.purgingFakelA.isEmpty() && last.purgingFakelA.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingFakelA = last.purgingFakelA }; count++ }
-        if (current.purgingFakelB.isEmpty() && last.purgingFakelB.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingFakelB = last.purgingFakelB }; count++ }
-        if (current.purgingFakelC.isEmpty() && last.purgingFakelC.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingFakelC = last.purgingFakelC }; count++ }
-        if (current.oilFakelA.isEmpty() && last.oilFakelA.isNotEmpty()) { sharedViewModel.updateORU220Data { oilFakelA = last.oilFakelA }; count++ }
-        if (current.oilFakelB.isEmpty() && last.oilFakelB.isNotEmpty()) { sharedViewModel.updateORU220Data { oilFakelB = last.oilFakelB }; count++ }
-        if (current.oilFakelC.isEmpty() && last.oilFakelC.isNotEmpty()) { sharedViewModel.updateORU220Data { oilFakelC = last.oilFakelC }; count++ }
+        if (isFieldEmpty(current.purgingFakelA) && isFieldNotEmpty(last.purgingFakelA)) {
+            sharedViewModel.updateORU220Data { purgingFakelA = last.purgingFakelA }
+            count++
+        }
+        if (isFieldEmpty(current.purgingFakelB) && isFieldNotEmpty(last.purgingFakelB)) {
+            sharedViewModel.updateORU220Data { purgingFakelB = last.purgingFakelB }
+            count++
+        }
+        if (isFieldEmpty(current.purgingFakelC) && isFieldNotEmpty(last.purgingFakelC)) {
+            sharedViewModel.updateORU220Data { purgingFakelC = last.purgingFakelC }
+            count++
+        }
+        if (isFieldEmpty(current.oilFakelA) && isFieldNotEmpty(last.oilFakelA)) {
+            sharedViewModel.updateORU220Data { oilFakelA = last.oilFakelA }
+            count++
+        }
+        if (isFieldEmpty(current.oilFakelB) && isFieldNotEmpty(last.oilFakelB)) {
+            sharedViewModel.updateORU220Data { oilFakelB = last.oilFakelB }
+            count++
+        }
+        if (isFieldEmpty(current.oilFakelC) && isFieldNotEmpty(last.oilFakelC)) {
+            sharedViewModel.updateORU220Data { oilFakelC = last.oilFakelC }
+            count++
+        }
 
         // Комета-2
-        if (current.purgingCometa2A.isEmpty() && last.purgingCometa2A.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingCometa2A = last.purgingCometa2A }; count++ }
-        if (current.purgingCometa2B.isEmpty() && last.purgingCometa2B.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingCometa2B = last.purgingCometa2B }; count++ }
-        if (current.purgingCometa2C.isEmpty() && last.purgingCometa2C.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingCometa2C = last.purgingCometa2C }; count++ }
-        if (current.oilCometa2A.isEmpty() && last.oilCometa2A.isNotEmpty()) { sharedViewModel.updateORU220Data { oilCometa2A = last.oilCometa2A }; count++ }
-        if (current.oilCometa2B.isEmpty() && last.oilCometa2B.isNotEmpty()) { sharedViewModel.updateORU220Data { oilCometa2B = last.oilCometa2B }; count++ }
-        if (current.oilCometa2C.isEmpty() && last.oilCometa2C.isNotEmpty()) { sharedViewModel.updateORU220Data { oilCometa2C = last.oilCometa2C }; count++ }
+        if (isFieldEmpty(current.purgingCometa2A) && isFieldNotEmpty(last.purgingCometa2A)) {
+            sharedViewModel.updateORU220Data { purgingCometa2A = last.purgingCometa2A }
+            count++
+        }
+        if (isFieldEmpty(current.purgingCometa2B) && isFieldNotEmpty(last.purgingCometa2B)) {
+            sharedViewModel.updateORU220Data { purgingCometa2B = last.purgingCometa2B }
+            count++
+        }
+        if (isFieldEmpty(current.purgingCometa2C) && isFieldNotEmpty(last.purgingCometa2C)) {
+            sharedViewModel.updateORU220Data { purgingCometa2C = last.purgingCometa2C }
+            count++
+        }
+        if (isFieldEmpty(current.oilCometa2A) && isFieldNotEmpty(last.oilCometa2A)) {
+            sharedViewModel.updateORU220Data { oilCometa2A = last.oilCometa2A }
+            count++
+        }
+        if (isFieldEmpty(current.oilCometa2B) && isFieldNotEmpty(last.oilCometa2B)) {
+            sharedViewModel.updateORU220Data { oilCometa2B = last.oilCometa2B }
+            count++
+        }
+        if (isFieldEmpty(current.oilCometa2C) && isFieldNotEmpty(last.oilCometa2C)) {
+            sharedViewModel.updateORU220Data { oilCometa2C = last.oilCometa2C }
+            count++
+        }
 
         // Комета-1
-        if (current.purgingCometa1A.isEmpty() && last.purgingCometa1A.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingCometa1A = last.purgingCometa1A }; count++ }
-        if (current.purgingCometa1B.isEmpty() && last.purgingCometa1B.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingCometa1B = last.purgingCometa1B }; count++ }
-        if (current.purgingCometa1C.isEmpty() && last.purgingCometa1C.isNotEmpty()) { sharedViewModel.updateORU220Data { purgingCometa1C = last.purgingCometa1C }; count++ }
-        if (current.oilCometa1A.isEmpty() && last.oilCometa1A.isNotEmpty()) { sharedViewModel.updateORU220Data { oilCometa1A = last.oilCometa1A }; count++ }
-        if (current.oilCometa1B.isEmpty() && last.oilCometa1B.isNotEmpty()) { sharedViewModel.updateORU220Data { oilCometa1B = last.oilCometa1B }; count++ }
-        if (current.oilCometa1C.isEmpty() && last.oilCometa1C.isNotEmpty()) { sharedViewModel.updateORU220Data { oilCometa1C = last.oilCometa1C }; count++ }
+        if (isFieldEmpty(current.purgingCometa1A) && isFieldNotEmpty(last.purgingCometa1A)) {
+            sharedViewModel.updateORU220Data { purgingCometa1A = last.purgingCometa1A }
+            count++
+        }
+        if (isFieldEmpty(current.purgingCometa1B) && isFieldNotEmpty(last.purgingCometa1B)) {
+            sharedViewModel.updateORU220Data { purgingCometa1B = last.purgingCometa1B }
+            count++
+        }
+        if (isFieldEmpty(current.purgingCometa1C) && isFieldNotEmpty(last.purgingCometa1C)) {
+            sharedViewModel.updateORU220Data { purgingCometa1C = last.purgingCometa1C }
+            count++
+        }
+        if (isFieldEmpty(current.oilCometa1A) && isFieldNotEmpty(last.oilCometa1A)) {
+            sharedViewModel.updateORU220Data { oilCometa1A = last.oilCometa1A }
+            count++
+        }
+        if (isFieldEmpty(current.oilCometa1B) && isFieldNotEmpty(last.oilCometa1B)) {
+            sharedViewModel.updateORU220Data { oilCometa1B = last.oilCometa1B }
+            count++
+        }
+        if (isFieldEmpty(current.oilCometa1C) && isFieldNotEmpty(last.oilCometa1C)) {
+            sharedViewModel.updateORU220Data { oilCometa1C = last.oilCometa1C }
+            count++
+        }
 
         // 1ТН-220
-        if (current.tn1UpperA.isEmpty() && last.tn1UpperA.isNotEmpty()) { sharedViewModel.updateORU220Data { tn1UpperA = last.tn1UpperA }; count++ }
-        if (current.tn1UpperB.isEmpty() && last.tn1UpperB.isNotEmpty()) { sharedViewModel.updateORU220Data { tn1UpperB = last.tn1UpperB }; count++ }
-        if (current.tn1UpperC.isEmpty() && last.tn1UpperC.isNotEmpty()) { sharedViewModel.updateORU220Data { tn1UpperC = last.tn1UpperC }; count++ }
-        if (current.tn1LowerA.isEmpty() && last.tn1LowerA.isNotEmpty()) { sharedViewModel.updateORU220Data { tn1LowerA = last.tn1LowerA }; count++ }
-        if (current.tn1LowerB.isEmpty() && last.tn1LowerB.isNotEmpty()) { sharedViewModel.updateORU220Data { tn1LowerB = last.tn1LowerB }; count++ }
-        if (current.tn1LowerC.isEmpty() && last.tn1LowerC.isNotEmpty()) { sharedViewModel.updateORU220Data { tn1LowerC = last.tn1LowerC }; count++ }
+        if (isFieldEmpty(current.tn1UpperA) && isFieldNotEmpty(last.tn1UpperA)) {
+            sharedViewModel.updateORU220Data { tn1UpperA = last.tn1UpperA }
+            count++
+        }
+        if (isFieldEmpty(current.tn1UpperB) && isFieldNotEmpty(last.tn1UpperB)) {
+            sharedViewModel.updateORU220Data { tn1UpperB = last.tn1UpperB }
+            count++
+        }
+        if (isFieldEmpty(current.tn1UpperC) && isFieldNotEmpty(last.tn1UpperC)) {
+            sharedViewModel.updateORU220Data { tn1UpperC = last.tn1UpperC }
+            count++
+        }
+        if (isFieldEmpty(current.tn1LowerA) && isFieldNotEmpty(last.tn1LowerA)) {
+            sharedViewModel.updateORU220Data { tn1LowerA = last.tn1LowerA }
+            count++
+        }
+        if (isFieldEmpty(current.tn1LowerB) && isFieldNotEmpty(last.tn1LowerB)) {
+            sharedViewModel.updateORU220Data { tn1LowerB = last.tn1LowerB }
+            count++
+        }
+        if (isFieldEmpty(current.tn1LowerC) && isFieldNotEmpty(last.tn1LowerC)) {
+            sharedViewModel.updateORU220Data { tn1LowerC = last.tn1LowerC }
+            count++
+        }
 
         // 2ТН-220
-        if (current.tn2UpperA.isEmpty() && last.tn2UpperA.isNotEmpty()) { sharedViewModel.updateORU220Data { tn2UpperA = last.tn2UpperA }; count++ }
-        if (current.tn2UpperB.isEmpty() && last.tn2UpperB.isNotEmpty()) { sharedViewModel.updateORU220Data { tn2UpperB = last.tn2UpperB }; count++ }
-        if (current.tn2UpperC.isEmpty() && last.tn2UpperC.isNotEmpty()) { sharedViewModel.updateORU220Data { tn2UpperC = last.tn2UpperC }; count++ }
-        if (current.tn2LowerA.isEmpty() && last.tn2LowerA.isNotEmpty()) { sharedViewModel.updateORU220Data { tn2LowerA = last.tn2LowerA }; count++ }
-        if (current.tn2LowerB.isEmpty() && last.tn2LowerB.isNotEmpty()) { sharedViewModel.updateORU220Data { tn2LowerB = last.tn2LowerB }; count++ }
-        if (current.tn2LowerC.isEmpty() && last.tn2LowerC.isNotEmpty()) { sharedViewModel.updateORU220Data { tn2LowerC = last.tn2LowerC }; count++ }
+        if (isFieldEmpty(current.tn2UpperA) && isFieldNotEmpty(last.tn2UpperA)) {
+            sharedViewModel.updateORU220Data { tn2UpperA = last.tn2UpperA }
+            count++
+        }
+        if (isFieldEmpty(current.tn2UpperB) && isFieldNotEmpty(last.tn2UpperB)) {
+            sharedViewModel.updateORU220Data { tn2UpperB = last.tn2UpperB }
+            count++
+        }
+        if (isFieldEmpty(current.tn2UpperC) && isFieldNotEmpty(last.tn2UpperC)) {
+            sharedViewModel.updateORU220Data { tn2UpperC = last.tn2UpperC }
+            count++
+        }
+        if (isFieldEmpty(current.tn2LowerA) && isFieldNotEmpty(last.tn2LowerA)) {
+            sharedViewModel.updateORU220Data { tn2LowerA = last.tn2LowerA }
+            count++
+        }
+        if (isFieldEmpty(current.tn2LowerB) && isFieldNotEmpty(last.tn2LowerB)) {
+            sharedViewModel.updateORU220Data { tn2LowerB = last.tn2LowerB }
+            count++
+        }
+        if (isFieldEmpty(current.tn2LowerC) && isFieldNotEmpty(last.tn2LowerC)) {
+            sharedViewModel.updateORU220Data { tn2LowerC = last.tn2LowerC }
+            count++
+        }
 
         return count
     }
@@ -298,9 +591,8 @@ class HomeScreen : Fragment() {
     private fun fillEmptyFieldsAtg(last: InspectionATGData, current: InspectionATGData): Int {
         var count = 0
 
-        // Функция-помощник для проверки и обновления
         fun checkAndUpdate(currentValue: String, lastValue: String, update: () -> Unit) {
-            if (currentValue.isEmpty() && lastValue.isNotEmpty()) {
+            if (isFieldEmpty(currentValue) && isFieldNotEmpty(lastValue)) {
                 update()
                 count++
             }
@@ -422,7 +714,7 @@ class HomeScreen : Fragment() {
         var count = 0
 
         fun checkAndUpdate(currentValue: String, lastValue: String, update: () -> Unit) {
-            if (currentValue.isEmpty() && lastValue.isNotEmpty()) {
+            if (isFieldEmpty(currentValue) && isFieldNotEmpty(lastValue)) {
                 update()
                 count++
             }
@@ -451,6 +743,17 @@ class HomeScreen : Fragment() {
         checkAndUpdate(current.oilTtVlt30A, last.oilTtVlt30A) { sharedViewModel.updateORU500Data { oilTtVlt30A = last.oilTtVlt30A } }
         checkAndUpdate(current.oilTtVlt30B, last.oilTtVlt30B) { sharedViewModel.updateORU500Data { oilTtVlt30B = last.oilTtVlt30B } }
         checkAndUpdate(current.oilTtVlt30C, last.oilTtVlt30C) { sharedViewModel.updateORU500Data { oilTtVlt30C = last.oilTtVlt30C } }
+
+        // Трачуковская
+        checkAndUpdate(current.oilTtTrachukovskayaA, last.oilTtTrachukovskayaA) { sharedViewModel.updateORU500Data { oilTtTrachukovskayaA = last.oilTtTrachukovskayaA } }
+        checkAndUpdate(current.oilTtTrachukovskayaB, last.oilTtTrachukovskayaB) { sharedViewModel.updateORU500Data { oilTtTrachukovskayaB = last.oilTtTrachukovskayaB } }
+        checkAndUpdate(current.oilTtTrachukovskayaC, last.oilTtTrachukovskayaC) { sharedViewModel.updateORU500Data { oilTtTrachukovskayaC = last.oilTtTrachukovskayaC } }
+        checkAndUpdate(current.oil2tnTrachukovskayaA, last.oil2tnTrachukovskayaA) { sharedViewModel.updateORU500Data { oil2tnTrachukovskayaA = last.oil2tnTrachukovskayaA } }
+        checkAndUpdate(current.oil2tnTrachukovskayaB, last.oil2tnTrachukovskayaB) { sharedViewModel.updateORU500Data { oil2tnTrachukovskayaB = last.oil2tnTrachukovskayaB } }
+        checkAndUpdate(current.oil2tnTrachukovskayaC, last.oil2tnTrachukovskayaC) { sharedViewModel.updateORU500Data { oil2tnTrachukovskayaC = last.oil2tnTrachukovskayaC } }
+        checkAndUpdate(current.oil1tnTrachukovskayaA, last.oil1tnTrachukovskayaA) { sharedViewModel.updateORU500Data { oil1tnTrachukovskayaA = last.oil1tnTrachukovskayaA } }
+        checkAndUpdate(current.oil1tnTrachukovskayaB, last.oil1tnTrachukovskayaB) { sharedViewModel.updateORU500Data { oil1tnTrachukovskayaB = last.oil1tnTrachukovskayaB } }
+        checkAndUpdate(current.oil1tnTrachukovskayaC, last.oil1tnTrachukovskayaC) { sharedViewModel.updateORU500Data { oil1tnTrachukovskayaC = last.oil1tnTrachukovskayaC } }
 
         // В-500 ВШЛ-32
         checkAndUpdate(current.purgingVshl32A1, last.purgingVshl32A1) { sharedViewModel.updateORU500Data { purgingVshl32A1 = last.purgingVshl32A1 } }
@@ -518,7 +821,12 @@ class HomeScreen : Fragment() {
         checkAndUpdate(current.oilTtVshl12B, last.oilTtVshl12B) { sharedViewModel.updateORU500Data { oilTtVshl12B = last.oilTtVshl12B } }
         checkAndUpdate(current.oilTtVshl12C, last.oilTtVshl12C) { sharedViewModel.updateORU500Data { oilTtVshl12C = last.oilTtVshl12C } }
 
-        // 1ТН-500
+        // Белозёрная
+        checkAndUpdate(current.oil2tnBelozernayaA, last.oil2tnBelozernayaA) { sharedViewModel.updateORU500Data { oil2tnBelozernayaA = last.oil2tnBelozernayaA } }
+        checkAndUpdate(current.oil2tnBelozernayaB, last.oil2tnBelozernayaB) { sharedViewModel.updateORU500Data { oil2tnBelozernayaB = last.oil2tnBelozernayaB } }
+        checkAndUpdate(current.oil2tnBelozernayaC, last.oil2tnBelozernayaC) { sharedViewModel.updateORU500Data { oil2tnBelozernayaC = last.oil2tnBelozernayaC } }
+
+        // 1ТН-500 Каскады
         checkAndUpdate(current.tn1500Cascade1A, last.tn1500Cascade1A) { sharedViewModel.updateORU500Data { tn1500Cascade1A = last.tn1500Cascade1A } }
         checkAndUpdate(current.tn1500Cascade1B, last.tn1500Cascade1B) { sharedViewModel.updateORU500Data { tn1500Cascade1B = last.tn1500Cascade1B } }
         checkAndUpdate(current.tn1500Cascade1C, last.tn1500Cascade1C) { sharedViewModel.updateORU500Data { tn1500Cascade1C = last.tn1500Cascade1C } }
@@ -532,7 +840,7 @@ class HomeScreen : Fragment() {
         checkAndUpdate(current.tn1500Cascade4B, last.tn1500Cascade4B) { sharedViewModel.updateORU500Data { tn1500Cascade4B = last.tn1500Cascade4B } }
         checkAndUpdate(current.tn1500Cascade4C, last.tn1500Cascade4C) { sharedViewModel.updateORU500Data { tn1500Cascade4C = last.tn1500Cascade4C } }
 
-        // 2ТН-500
+        // 2ТН-500 Каскады
         checkAndUpdate(current.tn2500Cascade1A, last.tn2500Cascade1A) { sharedViewModel.updateORU500Data { tn2500Cascade1A = last.tn2500Cascade1A } }
         checkAndUpdate(current.tn2500Cascade1B, last.tn2500Cascade1B) { sharedViewModel.updateORU500Data { tn2500Cascade1B = last.tn2500Cascade1B } }
         checkAndUpdate(current.tn2500Cascade1C, last.tn2500Cascade1C) { sharedViewModel.updateORU500Data { tn2500Cascade1C = last.tn2500Cascade1C } }
@@ -546,7 +854,7 @@ class HomeScreen : Fragment() {
         checkAndUpdate(current.tn2500Cascade4B, last.tn2500Cascade4B) { sharedViewModel.updateORU500Data { tn2500Cascade4B = last.tn2500Cascade4B } }
         checkAndUpdate(current.tn2500Cascade4C, last.tn2500Cascade4C) { sharedViewModel.updateORU500Data { tn2500Cascade4C = last.tn2500Cascade4C } }
 
-        // ТН-500 СГРЭС-1
+        // ТН-500 СГРЭС-1 Каскады
         checkAndUpdate(current.tn500Sgres1Cascade1A, last.tn500Sgres1Cascade1A) { sharedViewModel.updateORU500Data { tn500Sgres1Cascade1A = last.tn500Sgres1Cascade1A } }
         checkAndUpdate(current.tn500Sgres1Cascade1B, last.tn500Sgres1Cascade1B) { sharedViewModel.updateORU500Data { tn500Sgres1Cascade1B = last.tn500Sgres1Cascade1B } }
         checkAndUpdate(current.tn500Sgres1Cascade1C, last.tn500Sgres1Cascade1C) { sharedViewModel.updateORU500Data { tn500Sgres1Cascade1C = last.tn500Sgres1Cascade1C } }
@@ -566,65 +874,130 @@ class HomeScreen : Fragment() {
     private fun fillEmptyFieldsBuildings(last: InspectionBuildingsData, current: InspectionBuildingsData): Int {
         var count = 0
 
-        fun checkAndUpdate(currentValue: String, lastValue: String, update: () -> Unit) {
-            if (currentValue.isEmpty() && lastValue.isNotEmpty() && lastValue != "○") {
+        fun checkAndUpdateSpinner(currentValue: String, lastValue: String, update: () -> Unit) {
+            if (isFieldEmpty(currentValue) && isFieldNotEmpty(lastValue)) {
+                update()
+                count++
+            }
+        }
+
+        fun checkAndUpdateText(currentValue: String, lastValue: String, update: () -> Unit) {
+            if (currentValue.isEmpty() && lastValue.isNotEmpty()) {
                 update()
                 count++
             }
         }
 
         // Компрессорная №1
-        if (current.compressor1Valve == "○" && last.compressor1Valve != "○") { sharedViewModel.updateBuildingsData { compressor1Valve = last.compressor1Valve }; count++ }
-        if (current.compressor1Heating == "○" && last.compressor1Heating != "○") { sharedViewModel.updateBuildingsData { compressor1Heating = last.compressor1Heating }; count++ }
-        checkAndUpdate(current.compressor1Temp, last.compressor1Temp) { sharedViewModel.updateBuildingsData { compressor1Temp = last.compressor1Temp } }
+        checkAndUpdateSpinner(current.compressor1Valve, last.compressor1Valve) {
+            sharedViewModel.updateBuildingsData { compressor1Valve = last.compressor1Valve }
+        }
+        checkAndUpdateSpinner(current.compressor1Heating, last.compressor1Heating) {
+            sharedViewModel.updateBuildingsData { compressor1Heating = last.compressor1Heating }
+        }
+        checkAndUpdateText(current.compressor1Temp, last.compressor1Temp) {
+            sharedViewModel.updateBuildingsData { compressor1Temp = last.compressor1Temp }
+        }
 
         // Баллонная №1
-        if (current.ballroom1Valve == "○" && last.ballroom1Valve != "○") { sharedViewModel.updateBuildingsData { ballroom1Valve = last.ballroom1Valve }; count++ }
-        if (current.ballroom1Heating == "○" && last.ballroom1Heating != "○") { sharedViewModel.updateBuildingsData { ballroom1Heating = last.ballroom1Heating }; count++ }
-        checkAndUpdate(current.ballroom1Temp, last.ballroom1Temp) { sharedViewModel.updateBuildingsData { ballroom1Temp = last.ballroom1Temp } }
+        checkAndUpdateSpinner(current.ballroom1Valve, last.ballroom1Valve) {
+            sharedViewModel.updateBuildingsData { ballroom1Valve = last.ballroom1Valve }
+        }
+        checkAndUpdateSpinner(current.ballroom1Heating, last.ballroom1Heating) {
+            sharedViewModel.updateBuildingsData { ballroom1Heating = last.ballroom1Heating }
+        }
+        checkAndUpdateText(current.ballroom1Temp, last.ballroom1Temp) {
+            sharedViewModel.updateBuildingsData { ballroom1Temp = last.ballroom1Temp }
+        }
 
         // Компрессорная №2
-        if (current.compressor2Valve == "○" && last.compressor2Valve != "○") { sharedViewModel.updateBuildingsData { compressor2Valve = last.compressor2Valve }; count++ }
-        if (current.compressor2Heating == "○" && last.compressor2Heating != "○") { sharedViewModel.updateBuildingsData { compressor2Heating = last.compressor2Heating }; count++ }
-        checkAndUpdate(current.compressor2Temp, last.compressor2Temp) { sharedViewModel.updateBuildingsData { compressor2Temp = last.compressor2Temp } }
+        checkAndUpdateSpinner(current.compressor2Valve, last.compressor2Valve) {
+            sharedViewModel.updateBuildingsData { compressor2Valve = last.compressor2Valve }
+        }
+        checkAndUpdateSpinner(current.compressor2Heating, last.compressor2Heating) {
+            sharedViewModel.updateBuildingsData { compressor2Heating = last.compressor2Heating }
+        }
+        checkAndUpdateText(current.compressor2Temp, last.compressor2Temp) {
+            sharedViewModel.updateBuildingsData { compressor2Temp = last.compressor2Temp }
+        }
 
         // Баллонная №2
-        if (current.ballroom2Valve == "○" && last.ballroom2Valve != "○") { sharedViewModel.updateBuildingsData { ballroom2Valve = last.ballroom2Valve }; count++ }
-        if (current.ballroom2Heating == "○" && last.ballroom2Heating != "○") { sharedViewModel.updateBuildingsData { ballroom2Heating = last.ballroom2Heating }; count++ }
-        checkAndUpdate(current.ballroom2Temp, last.ballroom2Temp) { sharedViewModel.updateBuildingsData { ballroom2Temp = last.ballroom2Temp } }
+        checkAndUpdateSpinner(current.ballroom2Valve, last.ballroom2Valve) {
+            sharedViewModel.updateBuildingsData { ballroom2Valve = last.ballroom2Valve }
+        }
+        checkAndUpdateSpinner(current.ballroom2Heating, last.ballroom2Heating) {
+            sharedViewModel.updateBuildingsData { ballroom2Heating = last.ballroom2Heating }
+        }
+        checkAndUpdateText(current.ballroom2Temp, last.ballroom2Temp) {
+            sharedViewModel.updateBuildingsData { ballroom2Temp = last.ballroom2Temp }
+        }
 
         // КПЗ ОПУ
-        if (current.kpzOpuValve == "○" && last.kpzOpuValve != "○") { sharedViewModel.updateBuildingsData { kpzOpuValve = last.kpzOpuValve }; count++ }
-        if (current.kpzOpuHeating == "○" && last.kpzOpuHeating != "○") { sharedViewModel.updateBuildingsData { kpzOpuHeating = last.kpzOpuHeating }; count++ }
-        checkAndUpdate(current.kpzOpuTemp, last.kpzOpuTemp) { sharedViewModel.updateBuildingsData { kpzOpuTemp = last.kpzOpuTemp } }
+        checkAndUpdateSpinner(current.kpzOpuValve, last.kpzOpuValve) {
+            sharedViewModel.updateBuildingsData { kpzOpuValve = last.kpzOpuValve }
+        }
+        checkAndUpdateSpinner(current.kpzOpuHeating, last.kpzOpuHeating) {
+            sharedViewModel.updateBuildingsData { kpzOpuHeating = last.kpzOpuHeating }
+        }
+        checkAndUpdateText(current.kpzOpuTemp, last.kpzOpuTemp) {
+            sharedViewModel.updateBuildingsData { kpzOpuTemp = last.kpzOpuTemp }
+        }
 
         // КПЗ-2
-        if (current.kpz2Valve == "○" && last.kpz2Valve != "○") { sharedViewModel.updateBuildingsData { kpz2Valve = last.kpz2Valve }; count++ }
-        if (current.kpz2Heating == "○" && last.kpz2Heating != "○") { sharedViewModel.updateBuildingsData { kpz2Heating = last.kpz2Heating }; count++ }
-        checkAndUpdate(current.kpz2Temp, last.kpz2Temp) { sharedViewModel.updateBuildingsData { kpz2Temp = last.kpz2Temp } }
+        checkAndUpdateSpinner(current.kpz2Valve, last.kpz2Valve) {
+            sharedViewModel.updateBuildingsData { kpz2Valve = last.kpz2Valve }
+        }
+        checkAndUpdateSpinner(current.kpz2Heating, last.kpz2Heating) {
+            sharedViewModel.updateBuildingsData { kpz2Heating = last.kpz2Heating }
+        }
+        checkAndUpdateText(current.kpz2Temp, last.kpz2Temp) {
+            sharedViewModel.updateBuildingsData { kpz2Temp = last.kpz2Temp }
+        }
 
         // Насосная пожаротушения
-        if (current.firePumpValve == "○" && last.firePumpValve != "○") { sharedViewModel.updateBuildingsData { firePumpValve = last.firePumpValve }; count++ }
-        if (current.firePumpHeating == "○" && last.firePumpHeating != "○") { sharedViewModel.updateBuildingsData { firePumpHeating = last.firePumpHeating }; count++ }
-        checkAndUpdate(current.firePumpTemp, last.firePumpTemp) { sharedViewModel.updateBuildingsData { firePumpTemp = last.firePumpTemp } }
+        checkAndUpdateSpinner(current.firePumpValve, last.firePumpValve) {
+            sharedViewModel.updateBuildingsData { firePumpValve = last.firePumpValve }
+        }
+        checkAndUpdateSpinner(current.firePumpHeating, last.firePumpHeating) {
+            sharedViewModel.updateBuildingsData { firePumpHeating = last.firePumpHeating }
+        }
+        checkAndUpdateText(current.firePumpTemp, last.firePumpTemp) {
+            sharedViewModel.updateBuildingsData { firePumpTemp = last.firePumpTemp }
+        }
 
         // Мастерская по ремонту ВВ
-        if (current.workshopHeating == "○" && last.workshopHeating != "○") { sharedViewModel.updateBuildingsData { workshopHeating = last.workshopHeating }; count++ }
-        checkAndUpdate(current.workshopTemp, last.workshopTemp) { sharedViewModel.updateBuildingsData { workshopTemp = last.workshopTemp } }
+        checkAndUpdateSpinner(current.workshopHeating, last.workshopHeating) {
+            sharedViewModel.updateBuildingsData { workshopHeating = last.workshopHeating }
+        }
+        checkAndUpdateText(current.workshopTemp, last.workshopTemp) {
+            sharedViewModel.updateBuildingsData { workshopTemp = last.workshopTemp }
+        }
 
         // Артскважина
-        if (current.artWellHeating == "○" && last.artWellHeating != "○") { sharedViewModel.updateBuildingsData { artWellHeating = last.artWellHeating }; count++ }
+        checkAndUpdateSpinner(current.artWellHeating, last.artWellHeating) {
+            sharedViewModel.updateBuildingsData { artWellHeating = last.artWellHeating }
+        }
 
         // Здание артезианской скважины
-        if (current.artesianWellHeating == "○" && last.artesianWellHeating != "○") { sharedViewModel.updateBuildingsData { artesianWellHeating = last.artesianWellHeating }; count++ }
+        checkAndUpdateSpinner(current.artesianWellHeating, last.artesianWellHeating) {
+            sharedViewModel.updateBuildingsData { artesianWellHeating = last.artesianWellHeating }
+        }
 
         // Помещение 1 (2) АБ
-        if (current.roomAbHeating == "○" && last.roomAbHeating != "○") { sharedViewModel.updateBuildingsData { roomAbHeating = last.roomAbHeating }; count++ }
-        checkAndUpdate(current.roomAbTemp, last.roomAbTemp) { sharedViewModel.updateBuildingsData { roomAbTemp = last.roomAbTemp } }
+        checkAndUpdateSpinner(current.roomAbHeating, last.roomAbHeating) {
+            sharedViewModel.updateBuildingsData { roomAbHeating = last.roomAbHeating }
+        }
+        checkAndUpdateText(current.roomAbTemp, last.roomAbTemp) {
+            sharedViewModel.updateBuildingsData { roomAbTemp = last.roomAbTemp }
+        }
 
         // Помещение п/этажа №1,2,3
-        if (current.basementHeating == "○" && last.basementHeating != "○") { sharedViewModel.updateBuildingsData { basementHeating = last.basementHeating }; count++ }
-        checkAndUpdate(current.basementTemp, last.basementTemp) { sharedViewModel.updateBuildingsData { basementTemp = last.basementTemp } }
+        checkAndUpdateSpinner(current.basementHeating, last.basementHeating) {
+            sharedViewModel.updateBuildingsData { basementHeating = last.basementHeating }
+        }
+        checkAndUpdateText(current.basementTemp, last.basementTemp) {
+            sharedViewModel.updateBuildingsData { basementTemp = last.basementTemp }
+        }
 
         return count
     }
