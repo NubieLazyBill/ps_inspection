@@ -111,6 +111,12 @@ class InspectionArchiveManager(private val context: Context) {
         }
     }
 
+    // Получить файл архива по имени
+    fun getArchiveFile(fileName: String): File? {
+        val file = File(archiveDir, fileName)
+        return if (file.exists()) file else null
+    }
+
     // Очистить весь архив
     fun clearAllArchives(): Int {
         var count = 0

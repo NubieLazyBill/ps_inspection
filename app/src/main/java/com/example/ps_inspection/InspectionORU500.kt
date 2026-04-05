@@ -612,40 +612,41 @@ class InspectionORU500 : Fragment() {
         }
 
         //Ячейка В-500 ВЛТ-20
+        // В-500 ВЛТ-20
         setupSpinnerListener(binding.purgingVlt20A1) { selectedItem ->
-            sharedViewModel.updateORU500Data { copy(purgingVlt20A1 = selectedItem.toString()) }
+            sharedViewModel.updateORU500Data { purgingVlt20A1 = selectedItem.toString() }
         }
 
         setupSpinnerListener(binding.purgingVlt20B1) { selectedItem ->
-            sharedViewModel.updateORU500Data { copy(purgingVlt20B1 = selectedItem.toString()) }
+            sharedViewModel.updateORU500Data { purgingVlt20B1 = selectedItem.toString() }
         }
 
         setupSpinnerListener(binding.purgingVlt20C1) { selectedItem ->
-            sharedViewModel.updateORU500Data { copy(purgingVlt20C1 = selectedItem.toString()) }
+            sharedViewModel.updateORU500Data { purgingVlt20C1 = selectedItem.toString() }
         }
 
         setupSpinnerListener(binding.purgingVlt20A2) { selectedItem ->
-            sharedViewModel.updateORU500Data { copy(purgingVlt20A2 = selectedItem.toString()) }
+            sharedViewModel.updateORU500Data { purgingVlt20A2 = selectedItem.toString() }
         }
 
         setupSpinnerListener(binding.purgingVlt20B2) { selectedItem ->
-            sharedViewModel.updateORU500Data { copy(purgingVlt20B2 = selectedItem.toString()) }
+            sharedViewModel.updateORU500Data { purgingVlt20B2 = selectedItem.toString() }
         }
 
         setupSpinnerListener(binding.purgingVlt20C2) { selectedItem ->
-            sharedViewModel.updateORU500Data { copy(purgingVlt20C2 = selectedItem.toString()) }
+            sharedViewModel.updateORU500Data { purgingVlt20C2 = selectedItem.toString() }
         }
 
         setupSpinnerListener(binding.oilTtVlt20A) { selectedItem ->
-            sharedViewModel.updateORU500Data { copy(oilTtVlt20A = selectedItem.toString()) }
+            sharedViewModel.updateORU500Data { oilTtVlt20A = selectedItem.toString() }
         }
 
         setupSpinnerListener(binding.oilTtVlt20B) { selectedItem ->
-            sharedViewModel.updateORU500Data { copy(oilTtVlt20B = selectedItem.toString()) }
+            sharedViewModel.updateORU500Data { oilTtVlt20B = selectedItem.toString() }
         }
 
         setupSpinnerListener(binding.oilTtVlt20C) { selectedItem ->
-            sharedViewModel.updateORU500Data { copy(oilTtVlt20C = selectedItem.toString()) }
+            sharedViewModel.updateORU500Data { oilTtVlt20C = selectedItem.toString() }
         }
 
         // Ячейка 7: В-500 ВШТ-11

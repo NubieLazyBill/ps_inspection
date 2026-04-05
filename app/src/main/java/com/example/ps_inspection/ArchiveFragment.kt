@@ -1,6 +1,8 @@
 package com.example.ps_inspection
 
 import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -77,17 +79,45 @@ class ArchiveFragment : Fragment() {
     private fun showArchiveOptions(position: Int) {
         val archive = archives[position]
 
-        val options = arrayOf("Загрузить этот осмотр", "Удалить")
+        val options = arrayOf("Загрузить этот осмотр", "Поделиться (Excel)", "Удалить")
 
         AlertDialog.Builder(requireContext())
             .setTitle(archive.displayDate)
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> loadArchive(archive.fileName)
-                    1 -> deleteArchive(position, archive.fileName)
+                    1 -> shareArchive(archive.fileName)
+                    2 -> deleteArchive(position, archive.fileName)
                 }
             }
             .show()
+    }
+
+    private fun shareArchive(fileName: String) {
+        val archiveData = archiveManager.loadFromArchive(fileName)
+        if (archiveData == null) {
+            Toast.makeText(requireContext(), "Ошибка загрузки архива", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val exportService = ExcelExportService(requireContext())
+        val fileUri = exportService.exportArchiveToExcel(archiveData)
+
+        if (fileUri != null) {
+            Toast.makeText(requireContext(), "Файл готов к отправке", Toast.LENGTH_LONG).show()
+            shareExcelFile(fileUri)
+        } else {
+            Toast.makeText(requireContext(), "Ошибка при создании файла", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun shareExcelFile(fileUri: Uri) {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            putExtra(Intent.EXTRA_STREAM, fileUri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(shareIntent, "Поделиться файлом осмотра"))
     }
 
     private fun loadArchive(fileName: String) {

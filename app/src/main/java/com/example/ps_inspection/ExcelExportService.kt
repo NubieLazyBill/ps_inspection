@@ -16,6 +16,7 @@ import androidx.core.content.FileProvider
 import org.apache.poi.ss.usermodel.Workbook
 import java.io.File
 import java.io.FileOutputStream
+import android.util.Log
 
 
 class ExcelExportService(private val context: Context) {
@@ -29,18 +30,17 @@ class ExcelExportService(private val context: Context) {
         buildingsData: InspectionBuildingsData
     ): Uri? {
         return try {
-
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
             val workbook = XSSFWorkbook(inputStream)
             val sheet = workbook.getSheetAt(0)
-            val uri = saveWorkbookFromTemplate(workbook, inputStream)
 
-
+            // СНАЧАЛА заполняем данные
             fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
-            saveWorkbookFromTemplate(workbook, inputStream)
+            // ПОТОМ сохраняем
+            val uri = saveWorkbookFromTemplate(workbook, inputStream)
 
-            // СОХРАНЯЕМ ПОСЛЕДНИЙ ОСМОТР
+            // Сохраняем последний осмотр
             val lastInspectionManager = LastInspectionManager(context)
             lastInspectionManager.saveLastInspection(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
@@ -49,7 +49,33 @@ class ExcelExportService(private val context: Context) {
             archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
             uri
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 
+    fun exportArchiveToExcel(
+        archiveData: InspectionArchiveData
+    ): Uri? {
+        return try {
+            val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
+            val workbook = XSSFWorkbook(inputStream)
+            val sheet = workbook.getSheetAt(0)
+
+            fillDataToTemplate(sheet,
+                archiveData.oru35,
+                archiveData.oru220,
+                archiveData.atg,
+                archiveData.oru500,
+                archiveData.buildings
+            )
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                saveWorkbookFromTemplate(workbook, inputStream)
+            } else {
+                saveWorkbookLegacy(workbook, inputStream)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             null
@@ -66,6 +92,9 @@ class ExcelExportService(private val context: Context) {
     ) {
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
+
+        Log.d("ExcelExport", "=== fillDataToTemplate START ===")
+        Log.d("ExcelExport", "oru500Data.oilTtTrachukovskayaA = ${oru500Data.oilTtTrachukovskayaA}")
 
         // Заполняем даты (ячейки B1 и O1)
         setCellValue(sheet, 0, 1, currentDate) // B1
@@ -244,6 +273,13 @@ class ExcelExportService(private val context: Context) {
         setCellValue(sheet, 28, 8, oru500Data.oilTtVlt30C)
 
         //Трачуки
+
+        //Трачуки
+        Log.d("ExcelExport", "ТТ Трачуковская: A=${oru500Data.oilTtTrachukovskayaA}, B=${oru500Data.oilTtTrachukovskayaB}, C=${oru500Data.oilTtTrachukovskayaC}")
+        Log.d("ExcelExport", "2ТН Трачуковская: A=${oru500Data.oil2tnTrachukovskayaA}, B=${oru500Data.oil2tnTrachukovskayaB}, C=${oru500Data.oil2tnTrachukovskayaC}")
+        Log.d("ExcelExport", "1ТН Трачуковская: A=${oru500Data.oil1tnTrachukovskayaA}, B=${oru500Data.oil1tnTrachukovskayaB}, C=${oru500Data.oil1tnTrachukovskayaC}")
+        Log.d("ExcelExport", "Белозёрная: A=${oru500Data.oil2tnBelozernayaA}, B=${oru500Data.oil2tnBelozernayaB}, C=${oru500Data.oil2tnBelozernayaC}")
+
         //ТТ-500 Трачуковская
         setCellValue(sheet, 42, 6, oru500Data.oilTtTrachukovskayaA)
         setCellValue(sheet, 42, 7, oru500Data.oilTtTrachukovskayaB)
@@ -298,6 +334,9 @@ class ExcelExportService(private val context: Context) {
         setCellValue(sheet, 34, 7, oru500Data.oilTtVsht22B)
         setCellValue(sheet, 34, 8, oru500Data.oilTtVsht22C)
 
+        Log.d("ExcelExport", "ВЛТ-20 purging A1=${oru500Data.purgingVlt20A1}, B1=${oru500Data.purgingVlt20B1}, C1=${oru500Data.purgingVlt20C1}")
+        Log.d("ExcelExport", "ВЛТ-20 purging A2=${oru500Data.purgingVlt20A2}, B2=${oru500Data.purgingVlt20B2}, C2=${oru500Data.purgingVlt20C2}")
+        Log.d("ExcelExport", "ВЛТ-20 oilTt A=${oru500Data.oilTtVlt20A}, B=${oru500Data.oilTtVlt20B}, C=${oru500Data.oilTtVlt20C}")
         //В-500 ВЛТ-20
         setCellValue(sheet, 36, 2, oru500Data.purgingVlt20A1)
         setCellValue(sheet, 36, 3, oru500Data.purgingVlt20B1)
@@ -647,13 +686,14 @@ class ExcelExportService(private val context: Context) {
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
             val workbook = XSSFWorkbook(inputStream)
             val sheet = workbook.getSheetAt(0)
-            val uri = saveWorkbookLegacy(workbook, inputStream)
 
+            // СНАЧАЛА заполняем данные
             fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
-            saveWorkbookLegacy(workbook, inputStream)
+            // ПОТОМ сохраняем
+            val uri = saveWorkbookLegacy(workbook, inputStream)
 
-            // СОХРАНЯЕМ ПОСЛЕДНИЙ ОСМОТР
+            // Сохраняем последний осмотр
             val lastInspectionManager = LastInspectionManager(context)
             lastInspectionManager.saveLastInspection(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 

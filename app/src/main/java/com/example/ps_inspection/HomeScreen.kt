@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import com.example.ps_inspection.databinding.FragmentHomeScreenBinding
 
@@ -70,33 +72,8 @@ class HomeScreen : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun exportToExcel() {
-        try {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                val oru35Data = sharedViewModel.oru35Data.value
-                val oru220Data = sharedViewModel.oru220Data.value
-                val atgData = sharedViewModel.atgData.value
-                val oru500Data = sharedViewModel.oru500Data.value
-                val buildingsData = sharedViewModel.buildingsData.value
-
-                val exportService = ExcelExportService(requireContext())
-                val fileUri = exportService.exportToExcel(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-
-                if (fileUri != null) {
-                    Toast.makeText(requireContext(), "Файл успешно сохранен!", Toast.LENGTH_LONG).show()
-                    shareExcelFile(fileUri)
-                } else {
-                    Toast.makeText(requireContext(), "Ошибка при сохранении файла", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                exportToExcelLegacy()
-            }
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private fun exportToExcelLegacy() {
         try {
             val oru35Data = sharedViewModel.oru35Data.value
             val oru220Data = sharedViewModel.oru220Data.value
@@ -105,26 +82,16 @@ class HomeScreen : Fragment() {
             val buildingsData = sharedViewModel.buildingsData.value
 
             val exportService = ExcelExportService(requireContext())
-            val fileUri = exportService.exportToExcelLegacy(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+            val fileUri = exportService.exportToExcel(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
             if (fileUri != null) {
-                Toast.makeText(requireContext(), "Файл успешно сохранен в Downloads!", Toast.LENGTH_LONG).show()
-                shareExcelFile(fileUri)
+                Toast.makeText(requireContext(), "Осмотр сохранён в Excel", Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(requireContext(), "Ошибка при сохранении файла", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Ошибка при сохранении", Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun shareExcelFile(fileUri: Uri) {
-        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            putExtra(Intent.EXTRA_STREAM, fileUri)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
-        startActivity(Intent.createChooser(shareIntent, "Поделиться файлом осмотра"))
     }
 
     private fun clearAllData() {

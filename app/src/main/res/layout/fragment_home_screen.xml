@@ -114,7 +114,7 @@
             android:layout_marginBottom="8dp"
             android:backgroundTint="#4CAF50"
             android:textColor="@android:color/white"
-            android:text="Сохранить в Excel"
+            android:text="Сохранить осмотр"
             android:textAllCaps="false" />
 
         <Button
@@ -133,7 +133,7 @@
             android:layout_marginBottom="8dp"
             android:backgroundTint="#2196F3"
             android:textColor="@android:color/white"
-            android:text="Заполнить из прошлого осмотра"
+            android:text="Заполнить из предыдущего осмотра"
             android:textAllCaps="false" />
 
         <Button
