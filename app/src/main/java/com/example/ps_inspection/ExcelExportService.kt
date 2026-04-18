@@ -455,8 +455,8 @@ class ExcelExportService(private val context: Context) {
         setCellValue(sheet, 8, 21, oru220Data.oilOvC)
 
         //ТН-220 ОСШ
-        setCellValue(sheet, 19, 23, oru220Data.oilOvA)
-        setCellValue(sheet, 20, 23, oru220Data.oilOvA)
+        setCellValue(sheet, 19, 23, oru220Data.tnOsshFvUpper)
+        setCellValue(sheet, 20, 23, oru220Data.tnOsshFvLower)
 
         //В-220 2АТГ
         setCellValue(sheet, 9, 15, oru220Data.purgingV2atgA)
