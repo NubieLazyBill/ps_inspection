@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Дата -->
+        <TextView
+            android:id="@+id/tvArchiveDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#212121"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Сетка статусов: 5 колонок -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <!-- ОРУ-35 -->
+            <FrameLayout
+                android:id="@+id/frameOru35"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:background="@drawable/bg_status_frame_empty">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="ОРУ-35"
+                    android:textSize="10sp"
+                    android:textColor="#212121"/>
+            </FrameLayout>
+
+            <!-- ОРУ-220 -->
+            <FrameLayout
+                android:id="@+id/frameOru220"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:background="@drawable/bg_status_frame_empty">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="ОРУ-220"
+                    android:textSize="10sp"
+                    android:textColor="#212121"/>
+            </FrameLayout>
+
+            <!-- ОРУ-500 -->
+            <FrameLayout
+                android:id="@+id/frameOru500"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:background="@drawable/bg_status_frame_empty">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="ОРУ-500"
+                    android:textSize="10sp"
+                    android:textColor="#212121"/>
+            </FrameLayout>
+
+            <!-- АТГ -->
+            <FrameLayout
+                android:id="@+id/frameAtg"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:background="@drawable/bg_status_frame_empty">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="АТГ"
+                    android:textSize="10sp"
+                    android:textColor="#212121"/>
+            </FrameLayout>
+
+            <!-- Здания -->
+            <FrameLayout
+                android:id="@+id/frameBuildings"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:background="@drawable/bg_status_frame_empty">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Здания"
+                    android:textSize="10sp"
+                    android:textColor="#212121"/>
+            </FrameLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

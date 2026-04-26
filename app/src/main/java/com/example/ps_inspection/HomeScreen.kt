@@ -85,9 +85,9 @@ class HomeScreen : Fragment() {
             clearAllData()
         }
 
-        binding.btnFillFromLast.setOnClickListener {
-            fillFromLastInspection()
-        }
+        //binding.btnFillFromLast.setOnClickListener {
+        //    fillFromLastInspection()
+        //}
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

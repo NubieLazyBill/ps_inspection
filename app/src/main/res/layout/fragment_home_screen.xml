@@ -131,10 +131,11 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="8dp"
-            android:backgroundTint="#2196F3"
+            android:backgroundTint="#9E9E9E"
             android:textColor="@android:color/white"
-            android:text="Заполнить из предыдущего осмотра"
-            android:textAllCaps="false" />
+            android:text="Заполнить из предыдущего осмотра (Отключено)"
+            android:textAllCaps="false"
+            android:visibility="gone" /> <!-- Скрываем кнопку -->
 
         <Button
             android:id="@+id/btnArchive"

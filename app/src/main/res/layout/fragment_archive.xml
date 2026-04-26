@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="8dp"
     android:background="#F5F5F5">
 
+    <!-- Пустой архив -->
     <TextView
         android:id="@+id/tvEmptyArchive"
         android:layout_width="match_parent"
@@ -14,28 +15,14 @@
         android:textAlignment="center"
         android:textSize="16sp"
         android:padding="32dp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
-    <ListView
-        android:id="@+id/listArchives"
+    <!-- Список -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewArchives"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/white"
-        android:elevation="2dp"
-        android:visibility="gone" />
-
-    <!-- Кнопка временно закомментирована
-   <Button
-       android:id="@+id/btnClearArchive"
-       android:layout_width="match_parent"
-       android:layout_height="48dp"
-       android:layout_marginTop="16dp"
-       android:backgroundTint="#F44336"
-       android:textColor="@android:color/white"
-       android:text="Очистить весь архив"
-       android:textAllCaps="false"
-       android:visibility="gone" />
-   -->
-
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"/>
 </LinearLayout>
