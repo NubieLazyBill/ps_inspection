@@ -20,12 +20,10 @@ class ArchiveFragment : Fragment() {
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
     private lateinit var archiveManager: InspectionArchiveManager
-    private lateinit var lastInspectionManager: LastInspectionManager
     private lateinit var adapter: ArchiveAdapter
     private var allArchives = listOf<ArchiveItem>()
     private var currentFilter = "Все"
 
-    // MenuProvider для кнопки "Очистить архив"
     private val menuProvider = object : MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menuInflater.inflate(R.menu.menu_archive, menu)
@@ -54,7 +52,6 @@ class ArchiveFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         archiveManager = InspectionArchiveManager(requireContext())
-        lastInspectionManager = LastInspectionManager(requireContext())
 
         setupToolbar()
         setupFilters()
@@ -166,9 +163,9 @@ class ArchiveFragment : Fragment() {
         } catch (e: Exception) {}
     }
 
+    // ⬇️ УПРОЩЁННОЕ МЕНЮ - только "Перенести данные" и "Поделиться", "Удалить"
     private fun showArchiveOptions(archive: ArchiveItem) {
         val options = arrayOf(
-            "📂 Загрузить этот осмотр",
             "📤 Поделиться (Excel)",
             "🗑️ Удалить",
             "📥 Перенести данные в текущий осмотр"
@@ -178,108 +175,31 @@ class ArchiveFragment : Fragment() {
             .setTitle(archive.displayDate)
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> showLoadWarningDialog(archive.fileName)
-                    1 -> shareArchive(archive.fileName)
-                    2 -> deleteArchive(archive.fileName)
-                    3 -> showMergeDialog(archive.fileName)
+                    0 -> shareArchive(archive.fileName)
+                    1 -> deleteArchive(archive.fileName)
+                    2 -> showMergeDialog(archive.fileName)
                 }
             }
             .show()
     }
 
-    // ДИАЛОГ ПЕРЕД ЗАГРУЗКОЙ АРХИВА - с сохранением текущего осмотра
-    private fun showLoadWarningDialog(fileName: String) {
-        // Проверяем, есть ли данные в текущем осмотре
-        val hasData = hasAnyInspectionData()
-
-        if (hasData) {
-            // Есть данные - предлагаем сохранить
-            AlertDialog.Builder(requireContext())
-                .setTitle("💾 Сохранить текущий осмотр?")
-                .setMessage("У вас есть незавершённый осмотр. Сохранить его перед загрузкой архива?\n\nВы сможете восстановить его позже из меню.")
-                .setPositiveButton("Сохранить и загрузить") { _, _ ->
-                    saveCurrentInspectionAndLoad(fileName)
-                }
-                .setNegativeButton("Загрузить без сохранения") { _, _ ->
-                    loadArchive(fileName)
-                }
-                .setNeutralButton("Отмена", null)
-                .show()
-        } else {
-            // Нет данных - просто загружаем
-            loadArchive(fileName)
-        }
-    }
-
-    // Проверка наличия данных в текущем осмотре
-    private fun hasAnyInspectionData(): Boolean {
-        val oru35 = sharedViewModel.oru35Data.value
-        val oru220 = sharedViewModel.oru220Data.value
-        val oru500 = sharedViewModel.oru500Data.value
-        val atg = sharedViewModel.atgData.value
-        val buildings = sharedViewModel.buildingsData.value
-
-        // Проверяем хотя бы одно непустое поле
-        return oru35.getFillStatus() != FillStatus.EMPTY ||
-                oru220.getFillStatus() != FillStatus.EMPTY ||
-                oru500.getFillStatus() != FillStatus.EMPTY ||
-                atg.getFillStatus() != FillStatus.EMPTY ||
-                buildings.getFillStatus() != FillStatus.EMPTY
-    }
-
-    // Сохраняем текущий осмотр и загружаем архив
-    private fun saveCurrentInspectionAndLoad(fileName: String) {
-        val oru35Data = sharedViewModel.oru35Data.value ?: InspectionORU35Data()
-        val oru220Data = sharedViewModel.oru220Data.value ?: InspectionORU220Data()
-        val oru500Data = sharedViewModel.oru500Data.value ?: InspectionORU500Data()
-        val atgData = sharedViewModel.atgData.value ?: InspectionATGData()
-        val buildingsData = sharedViewModel.buildingsData.value ?: InspectionBuildingsData()
-
-        lastInspectionManager.saveLastInspection(
-            oru35Data, oru220Data, atgData, oru500Data, buildingsData
-        )
-
-        Toast.makeText(requireContext(), "✅ Текущий осмотр сохранён. Вы можете восстановить его из меню.", Toast.LENGTH_LONG).show()
-
-        // Загружаем архив
-        loadArchive(fileName)
-    }
-
-    private fun loadArchive(fileName: String) {
-        val archiveData = archiveManager.loadFromArchive(fileName) ?: run {
-            Toast.makeText(requireContext(), "Ошибка загрузки архива", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // Загружаем данные в ViewModel
-        mergeDataFromArchive(fileName, booleanArrayOf(true, true, true, true, false, true))
-
-        Toast.makeText(requireContext(), "Осмотр от ${archiveData.displayDate} загружен", Toast.LENGTH_LONG).show()
-
-        // Переходим на экран выбора объекта
-        findNavController().navigate(R.id.homeScreen)
-    }
-
-    // --- ДИАЛОГ ПЕРЕНОСА ДАННЫХ ---
+    // ДИАЛОГ ПЕРЕНОСА ДАННЫХ
     private fun showMergeDialog(fileName: String) {
-        Toast.makeText(requireContext(), "📥 Выберите данные для переноса", Toast.LENGTH_SHORT).show()
-
         val items = arrayOf(
-            "ОРУ-35 (Полностью)",
-            "ОРУ-220 (Полностью)",
-            "ОРУ-500 (Полностью)",
-            "АТГ + Реакторы (Полностью)",
-            "АТГ + Реакторы (Только насосы)",
-            "Здания (Полностью)"
+            "ОРУ-35",
+            "ОРУ-220",
+            "ОРУ-500",
+            "АТГ + Реакторы",
+            "Здания"
         )
         val checked = BooleanArray(items.size) { false }
 
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("📥 Перенести данные в текущий осмотр")
+            .setTitle("📥 Выберите данные для переноса в текущий осмотр")
             .setMultiChoiceItems(items, checked) { _, which, isChecked ->
                 checked[which] = isChecked
             }
-            .setPositiveButton("Перенести выбранное") { _, _ ->
+            .setPositiveButton("Перенести") { _, _ ->
                 if (checked.any { it }) {
                     mergeDataFromArchive(fileName, checked)
                 } else {
@@ -298,8 +218,7 @@ class ArchiveFragment : Fragment() {
         if (sections[1]) { mergeORU220(archiveData.oru220); count++ }
         if (sections[2]) { mergeORU500(archiveData.oru500); count++ }
         if (sections[3]) { mergeATG(archiveData.atg); count++ }
-        if (sections[4]) { mergeATGPressuresOnly(archiveData.atg); count++ }
-        if (sections[5]) { mergeBuildings(archiveData.buildings); count++ }
+        if (sections[4]) { mergeBuildings(archiveData.buildings); count++ }
 
         if (count > 0) {
             Toast.makeText(requireContext(), "✅ Перенесено разделов: $count", Toast.LENGTH_LONG).show()
@@ -308,8 +227,8 @@ class ArchiveFragment : Fragment() {
         }
     }
 
-    // ... ВСЕ ВАШИ МЕТОДЫ СЛИЯНИЯ (mergeORU35, mergeORU220, mergeORU500, mergeBuildings, mergeATG, mergeATGPressuresOnly) ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ ...
-    // (скопируйте их из вашего текущего файла)
+    // ... ВАШИ МЕТОДЫ СЛИЯНИЯ (mergeORU35, mergeORU220, mergeORU500, mergeBuildings, mergeATG) ОСТАЮТСЯ ...
+    // (они уже есть в вашем файле)
 
     private fun shareArchive(fileName: String) {
         val archiveData = archiveManager.loadFromArchive(fileName) ?: run {
@@ -366,7 +285,6 @@ class ArchiveFragment : Fragment() {
         requireActivity().removeMenuProvider(menuProvider)
     }
 
-    // ========== МЕТОДЫ СЛИЯНИЯ ДАННЫХ ==========
 
     private fun mergeORU35(src: InspectionORU35Data) {
         sharedViewModel.updateORU35Data {
@@ -385,8 +303,8 @@ class ArchiveFragment : Fragment() {
             if (src.v353tsnA.isNotBlank()) v353tsnA = src.v353tsnA
             if (src.v353tsnB.isNotBlank()) v353tsnB = src.v353tsnB
             if (src.v353tsnC.isNotBlank()) v353tsnC = src.v353tsnC
-            if (src.tn352atg.isNotBlank()) tn352atg = src.tn352atg
-            if (src.tn353atg.isNotBlank()) tn353atg = src.tn353atg
+            //if (src.tn352atg.isNotBlank()) tn352atg = src.tn352atg
+            //if (src.tn353atg.isNotBlank()) tn353atg = src.tn353atg
         }
     }
 

@@ -161,6 +161,10 @@ class InspectionATG : Fragment() {
         updateEditTextIfNeeded(binding.atgReservePumpGroup3, data.atg_reserve_pump_group3)
         updateEditTextIfNeeded(binding.atgReservePumpGroup4, data.atg_reserve_pump_group4)
 
+        // ТН-35
+        updateEditTextIfNeeded(binding.etTn352atg, data.tn352atg)
+        updateEditTextIfNeeded(binding.etTn353atg, data.tn353atg)
+
         // 3 АТГ ф.С
         updateEditTextIfNeeded(binding.atg3COilTank, data.atg3_c_oil_tank)
         updateEditTextIfNeeded(binding.atg3COilRpn, data.atg3_c_oil_rpn)
@@ -386,6 +390,14 @@ class InspectionATG : Fragment() {
         }
         setupEditTextListener(binding.atgReservePumpGroup4) { text ->
             sharedViewModel.updateATGData { atg_reserve_pump_group4 = text }
+        }
+
+        // ТН-35
+        setupEditTextListener(binding.etTn352atg) { text ->
+            sharedViewModel.updateATGData { tn352atg = text }
+        }
+        setupEditTextListener(binding.etTn353atg) { text ->
+            sharedViewModel.updateATGData { tn353atg = text }
         }
 
         // 3 АТГ ф.С

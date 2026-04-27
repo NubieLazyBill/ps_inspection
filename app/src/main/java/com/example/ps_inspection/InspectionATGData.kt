@@ -128,4 +128,9 @@ data class InspectionATGData(
     var commentReactorC: String = "",
     var commentReactorB: String = "",
     var commentReactorA: String = "",
+
+    //ТН-35:
+    var tn352atg: String = "",
+    var tn353atg: String = ""
+
 )

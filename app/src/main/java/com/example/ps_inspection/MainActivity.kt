@@ -116,8 +116,8 @@ class MainActivity : AppCompatActivity() {
             v353tsnA = autoSave.oru35.v353tsnA
             v353tsnB = autoSave.oru35.v353tsnB
             v353tsnC = autoSave.oru35.v353tsnC
-            tn352atg = autoSave.oru35.tn352atg
-            tn353atg = autoSave.oru35.tn353atg
+            //tn352atg = autoSave.oru35.tn352atg
+            //tn353atg = autoSave.oru35.tn353atg
         }
 
         // Восстанавливаем ORU220 данные
@@ -244,6 +244,9 @@ class MainActivity : AppCompatActivity() {
             atg_reserve_pump_group2 = autoSave.atg.atg_reserve_pump_group2
             atg_reserve_pump_group3 = autoSave.atg.atg_reserve_pump_group3
             atg_reserve_pump_group4 = autoSave.atg.atg_reserve_pump_group4
+            // ТН-35
+            tn352atg = autoSave.atg.tn352atg
+            tn353atg = autoSave.atg.tn353atg
             // 3 АТГ ф.С
             atg3_c_oil_tank = autoSave.atg.atg3_c_oil_tank
             atg3_c_oil_rpn = autoSave.atg.atg3_c_oil_rpn

@@ -28,6 +28,6 @@ data class InspectionORU35Data(
     var v353tsnC: String = "",
 
     // ТН-35
-    var tn352atg: String = "",
-    var tn353atg: String = ""
+    //var tn352atg: String = "",
+    //var tn353atg: String = ""
 )

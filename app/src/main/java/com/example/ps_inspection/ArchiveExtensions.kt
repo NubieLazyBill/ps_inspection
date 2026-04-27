@@ -4,7 +4,7 @@ enum class FillStatus { EMPTY, PARTIAL, FULL }
 
 fun InspectionORU35Data.getFillStatus(): FillStatus =
     listOf(tsn2, tsn3, tsn4, tt352tsnA, tt352tsnB, tt352tsnC, tt353tsnA, tt353tsnB, tt353tsnC,
-        v352tsnA, v352tsnB, v352tsnC, v353tsnA, v353tsnB, v353tsnC, tn352atg, tn353atg)
+        v352tsnA, v352tsnB, v352tsnC, v353tsnA, v353tsnB, v353tsnC, /*tn352atg, tn353atg*/)
         .calculateStatus()
 
 fun InspectionORU220Data.getFillStatus(): FillStatus =
@@ -67,7 +67,8 @@ fun InspectionATGData.getFillStatus(): FillStatus =
         reactor_b_oil_tank, reactor_b_pressure_500, reactor_b_temp_ts, reactor_b_pump_group1, reactor_b_pump_group2,
         reactor_b_pump_group3, reactor_b_tt_neutral,
         reactor_a_oil_tank, reactor_a_pressure_500, reactor_a_temp_ts, reactor_a_pump_group1, reactor_a_pump_group2,
-        reactor_a_pump_group3, reactor_a_tt_neutral)
+        reactor_a_pump_group3, reactor_a_tt_neutral,
+        tn352atg, tn353atg)
         .calculateStatus()
 
 fun InspectionBuildingsData.getFillStatus(): FillStatus =

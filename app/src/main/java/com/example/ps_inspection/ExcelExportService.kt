@@ -128,8 +128,8 @@ class ExcelExportService(private val context: Context) {
         setCellValue(sheet, 5, 10, oru35Data.tt353tsnC) // K6 - ф.С
 
         // ТН-35 (строка 7 в Excel = индекс 6)
-        setCellValue(sheet, 6, 8, oru35Data.tn352atg) // I7 - ТН-35 2АТГ
-        setCellValue(sheet, 6, 10, oru35Data.tn353atg) // J7 - ТН-35 3АТГ
+        setCellValue(sheet, 6, 8, atgData.tn352atg) // I7 - ТН-35 2АТГ
+        setCellValue(sheet, 6, 10, atgData.tn353atg) // J7 - ТН-35 3АТГ
 
         //АТГ, Реактор
         //2АТГ ф.С

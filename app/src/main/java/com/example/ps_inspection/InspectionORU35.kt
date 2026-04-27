@@ -51,8 +51,8 @@ class InspectionORU35 : Fragment() {
         updateEditTextIfNeeded(binding.tsn2Input, data.tsn2)
         updateEditTextIfNeeded(binding.tsn3Input, data.tsn3)
         updateEditTextIfNeeded(binding.tsn4Input, data.tsn4)
-        updateEditTextIfNeeded(binding.tn352atgInput, data.tn352atg)
-        updateEditTextIfNeeded(binding.tn353atgInput, data.tn353atg)
+        //updateEditTextIfNeeded(binding.tn352atgInput, data.tn352atg)
+        //updateEditTextIfNeeded(binding.tn353atgInput, data.tn353atg)
 
         setSpinnerSelection(binding.tt352TsnAInput, data.tt352tsnA)
         setSpinnerSelection(binding.tt352TsnBInput, data.tt352tsnB)
@@ -105,12 +105,12 @@ class InspectionORU35 : Fragment() {
         setupEditTextListener(binding.tsn4Input) { text ->
             sharedViewModel.updateORU35Data { tsn4 = text }
         }
-        setupEditTextListener(binding.tn352atgInput) { text ->
+        /*setupEditTextListener(binding.tn352atgInput) { text ->
             sharedViewModel.updateORU35Data { tn352atg = text }
         }
         setupEditTextListener(binding.tn353atgInput) { text ->
             sharedViewModel.updateORU35Data { tn353atg = text }
-        }
+        }*/
 
         // Слушатели для Spinner'ов
         setupSpinnerListener(binding.tt352TsnAInput) { selectedItem ->

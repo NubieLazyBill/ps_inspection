@@ -1181,6 +1181,76 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
+        <!-- === ТН-35 === -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ТН-35"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ТН-352 (АТГ)"
+                android:textColor="#B0B0B0"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/etTn352atg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Значение"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:background="@drawable/bg_edit_text"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ТН-353 (АТГ)"
+                android:textColor="#B0B0B0"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/etTn353atg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Значение"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#666666"
+                android:background="@drawable/bg_edit_text"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
         <!-- ==================== 3 АТГ ф.С ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
