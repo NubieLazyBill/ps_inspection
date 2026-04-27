@@ -2,62 +2,86 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_main"
-    app:startDestination="@id/homeScreen">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainMenuFragment">
 
+    <!-- ⭐ НОВОЕ ГЛАВНОЕ МЕНЮ -->
+    <fragment
+        android:id="@+id/mainMenuFragment"
+        android:name="com.example.ps_inspection.MainMenuFragment"
+        android:label="Главное меню"
+        tools:layout="@layout/fragment_main_menu">
+
+        <action
+            android:id="@+id/action_mainMenu_to_homeScreen"
+            app:destination="@id/homeScreen" />
+
+        <action
+            android:id="@+id/action_mainMenu_to_archiveFragment"
+            app:destination="@id/archiveFragment" />
+    </fragment>
+
+    <!-- 📋 СТАРЫЙ ЭКРАН ВЫБОРА ОБЪЕКТОВ -->
     <fragment
         android:id="@+id/homeScreen"
         android:name="com.example.ps_inspection.HomeScreen"
-        android:label="Главная"
-        tools:layout="@layout/fragment_home_screen" >
+        android:label="Выбор объекта"
+        tools:layout="@layout/fragment_home_screen">
+
         <action
             android:id="@+id/action_homeScreen_to_inspectionORU35"
             app:destination="@id/inspectionORU35" />
+
         <action
             android:id="@+id/action_homeScreen_to_inspectionORU2202"
             app:destination="@id/inspectionORU220" />
+
         <action
             android:id="@+id/action_homeScreen_to_inspectionORU500"
             app:destination="@id/inspectionORU500" />
-        <action
-            android:id="@+id/action_homeScreen_to_inspectionBuildings"
-            app:destination="@id/inspectionBuildings" />
+
         <action
             android:id="@+id/action_homeScreen_to_inspectionATG"
             app:destination="@id/inspectionATG" />
+
+        <action
+            android:id="@+id/action_homeScreen_to_inspectionBuildings"
+            app:destination="@id/inspectionBuildings" />
+
         <action
             android:id="@+id/action_homeScreen_to_archiveFragment"
             app:destination="@id/archiveFragment" />
     </fragment>
+
+    <!-- Остальные ваши фрагменты осмотра -->
     <fragment
         android:id="@+id/inspectionORU35"
         android:name="com.example.ps_inspection.InspectionORU35"
-        android:label="Осмотр ОРУ-35"
-        tools:layout="@layout/fragment_inspection_o_r_u35" />
+        android:label="Осмотр ОРУ-35" />
+
     <fragment
         android:id="@+id/inspectionORU220"
         android:name="com.example.ps_inspection.InspectionORU220"
-        android:label="Осмотр ОРУ-220"
-        tools:layout="@layout/fragment_inspection_o_r_u220" />
+        android:label="Осмотр ОРУ-220" />
+
     <fragment
         android:id="@+id/inspectionORU500"
         android:name="com.example.ps_inspection.InspectionORU500"
-        android:label="Осмотр ОРУ-500"
-        tools:layout="@layout/fragment_inspection_o_r_u500" />
-    <fragment
-        android:id="@+id/inspectionBuildings"
-        android:name="com.example.ps_inspection.InspectionBuildings"
-        android:label="Осмотр зданий и сооружений"
-        tools:layout="@layout/fragment_inspection_buildings" />
+        android:label="Осмотр ОРУ-500" />
+
     <fragment
         android:id="@+id/inspectionATG"
         android:name="com.example.ps_inspection.InspectionATG"
-        android:label="Осмотр АТГ, Р-500 2С"
-        tools:layout="@layout/fragment_inspection_atg" />
+        android:label="Осмотр АТГ" />
+
+    <fragment
+        android:id="@+id/inspectionBuildings"
+        android:name="com.example.ps_inspection.InspectionBuildings"
+        android:label="Осмотр зданий" />
 
     <fragment
         android:id="@+id/archiveFragment"
         android:name="com.example.ps_inspection.ArchiveFragment"
-        android:label="Архив осмотров"
-        tools:layout="@layout/fragment_archive" />
+        android:label="Архив осмотров" />
+
 </navigation>

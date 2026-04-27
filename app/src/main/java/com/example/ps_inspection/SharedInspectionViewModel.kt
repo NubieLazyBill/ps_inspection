@@ -67,11 +67,12 @@ class SharedInspectionViewModel : ViewModel() {
 
     // В конце класса SharedInspectionViewModel
 
-    // --- Функции для комментариев АТГ ---
+    /* --- Функции для комментариев АТГ ---
     fun updateATGComment(text: String) {
         val newData = _atgData.value.copy(atgComment = text)
         _atgData.value = newData
     }
+     */
 
     // --- Функции для фото АТГ ---
     fun addATGPhoto(fileName: String) {
@@ -94,10 +95,24 @@ class SharedInspectionViewModel : ViewModel() {
     private val _atgComments = MutableStateFlow<Map<String, String>>(emptyMap())
     val atgComments: StateFlow<Map<String, String>> = _atgComments
 
-    fun updateATGComment(equipmentName: String, comment: String) {
-        val currentMap = _atgComments.value.toMutableMap()
-        if (comment.isBlank()) currentMap.remove(equipmentName)
-        else currentMap[equipmentName] = comment
-        _atgComments.value = currentMap
+
+    fun updateATGComment(equipmentKey: String, comment: String) {
+        val current = _atgData.value ?: return
+        _atgData.value = current.copy(
+            // 2 АТГ
+            commentAtg2C = if (equipmentKey == "2 АТГ ф.С") comment else current.commentAtg2C,
+            commentAtg2B = if (equipmentKey == "2 АТГ ф.В") comment else current.commentAtg2B,
+            commentAtg2A = if (equipmentKey == "2 АТГ ф.А") comment else current.commentAtg2A,
+            // АТГ резервная фаза
+            commentAtgReserve = if (equipmentKey == "АТГ резервная") comment else current.commentAtgReserve,
+            // 3 АТГ
+            commentAtg3C = if (equipmentKey == "3 АТГ ф.С") comment else current.commentAtg3C,
+            commentAtg3B = if (equipmentKey == "3 АТГ ф.В") comment else current.commentAtg3B,
+            commentAtg3A = if (equipmentKey == "3 АТГ ф.А") comment else current.commentAtg3A,
+            // Реакторы
+            commentReactorC = if (equipmentKey == "Реактор ф.С") comment else current.commentReactorC,
+            commentReactorB = if (equipmentKey == "Реактор ф.В") comment else current.commentReactorB,
+            commentReactorA = if (equipmentKey == "Реактор ф.А") comment else current.commentReactorA
+        )
     }
 }

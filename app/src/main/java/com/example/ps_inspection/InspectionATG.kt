@@ -90,7 +90,8 @@ class InspectionATG : Fragment() {
         val input = EditText(requireContext()).apply {
             setText(existingComment)
             hint = "Введите комментарий к $equipmentName..."
-            setPadding(32, 24, 32, 0)
+            setPadding(24, 16, 24, 16) // ✅ Немного выровнял отступы
+            setBackgroundResource(R.drawable.bg_edit_text_comment) // 👈 ВОТ СЮДА
         }
 
         AlertDialog.Builder(requireContext())

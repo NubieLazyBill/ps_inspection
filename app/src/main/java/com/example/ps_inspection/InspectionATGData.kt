@@ -115,5 +115,17 @@ data class InspectionATGData(
 
     // ⭐ НОВЫЕ ПОЛЯ для сохранения
     var atgComment: String = "",
-    var atgPhotoFiles: List<String> = emptyList()
+    var atgPhotoFiles: List<String> = emptyList(),
+
+    // 💬 Комментарии по секциям
+    var commentAtg2C: String = "",
+    var commentAtg2B: String = "",
+    var commentAtg2A: String = "",
+    var commentAtgReserve: String = "",
+    var commentAtg3C: String = "",
+    var commentAtg3B: String = "",
+    var commentAtg3A: String = "",
+    var commentReactorC: String = "",
+    var commentReactorB: String = "",
+    var commentReactorA: String = "",
 )
