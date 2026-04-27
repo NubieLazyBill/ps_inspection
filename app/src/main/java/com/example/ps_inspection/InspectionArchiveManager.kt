@@ -6,14 +6,12 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+// ✅ Оставляем ТОЛЬКО ОДНО определение ArchiveItem
 data class ArchiveItem(
     val fileName: String,
     val displayDate: String,
-    val statusORU35: FillStatus,
-    val statusORU220: FillStatus,
-    val statusORU500: FillStatus,
-    val statusATG: FillStatus,
-    val statusBuildings: FillStatus
+    val equipmentType: String,  // ← Добавлено поле
+    val timestamp: Long = System.currentTimeMillis()
 )
 
 class InspectionArchiveManager(private val context: Context) {
@@ -51,18 +49,50 @@ class InspectionArchiveManager(private val context: Context) {
             if (file.isFile && file.extension == "json") {
                 try {
                     val data = gson.fromJson(file.readText(), InspectionArchiveData::class.java)
+
+                    // Определяем тип оборудования для отображения
+                    val equipmentType = detectEquipmentType(file.name, data)
+
                     archives.add(ArchiveItem(
-                        fileName = file.name, displayDate = data.displayDate,
-                        statusORU35 = data.oru35.getFillStatus(),
-                        statusORU220 = data.oru220.getFillStatus(),
-                        statusORU500 = data.oru500.getFillStatus(),
-                        statusATG = data.atg.getFillStatus(),
-                        statusBuildings = data.buildings.getFillStatus()
+                        fileName = file.name,
+                        displayDate = data.displayDate,
+                        equipmentType = equipmentType  // ← Добавлено
                     ))
                 } catch (e: Exception) { e.printStackTrace() }
             }
         }
         return archives.sortedByDescending { it.displayDate }
+    }
+
+    // Вспомогательный метод для определения типа осмотра
+    private fun detectEquipmentType(fileName: String, data: InspectionArchiveData): String {
+        // Проверяем, какие данные заполнены
+        return when {
+            data.oru35.getFillStatus() != FillStatus.EMPTY &&
+                    data.oru220.getFillStatus() == FillStatus.EMPTY &&
+                    data.oru500.getFillStatus() == FillStatus.EMPTY -> "ОРУ-35"
+
+            data.oru220.getFillStatus() != FillStatus.EMPTY &&
+                    data.oru35.getFillStatus() == FillStatus.EMPTY &&
+                    data.oru500.getFillStatus() == FillStatus.EMPTY -> "ОРУ-220"
+
+            data.oru500.getFillStatus() != FillStatus.EMPTY &&
+                    data.oru35.getFillStatus() == FillStatus.EMPTY &&
+                    data.oru220.getFillStatus() == FillStatus.EMPTY -> "ОРУ-500"
+
+            data.atg.getFillStatus() != FillStatus.EMPTY &&
+                    data.oru35.getFillStatus() == FillStatus.EMPTY &&
+                    data.oru220.getFillStatus() == FillStatus.EMPTY &&
+                    data.oru500.getFillStatus() == FillStatus.EMPTY -> "АТГ"
+
+            data.buildings.getFillStatus() != FillStatus.EMPTY &&
+                    data.oru35.getFillStatus() == FillStatus.EMPTY &&
+                    data.oru220.getFillStatus() == FillStatus.EMPTY &&
+                    data.oru500.getFillStatus() == FillStatus.EMPTY &&
+                    data.atg.getFillStatus() == FillStatus.EMPTY -> "Здания"
+
+            else -> "Полный осмотр"  // Если заполнено несколько секций
+        }
     }
 
     fun loadFromArchive(fileName: String): InspectionArchiveData? {
@@ -79,7 +109,7 @@ class InspectionArchiveManager(private val context: Context) {
 
 data class InspectionArchiveData(
     val timestamp: Long,
-    val displayDate: String,  // ✅ это поле обязательно!
+    val displayDate: String,
     val oru35: InspectionORU35Data,
     val oru220: InspectionORU220Data,
     val atg: InspectionATGData,

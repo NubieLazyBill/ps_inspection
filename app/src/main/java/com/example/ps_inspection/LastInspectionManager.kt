@@ -79,4 +79,16 @@ class LastInspectionManager(private val context: Context) {
         val last = getLastInspection() ?: return null
         return gson.fromJson(gson.toJson(last["buildings"]), InspectionBuildingsData::class.java)
     }
+
+    fun getLastInspectionDate(): String? {
+        return prefs.getString("last_inspection_date", null)
+    }
+
+    fun clearLastInspection() {
+        prefs.edit().remove(KEY_LAST_INSPECTION).remove("last_inspection_date").apply()
+    }
+
+    fun hasSavedInspection(): Boolean {
+        return prefs.getString(KEY_LAST_INSPECTION, null) != null
+    }
 }

@@ -2,42 +2,55 @@ package com.example.ps_inspection
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.ps_inspection.databinding.ItemArchiveBinding
 
 class ArchiveAdapter(
-    private val items: List<ArchiveItem>,
+    private var records: List<ArchiveItem>,
     private val onItemClick: (ArchiveItem) -> Unit
 ) : RecyclerView.Adapter<ArchiveAdapter.ViewHolder>() {
 
-    // Ресурсы рамок
-    private val frameBackgrounds = mapOf(
-        FillStatus.EMPTY to R.drawable.bg_status_frame_empty,
-        FillStatus.PARTIAL to R.drawable.bg_status_frame_partial,
-        FillStatus.FULL to R.drawable.bg_status_frame_full
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_archive_card, parent, false)
+        return ViewHolder(view)
+    }
 
-    inner class ViewHolder(private val binding: ItemArchiveBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ArchiveItem) {
-            binding.tvArchiveDate.text = item.displayDate
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(records[position])
+    }
 
-            // Применяем фон к каждому фрейму
-            binding.frameOru35.setBackgroundResource(frameBackgrounds[item.statusORU35]!!)
-            binding.frameOru220.setBackgroundResource(frameBackgrounds[item.statusORU220]!!)
-            binding.frameOru500.setBackgroundResource(frameBackgrounds[item.statusORU500]!!)
-            binding.frameAtg.setBackgroundResource(frameBackgrounds[item.statusATG]!!)
-            binding.frameBuildings.setBackgroundResource(frameBackgrounds[item.statusBuildings]!!)
+    override fun getItemCount() = records.size
 
-            itemView.setOnClickListener { onItemClick(item) }
+    fun updateData(newRecords: List<ArchiveItem>) {
+        records = newRecords
+        notifyDataSetChanged()
+    }
+
+    inner class ViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
+        private val tvIcon: TextView = itemView.findViewById(R.id.tvIcon)
+        private val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
+        private val tvDate: TextView = itemView.findViewById(R.id.tvDate)
+        private val tvDefects: TextView = itemView.findViewById(R.id.tvDefects)
+
+        fun bind(record: ArchiveItem) {
+            val equipmentType = record.equipmentType
+
+            tvIcon.text = when {
+                equipmentType.contains("ОРУ-35") -> "⚡"
+                equipmentType.contains("ОРУ-220") -> "🔌"
+                equipmentType.contains("ОРУ-500") -> "⚡"
+                equipmentType.contains("АТГ") -> "🏗️"
+                equipmentType.contains("Здания") -> "🏢"
+                else -> "📋"
+            }
+
+            tvTitle.text = equipmentType
+            tvDate.text = record.displayDate
+            tvDefects.text = "✅ Без замечаний"
+            tvDefects.setTextColor(itemView.context.getColor(android.R.color.holo_green_dark))
+
+            itemView.setOnClickListener { onItemClick(record) }
         }
     }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemArchiveBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(items[position])
-    override fun getItemCount() = items.size
 }
