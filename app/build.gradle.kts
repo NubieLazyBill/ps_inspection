@@ -12,7 +12,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 24
-        versionName = "2.1.1"
+        versionName = "2.1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -61,4 +61,5 @@ dependencies {
     implementation(libs.poi.ooxml)
 
     implementation(libs.gson)
+    implementation("androidx.activity:activity-ktx:1.8.2")
 }

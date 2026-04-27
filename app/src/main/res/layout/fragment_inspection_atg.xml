@@ -20,16 +20,51 @@
             android:padding="16dp"
             android:layout_marginTop="16dp">
 
-            <!-- 2 АТГ ф.С -->
-            <TextView
+
+            <!-- ==================== 2 АТГ ф.С ==================== -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:background="#E3F2FD"
                 android:padding="8dp"
-                android:text="@string/atg_2_C"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/atg_2_C"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_atg2_c"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_atg2_c"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -271,7 +306,7 @@
             android:layout_marginVertical="8dp" />
 
 
-        <!-- 2 АТГ ф.В -->
+        <!-- ==================== 2 АТГ ф.В ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -280,15 +315,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/atg_2_B"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
                 android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/atg_2_B"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_atg2_b"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_atg2_b"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -524,14 +592,7 @@
             </TableLayout>
         </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- 2 АТГ ф.А -->
+        <!-- ==================== 2 АТГ ф.А ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -540,15 +601,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/atg_2_A"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
                 android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/atg_2_A"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_atg2_a"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_atg2_a"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -794,14 +888,7 @@
             </TableLayout>
         </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- АТГ резер. фаза -->
+        <!-- ==================== АТГ резервная фаза ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -810,15 +897,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/atg_reserve"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
                 android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/atg_reserve"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_atg_reserve"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_atg_reserve"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1061,7 +1181,7 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- 3 АТГ ф.С -->
+        <!-- ==================== 3 АТГ ф.С ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1070,15 +1190,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/atg_3_C"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
                 android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/atg_3_C"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_atg3_c"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_atg3_c"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1331,7 +1484,7 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- 3 АТГ ф.В -->
+        <!-- ==================== 3 АТГ ф.В ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1340,15 +1493,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/atg_3_B"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
                 android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/atg_3_B"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_atg3_b"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_atg3_b"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1597,7 +1783,7 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- 3 АТГ ф.А -->
+        <!-- ==================== 3 АТГ ф.А ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1606,15 +1792,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/atg_3_A"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
                 android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/atg_3_A"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_atg3_a"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_atg3_a"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -1862,7 +2081,7 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- Реактор Р-500 2С ф.С -->
+        <!-- ==================== Реактор Р-500 2С ф.С ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1871,15 +2090,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/reactor_500_2c_C"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#E8F5E8"
                 android:padding="8dp"
-                android:background="#E8F5E8" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reactor_500_2c_C"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_reactor_c"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_reactor_c"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -2057,7 +2309,7 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- Реактор Р-500 2С ф.В -->
+        <!-- ==================== Реактор Р-500 2С ф.В ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -2066,15 +2318,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/reactor_500_2s_B"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#E8F5E8"
                 android:padding="8dp"
-                android:background="#E8F5E8" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reactor_500_2s_B"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_reactor_b"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_reactor_b"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -2254,7 +2539,7 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- Реактор Р-500 2С ф.А -->
+        <!-- ==================== Реактор Р-500 2С ф.А ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -2263,15 +2548,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/reactor_500_2s_A"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#E8F5E8"
                 android:padding="8dp"
-                android:background="#E8F5E8" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/reactor_500_2s_A"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMedia_reactor_a"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnComment_reactor_a"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"

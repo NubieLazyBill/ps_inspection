@@ -64,4 +64,40 @@ class SharedInspectionViewModel : ViewModel() {
         _oru500Data.value = InspectionORU500Data()
         _buildingsData.value = InspectionBuildingsData()
     }
+
+    // В конце класса SharedInspectionViewModel
+
+    // --- Функции для комментариев АТГ ---
+    fun updateATGComment(text: String) {
+        val newData = _atgData.value.copy(atgComment = text)
+        _atgData.value = newData
+    }
+
+    // --- Функции для фото АТГ ---
+    fun addATGPhoto(fileName: String) {
+        val currentList = _atgData.value.atgPhotoFiles.toMutableList()
+        if (!currentList.contains(fileName)) {
+            currentList.add(fileName)
+            val newData = _atgData.value.copy(atgPhotoFiles = currentList)
+            _atgData.value = newData
+        }
+    }
+
+    fun removeATGPhoto(fileName: String) {
+        val currentList = _atgData.value.atgPhotoFiles.toMutableList()
+        if (currentList.remove(fileName)) {
+            val newData = _atgData.value.copy(atgPhotoFiles = currentList)
+            _atgData.value = newData
+        }
+    }
+
+    private val _atgComments = MutableStateFlow<Map<String, String>>(emptyMap())
+    val atgComments: StateFlow<Map<String, String>> = _atgComments
+
+    fun updateATGComment(equipmentName: String, comment: String) {
+        val currentMap = _atgComments.value.toMutableMap()
+        if (comment.isBlank()) currentMap.remove(equipmentName)
+        else currentMap[equipmentName] = comment
+        _atgComments.value = currentMap
+    }
 }

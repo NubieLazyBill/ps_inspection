@@ -1,12 +1,15 @@
 // InspectionATG.kt
 package com.example.ps_inspection
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +45,68 @@ class InspectionATG : Fragment() {
         }
 
         setupInputListeners()
+        setupMediaButtons()
+    }
+
+    private fun setupMediaButtons() {
+        // 📷 Кнопки фото
+        val photoButtons = mapOf(
+            binding.btnMediaAtg2C to "2 АТГ ф.С", binding.btnMediaAtg2B to "2 АТГ ф.В",
+            binding.btnMediaAtg2A to "2 АТГ ф.А", binding.btnMediaAtgReserve to "АТГ резервная",
+            binding.btnMediaAtg3C to "3 АТГ ф.С", binding.btnMediaAtg3B to "3 АТГ ф.В",
+            binding.btnMediaAtg3A to "3 АТГ ф.А", binding.btnMediaReactorC to "Реактор ф.С",
+            binding.btnMediaReactorB to "Реактор ф.В", binding.btnMediaReactorA to "Реактор ф.А"
+        )
+
+        // 💬 Кнопки комментариев
+        val commentButtons = mapOf(
+            binding.btnCommentAtg2C to "2 АТГ ф.С", binding.btnCommentAtg2B to "2 АТГ ф.В",
+            binding.btnCommentAtg2A to "2 АТГ ф.А", binding.btnCommentAtgReserve to "АТГ резервная",
+            binding.btnCommentAtg3C to "3 АТГ ф.С", binding.btnCommentAtg3B to "3 АТГ ф.В",
+            binding.btnCommentAtg3A to "3 АТГ ф.А", binding.btnCommentReactorC to "Реактор ф.С",
+            binding.btnCommentReactorB to "Реактор ф.В", binding.btnCommentReactorA to "Реактор ф.А"
+        )
+
+        val inspectionId = "current_inspection"
+
+        // Привязываем фото
+        photoButtons.forEach { (btn, name) ->
+            btn.setOnClickListener {
+                MediaDialogFragment.newInstance(inspectionId, name)
+                    .show(childFragmentManager, "media_$name")
+            }
+        }
+
+        // Привязываем комментарии
+        commentButtons.forEach { (btn, name) ->
+            btn.setOnClickListener { showCommentDialog(name) }
+        }
+    }
+
+    private fun showCommentDialog(equipmentName: String) {
+        val currentComments = sharedViewModel.atgComments.value
+        val existingComment = currentComments[equipmentName] ?: ""
+
+        val input = EditText(requireContext()).apply {
+            setText(existingComment)
+            hint = "Введите комментарий к $equipmentName..."
+            setPadding(32, 24, 32, 0)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("💬 Комментарий: $equipmentName")
+            .setView(input)
+            .setPositiveButton("💾 Сохранить") { _, _ ->
+                val text = input.text.toString()
+                sharedViewModel.updateATGComment(equipmentName, text)
+                Toast.makeText(requireContext(), "Комментарий сохранён", Toast.LENGTH_SHORT).show()
+            }
+            .setNeutralButton("🗑️ Удалить") { _, _ ->
+                sharedViewModel.updateATGComment(equipmentName, "")
+                Toast.makeText(requireContext(), "Комментарий удалён", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
     }
 
     private fun updateUIFromData(data: InspectionATGData) {
@@ -519,4 +584,5 @@ class InspectionATG : Fragment() {
             }
         }
     }
+
 }

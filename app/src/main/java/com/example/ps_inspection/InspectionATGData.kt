@@ -111,5 +111,9 @@ data class InspectionATGData(
     var reactor_a_pump_group1: String = "",
     var reactor_a_pump_group2: String = "",
     var reactor_a_pump_group3: String = "",
-    var reactor_a_tt_neutral: String = ""
+    var reactor_a_tt_neutral: String = "",
+
+    // ⭐ НОВЫЕ ПОЛЯ для сохранения
+    var atgComment: String = "",
+    var atgPhotoFiles: List<String> = emptyList()
 )
