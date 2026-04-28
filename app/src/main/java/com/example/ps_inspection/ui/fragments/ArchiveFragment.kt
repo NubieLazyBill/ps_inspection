@@ -1,16 +1,33 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.fragments
 
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ps_inspection.ui.adapters.ArchiveAdapter
+import com.example.ps_inspection.data.repositories.ArchiveItem
+import com.example.ps_inspection.data.utils.ExcelExportService
+import com.example.ps_inspection.data.repositories.InspectionArchiveManager
+import com.example.ps_inspection.R
+import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentArchiveBinding
+import com.example.ps_inspection.data.utils.mergeATG
+import com.example.ps_inspection.data.utils.mergeATGPressuresOnly
+import com.example.ps_inspection.data.utils.mergeBuildings
+import com.example.ps_inspection.data.utils.mergeORU220
+import com.example.ps_inspection.data.utils.mergeORU35
+import com.example.ps_inspection.data.utils.mergeORU500
 import com.example.ps_inspection.ui.MainActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -165,7 +182,7 @@ class ArchiveFragment : Fragment() {
         if (fileUri != null) {
             Toast.makeText(requireContext(), "Файл готов к отправке", Toast.LENGTH_LONG).show()
             startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  // ← исправлено
                 putExtra(Intent.EXTRA_STREAM, fileUri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }, "Поделиться файлом осмотра"))

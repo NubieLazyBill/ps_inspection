@@ -1,26 +1,42 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.fragments.dialogs
 
+import android.R
 import android.app.AlertDialog
+import android.graphics.Typeface
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.example.ps_inspection.ui.fragments.inspections.InspectionATG
+import com.example.ps_inspection.ui.fragments.inspections.InspectionORU35
+import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class CommentsDialogFragment : DialogFragment() {
 
     private var equipmentName: String = ""
+    private var equipmentType: String = ""  // "ATG" или "ORU35"
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
     private lateinit var listView: ListView
     private lateinit var adapter: ArrayAdapter<String>
     private val commentsList = mutableListOf<String>()
 
     companion object {
-        fun newInstance(equipmentName: String): CommentsDialogFragment {
+        fun newInstance(equipmentName: String, equipmentType: String = "ATG"): CommentsDialogFragment {
             val fragment = CommentsDialogFragment()
             val args = Bundle()
             args.putString("equipment_name", equipmentName)
+            args.putString("equipment_type", equipmentType)
             fragment.arguments = args
             return fragment
         }
@@ -29,14 +45,15 @@ class CommentsDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         equipmentName = arguments?.getString("equipment_name") ?: ""
-        setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_Dialog)
+        equipmentType = arguments?.getString("equipment_type") ?: "ATG"
+        setStyle(STYLE_NORMAL, R.style.Theme_DeviceDefault_Light_Dialog)
     }
 
     override fun onCreateView(
-        inflater: android.view.LayoutInflater,
+        inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): android.view.View {
+    ): View {
         val root = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(16, 16, 16, 16)
@@ -46,7 +63,7 @@ class CommentsDialogFragment : DialogFragment() {
         root.addView(TextView(requireContext()).apply {
             text = "💬 Комментарии: $equipmentName"
             textSize = 18f
-            setTypeface(null, android.graphics.Typeface.BOLD)
+            setTypeface(null, Typeface.BOLD)
             setPadding(0, 0, 0, 16)
         })
 
@@ -81,19 +98,66 @@ class CommentsDialogFragment : DialogFragment() {
         return root
     }
 
+    private fun getCurrentComments(): List<String> {
+        return if (equipmentType == "ATG") {
+            sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
+        } else {
+            sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
+        }
+    }
+
+    private fun saveComment(comment: String) {
+        if (equipmentType == "ATG") {
+            sharedViewModel.addATGComment(equipmentName, comment)
+        } else {
+            sharedViewModel.addORU35Comment(equipmentName, comment)  // ← новый метод
+        }
+    }
+
+    private fun deleteComment() {
+        if (equipmentType == "ATG") {
+            val comments = sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
+            if (comments.isNotEmpty()) {
+                sharedViewModel.removeATGComment(equipmentName, comments.size - 1)
+            }
+        } else {
+            val comments = sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
+            if (comments.isNotEmpty()) {
+                sharedViewModel.removeORU35Comment(equipmentName, comments.size - 1)  // ← новый метод
+            }
+        }
+    }
+
+    private fun updateComment(newComment: String) {
+        if (equipmentType == "ATG") {
+            val comments = sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
+            if (comments.isNotEmpty()) {
+                sharedViewModel.updateATGComment(equipmentName, comments.size - 1, newComment)
+            } else {
+                sharedViewModel.addATGComment(equipmentName, newComment)
+            }
+        } else {
+            val comments = sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
+            if (comments.isNotEmpty()) {
+                sharedViewModel.updateORU35Comment(equipmentName, comments.size - 1, newComment)
+            } else {
+                sharedViewModel.addORU35Comment(equipmentName, newComment)
+            }
+        }
+    }
+
     private fun loadComments() {
         commentsList.clear()
 
-        val allComments = sharedViewModel.atgComments.value
-        val currentComments = allComments[equipmentName] ?: emptyList()
+        val currentComments = getCurrentComments()
 
         if (currentComments.isNotEmpty()) {
             commentsList.addAll(currentComments)
-            adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, commentsList)
+            adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, commentsList)
             Toast.makeText(requireContext(), "Загружено ${currentComments.size} комментариев", Toast.LENGTH_SHORT).show()
         } else {
             val emptyList = listOf("📝 Нет комментариев\n\nНажмите + чтобы добавить")
-            adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, emptyList)
+            adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, emptyList)
             Toast.makeText(requireContext(), "Нет комментариев для $equipmentName", Toast.LENGTH_SHORT).show()
         }
         listView.adapter = adapter
@@ -120,7 +184,7 @@ class CommentsDialogFragment : DialogFragment() {
             hint = "Введите комментарий для $equipmentName..."
             setPadding(24, 16, 24, 16)
             setMinimumHeight(120)
-            gravity = android.view.Gravity.TOP
+            gravity = Gravity.TOP
         }
 
         MaterialAlertDialogBuilder(requireContext())
@@ -129,9 +193,9 @@ class CommentsDialogFragment : DialogFragment() {
             .setPositiveButton("Добавить") { _, _ ->
                 val text = input.text.toString()
                 if (text.isNotBlank()) {
-                    sharedViewModel.addATGComment(equipmentName, text)
+                    saveComment(text)
                     loadComments()
-                    (parentFragment as? InspectionATG)?.updateCommentButtonsState(sharedViewModel.atgComments.value)
+                    updateParentButtonState()
                     Toast.makeText(requireContext(), "Комментарий добавлен", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireContext(), "Комментарий не может быть пустым", Toast.LENGTH_SHORT).show()
@@ -147,7 +211,7 @@ class CommentsDialogFragment : DialogFragment() {
             hint = "Редактировать комментарий..."
             setPadding(24, 16, 24, 16)
             setMinimumHeight(120)
-            gravity = android.view.Gravity.TOP
+            gravity = Gravity.TOP
         }
 
         MaterialAlertDialogBuilder(requireContext())
@@ -156,16 +220,18 @@ class CommentsDialogFragment : DialogFragment() {
             .setPositiveButton("Сохранить") { _, _ ->
                 val newText = input.text.toString()
                 if (newText.isNotBlank()) {
-                    sharedViewModel.updateATGComment(equipmentName, position, newText)
+                    updateComment(newText)
                     loadComments()
+                    updateParentButtonState()
                     Toast.makeText(requireContext(), "Комментарий обновлён", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(requireContext(), "Комментарий не может быть пустым", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Удалить") { _, _ ->
-                sharedViewModel.removeATGComment(equipmentName, position)
+                deleteComment()
                 loadComments()
+                updateParentButtonState()
                 Toast.makeText(requireContext(), "Комментарий удалён", Toast.LENGTH_SHORT).show()
             }
             .setNeutralButton("Отмена", null)
@@ -177,11 +243,20 @@ class CommentsDialogFragment : DialogFragment() {
             .setTitle("Удалить комментарий?")
             .setMessage("Удалить этот комментарий?")
             .setPositiveButton("Удалить") { _, _ ->
-                sharedViewModel.removeATGComment(equipmentName, position)
+                deleteComment()
                 loadComments()
+                updateParentButtonState()
                 Toast.makeText(requireContext(), "Комментарий удалён", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Отмена", null)
             .show()
+    }
+
+    private fun updateParentButtonState() {
+        if (equipmentType == "ATG") {
+            (parentFragment as? InspectionATG)?.updateCommentButtonsState(sharedViewModel.atgComments.value)
+        } else {
+            (parentFragment as? InspectionORU35)?.updateCommentButtonsState(sharedViewModel.oru35Comments.value)
+        }
     }
 }

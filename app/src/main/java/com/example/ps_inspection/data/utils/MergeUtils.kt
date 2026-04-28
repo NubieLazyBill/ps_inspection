@@ -1,4 +1,11 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.data.utils
+
+import com.example.ps_inspection.data.models.InspectionATGData
+import com.example.ps_inspection.data.models.InspectionBuildingsData
+import com.example.ps_inspection.data.models.InspectionORU220Data
+import com.example.ps_inspection.data.models.InspectionORU35Data
+import com.example.ps_inspection.data.models.InspectionORU500Data
+import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 
 // Расширение для SharedInspectionViewModel - методы слияния данных из архива
 fun SharedInspectionViewModel.mergeORU35(src: InspectionORU35Data) {
@@ -18,6 +25,16 @@ fun SharedInspectionViewModel.mergeORU35(src: InspectionORU35Data) {
         if (src.v353tsnA.isNotBlank()) v353tsnA = src.v353tsnA
         if (src.v353tsnB.isNotBlank()) v353tsnB = src.v353tsnB
         if (src.v353tsnC.isNotBlank()) v353tsnC = src.v353tsnC
+
+        // Комментарии
+        commentTsn = src.commentTsn
+        commentTt352 = src.commentTt352
+        commentTt353 = src.commentTt353
+        commentV352 = src.commentV352
+        commentV353 = src.commentV353
+
+        // Фото
+        oru35PhotoFiles = src.oru35PhotoFiles
     }
 }
 

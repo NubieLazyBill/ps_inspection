@@ -1,7 +1,9 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.fragments.dialogs
 
+import android.R
 import android.app.AlertDialog
 import android.graphics.BitmapFactory
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -12,13 +14,18 @@ import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
+import com.example.ps_inspection.data.repositories.InspectionMediaManager
+import com.example.ps_inspection.ui.fragments.inspections.InspectionATG
+import com.example.ps_inspection.ui.fragments.inspections.InspectionORU35
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class MediaDialogFragment : DialogFragment() {
     private var inspectionId: String = ""
@@ -57,7 +64,7 @@ class MediaDialogFragment : DialogFragment() {
         inspectionId = arguments?.getString("INSPECTION_ID") ?: return
         equipmentName = arguments?.getString("EQUIPMENT") ?: return
         mediaManager = InspectionMediaManager(requireContext())
-        setStyle(STYLE_NORMAL, android.R.style.Theme_Material_Light_Dialog_NoActionBar_MinWidth)
+        setStyle(STYLE_NORMAL, R.style.Theme_Material_Light_Dialog_NoActionBar_MinWidth)
     }
 
     override fun onCreateView(
@@ -71,11 +78,11 @@ class MediaDialogFragment : DialogFragment() {
         }
 
         // Заголовок
-        root.addView(android.widget.TextView(requireContext()).apply {
+        root.addView(TextView(requireContext()).apply {
             text = "📷 $equipmentName"
             textSize = 18f
             setPadding(0, 0, 0, 16)
-            setTypeface(null, android.graphics.Typeface.BOLD)
+            setTypeface(null, Typeface.BOLD)
         })
 
         // Сетка фото
@@ -151,6 +158,13 @@ class MediaDialogFragment : DialogFragment() {
             inputStream?.use { it.copyTo(target.outputStream()) }
 
             loadPhotosToGrid()
+
+            // Универсальное обновление состояния кнопок фото
+            when (parentFragment) {
+                is InspectionATG -> (parentFragment as InspectionATG).refreshPhotoButtonsState()
+                is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
+            }
+
             Toast.makeText(requireContext(), "Фото добавлено", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -190,6 +204,13 @@ class MediaDialogFragment : DialogFragment() {
                         .setPositiveButton("Удалить") { _, _ ->
                             mediaManager.deletePhoto(inspectionId, equipmentName, fileName)
                             loadPhotosToGrid()
+
+                            // Универсальное обновление состояния кнопок фото
+                            when (parentFragment) {
+                                is InspectionATG -> (parentFragment as InspectionATG).refreshPhotoButtonsState()
+                                is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
+                            }
+
                             Toast.makeText(requireContext(), "Фото удалено", Toast.LENGTH_SHORT).show()
                         }
                         .setNegativeButton("Отмена", null)
@@ -202,7 +223,7 @@ class MediaDialogFragment : DialogFragment() {
     }
 
     private fun showFullscreenPhoto(photoPath: String) {
-        val dialog = FullscreenPhotoDialog.newInstance(photoPath)
+        val dialog = FullscreenPhotoDialog.Companion.newInstance(photoPath)
         dialog.show(childFragmentManager, "fullscreen_photo")
     }
 

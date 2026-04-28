@@ -1,10 +1,12 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ps_inspection.data.repositories.ArchiveItem
+import com.example.ps_inspection.data.utils.FillStatus
+import com.example.ps_inspection.R
 import com.example.ps_inspection.databinding.ItemArchiveCardBinding
 
 class ArchiveAdapter(

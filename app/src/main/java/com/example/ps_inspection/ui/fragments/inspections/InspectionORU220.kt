@@ -1,14 +1,17 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.fragments.inspections
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ps_inspection.data.models.InspectionORU220Data
+import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionORU220Binding
 import kotlinx.coroutines.launch
 
@@ -161,7 +164,7 @@ class InspectionORU220 : Fragment() {
         isUpdatingUIFromViewModel = false
     }
 
-    private fun setSpinnerSelection(spinner: android.widget.Spinner, value: String) {
+    private fun setSpinnerSelection(spinner: Spinner, value: String) {
         if (value.isNotEmpty()) {
             val adapter = spinner.adapter
             for (i in 0 until adapter.count) {
@@ -423,7 +426,7 @@ class InspectionORU220 : Fragment() {
         }
     }
 
-    private fun setupSpinnerListener(spinner: android.widget.Spinner, onItemSelected: (Any?) -> Unit) {
+    private fun setupSpinnerListener(spinner: Spinner, onItemSelected: (Any?) -> Unit) {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position > 0 && !isUpdatingUIFromViewModel) {
@@ -586,7 +589,7 @@ class InspectionORU220 : Fragment() {
         }
     }
 
-    private fun fillSpinners(spinners: List<android.widget.Spinner>, value: String, onUpdate: () -> Unit) {
+    private fun fillSpinners(spinners: List<Spinner>, value: String, onUpdate: () -> Unit) {
         isUpdatingUIFromViewModel = true
 
         for (spinner in spinners) {
@@ -611,8 +614,8 @@ class InspectionORU220 : Fragment() {
     }
 
     private fun fillAllTn220(
-        upperA: android.widget.Spinner, upperB: android.widget.Spinner, upperC: android.widget.Spinner,
-        lowerA: android.widget.Spinner, lowerB: android.widget.Spinner, lowerC: android.widget.Spinner,
+        upperA: Spinner, upperB: Spinner, upperC: Spinner,
+        lowerA: Spinner, lowerB: Spinner, lowerC: Spinner,
         title: String
     ) {
         // Берём значение из первого спиннера (верх, фаза А)
@@ -632,7 +635,7 @@ class InspectionORU220 : Fragment() {
         Toast.makeText(requireContext(), "Все каскады $title заполнены", Toast.LENGTH_SHORT).show()
     }
 
-    private fun setSpinnerSilently(spinner: android.widget.Spinner, value: String) {
+    private fun setSpinnerSilently(spinner: Spinner, value: String) {
         val adapter = spinner.adapter
         for (i in 0 until adapter.count) {
             if (adapter.getItem(i).toString() == value) {

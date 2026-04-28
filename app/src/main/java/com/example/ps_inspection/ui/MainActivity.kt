@@ -9,9 +9,9 @@ import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.example.ps_inspection.AutoSaveManager
+import com.example.ps_inspection.data.repositories.AutoSaveManager
 import com.example.ps_inspection.R
-import com.example.ps_inspection.SharedInspectionViewModel
+import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         autoSaveManager = AutoSaveManager(this)
 
         sharedViewModel.loadCommentsFromAtgData()
+
+        // ЗАГРУЖАЕМ КОММЕНТАРИИ ДЛЯ ОРУ-35
+        sharedViewModel.loadORU35CommentsFromStorage()
 
         // Находим кастомный TextView
         toolbarTitle = findViewById(R.id.toolbar_title)
@@ -93,17 +96,25 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton("Восстановить") { _, _ ->
                         restoreAutoSave(autoSave)
                         autoSaveManager.clearAutoSave()
+                        sharedViewModel.loadCommentsFromAtgData()  // перезагружаем комментарии АТГ
+                        sharedViewModel.loadORU35CommentsFromData()  // перезагружаем комментарии ОРУ-35
                         Toast.makeText(this, "Данные восстановлены", Toast.LENGTH_LONG).show()
                     }
                     .setNegativeButton("Начать новый осмотр") { _, _ ->
                         autoSaveManager.clearAutoSave()
                         sharedViewModel.clearAllData()
+                        sharedViewModel.loadCommentsFromAtgData()  // ← добавить
+                        sharedViewModel.loadORU35CommentsFromData()  // ← добавить
                         Toast.makeText(this, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
                     }
                     .setNeutralButton("Отмена", null)
                     .setCancelable(false)
                     .show()
             }
+        } else {
+            // Если нет автосохранения, всё равно загружаем комментарии
+            sharedViewModel.loadCommentsFromAtgData()
+            sharedViewModel.loadORU35CommentsFromData()
         }
     }
 

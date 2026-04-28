@@ -1,8 +1,9 @@
-// InspectionBuildings.kt
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.fragments.inspections
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,9 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ps_inspection.data.models.InspectionBuildingsData
+import com.example.ps_inspection.R
+import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -260,13 +264,13 @@ class InspectionBuildings : Fragment() {
 
     private fun setupEditTextListener(editTextId: Int, onTextChanged: (String) -> Unit) {
         val editText = rootView.findViewById<EditText>(editTextId)
-        editText.addTextChangedListener(object : android.text.TextWatcher {
+        editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (isUpdatingUIFromViewModel) return
                 onTextChanged(s?.toString() ?: "")
             }
-            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun afterTextChanged(s: Editable?) {}
         })
     }
 

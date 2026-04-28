@@ -1,17 +1,23 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.fragments.inspections
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ps_inspection.data.models.InspectionORU500Data
+import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionORU500Binding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import android.widget.Toast
 
 class InspectionORU500 : Fragment() {
 
@@ -24,9 +30,9 @@ class InspectionORU500 : Fragment() {
     private var isUpdatingUIFromViewModel = false
 
     // Списки спиннеров для массового заполнения
-    private val tn1500Spinners = mutableListOf<android.widget.Spinner>()
-    private val tn2500Spinners = mutableListOf<android.widget.Spinner>()
-    private val tn500Sgres1Spinners = mutableListOf<android.widget.Spinner>()
+    private val tn1500Spinners = mutableListOf<Spinner>()
+    private val tn2500Spinners = mutableListOf<Spinner>()
+    private val tn500Sgres1Spinners = mutableListOf<Spinner>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -178,7 +184,7 @@ class InspectionORU500 : Fragment() {
 
     }
 
-    private fun fillAllSpinners(spinners: List<android.widget.Spinner>, title: String, onUpdate: (String) -> Unit) {
+    private fun fillAllSpinners(spinners: List<Spinner>, title: String, onUpdate: (String) -> Unit) {
         // Берем значение из первого спиннера
         val firstSpinner = spinners.firstOrNull() ?: return
         val value = firstSpinner.selectedItem?.toString() ?: return
@@ -412,7 +418,7 @@ class InspectionORU500 : Fragment() {
         isUpdatingUIFromViewModel = false
     }
 
-    private fun updateEditTextIfNeeded(editText: android.widget.EditText, newValue: String) {
+    private fun updateEditTextIfNeeded(editText: EditText, newValue: String) {
         val currentText = editText.text.toString()
         if (currentText != newValue) {
             editText.setText(newValue)
@@ -420,7 +426,7 @@ class InspectionORU500 : Fragment() {
         }
     }
 
-    private fun setSpinnerSelection(spinner: android.widget.Spinner, value: String) {
+    private fun setSpinnerSelection(spinner: Spinner, value: String) {
         if (value.isNotEmpty()) {
             val adapter = spinner.adapter
             for (i in 0 until adapter.count) {
@@ -831,19 +837,19 @@ class InspectionORU500 : Fragment() {
         }
     }
 
-    private fun setupEditTextListener(editText: android.widget.EditText, onTextChanged: (String) -> Unit) {
-        editText.addTextChangedListener(object : android.text.TextWatcher {
+    private fun setupEditTextListener(editText: EditText, onTextChanged: (String) -> Unit) {
+        editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (isUpdatingUIFromViewModel) return
                 val newText = s?.toString() ?: ""
                 onTextChanged(newText)
             }
-            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun afterTextChanged(s: Editable?) {}
         })
     }
 
-    private fun setupSpinnerListener(spinner: android.widget.Spinner, onItemSelected: (Any?) -> Unit) {
+    private fun setupSpinnerListener(spinner: Spinner, onItemSelected: (Any?) -> Unit) {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (position > 0) {
@@ -865,9 +871,9 @@ class InspectionORU500 : Fragment() {
     }
 
     private fun fillTtSpinners(
-        spinnerA: android.widget.Spinner,
-        spinnerB: android.widget.Spinner,
-        spinnerC: android.widget.Spinner,
+        spinnerA: Spinner,
+        spinnerB: Spinner,
+        spinnerC: Spinner,
         onUpdate: (String) -> Unit
     ) {
         val value = spinnerA.selectedItem?.toString()
@@ -887,7 +893,7 @@ class InspectionORU500 : Fragment() {
         Toast.makeText(requireContext(), "Фазы B и C заполнены", Toast.LENGTH_SHORT).show()
     }
 
-    private fun setSpinnerSilently(spinner: android.widget.Spinner, value: String) {
+    private fun setSpinnerSilently(spinner: Spinner, value: String) {
         val adapter = spinner.adapter
         for (i in 0 until adapter.count) {
             if (adapter.getItem(i).toString() == value) {

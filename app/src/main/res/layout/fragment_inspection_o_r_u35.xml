@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- ТСН секция -->
+        <!-- ==================== ТСН секция ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,16 +23,48 @@
             android:padding="16dp"
             android:layout_marginTop="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:background="#E3F2FD"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="@string/tsn"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tsn"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaTsn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentTsn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -109,7 +141,7 @@
             </TableLayout>
         </LinearLayout>
 
-        <!-- ТТ-35 2ТСН секция -->
+        <!-- ==================== ТТ-35 2ТСН секция ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,16 +151,48 @@
             android:padding="16dp"
             android:layout_marginTop="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:background="#E8F5E8"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="@string/tt_35_2_tsn"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tt_35_2_tsn"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaTt352"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentTt352"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -196,7 +260,7 @@
             </TableLayout>
         </LinearLayout>
 
-        <!-- ТТ-35 3ТСН секция -->
+        <!-- ==================== ТТ-35 3ТСН секция ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -206,16 +270,48 @@
             android:padding="16dp"
             android:layout_marginTop="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:background="#FFF3E0"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="@string/tt_35_3_tsn"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tt_35_3_tsn"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaTt353"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentTt353"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -283,7 +379,7 @@
             </TableLayout>
         </LinearLayout>
 
-        <!-- В-35 2ТСН секция -->
+        <!-- ==================== В-35 2ТСН секция ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -293,16 +389,48 @@
             android:padding="16dp"
             android:layout_marginTop="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:background="#F3E5F5"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="@string/v_35_2_tsn"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/v_35_2_tsn"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaV352"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentV352"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -370,7 +498,7 @@
             </TableLayout>
         </LinearLayout>
 
-        <!-- В-35 3ТСН секция -->
+        <!-- ==================== В-35 3ТСН секция ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -378,18 +506,51 @@
             android:background="@color/white"
             android:elevation="2dp"
             android:padding="16dp"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:background="#E0F2F1"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="@string/v_35_3_tsn"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/v_35_3_tsn"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaV353"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentV353"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -456,81 +617,6 @@
                 </TableRow>
             </TableLayout>
         </LinearLayout>
-
-        <!-- ТН-35 секция -->
-        <!--<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="24dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFEBEE"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="@string/tn_35"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stretchColumns="*"
-                android:shrinkColumns="*"
-                android:layout_marginTop="8dp">
-
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="12dp"
-                        android:text="@string/tn_35_2atg"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/tn_35_2atg_input"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:inputType="number|numberSigned"
-                        android:hint="@string/oil_level"
-                        android:gravity="center"
-                        android:textSize="16sp"
-                        android:background="@drawable/edittext_border" />
-                </TableRow>
-
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="12dp"
-                        android:text="@string/tn_35_3atg"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/tn_35_3atg_input"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:inputType="number|numberSigned"
-                        android:hint="@string/oil_level"
-                        android:gravity="center"
-                        android:textSize="16sp"
-                        android:background="@drawable/edittext_border" />
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>-->
 
     </LinearLayout>
 </ScrollView>

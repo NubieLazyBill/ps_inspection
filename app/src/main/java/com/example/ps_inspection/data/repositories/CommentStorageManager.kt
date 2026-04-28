@@ -1,4 +1,4 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.data.repositories
 
 import android.content.Context
 import android.content.SharedPreferences

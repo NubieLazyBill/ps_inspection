@@ -1,8 +1,13 @@
-// SharedInspectionViewModel.kt
-package com.example.ps_inspection
+package com.example.ps_inspection.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.example.ps_inspection.data.repositories.CommentStorageManager
+import com.example.ps_inspection.data.models.InspectionATGData
+import com.example.ps_inspection.data.models.InspectionBuildingsData
+import com.example.ps_inspection.data.models.InspectionORU220Data
+import com.example.ps_inspection.data.models.InspectionORU35Data
+import com.example.ps_inspection.data.models.InspectionORU500Data
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -75,6 +80,7 @@ class SharedInspectionViewModel : ViewModel() {
         _oru500Data.value = InspectionORU500Data()
         _buildingsData.value = InspectionBuildingsData()
         // НЕ очищаем комментарии - они остаются!
+
     }
 
     // Очистка только комментариев (если нужно)
@@ -183,4 +189,133 @@ class SharedInspectionViewModel : ViewModel() {
         }
         loadCommentsFromStorage()
     }
+
+    // --- Функции для фото ОРУ-35 ---
+    fun addORU35Photo(fileName: String) {
+        val currentList = _oru35Data.value.oru35PhotoFiles.toMutableList()
+        if (!currentList.contains(fileName)) {
+            currentList.add(fileName)
+            val newData = _oru35Data.value.copy(oru35PhotoFiles = currentList)
+            _oru35Data.value = newData
+        }
+    }
+
+    fun removeORU35Photo(fileName: String) {
+        val currentList = _oru35Data.value.oru35PhotoFiles.toMutableList()
+        if (currentList.remove(fileName)) {
+            val newData = _oru35Data.value.copy(oru35PhotoFiles = currentList)
+            _oru35Data.value = newData
+        }
+    }
+
+    // ========== КОММЕНТАРИИ ДЛЯ ОРУ-35 (СПИСОК) ==========
+
+    private val _oru35Comments = MutableStateFlow<Map<String, List<String>>>(emptyMap())
+    val oru35Comments: StateFlow<Map<String, List<String>>> = _oru35Comments
+
+    // Добавить комментарий
+    fun addORU35Comment(equipmentKey: String, comment: String) {
+        if (comment.isBlank()) return
+
+        val currentMap = _oru35Comments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
+        currentList.add(comment)
+        currentMap[equipmentKey] = currentList
+        _oru35Comments.value = currentMap
+
+        // Сохраняем в хранилище
+        val allComments = commentStorage.loadAllComments().toMutableMap()
+        allComments[equipmentKey] = currentList
+        commentStorage.saveAllComments(allComments)
+
+        // Сохраняем в _oru35Data как строку с разделителем
+        saveORU35CommentsToData(equipmentKey, currentList)
+    }
+
+    // Удалить комментарий по индексу
+    fun removeORU35Comment(equipmentKey: String, commentIndex: Int) {
+        val currentMap = _oru35Comments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList.removeAt(commentIndex)
+            if (currentList.isEmpty()) {
+                currentMap.remove(equipmentKey)
+            } else {
+                currentMap[equipmentKey] = currentList
+            }
+            _oru35Comments.value = currentMap
+
+            // Обновляем хранилище
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            if (currentList.isEmpty()) {
+                allComments.remove(equipmentKey)
+            } else {
+                allComments[equipmentKey] = currentList
+            }
+            commentStorage.saveAllComments(allComments)
+
+            // Обновляем _oru35Data
+            saveORU35CommentsToData(equipmentKey, currentList)
+        }
+    }
+
+    // Редактировать комментарий
+    fun updateORU35Comment(equipmentKey: String, commentIndex: Int, newComment: String) {
+        if (newComment.isBlank()) return
+
+        val currentMap = _oru35Comments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList[commentIndex] = newComment
+            currentMap[equipmentKey] = currentList
+            _oru35Comments.value = currentMap
+
+            // Обновляем хранилище
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            allComments[equipmentKey] = currentList
+            commentStorage.saveAllComments(allComments)
+
+            // Обновляем _oru35Data
+            saveORU35CommentsToData(equipmentKey, currentList)
+        }
+    }
+
+    // Сохранить комментарии в _oru35Data (для архива)
+    private fun saveORU35CommentsToData(equipmentKey: String, comments: List<String>) {
+        val commentString = comments.joinToString("|||")
+        updateORU35Data {
+            when (equipmentKey) {
+                "ТСН" -> commentTsn = commentString
+                "ТТ-35 2ТСН" -> commentTt352 = commentString
+                "ТТ-35 3ТСН" -> commentTt353 = commentString
+                "В-35 2ТСН" -> commentV352 = commentString
+                "В-35 3ТСН" -> commentV353 = commentString
+            }
+        }
+    }
+
+    // Загрузить комментарии из _oru35Data
+    fun loadORU35CommentsFromData() {
+        val data = _oru35Data.value
+        val commentsMap = mutableMapOf<String, List<String>>()
+
+        fun parseComments(str: String): List<String> {
+            return if (str.isBlank()) emptyList() else str.split("|||")
+        }
+
+        commentsMap["ТСН"] = parseComments(data.commentTsn)
+        commentsMap["ТТ-35 2ТСН"] = parseComments(data.commentTt352)
+        commentsMap["ТТ-35 3ТСН"] = parseComments(data.commentTt353)
+        commentsMap["В-35 2ТСН"] = parseComments(data.commentV352)
+        commentsMap["В-35 3ТСН"] = parseComments(data.commentV353)
+
+        _oru35Comments.value = commentsMap
+    }
+
+    // Загрузить комментарии из хранилища
+    fun loadORU35CommentsFromStorage() {
+        val saved = commentStorage.loadAllComments()
+        _oru35Comments.value = saved
+    }
+
 }

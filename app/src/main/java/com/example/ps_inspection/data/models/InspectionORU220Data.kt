@@ -1,5 +1,4 @@
-// InspectionORU220Data.kt
-package com.example.ps_inspection
+package com.example.ps_inspection.data.models
 
 data class InspectionORU220Data(
     // Мирная - Выключатель

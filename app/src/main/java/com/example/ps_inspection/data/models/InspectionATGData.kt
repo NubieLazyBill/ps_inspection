@@ -1,4 +1,4 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.data.models
 
 // InspectionATGData.kt
 data class InspectionATGData(

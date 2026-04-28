@@ -1,4 +1,4 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.data.repositories
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -39,5 +39,16 @@ class InspectionMediaManager(private val context: Context) {
     fun clearMediaForInspection(inspectionId: String) {
         val dir = File(context.filesDir, "inspection_media/$inspectionId")
         if (dir.exists()) dir.deleteRecursively()
+    }
+
+    // В InspectionMediaManager.kt добавьте:
+    fun hasPhotos(inspectionId: String, equipmentName: String): Boolean {
+        val dir = getMediaDir(inspectionId, equipmentName)
+        return dir.exists() && dir.listFiles()?.isNotEmpty() == true
+    }
+
+    fun getPhotoCount(inspectionId: String, equipmentName: String): Int {
+        val dir = getMediaDir(inspectionId, equipmentName)
+        return if (dir.exists()) dir.listFiles()?.size ?: 0 else 0
     }
 }

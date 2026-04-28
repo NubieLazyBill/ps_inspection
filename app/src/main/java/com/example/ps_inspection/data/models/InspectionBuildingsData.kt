@@ -1,5 +1,4 @@
-// InspectionBuildingsData.kt
-package com.example.ps_inspection
+package com.example.ps_inspection.data.models
 
 data class InspectionBuildingsData(
     // Компрессорная №1

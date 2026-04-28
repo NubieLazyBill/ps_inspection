@@ -1,5 +1,6 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.fragments.dialogs
 
+import android.R
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import com.github.chrisbanes.photoview.PhotoView
-import java.io.File
 
 class FullscreenPhotoDialog : DialogFragment() {
 
@@ -26,7 +26,7 @@ class FullscreenPhotoDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        setStyle(STYLE_NORMAL, R.style.Theme_Black_NoTitleBar_Fullscreen)
         photoPath = arguments?.getString("photo_path") ?: ""
     }
 

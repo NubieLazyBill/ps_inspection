@@ -1,19 +1,24 @@
-// InspectionATG.kt
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.fragments.inspections
 
-import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ps_inspection.data.models.InspectionATGData
+import com.example.ps_inspection.data.repositories.InspectionMediaManager
+import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionAtgBinding
+import com.example.ps_inspection.ui.fragments.dialogs.CommentsDialogFragment
+import com.example.ps_inspection.ui.fragments.dialogs.MediaDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -27,11 +32,14 @@ class InspectionATG : Fragment() {
     // Флаг для отслеживания, обновляем ли мы UI программно
     private var isUpdatingUIFromViewModel = false
 
+    private lateinit var mediaManager: InspectionMediaManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInspectionAtgBinding.inflate(inflater, container, false)
+        mediaManager = InspectionMediaManager(requireContext())
         return binding.root
     }
 
@@ -53,6 +61,33 @@ class InspectionATG : Fragment() {
 
         setupInputListeners()
         setupMediaButtons()
+        updatePhotoButtonsState()
+    }
+
+    private fun updatePhotoButtonsState() {
+        val inspectionId = "current_inspection"
+        val photoButtons = mapOf(
+            binding.btnMediaAtg2C to "2 АТГ ф.С",
+            binding.btnMediaAtg2B to "2 АТГ ф.В",
+            binding.btnMediaAtg2A to "2 АТГ ф.А",
+            binding.btnMediaAtgReserve to "АТГ резервная",
+            binding.btnMediaAtg3C to "3 АТГ ф.С",
+            binding.btnMediaAtg3B to "3 АТГ ф.В",
+            binding.btnMediaAtg3A to "3 АТГ ф.А",
+            binding.btnMediaReactorC to "Реактор ф.С",
+            binding.btnMediaReactorB to "Реактор ф.В",
+            binding.btnMediaReactorA to "Реактор ф.А"
+        )
+
+        photoButtons.forEach { (button, name) ->
+            val hasPhotos = mediaManager.hasPhotos(inspectionId, name)
+            val color = if (hasPhotos) {
+                Color.parseColor("#4CAF50")  // зелёный
+            } else {
+                Color.parseColor("#9E9E9E")  // серый
+            }
+            button.setColorFilter(color)
+        }
     }
 
     fun updateCommentButtonsState(comments: Map<String, List<String>>) {
@@ -72,12 +107,16 @@ class InspectionATG : Fragment() {
         buttonKeys.forEach { (button, key) ->
             val hasComment = comments[key].isNullOrEmpty().not()
             val color = if (hasComment) {
-                android.graphics.Color.parseColor("#4CAF50")
+                Color.parseColor("#4CAF50")
             } else {
-                android.graphics.Color.parseColor("#9E9E9E")
+                Color.parseColor("#9E9E9E")
             }
             button.setColorFilter(color)
         }
+    }
+
+    fun refreshPhotoButtonsState() {
+        updatePhotoButtonsState()
     }
 
     private fun setupMediaButtons() {
@@ -109,7 +148,7 @@ class InspectionATG : Fragment() {
         // Привязываем фото
         photoButtons.forEach { (btn, name) ->
             btn.setOnClickListener {
-                MediaDialogFragment.newInstance(inspectionId, name)
+                MediaDialogFragment.Companion.newInstance(inspectionId, name)
                     .show(childFragmentManager, "media_$name")
             }
         }
@@ -117,7 +156,7 @@ class InspectionATG : Fragment() {
         // Привязываем комментарии — открываем диалог для конкретного оборудования
         commentButtons.forEach { (btn, name) ->
             btn.setOnClickListener {
-                val dialog = CommentsDialogFragment.newInstance(name)  // ← передаём name
+                val dialog = CommentsDialogFragment.Companion.newInstance(name)  // ← передаём name
                 dialog.show(childFragmentManager, "comments_dialog")
             }
         }
@@ -244,7 +283,7 @@ class InspectionATG : Fragment() {
         isUpdatingUIFromViewModel = false
     }
 
-    private fun updateEditTextIfNeeded(editText: android.widget.EditText, newValue: String) {
+    private fun updateEditTextIfNeeded(editText: EditText, newValue: String) {
         val currentText = editText.text.toString()
         if (currentText != newValue) {
             editText.setText(newValue)
@@ -581,8 +620,8 @@ class InspectionATG : Fragment() {
         }
     }
 
-    private fun setupEditTextListener(editText: android.widget.EditText, onTextChanged: (String) -> Unit) {
-        editText.addTextChangedListener(object : android.text.TextWatcher {
+    private fun setupEditTextListener(editText: EditText, onTextChanged: (String) -> Unit) {
+        editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -591,7 +630,7 @@ class InspectionATG : Fragment() {
                 onTextChanged(newText)
             }
 
-            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun afterTextChanged(s: Editable?) {}
         })
     }
 

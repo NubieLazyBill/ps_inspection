@@ -5,7 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainMenuFragment">
 
-    <!-- ⭐ НОВОЕ ГЛАВНОЕ МЕНЮ -->
+    <!-- ⭐ ГЛАВНОЕ МЕНЮ -->
     <fragment
         android:id="@+id/mainMenuFragment"
         android:name="com.example.ps_inspection.ui.fragments.MainMenuFragment"
@@ -21,7 +21,7 @@
             app:destination="@id/archiveFragment" />
     </fragment>
 
-    <!-- 📋 СТАРЫЙ ЭКРАН ВЫБОРА ОБЪЕКТОВ -->
+    <!-- ЭКРАН ВЫБОРА ОБЪЕКТОВ -->
     <fragment
         android:id="@+id/homeScreen"
         android:name="com.example.ps_inspection.ui.fragments.HomeScreen"
@@ -53,35 +53,36 @@
             app:destination="@id/archiveFragment" />
     </fragment>
 
-    <!-- Остальные ваши фрагменты осмотра -->
+    <!-- ФРАГМЕНТЫ ОСМОТРА -->
     <fragment
         android:id="@+id/inspectionORU35"
-        android:name="com.example.ps_inspection.InspectionORU35"
+        android:name="com.example.ps_inspection.ui.fragments.inspections.InspectionORU35"
         android:label="Осмотр ОРУ-35" />
 
     <fragment
         android:id="@+id/inspectionORU220"
-        android:name="com.example.ps_inspection.InspectionORU220"
+        android:name="com.example.ps_inspection.ui.fragments.inspections.InspectionORU220"
         android:label="Осмотр ОРУ-220" />
 
     <fragment
         android:id="@+id/inspectionORU500"
-        android:name="com.example.ps_inspection.InspectionORU500"
+        android:name="com.example.ps_inspection.ui.fragments.inspections.InspectionORU500"
         android:label="Осмотр ОРУ-500" />
 
     <fragment
         android:id="@+id/inspectionATG"
-        android:name="com.example.ps_inspection.InspectionATG"
+        android:name="com.example.ps_inspection.ui.fragments.inspections.InspectionATG"
         android:label="Осмотр АТГ" />
 
     <fragment
         android:id="@+id/inspectionBuildings"
-        android:name="com.example.ps_inspection.InspectionBuildings"
+        android:name="com.example.ps_inspection.ui.fragments.inspections.InspectionBuildings"
         android:label="Осмотр зданий" />
 
+    <!-- АРХИВ -->
     <fragment
         android:id="@+id/archiveFragment"
-        android:name="com.example.ps_inspection.ArchiveFragment"
+        android:name="com.example.ps_inspection.ui.fragments.ArchiveFragment"
         android:label="Архив осмотров" />
 
 </navigation>

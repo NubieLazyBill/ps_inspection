@@ -1,4 +1,10 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.data.utils
+
+import com.example.ps_inspection.data.models.InspectionATGData
+import com.example.ps_inspection.data.models.InspectionBuildingsData
+import com.example.ps_inspection.data.models.InspectionORU220Data
+import com.example.ps_inspection.data.models.InspectionORU35Data
+import com.example.ps_inspection.data.models.InspectionORU500Data
 
 enum class FillStatus { EMPTY, PARTIAL, FULL }
 
