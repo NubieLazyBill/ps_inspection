@@ -16,6 +16,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Верхняя строка: иконка + дата + меню -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,8 +27,9 @@
                 android:id="@+id/tvIcon"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:textSize="32sp"
-                android:gravity="center" />
+                android:textSize="28sp"
+                android:gravity="center"
+                android:text="📋" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -40,37 +42,180 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ОРУ-35"
+                    android:text="Осмотр"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="27.04.2026 14:30"
-                    android:textColor="#B0B0B0"
-                    android:textSize="12sp"
+                    android:text="27.04.2026"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="14:30"
+                    android:textColor="#B0B0B0"
+                    android:textSize="14sp"
+                    android:layout_marginTop="2dp" />
 
             </LinearLayout>
 
-            <!-- Убираем кнопку "Открыть" - теперь вся карточка кликабельна -->
+            <!-- Кнопка меню (три точки) -->
+            <ImageView
+                android:id="@+id/btnMenu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_more_vert"
+                android:padding="8dp"
+                android:tint="#FFFFFF"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvDefects"
-            android:layout_width="wrap_content"
+        <!-- Индикаторы секций (5 штук) -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="✅ Без замечаний"
-            android:textSize="13sp"
-            android:layout_marginTop="12dp"
-            android:padding="8dp"
-            android:background="#2D3A4A"
-            android:gravity="center"
-            android:layout_gravity="start" />
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <!-- ОРУ-35 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="4dp">
+
+                <View
+                    android:id="@+id/indicatorOru35Dot"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/indicator_empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="35"
+                    android:textColor="#B0B0B0"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- ОРУ-220 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="4dp">
+
+                <View
+                    android:id="@+id/indicatorOru220Dot"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/indicator_empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="220"
+                    android:textColor="#B0B0B0"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- ОРУ-500 -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="4dp">
+
+                <View
+                    android:id="@+id/indicatorOru500Dot"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/indicator_empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="500"
+                    android:textColor="#B0B0B0"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- АТГ -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="4dp">
+
+                <View
+                    android:id="@+id/indicatorAtgDot"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/indicator_empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="АТГ"
+                    android:textColor="#B0B0B0"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+            <!-- Здания -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="4dp">
+
+                <View
+                    android:id="@+id/indicatorBuildingsDot"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/indicator_empty" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Здания"
+                    android:textColor="#B0B0B0"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

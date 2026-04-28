@@ -9,7 +9,6 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ps_inspection.databinding.FragmentArchiveBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -22,7 +21,6 @@ class ArchiveFragment : Fragment() {
     private lateinit var archiveManager: InspectionArchiveManager
     private lateinit var adapter: ArchiveAdapter
     private var allArchives = listOf<ArchiveItem>()
-    private var currentFilter = "Все"
 
     private val menuProvider = object : MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -54,7 +52,6 @@ class ArchiveFragment : Fragment() {
         archiveManager = InspectionArchiveManager(requireContext())
 
         setupToolbar()
-        setupFilters()
         setupRecyclerView()
         loadArchives()
 
@@ -68,107 +65,32 @@ class ArchiveFragment : Fragment() {
         }
     }
 
-    private fun setupFilters() {
-        binding.filterAll.setOnClickListener {
-            currentFilter = "Все"
-            updateFilterUI(binding.filterAll)
-            filterArchives()
-        }
-        binding.filterORU35.setOnClickListener {
-            currentFilter = "ОРУ-35"
-            updateFilterUI(binding.filterORU35)
-            filterArchives()
-        }
-        binding.filterORU220.setOnClickListener {
-            currentFilter = "ОРУ-220"
-            updateFilterUI(binding.filterORU220)
-            filterArchives()
-        }
-        binding.filterORU500.setOnClickListener {
-            currentFilter = "ОРУ-500"
-            updateFilterUI(binding.filterORU500)
-            filterArchives()
-        }
-
-        try {
-            binding.filterATG.setOnClickListener {
-                currentFilter = "АТГ"
-                updateFilterUI(binding.filterATG)
-                filterArchives()
-            }
-        } catch (e: Exception) {}
-
-        try {
-            binding.filterBuildings.setOnClickListener {
-                currentFilter = "Здания"
-                updateFilterUI(binding.filterBuildings)
-                filterArchives()
-            }
-        } catch (e: Exception) {}
-    }
-
-    private fun updateFilterUI(selectedView: View) {
-        val filters = mutableListOf(
-            binding.filterAll,
-            binding.filterORU35,
-            binding.filterORU220,
-            binding.filterORU500
-        )
-
-        try { filters.add(binding.filterATG) } catch (e: Exception) {}
-        try { filters.add(binding.filterBuildings) } catch (e: Exception) {}
-
-        filters.forEach { filter ->
-            if (filter == selectedView) {
-                filter.background = requireContext().getDrawable(R.drawable.filter_chip_selected)
-                filter.setTextColor(requireContext().getColor(android.R.color.white))
-            } else {
-                filter.background = requireContext().getDrawable(R.drawable.filter_chip)
-                filter.setTextColor(requireContext().getColor(android.R.color.darker_gray))
-            }
-        }
-    }
-
     private fun setupRecyclerView() {
         binding.recyclerViewArchives.layoutManager = LinearLayoutManager(requireContext())
-        adapter = ArchiveAdapter(emptyList()) { archive -> showArchiveOptions(archive) }
+        adapter = ArchiveAdapter(emptyList()) { archive, view ->
+            showArchiveOptions(archive, view)
+        }
         binding.recyclerViewArchives.adapter = adapter
     }
 
     private fun loadArchives() {
         allArchives = archiveManager.getAllArchives()
-        try {
-            binding.tvCount.text = allArchives.size.toString()
-        } catch (e: Exception) {}
-        filterArchives()
-    }
 
-    private fun filterArchives() {
-        val filtered = if (currentFilter == "Все") {
-            allArchives
+        if (allArchives.isEmpty()) {
+            binding.emptyState.visibility = View.VISIBLE
+            binding.recyclerViewArchives.visibility = View.GONE
         } else {
-            allArchives.filter { it.equipmentType == currentFilter }
+            binding.emptyState.visibility = View.GONE
+            binding.recyclerViewArchives.visibility = View.VISIBLE
+            adapter.updateData(allArchives)
         }
-
-        adapter.updateData(filtered)
-
-        try {
-            if (filtered.isEmpty()) {
-                binding.emptyState.visibility = View.VISIBLE
-                binding.recyclerViewArchives.visibility = View.GONE
-            } else {
-                binding.emptyState.visibility = View.GONE
-                binding.recyclerViewArchives.visibility = View.VISIBLE
-            }
-        } catch (e: Exception) {}
     }
 
-    // ⬇️ УПРОЩЁННОЕ МЕНЮ - только "Перенести данные" и "Поделиться", "Удалить"
-    private fun showArchiveOptions(archive: ArchiveItem) {
+    private fun showArchiveOptions(archive: ArchiveItem, anchorView: View) {
         val options = arrayOf(
             "📤 Поделиться (Excel)",
             "🗑️ Удалить",
-            "📥 Перенести данные в текущий осмотр"
+            "📥 Перенести данные"
         )
 
         AlertDialog.Builder(requireContext())
@@ -183,7 +105,6 @@ class ArchiveFragment : Fragment() {
             .show()
     }
 
-    // ДИАЛОГ ПЕРЕНОСА ДАННЫХ
     private fun showMergeDialog(fileName: String) {
         val items = arrayOf(
             "ОРУ-35",
@@ -195,7 +116,7 @@ class ArchiveFragment : Fragment() {
         val checked = BooleanArray(items.size) { false }
 
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("📥 Выберите данные для переноса в текущий осмотр")
+            .setTitle("📥 Выберите данные для переноса")
             .setMultiChoiceItems(items, checked) { _, which, isChecked ->
                 checked[which] = isChecked
             }
@@ -227,64 +148,7 @@ class ArchiveFragment : Fragment() {
         }
     }
 
-    // ... ВАШИ МЕТОДЫ СЛИЯНИЯ (mergeORU35, mergeORU220, mergeORU500, mergeBuildings, mergeATG) ОСТАЮТСЯ ...
-    // (они уже есть в вашем файле)
-
-    private fun shareArchive(fileName: String) {
-        val archiveData = archiveManager.loadFromArchive(fileName) ?: run {
-            Toast.makeText(requireContext(), "Ошибка загрузки архива", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val exportService = ExcelExportService(requireContext())
-        val fileUri = exportService.exportArchiveToExcel(archiveData)
-
-        if (fileUri != null) {
-            Toast.makeText(requireContext(), "Файл готов к отправке", Toast.LENGTH_LONG).show()
-            startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                putExtra(Intent.EXTRA_STREAM, fileUri)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }, "Поделиться файлом осмотра"))
-        } else {
-            Toast.makeText(requireContext(), "Ошибка при создании файла", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun deleteArchive(fileName: String) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Удаление")
-            .setMessage("Удалить этот осмотр из архива?")
-            .setPositiveButton("Удалить") { _, _ ->
-                if (archiveManager.deleteArchive(fileName)) {
-                    Toast.makeText(requireContext(), "Осмотр удалён", Toast.LENGTH_SHORT).show()
-                    loadArchives()
-                } else {
-                    Toast.makeText(requireContext(), "Ошибка удаления", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .setNegativeButton("Отмена", null)
-            .show()
-    }
-
-    private fun showClearAllDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("⚠️ Очистка архива")
-            .setMessage("Удалить ВСЕ сохранённые осмотры? Это действие нельзя отменить.")
-            .setPositiveButton("Удалить всё") { _, _ ->
-                val count = archiveManager.clearAllArchives()
-                Toast.makeText(requireContext(), "Удалено $count осмотров", Toast.LENGTH_SHORT).show()
-                loadArchives()
-            }
-            .setNegativeButton("Отмена", null)
-            .show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        requireActivity().removeMenuProvider(menuProvider)
-    }
-
+    // ========== МЕТОДЫ СЛИЯНИЯ ==========
 
     private fun mergeORU35(src: InspectionORU35Data) {
         sharedViewModel.updateORU35Data {
@@ -303,8 +167,6 @@ class ArchiveFragment : Fragment() {
             if (src.v353tsnA.isNotBlank()) v353tsnA = src.v353tsnA
             if (src.v353tsnB.isNotBlank()) v353tsnB = src.v353tsnB
             if (src.v353tsnC.isNotBlank()) v353tsnC = src.v353tsnC
-            //if (src.tn352atg.isNotBlank()) tn352atg = src.tn352atg
-            //if (src.tn353atg.isNotBlank()) tn353atg = src.tn353atg
         }
     }
 
@@ -537,34 +399,65 @@ class ArchiveFragment : Fragment() {
             reactor_c_pump_group1 = src.reactor_c_pump_group1
             reactor_c_pump_group2 = src.reactor_c_pump_group2
             reactor_c_pump_group3 = src.reactor_c_pump_group3
+            tn352atg = src.tn352atg
+            tn353atg = src.tn353atg
         }
     }
 
-    private fun mergeATGPressuresOnly(src: InspectionATGData) {
-        sharedViewModel.updateATGData {
-            atg2_c_pump_group1 = src.atg2_c_pump_group1
-            atg2_c_pump_group2 = src.atg2_c_pump_group2
-            atg2_c_pump_group3 = src.atg2_c_pump_group3
-            atg2_c_pump_group4 = src.atg2_c_pump_group4
-            atg2_b_pump_group1 = src.atg2_b_pump_group1
-            atg2_b_pump_group2 = src.atg2_b_pump_group2
-            atg2_b_pump_group3 = src.atg2_b_pump_group3
-            atg2_b_pump_group4 = src.atg2_b_pump_group4
-            atg2_a_pump_group1 = src.atg2_a_pump_group1
-            atg2_a_pump_group2 = src.atg2_a_pump_group2
-            atg2_a_pump_group3 = src.atg2_a_pump_group3
-            atg2_a_pump_group4 = src.atg2_a_pump_group4
-            atg_reserve_pump_group1 = src.atg_reserve_pump_group1
-            atg_reserve_pump_group2 = src.atg_reserve_pump_group2
-            atg_reserve_pump_group3 = src.atg_reserve_pump_group3
-            atg_reserve_pump_group4 = src.atg_reserve_pump_group4
-            atg3_c_pump_group1 = src.atg3_c_pump_group1
-            atg3_c_pump_group2 = src.atg3_c_pump_group2
-            atg3_c_pump_group3 = src.atg3_c_pump_group3
-            atg3_c_pump_group4 = src.atg3_c_pump_group4
-            reactor_c_pump_group1 = src.reactor_c_pump_group1
-            reactor_c_pump_group2 = src.reactor_c_pump_group2
-            reactor_c_pump_group3 = src.reactor_c_pump_group3
+    // ========== ОСТАЛЬНЫЕ МЕТОДЫ ==========
+
+    private fun shareArchive(fileName: String) {
+        val archiveData = archiveManager.loadFromArchive(fileName) ?: run {
+            Toast.makeText(requireContext(), "Ошибка загрузки архива", Toast.LENGTH_SHORT).show()
+            return
         }
+        val exportService = ExcelExportService(requireContext())
+        val fileUri = exportService.exportArchiveToExcel(archiveData)
+
+        if (fileUri != null) {
+            Toast.makeText(requireContext(), "Файл готов к отправке", Toast.LENGTH_LONG).show()
+            startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
+                type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                putExtra(Intent.EXTRA_STREAM, fileUri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }, "Поделиться файлом осмотра"))
+        } else {
+            Toast.makeText(requireContext(), "Ошибка при создании файла", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun deleteArchive(fileName: String) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Удаление")
+            .setMessage("Удалить этот осмотр из архива?")
+            .setPositiveButton("Удалить") { _, _ ->
+                if (archiveManager.deleteArchive(fileName)) {
+                    Toast.makeText(requireContext(), "Осмотр удалён", Toast.LENGTH_SHORT).show()
+                    loadArchives()
+                } else {
+                    Toast.makeText(requireContext(), "Ошибка удаления", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
+    }
+
+    private fun showClearAllDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("⚠️ Очистка архива")
+            .setMessage("Удалить ВСЕ сохранённые осмотры? Это действие нельзя отменить.")
+            .setPositiveButton("Удалить всё") { _, _ ->
+                val count = archiveManager.clearAllArchives()
+                Toast.makeText(requireContext(), "Удалено $count осмотров", Toast.LENGTH_SHORT).show()
+                loadArchives()
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        requireActivity().removeMenuProvider(menuProvider)
     }
 }

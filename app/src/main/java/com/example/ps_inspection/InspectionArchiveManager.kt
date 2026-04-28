@@ -10,7 +10,12 @@ import java.util.*
 data class ArchiveItem(
     val fileName: String,
     val displayDate: String,
-    val equipmentType: String,  // ← Добавлено поле
+    val equipmentType: String,
+    val statusORU35: FillStatus,
+    val statusORU220: FillStatus,
+    val statusORU500: FillStatus,
+    val statusATG: FillStatus,
+    val statusBuildings: FillStatus,
     val timestamp: Long = System.currentTimeMillis()
 )
 
@@ -50,13 +55,15 @@ class InspectionArchiveManager(private val context: Context) {
                 try {
                     val data = gson.fromJson(file.readText(), InspectionArchiveData::class.java)
 
-                    // Определяем тип оборудования для отображения
-                    val equipmentType = detectEquipmentType(file.name, data)
-
                     archives.add(ArchiveItem(
                         fileName = file.name,
                         displayDate = data.displayDate,
-                        equipmentType = equipmentType  // ← Добавлено
+                        equipmentType = detectEquipmentType(file.name, data),
+                        statusORU35 = data.oru35.getFillStatus(),
+                        statusORU220 = data.oru220.getFillStatus(),
+                        statusORU500 = data.oru500.getFillStatus(),
+                        statusATG = data.atg.getFillStatus(),
+                        statusBuildings = data.buildings.getFillStatus()
                     ))
                 } catch (e: Exception) { e.printStackTrace() }
             }

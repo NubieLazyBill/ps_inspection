@@ -1,19 +1,22 @@
 package com.example.ps_inspection
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ps_inspection.databinding.ItemArchiveCardBinding
 
 class ArchiveAdapter(
     private var records: List<ArchiveItem>,
-    private val onItemClick: (ArchiveItem) -> Unit
+    private val onMenuClick: (ArchiveItem, View) -> Unit
 ) : RecyclerView.Adapter<ArchiveAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_archive_card, parent, false)
-        return ViewHolder(view)
+        val binding = ItemArchiveCardBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -27,30 +30,43 @@ class ArchiveAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(itemView: android.view.View) : RecyclerView.ViewHolder(itemView) {
-        private val tvIcon: TextView = itemView.findViewById(R.id.tvIcon)
-        private val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
-        private val tvDate: TextView = itemView.findViewById(R.id.tvDate)
-        private val tvDefects: TextView = itemView.findViewById(R.id.tvDefects)
+    inner class ViewHolder(private val binding: ItemArchiveCardBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(record: ArchiveItem) {
-            val equipmentType = record.equipmentType
+            // Фиксированный заголовок "Осмотр"
+            binding.tvTitle.text = "Осмотр"
 
-            tvIcon.text = when {
-                equipmentType.contains("ОРУ-35") -> "⚡"
-                equipmentType.contains("ОРУ-220") -> "🔌"
-                equipmentType.contains("ОРУ-500") -> "⚡"
-                equipmentType.contains("АТГ") -> "🏗️"
-                equipmentType.contains("Здания") -> "🏢"
-                else -> "📋"
+            // Разбиваем дату и время
+            val parts = record.displayDate.split(" ")
+            if (parts.size >= 2) {
+                binding.tvDate.text = parts[0]  // дата
+                binding.tvTime.text = parts[1]  // время
+            } else {
+                binding.tvDate.text = record.displayDate
+                binding.tvTime.text = ""
             }
 
-            tvTitle.text = equipmentType
-            tvDate.text = record.displayDate
-            tvDefects.text = "✅ Без замечаний"
-            tvDefects.setTextColor(itemView.context.getColor(android.R.color.holo_green_dark))
+            // Устанавливаем индикаторы
+            setIndicator(binding.indicatorOru35Dot, record.statusORU35)
+            setIndicator(binding.indicatorOru220Dot, record.statusORU220)
+            setIndicator(binding.indicatorOru500Dot, record.statusORU500)
+            setIndicator(binding.indicatorAtgDot, record.statusATG)
+            setIndicator(binding.indicatorBuildingsDot, record.statusBuildings)
 
-            itemView.setOnClickListener { onItemClick(record) }
+            // Меню (три точки)
+            binding.btnMenu.setOnClickListener { view ->
+                onMenuClick(record, view)
+            }
+        }
+
+        private fun setIndicator(view: View, status: FillStatus) {
+            val drawableRes = when (status) {
+                FillStatus.EMPTY -> R.drawable.indicator_empty
+                FillStatus.PARTIAL -> R.drawable.indicator_partial
+                FillStatus.FULL -> R.drawable.indicator_full
+            }
+            view.setBackgroundResource(drawableRes)
         }
     }
 }

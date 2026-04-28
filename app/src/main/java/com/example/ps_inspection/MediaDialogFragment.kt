@@ -1,14 +1,11 @@
 package com.example.ps_inspection
 
 import android.app.AlertDialog
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -27,6 +24,7 @@ class MediaDialogFragment : DialogFragment() {
     private var inspectionId: String = ""
     private var equipmentName: String = ""
     private lateinit var mediaManager: InspectionMediaManager
+    private lateinit var gridLayout: GridLayout
 
     // 📸 Лаунчер для камеры
     private var currentPhotoUri: Uri? = null
@@ -81,7 +79,7 @@ class MediaDialogFragment : DialogFragment() {
         })
 
         // Сетка фото
-        val grid = GridLayout(requireContext()).apply {
+        gridLayout = GridLayout(requireContext()).apply {
             columnCount = 3
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -89,9 +87,9 @@ class MediaDialogFragment : DialogFragment() {
                 1f
             )
         }
-        root.addView(grid)
+        root.addView(gridLayout)
 
-        // 🔹 Кнопка ТОЛЬКО для добавления фото (кнопку комментария убрали!)
+        // Кнопка добавления фото
         val btnAdd = Button(requireContext()).apply {
             text = "📸 Добавить фото"
         }
@@ -105,27 +103,24 @@ class MediaDialogFragment : DialogFragment() {
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
 
-        // Логика
-        loadPhotosToGrid(grid)
+        loadPhotosToGrid()
         btnAdd.setOnClickListener { showAddPhotoOptions() }
 
         return root
     }
 
-    // 🎯 Меню выбора: Камера или Галерея
     private fun showAddPhotoOptions() {
         val options = arrayOf("📸 Сделать фото", "🖼️ Выбрать из галереи")
         AlertDialog.Builder(requireContext())
             .setTitle("Добавить фото")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> launchCamera()  // Камера — работает как было
-                    1 -> pickMedia.launch("image/*")  // ✅ Галерея — исправлено
+                    0 -> launchCamera()
+                    1 -> pickMedia.launch("image/*")
                 }
             }.show()
     }
 
-    // 📸 Запуск камеры
     private fun launchCamera() {
         try {
             val photoFile = createImageFile()
@@ -140,14 +135,12 @@ class MediaDialogFragment : DialogFragment() {
         }
     }
 
-    // Создаём временный файл для фото
     private fun createImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("IMG_${timeStamp}_", ".jpg", storageDir)
     }
 
-    // Сохраняем фото из Uri в папку оборудования
     private fun savePhotoFromUri(uri: Uri) {
         try {
             val inputStream = requireContext().contentResolver.openInputStream(uri)
@@ -157,40 +150,37 @@ class MediaDialogFragment : DialogFragment() {
 
             inputStream?.use { it.copyTo(target.outputStream()) }
 
-            // Обновляем сетку
-            updateGridPhotos()
+            loadPhotosToGrid()
             Toast.makeText(requireContext(), "Фото добавлено", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // Поиск GridLayout через цикл
-    private fun updateGridPhotos() {
-        val root = view as? LinearLayout ?: return
-        for (i in 0 until root.childCount) {
-            val child = root.getChildAt(i)
-            if (child is GridLayout) {
-                loadPhotosToGrid(child)
-                break
-            }
-        }
-    }
+    private fun loadPhotosToGrid() {
+        gridLayout.removeAllViews()
+        val photoFiles = mediaManager.getPhotoFiles(inspectionId, equipmentName)
 
-    private fun loadPhotosToGrid(grid: GridLayout) {
-        grid.removeAllViews()
-        mediaManager.getPhotoFiles(inspectionId, equipmentName).forEach { fileName ->
-            val iv = ImageView(requireContext()).apply {
+        photoFiles.forEach { fileName ->
+            val imageView = ImageView(requireContext()).apply {
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 200
                     height = 200
                     setMargins(8, 8, 8, 8)
                 }
                 scaleType = ImageView.ScaleType.CENTER_CROP
-                setImageBitmap(mediaManager.loadThumbnail(inspectionId, equipmentName, fileName))
 
-                // Клик → полный просмотр с зумом
-                setOnClickListener { showFullImage(fileName) }
+                // Загружаем миниатюру
+                val fullPath = mediaManager.getFullPhotoPath(inspectionId, equipmentName, fileName)
+                val bitmap = BitmapFactory.decodeFile(fullPath)
+                if (bitmap != null) {
+                    setImageBitmap(bitmap)
+                }
+
+                // Клик → полноэкранный просмотр с зумом
+                setOnClickListener {
+                    showFullscreenPhoto(fullPath)
+                }
 
                 // Долгое нажатие → удаление
                 setOnLongClickListener {
@@ -199,61 +189,25 @@ class MediaDialogFragment : DialogFragment() {
                         .setMessage("Это действие нельзя отменить")
                         .setPositiveButton("Удалить") { _, _ ->
                             mediaManager.deletePhoto(inspectionId, equipmentName, fileName)
-                            loadPhotosToGrid(grid)
+                            loadPhotosToGrid()
+                            Toast.makeText(requireContext(), "Фото удалено", Toast.LENGTH_SHORT).show()
                         }
-                        .setNegativeButton("Отмена", null).show()
+                        .setNegativeButton("Отмена", null)
+                        .show()
                     true
                 }
             }
-            grid.addView(iv)
+            gridLayout.addView(imageView)
         }
     }
 
-    private fun showFullImage(fileName: String) {
-        val dialogView = LinearLayout(requireContext()).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(16, 16, 16, 16)
-        }
-        val imageView = ImageView(requireContext()).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                600
-            ).apply {
-                gravity = android.view.Gravity.CENTER
-            }
-            scaleType = ImageView.ScaleType.FIT_CENTER
-            adjustViewBounds = true
+    private fun showFullscreenPhoto(photoPath: String) {
+        val dialog = FullscreenPhotoDialog.newInstance(photoPath)
+        dialog.show(childFragmentManager, "fullscreen_photo")
+    }
 
-            val path = mediaManager.getFullPhotoPath(inspectionId, equipmentName, fileName)
-            val bitmap = BitmapFactory.decodeFile(path)
-            if (bitmap != null) {
-                setImageBitmap(bitmap)
-            }
-        }
-        dialogView.addView(imageView)
-
-        // Простой pinch-to-zoom
-        val scaleDetector = android.view.ScaleGestureDetector(
-            requireContext(),
-            object : android.view.ScaleGestureDetector.SimpleOnScaleGestureListener() {
-                private var mScaleFactor = 1f
-                override fun onScale(detector: android.view.ScaleGestureDetector): Boolean {
-                    mScaleFactor *= detector.scaleFactor
-                    mScaleFactor = mScaleFactor.coerceIn(0.5f, 3.0f)
-                    imageView.scaleX = mScaleFactor
-                    imageView.scaleY = mScaleFactor
-                    return true
-                }
-            }
-        )
-        imageView.setOnTouchListener { _, event ->
-            scaleDetector.onTouchEvent(event)
-            true
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setPositiveButton("Закрыть", null)
-            .show()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Очищаем ссылки
     }
 }
