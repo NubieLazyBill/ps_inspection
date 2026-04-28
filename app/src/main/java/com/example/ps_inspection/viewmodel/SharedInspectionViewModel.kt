@@ -69,7 +69,8 @@ class SharedInspectionViewModel : ViewModel() {
     // Инициализация хранилища комментариев
     fun initCommentStorage(context: Context) {
         commentStorage = CommentStorageManager(context)
-        loadCommentsFromStorage()
+        loadCommentsFromStorage()         // для АТГ
+        loadORU35CommentsFromStorage()   // для ОРУ-35
     }
 
     // Очистка всех данных осмотра (комментарии НЕ трогаем!)
