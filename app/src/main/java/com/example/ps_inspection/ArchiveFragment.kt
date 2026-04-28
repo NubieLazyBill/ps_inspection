@@ -110,7 +110,8 @@ class ArchiveFragment : Fragment() {
             "ОРУ-35",
             "ОРУ-220",
             "ОРУ-500",
-            "АТГ + Реакторы",
+            "АТГ + Реакторы (Полностью)",
+            "АТГ + Реакторы (Только давления насосов)",
             "Здания"
         )
         val checked = BooleanArray(items.size) { false }
@@ -139,7 +140,8 @@ class ArchiveFragment : Fragment() {
         if (sections[1]) { mergeORU220(archiveData.oru220); count++ }
         if (sections[2]) { mergeORU500(archiveData.oru500); count++ }
         if (sections[3]) { mergeATG(archiveData.atg); count++ }
-        if (sections[4]) { mergeBuildings(archiveData.buildings); count++ }
+        if (sections[4]) { mergeATGPressuresOnly(archiveData.atg); count++ }  // ← этот метод у вас есть
+        if (sections[5]) { mergeBuildings(archiveData.buildings); count++ }
 
         if (count > 0) {
             Toast.makeText(requireContext(), "✅ Перенесено разделов: $count", Toast.LENGTH_LONG).show()
@@ -401,6 +403,34 @@ class ArchiveFragment : Fragment() {
             reactor_c_pump_group3 = src.reactor_c_pump_group3
             tn352atg = src.tn352atg
             tn353atg = src.tn353atg
+        }
+    }
+
+    private fun mergeATGPressuresOnly(src: InspectionATGData) {
+        sharedViewModel.updateATGData {
+            atg2_c_pump_group1 = src.atg2_c_pump_group1
+            atg2_c_pump_group2 = src.atg2_c_pump_group2
+            atg2_c_pump_group3 = src.atg2_c_pump_group3
+            atg2_c_pump_group4 = src.atg2_c_pump_group4
+            atg2_b_pump_group1 = src.atg2_b_pump_group1
+            atg2_b_pump_group2 = src.atg2_b_pump_group2
+            atg2_b_pump_group3 = src.atg2_b_pump_group3
+            atg2_b_pump_group4 = src.atg2_b_pump_group4
+            atg2_a_pump_group1 = src.atg2_a_pump_group1
+            atg2_a_pump_group2 = src.atg2_a_pump_group2
+            atg2_a_pump_group3 = src.atg2_a_pump_group3
+            atg2_a_pump_group4 = src.atg2_a_pump_group4
+            atg_reserve_pump_group1 = src.atg_reserve_pump_group1
+            atg_reserve_pump_group2 = src.atg_reserve_pump_group2
+            atg_reserve_pump_group3 = src.atg_reserve_pump_group3
+            atg_reserve_pump_group4 = src.atg_reserve_pump_group4
+            atg3_c_pump_group1 = src.atg3_c_pump_group1
+            atg3_c_pump_group2 = src.atg3_c_pump_group2
+            atg3_c_pump_group3 = src.atg3_c_pump_group3
+            atg3_c_pump_group4 = src.atg3_c_pump_group4
+            reactor_c_pump_group1 = src.reactor_c_pump_group1
+            reactor_c_pump_group2 = src.reactor_c_pump_group2
+            reactor_c_pump_group3 = src.reactor_c_pump_group3
         }
     }
 

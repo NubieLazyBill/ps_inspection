@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
         autoSaveManager = AutoSaveManager(this)
 
+        sharedViewModel.loadCommentsFromAtgData()
+
         // Находим кастомный TextView
         toolbarTitle = findViewById(R.id.toolbar_title)
 

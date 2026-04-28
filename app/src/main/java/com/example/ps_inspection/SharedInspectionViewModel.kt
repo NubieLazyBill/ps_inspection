@@ -63,16 +63,8 @@ class SharedInspectionViewModel : ViewModel() {
         _atgData.value = InspectionATGData()
         _oru500Data.value = InspectionORU500Data()
         _buildingsData.value = InspectionBuildingsData()
+        _atgComments.value = emptyMap()
     }
-
-    // В конце класса SharedInspectionViewModel
-
-    /* --- Функции для комментариев АТГ ---
-    fun updateATGComment(text: String) {
-        val newData = _atgData.value.copy(atgComment = text)
-        _atgData.value = newData
-    }
-     */
 
     // --- Функции для фото АТГ ---
     fun addATGPhoto(fileName: String) {
@@ -92,27 +84,92 @@ class SharedInspectionViewModel : ViewModel() {
         }
     }
 
-    private val _atgComments = MutableStateFlow<Map<String, String>>(emptyMap())
-    val atgComments: StateFlow<Map<String, String>> = _atgComments
+    // ========== КОММЕНТАРИИ (СПИСОК) ==========
 
+    private val _atgComments = MutableStateFlow<Map<String, List<String>>>(emptyMap())
+    val atgComments: StateFlow<Map<String, List<String>>> = _atgComments
 
-    fun updateATGComment(equipmentKey: String, comment: String) {
-        val current = _atgData.value ?: return
-        _atgData.value = current.copy(
-            // 2 АТГ
-            commentAtg2C = if (equipmentKey == "2 АТГ ф.С") comment else current.commentAtg2C,
-            commentAtg2B = if (equipmentKey == "2 АТГ ф.В") comment else current.commentAtg2B,
-            commentAtg2A = if (equipmentKey == "2 АТГ ф.А") comment else current.commentAtg2A,
-            // АТГ резервная фаза
-            commentAtgReserve = if (equipmentKey == "АТГ резервная") comment else current.commentAtgReserve,
-            // 3 АТГ
-            commentAtg3C = if (equipmentKey == "3 АТГ ф.С") comment else current.commentAtg3C,
-            commentAtg3B = if (equipmentKey == "3 АТГ ф.В") comment else current.commentAtg3B,
-            commentAtg3A = if (equipmentKey == "3 АТГ ф.А") comment else current.commentAtg3A,
-            // Реакторы
-            commentReactorC = if (equipmentKey == "Реактор ф.С") comment else current.commentReactorC,
-            commentReactorB = if (equipmentKey == "Реактор ф.В") comment else current.commentReactorB,
-            commentReactorA = if (equipmentKey == "Реактор ф.А") comment else current.commentReactorA
+    // Добавить комментарий
+    fun addATGComment(equipmentKey: String, comment: String) {
+        if (comment.isBlank()) return
+
+        val currentMap = _atgComments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
+        currentList.add(comment)
+        currentMap[equipmentKey] = currentList
+
+        _atgComments.value = currentMap
+        saveCommentsToAtgData(equipmentKey, currentList)
+    }
+
+    // Удалить комментарий по индексу
+    fun removeATGComment(equipmentKey: String, commentIndex: Int) {
+        val currentMap = _atgComments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList.removeAt(commentIndex)
+            if (currentList.isEmpty()) {
+                currentMap.remove(equipmentKey)
+            } else {
+                currentMap[equipmentKey] = currentList
+            }
+            _atgComments.value = currentMap
+            saveCommentsToAtgData(equipmentKey, currentList)
+        }
+    }
+
+    // Редактировать комментарий по индексу
+    fun updateATGComment(equipmentKey: String, commentIndex: Int, newComment: String) {
+        if (newComment.isBlank()) return
+
+        val currentMap = _atgComments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList[commentIndex] = newComment
+            currentMap[equipmentKey] = currentList
+            _atgComments.value = currentMap
+            saveCommentsToAtgData(equipmentKey, currentList)
+        }
+    }
+
+    // Сохранить комментарии в _atgData (для архива)
+    private fun saveCommentsToAtgData(equipmentKey: String, comments: List<String>) {
+        val commentString = comments.joinToString("|||")
+        val currentData = _atgData.value
+        _atgData.value = currentData.copy(
+            commentAtg2C = if (equipmentKey == "2 АТГ ф.С") commentString else currentData.commentAtg2C,
+            commentAtg2B = if (equipmentKey == "2 АТГ ф.В") commentString else currentData.commentAtg2B,
+            commentAtg2A = if (equipmentKey == "2 АТГ ф.А") commentString else currentData.commentAtg2A,
+            commentAtgReserve = if (equipmentKey == "АТГ резервная") commentString else currentData.commentAtgReserve,
+            commentAtg3C = if (equipmentKey == "3 АТГ ф.С") commentString else currentData.commentAtg3C,
+            commentAtg3B = if (equipmentKey == "3 АТГ ф.В") commentString else currentData.commentAtg3B,
+            commentAtg3A = if (equipmentKey == "3 АТГ ф.А") commentString else currentData.commentAtg3A,
+            commentReactorC = if (equipmentKey == "Реактор ф.С") commentString else currentData.commentReactorC,
+            commentReactorB = if (equipmentKey == "Реактор ф.В") commentString else currentData.commentReactorB,
+            commentReactorA = if (equipmentKey == "Реактор ф.А") commentString else currentData.commentReactorA
         )
+    }
+
+    // Загрузить комментарии из _atgData (вызвать при старте)
+    fun loadCommentsFromAtgData() {
+        val data = _atgData.value
+        val commentsMap = mutableMapOf<String, List<String>>()
+
+        fun parseComments(str: String): List<String> {
+            return if (str.isBlank()) emptyList() else str.split("|||")
+        }
+
+        commentsMap["2 АТГ ф.С"] = parseComments(data.commentAtg2C)
+        commentsMap["2 АТГ ф.В"] = parseComments(data.commentAtg2B)
+        commentsMap["2 АТГ ф.А"] = parseComments(data.commentAtg2A)
+        commentsMap["АТГ резервная"] = parseComments(data.commentAtgReserve)
+        commentsMap["3 АТГ ф.С"] = parseComments(data.commentAtg3C)
+        commentsMap["3 АТГ ф.В"] = parseComments(data.commentAtg3B)
+        commentsMap["3 АТГ ф.А"] = parseComments(data.commentAtg3A)
+        commentsMap["Реактор ф.С"] = parseComments(data.commentReactorC)
+        commentsMap["Реактор ф.В"] = parseComments(data.commentReactorB)
+        commentsMap["Реактор ф.А"] = parseComments(data.commentReactorA)
+
+        _atgComments.value = commentsMap
     }
 }

@@ -44,8 +44,40 @@ class InspectionATG : Fragment() {
             }
         }
 
+        // Подписываемся на изменения комментариев
+        viewLifecycleOwner.lifecycleScope.launch {
+            sharedViewModel.atgComments.collectLatest { comments ->
+                updateCommentButtonsState(comments)
+            }
+        }
+
         setupInputListeners()
         setupMediaButtons()
+    }
+
+    fun updateCommentButtonsState(comments: Map<String, List<String>>) {
+        val buttonKeys = mapOf(
+            binding.btnCommentAtg2C to "2 АТГ ф.С",
+            binding.btnCommentAtg2B to "2 АТГ ф.В",
+            binding.btnCommentAtg2A to "2 АТГ ф.А",
+            binding.btnCommentAtgReserve to "АТГ резервная",
+            binding.btnCommentAtg3C to "3 АТГ ф.С",
+            binding.btnCommentAtg3B to "3 АТГ ф.В",
+            binding.btnCommentAtg3A to "3 АТГ ф.А",
+            binding.btnCommentReactorC to "Реактор ф.С",
+            binding.btnCommentReactorB to "Реактор ф.В",
+            binding.btnCommentReactorA to "Реактор ф.А"
+        )
+
+        buttonKeys.forEach { (button, key) ->
+            val hasComment = comments[key].isNullOrEmpty().not()
+            val color = if (hasComment) {
+                android.graphics.Color.parseColor("#4CAF50")
+            } else {
+                android.graphics.Color.parseColor("#9E9E9E")
+            }
+            button.setColorFilter(color)
+        }
     }
 
     private fun setupMediaButtons() {
@@ -60,11 +92,16 @@ class InspectionATG : Fragment() {
 
         // 💬 Кнопки комментариев
         val commentButtons = mapOf(
-            binding.btnCommentAtg2C to "2 АТГ ф.С", binding.btnCommentAtg2B to "2 АТГ ф.В",
-            binding.btnCommentAtg2A to "2 АТГ ф.А", binding.btnCommentAtgReserve to "АТГ резервная",
-            binding.btnCommentAtg3C to "3 АТГ ф.С", binding.btnCommentAtg3B to "3 АТГ ф.В",
-            binding.btnCommentAtg3A to "3 АТГ ф.А", binding.btnCommentReactorC to "Реактор ф.С",
-            binding.btnCommentReactorB to "Реактор ф.В", binding.btnCommentReactorA to "Реактор ф.А"
+            binding.btnCommentAtg2C to "2 АТГ ф.С",
+            binding.btnCommentAtg2B to "2 АТГ ф.В",
+            binding.btnCommentAtg2A to "2 АТГ ф.А",
+            binding.btnCommentAtgReserve to "АТГ резервная",
+            binding.btnCommentAtg3C to "3 АТГ ф.С",
+            binding.btnCommentAtg3B to "3 АТГ ф.В",
+            binding.btnCommentAtg3A to "3 АТГ ф.А",
+            binding.btnCommentReactorC to "Реактор ф.С",
+            binding.btnCommentReactorB to "Реактор ф.В",
+            binding.btnCommentReactorA to "Реактор ф.А"
         )
 
         val inspectionId = "current_inspection"
@@ -77,38 +114,16 @@ class InspectionATG : Fragment() {
             }
         }
 
-        // Привязываем комментарии
+        // Привязываем комментарии — открываем диалог для конкретного оборудования
         commentButtons.forEach { (btn, name) ->
-            btn.setOnClickListener { showCommentDialog(name) }
+            btn.setOnClickListener {
+                val dialog = CommentsDialogFragment.newInstance(name)  // ← передаём name
+                dialog.show(childFragmentManager, "comments_dialog")
+            }
         }
     }
 
-    private fun showCommentDialog(equipmentName: String) {
-        val currentComments = sharedViewModel.atgComments.value
-        val existingComment = currentComments[equipmentName] ?: ""
 
-        val input = EditText(requireContext()).apply {
-            setText(existingComment)
-            hint = "Введите комментарий к $equipmentName..."
-            setPadding(24, 16, 24, 16) // ✅ Немного выровнял отступы
-            setBackgroundResource(R.drawable.bg_edit_text_comment) // 👈 ВОТ СЮДА
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("💬 Комментарий: $equipmentName")
-            .setView(input)
-            .setPositiveButton("💾 Сохранить") { _, _ ->
-                val text = input.text.toString()
-                sharedViewModel.updateATGComment(equipmentName, text)
-                Toast.makeText(requireContext(), "Комментарий сохранён", Toast.LENGTH_SHORT).show()
-            }
-            .setNeutralButton("🗑️ Удалить") { _, _ ->
-                sharedViewModel.updateATGComment(equipmentName, "")
-                Toast.makeText(requireContext(), "Комментарий удалён", Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton("Отмена", null)
-            .show()
-    }
 
     private fun updateUIFromData(data: InspectionATGData) {
         isUpdatingUIFromViewModel = true
