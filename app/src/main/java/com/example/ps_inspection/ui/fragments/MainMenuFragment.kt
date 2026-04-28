@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.ps_inspection.BuildConfig
 import com.example.ps_inspection.R
 import com.example.ps_inspection.databinding.FragmentMainMenuBinding
 
@@ -45,15 +47,27 @@ class MainMenuFragment : Fragment() {
     }
 
     private fun showAboutDialog() {
+        // Инфлейтим кастомный layout для диалога
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_about, null)
+
+        val tvVersion = dialogView.findViewById<TextView>(R.id.tvVersion)
+        val tvCopyright = dialogView.findViewById<TextView>(R.id.tvCopyright)
+        val tvAuthor = dialogView.findViewById<TextView>(R.id.tvAuthor)
+        val tvLicense = dialogView.findViewById<TextView>(R.id.tvLicense)
+        val tvNote = dialogView.findViewById<TextView>(R.id.tvNote)
+
+        // Получаем версию из build.gradle
+        val versionName = BuildConfig.VERSION_NAME
+        tvVersion.text = "Версия $versionName"
+
+        tvCopyright.text = "© 2026"
+        tvAuthor.text = "Разработано: Алексей Петрович\nДежурный инженер ПС 500кВ «Кустовая»"
+        tvLicense.text = "Все права защищены.\nПрограмма создана в личное время, на собственном оборудовании."
+        tvNote.text = "Программа предназначена исключительно для использования\nна ПС 500кВ «Кустовая».\nКоммерческое использование и тиражирование только с разрешения автора."
+
         AlertDialog.Builder(requireContext())
-            .setTitle("О программе")
-            .setMessage("""
-                ПС 500кВ «Кустовая»
-                Система осмотра оборудования
-                
-                Версия 2.0
-                © 2026
-            """.trimIndent())
+            .setTitle("ℹ️ О программе")
+            .setView(dialogView)
             .setPositiveButton("OK", null)
             .show()
     }
