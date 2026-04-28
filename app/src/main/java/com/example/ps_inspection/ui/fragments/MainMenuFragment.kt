@@ -1,12 +1,14 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.ps_inspection.R
 import com.example.ps_inspection.databinding.FragmentMainMenuBinding
 
 class MainMenuFragment : Fragment() {
@@ -43,7 +45,7 @@ class MainMenuFragment : Fragment() {
     }
 
     private fun showAboutDialog() {
-        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(requireContext())
             .setTitle("О программе")
             .setMessage("""
                 ПС 500кВ «Кустовая»

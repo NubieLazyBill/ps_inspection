@@ -8,7 +8,7 @@
     <!-- ⭐ НОВОЕ ГЛАВНОЕ МЕНЮ -->
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="com.example.ps_inspection.MainMenuFragment"
+        android:name="com.example.ps_inspection.ui.fragments.MainMenuFragment"
         android:label="Главное меню"
         tools:layout="@layout/fragment_main_menu">
 
@@ -24,7 +24,7 @@
     <!-- 📋 СТАРЫЙ ЭКРАН ВЫБОРА ОБЪЕКТОВ -->
     <fragment
         android:id="@+id/homeScreen"
-        android:name="com.example.ps_inspection.HomeScreen"
+        android:name="com.example.ps_inspection.ui.fragments.HomeScreen"
         android:label="Выбор объекта"
         tools:layout="@layout/fragment_home_screen">
 

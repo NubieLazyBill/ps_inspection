@@ -1,6 +1,7 @@
 // SharedInspectionViewModel.kt
 package com.example.ps_inspection
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,9 @@ class SharedInspectionViewModel : ViewModel() {
     // Данные для экрана ORU500
     private val _oru500Data = MutableStateFlow(InspectionORU500Data())
     val oru500Data: StateFlow<InspectionORU500Data> = _oru500Data
+
+    // Хранилище комментариев
+    private lateinit var commentStorage: CommentStorageManager
 
     // Функция для обновления данных ORU35
     fun updateORU35Data(update: InspectionORU35Data.() -> Unit) {
@@ -57,13 +61,26 @@ class SharedInspectionViewModel : ViewModel() {
         _oru500Data.value = newData
     }
 
+    // Инициализация хранилища комментариев
+    fun initCommentStorage(context: Context) {
+        commentStorage = CommentStorageManager(context)
+        loadCommentsFromStorage()
+    }
+
+    // Очистка всех данных осмотра (комментарии НЕ трогаем!)
     fun clearAllData() {
         _oru35Data.value = InspectionORU35Data()
         _oru220Data.value = InspectionORU220Data()
         _atgData.value = InspectionATGData()
         _oru500Data.value = InspectionORU500Data()
         _buildingsData.value = InspectionBuildingsData()
-        _atgComments.value = emptyMap()
+        // НЕ очищаем комментарии - они остаются!
+    }
+
+    // Очистка только комментариев (если нужно)
+    fun clearAllComments() {
+        commentStorage.clearAllComments()
+        loadCommentsFromStorage()
     }
 
     // --- Функции для фото АТГ ---
@@ -89,47 +106,34 @@ class SharedInspectionViewModel : ViewModel() {
     private val _atgComments = MutableStateFlow<Map<String, List<String>>>(emptyMap())
     val atgComments: StateFlow<Map<String, List<String>>> = _atgComments
 
+    // Загрузить комментарии из хранилища
+    private fun loadCommentsFromStorage() {
+        val saved = commentStorage.loadAllComments()
+        _atgComments.value = saved
+    }
+
     // Добавить комментарий
     fun addATGComment(equipmentKey: String, comment: String) {
         if (comment.isBlank()) return
-
-        val currentMap = _atgComments.value.toMutableMap()
-        val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(comment)
-        currentMap[equipmentKey] = currentList
-
-        _atgComments.value = currentMap
-        saveCommentsToAtgData(equipmentKey, currentList)
+        commentStorage.addComment(equipmentKey, comment)
+        loadCommentsFromStorage()
+        // Сохраняем также в _atgData для архива
+        saveCommentsToAtgData(equipmentKey, commentStorage.getComments(equipmentKey))
     }
 
     // Удалить комментарий по индексу
     fun removeATGComment(equipmentKey: String, commentIndex: Int) {
-        val currentMap = _atgComments.value.toMutableMap()
-        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
-        if (commentIndex in currentList.indices) {
-            currentList.removeAt(commentIndex)
-            if (currentList.isEmpty()) {
-                currentMap.remove(equipmentKey)
-            } else {
-                currentMap[equipmentKey] = currentList
-            }
-            _atgComments.value = currentMap
-            saveCommentsToAtgData(equipmentKey, currentList)
-        }
+        commentStorage.removeComment(equipmentKey, commentIndex)
+        loadCommentsFromStorage()
+        saveCommentsToAtgData(equipmentKey, commentStorage.getComments(equipmentKey))
     }
 
     // Редактировать комментарий по индексу
     fun updateATGComment(equipmentKey: String, commentIndex: Int, newComment: String) {
         if (newComment.isBlank()) return
-
-        val currentMap = _atgComments.value.toMutableMap()
-        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
-        if (commentIndex in currentList.indices) {
-            currentList[commentIndex] = newComment
-            currentMap[equipmentKey] = currentList
-            _atgComments.value = currentMap
-            saveCommentsToAtgData(equipmentKey, currentList)
-        }
+        commentStorage.updateComment(equipmentKey, commentIndex, newComment)
+        loadCommentsFromStorage()
+        saveCommentsToAtgData(equipmentKey, commentStorage.getComments(equipmentKey))
     }
 
     // Сохранить комментарии в _atgData (для архива)
@@ -150,7 +154,7 @@ class SharedInspectionViewModel : ViewModel() {
         )
     }
 
-    // Загрузить комментарии из _atgData (вызвать при старте)
+    // Загрузить комментарии из _atgData (при загрузке архива)
     fun loadCommentsFromAtgData() {
         val data = _atgData.value
         val commentsMap = mutableMapOf<String, List<String>>()
@@ -170,6 +174,13 @@ class SharedInspectionViewModel : ViewModel() {
         commentsMap["Реактор ф.В"] = parseComments(data.commentReactorB)
         commentsMap["Реактор ф.А"] = parseComments(data.commentReactorA)
 
-        _atgComments.value = commentsMap
+        // Сохраняем в постоянное хранилище
+        commentsMap.forEach { (key, value) ->
+            if (value.isNotEmpty()) {
+                commentStorage.addComment(key, value.last()) // Восстанавливаем последний комментарий
+                // Для списка нужно более сложное восстановление, но пока так
+            }
+        }
+        loadCommentsFromStorage()
     }
 }

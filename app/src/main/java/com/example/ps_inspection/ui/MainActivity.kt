@@ -1,13 +1,17 @@
-package com.example.ps_inspection
+package com.example.ps_inspection.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.widget.TextView
-import kotlinx.coroutines.launch
+import com.example.ps_inspection.AutoSaveManager
+import com.example.ps_inspection.R
+import com.example.ps_inspection.SharedInspectionViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,12 +19,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var autoSaveManager: AutoSaveManager
     private val sharedViewModel: SharedInspectionViewModel by lazy {
         // Получаем ViewModel через ViewModelProvider
-        androidx.lifecycle.ViewModelProvider(this)[SharedInspectionViewModel::class.java]
+        ViewModelProvider(this)[SharedInspectionViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Инициализируем хранилище комментариев
+        sharedViewModel.initCommentStorage(this)
 
         autoSaveManager = AutoSaveManager(this)
 
@@ -30,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         toolbarTitle = findViewById(R.id.toolbar_title)
 
         // Настройка Toolbar
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         // ОТКЛЮЧАЕМ стандартный заголовок ActionBar
@@ -80,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         if (autoSaveManager.hasAutoSave()) {
             val autoSave = autoSaveManager.loadAllData()
             if (autoSave != null) {
-                android.app.AlertDialog.Builder(this)
+                AlertDialog.Builder(this)
                     .setTitle("Восстановление данных")
                     .setMessage("Обнаружены несохранённые данные от ${autoSave.displayDate}. Восстановить?")
                     .setPositiveButton("Восстановить") { _, _ ->
