@@ -972,6 +972,11 @@ class InspectionORU500 : Fragment() {
         }
     }
 
+    fun refreshAllStates() {
+        updatePhotoButtonsState()
+        updateCommentButtonsState(sharedViewModel.oru500Comments.value)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

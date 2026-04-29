@@ -300,7 +300,7 @@ class CommentsDialogFragment : DialogFragment() {
             "ATG" -> (parentFragment as? InspectionATG)?.updateCommentButtonsState(sharedViewModel.atgComments.value)
             "ORU35" -> (parentFragment as? InspectionORU35)?.updateCommentButtonsState(sharedViewModel.oru35Comments.value)
             "ORU220" -> (parentFragment as? InspectionORU220)?.updateCommentButtonsState(sharedViewModel.oru220Comments.value)
-            "ORU500" -> (parentFragment as? InspectionORU500)?.updateCommentButtonsState(sharedViewModel.oru500Comments.value)
+            "ORU500" -> (parentFragment as? InspectionORU500)?.refreshAllStates()
         }
     }
 }
