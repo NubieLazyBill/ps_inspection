@@ -56,12 +56,17 @@ class InspectionORU500 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Сначала загружаем комментарии из хранилища
+        sharedViewModel.loadORU500CommentsFromStorage()
+
+        // Подписываемся на изменения данных
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.oru500Data.collectLatest { data ->
                 updateUIFromData(data)
             }
         }
 
+        // Подписываемся на изменения комментариев
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.oru500Comments.collectLatest { comments ->
                 updateCommentButtonsState(comments)
@@ -71,8 +76,11 @@ class InspectionORU500 : Fragment() {
         setupInputListeners()
         initSpinnerLists()
         setupFillButtons()
-        setupMediaButtons()  // ← как в ОРУ-220
+        setupMediaButtons()
+
+        // Обновляем состояние всех кнопок
         updatePhotoButtonsState()
+        refreshAllStates()  // ← этот метод нужно добавить в класс
     }
 
     private fun setupMediaButtons() {
