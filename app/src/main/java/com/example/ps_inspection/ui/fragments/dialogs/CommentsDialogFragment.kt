@@ -20,6 +20,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.ps_inspection.ui.fragments.inspections.InspectionATG
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU220
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU35
+import com.example.ps_inspection.ui.fragments.inspections.InspectionORU500
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -106,6 +107,8 @@ class CommentsDialogFragment : DialogFragment() {
             sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
         } else if (equipmentType == "ORU220") {
             sharedViewModel.oru220Comments.value[equipmentName] ?: emptyList()
+        } else if (equipmentType == "ORU500") {
+            sharedViewModel.oru500Comments.value[equipmentName] ?: emptyList()
         } else {
             emptyList()
         }
@@ -116,6 +119,7 @@ class CommentsDialogFragment : DialogFragment() {
             "ATG" -> sharedViewModel.addATGComment(equipmentName, comment)
             "ORU35" -> sharedViewModel.addORU35Comment(equipmentName, comment)
             "ORU220" -> sharedViewModel.addORU220Comment(equipmentName, comment)
+            "ORU500" -> sharedViewModel.addORU500Comment(equipmentName, comment)
         }
     }
 
@@ -137,6 +141,12 @@ class CommentsDialogFragment : DialogFragment() {
                 val comments = sharedViewModel.oru220Comments.value[equipmentName] ?: emptyList()
                 if (comments.isNotEmpty()) {
                     sharedViewModel.removeORU220Comment(equipmentName, comments.size - 1)
+                }
+            }
+            "ORU500" -> {
+                val comments = sharedViewModel.oru500Comments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.removeORU500Comment(equipmentName, comments.size - 1)
                 }
             }
         }
@@ -166,6 +176,14 @@ class CommentsDialogFragment : DialogFragment() {
                     sharedViewModel.updateORU220Comment(equipmentName, comments.size - 1, newComment)
                 } else {
                     sharedViewModel.addORU220Comment(equipmentName, newComment)
+                }
+            }
+            "ORU500" -> {
+                val comments = sharedViewModel.oru500Comments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.updateORU500Comment(equipmentName, comments.size - 1, newComment)
+                } else {
+                    sharedViewModel.addORU500Comment(equipmentName, newComment)
                 }
             }
         }
@@ -282,6 +300,7 @@ class CommentsDialogFragment : DialogFragment() {
             "ATG" -> (parentFragment as? InspectionATG)?.updateCommentButtonsState(sharedViewModel.atgComments.value)
             "ORU35" -> (parentFragment as? InspectionORU35)?.updateCommentButtonsState(sharedViewModel.oru35Comments.value)
             "ORU220" -> (parentFragment as? InspectionORU220)?.updateCommentButtonsState(sharedViewModel.oru220Comments.value)
+            "ORU500" -> (parentFragment as? InspectionORU500)?.updateCommentButtonsState(sharedViewModel.oru500Comments.value)
         }
     }
 }

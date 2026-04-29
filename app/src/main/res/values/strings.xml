@@ -149,5 +149,6 @@
     <string name="zapolnit">Заполнить</string>
     <string name="add_photo">Добавить фото</string>
     <string name="add_comment">Добавить комментарий</string>
+    <string name="fill_all">Заполнить все</string>
 
 </resources>

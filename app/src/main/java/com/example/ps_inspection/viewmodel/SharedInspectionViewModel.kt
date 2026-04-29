@@ -453,4 +453,164 @@ class SharedInspectionViewModel : ViewModel() {
         _oru220Comments.value = commentsMap
     }
 
+    // ========== КОММЕНТАРИИ ДЛЯ ОРУ-500 (СПИСОК) ==========
+
+    private val _oru500Comments = MutableStateFlow<Map<String, List<String>>>(emptyMap())
+    val oru500Comments: StateFlow<Map<String, List<String>>> = _oru500Comments
+
+    fun addORU500Comment(equipmentKey: String, comment: String) {
+        if (comment.isBlank()) return
+
+        val currentMap = _oru500Comments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
+        currentList.add(comment)
+        currentMap[equipmentKey] = currentList
+        _oru500Comments.value = currentMap
+
+        val allComments = commentStorage.loadAllComments().toMutableMap()
+        allComments[equipmentKey] = currentList
+        commentStorage.saveAllComments(allComments)
+
+        saveORU500CommentsToData(equipmentKey, currentList)
+    }
+
+    fun removeORU500Comment(equipmentKey: String, commentIndex: Int) {
+        val currentMap = _oru500Comments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList.removeAt(commentIndex)
+            if (currentList.isEmpty()) {
+                currentMap.remove(equipmentKey)
+            } else {
+                currentMap[equipmentKey] = currentList
+            }
+            _oru500Comments.value = currentMap
+
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            if (currentList.isEmpty()) {
+                allComments.remove(equipmentKey)
+            } else {
+                allComments[equipmentKey] = currentList
+            }
+            commentStorage.saveAllComments(allComments)
+
+            saveORU500CommentsToData(equipmentKey, currentList)
+        }
+    }
+
+    fun updateORU500Comment(equipmentKey: String, commentIndex: Int, newComment: String) {
+        if (newComment.isBlank()) return
+
+        val currentMap = _oru500Comments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList[commentIndex] = newComment
+            currentMap[equipmentKey] = currentList
+            _oru500Comments.value = currentMap
+
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            allComments[equipmentKey] = currentList
+            commentStorage.saveAllComments(allComments)
+
+            saveORU500CommentsToData(equipmentKey, currentList)
+        }
+    }
+
+    private fun saveORU500CommentsToData(equipmentKey: String, comments: List<String>) {
+        val commentString = comments.joinToString("|||")
+        updateORU500Data {
+            when (equipmentKey) {
+                // В-500
+                "В-500 Р-500 2С" -> commentR5002s = commentString
+                "В-500 ВШТ-31" -> commentVsht31 = commentString
+                "В-500 ВЛТ-30" -> commentVlt30 = commentString
+                "В-500 ВШЛ-32" -> commentVshl32 = commentString
+                "В-500 ВШЛ-21" -> commentVshl21 = commentString
+                "В-500 ВШТ-22" -> commentVsht22 = commentString
+                "В-500 ВЛТ-20" -> commentVlt20 = commentString
+                "В-500 ВШТ-11" -> commentVsht11 = commentString
+                "В-500 ВШЛ-12" -> commentVshl12 = commentString
+                // ТТ-500
+                "ТТ-500 ВШТ-31" -> commentTtVsht31 = commentString
+                "ТТ-500 ВЛТ-30" -> commentTtVlt30 = commentString
+                "ТТ-500 ВШЛ-32" -> commentTtVshl32 = commentString
+                "ТТ-500 ВШЛ-21" -> commentTtVshl21 = commentString
+                "ТТ-500 ВШТ-22" -> commentTtVsht22 = commentString
+                "ТТ-500 ВЛТ-20" -> commentTtVlt20 = commentString
+                "ТТ-500 ВШТ-11" -> commentTtVsht11 = commentString
+                "ТТ-500 ВШЛ-12" -> commentTtVshl12 = commentString
+                // ТН-500
+                "1ТН-500" -> commentTn1500 = commentString
+                "2ТН-500" -> commentTn2500 = commentString
+                "ТН-500 СГРЭС-1" -> commentTn500Sgres1 = commentString
+                // Трачуковская
+                "Трачуковская ТТ" -> commentTrachukovskayaTt = commentString
+                "Трачуковская 2ТН" -> commentTrachukovskaya2tn = commentString
+                "Трачуковская 1ТН" -> commentTrachukovskaya1tn = commentString
+                // Белозёрная
+                "Белозёрная 2ТН" -> commentBelozernaya2tn = commentString
+            }
+        }
+    }
+
+    fun loadORU500CommentsFromStorage() {
+        val saved = commentStorage.loadAllComments()
+        // Фильтруем только комментарии для ОРУ-500
+        val oru500Keys = setOf(
+            "В-500 Р-500 2С", "В-500 ВШТ-31", "В-500 ВЛТ-30", "В-500 ВШЛ-32", "В-500 ВШЛ-21",
+            "В-500 ВШТ-22", "В-500 ВЛТ-20", "В-500 ВШТ-11", "В-500 ВШЛ-12",
+            "ТТ-500 ВШТ-31", "ТТ-500 ВЛТ-30", "ТТ-500 ВШЛ-32", "ТТ-500 ВШЛ-21",
+            "ТТ-500 ВШТ-22", "ТТ-500 ВЛТ-20", "ТТ-500 ВШТ-11", "ТТ-500 ВШЛ-12",
+            "1ТН-500", "2ТН-500", "ТН-500 СГРЭС-1",
+            "Трачуковская ТТ", "Трачуковская 2ТН", "Трачуковская 1ТН",
+            "Белозёрная 2ТН"
+        )
+        _oru500Comments.value = saved.filterKeys { it in oru500Keys }
+    }
+
+    fun loadORU500CommentsFromData() {
+        val data = _oru500Data.value
+        val commentsMap = mutableMapOf<String, List<String>>()
+
+        fun parseComments(str: String): List<String> {
+            return if (str.isBlank()) emptyList() else str.split("|||")
+        }
+
+        // В-500
+        commentsMap["В-500 Р-500 2С"] = parseComments(data.commentR5002s)
+        commentsMap["В-500 ВШТ-31"] = parseComments(data.commentVsht31)
+        commentsMap["В-500 ВЛТ-30"] = parseComments(data.commentVlt30)
+        commentsMap["В-500 ВШЛ-32"] = parseComments(data.commentVshl32)
+        commentsMap["В-500 ВШЛ-21"] = parseComments(data.commentVshl21)
+        commentsMap["В-500 ВШТ-22"] = parseComments(data.commentVsht22)
+        commentsMap["В-500 ВЛТ-20"] = parseComments(data.commentVlt20)
+        commentsMap["В-500 ВШТ-11"] = parseComments(data.commentVsht11)
+        commentsMap["В-500 ВШЛ-12"] = parseComments(data.commentVshl12)
+
+        // ТТ-500
+        commentsMap["ТТ-500 ВШТ-31"] = parseComments(data.commentTtVsht31)
+        commentsMap["ТТ-500 ВЛТ-30"] = parseComments(data.commentTtVlt30)
+        commentsMap["ТТ-500 ВШЛ-32"] = parseComments(data.commentTtVshl32)
+        commentsMap["ТТ-500 ВШЛ-21"] = parseComments(data.commentTtVshl21)
+        commentsMap["ТТ-500 ВШТ-22"] = parseComments(data.commentTtVsht22)
+        commentsMap["ТТ-500 ВЛТ-20"] = parseComments(data.commentTtVlt20)
+        commentsMap["ТТ-500 ВШТ-11"] = parseComments(data.commentTtVsht11)
+        commentsMap["ТТ-500 ВШЛ-12"] = parseComments(data.commentTtVshl12)
+
+        // ТН-500
+        commentsMap["1ТН-500"] = parseComments(data.commentTn1500)
+        commentsMap["2ТН-500"] = parseComments(data.commentTn2500)
+        commentsMap["ТН-500 СГРЭС-1"] = parseComments(data.commentTn500Sgres1)
+
+        // Трачуковская
+        commentsMap["Трачуковская ТТ"] = parseComments(data.commentTrachukovskayaTt)
+        commentsMap["Трачуковская 2ТН"] = parseComments(data.commentTrachukovskaya2tn)
+        commentsMap["Трачуковская 1ТН"] = parseComments(data.commentTrachukovskaya1tn)
+
+        // Белозёрная
+        commentsMap["Белозёрная 2ТН"] = parseComments(data.commentBelozernaya2tn)
+
+        _oru500Comments.value = commentsMap
+    }
+
 }

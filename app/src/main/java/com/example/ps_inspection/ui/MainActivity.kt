@@ -32,7 +32,8 @@ class MainActivity : AppCompatActivity() {
 
         sharedViewModel.loadCommentsFromAtgData()
         sharedViewModel.loadORU35CommentsFromStorage()
-        sharedViewModel.loadORU220CommentsFromStorage()  // ← ДОБАВЛЕНО для ОРУ-220
+        sharedViewModel.loadORU220CommentsFromStorage()
+        sharedViewModel.loadORU500CommentsFromStorage()
 
         // Находим кастомный TextView
         toolbarTitle = findViewById(R.id.toolbar_title)
@@ -94,7 +95,8 @@ class MainActivity : AppCompatActivity() {
                         autoSaveManager.clearAutoSave()
                         sharedViewModel.loadCommentsFromAtgData()
                         sharedViewModel.loadORU35CommentsFromStorage()
-                        sharedViewModel.loadORU220CommentsFromStorage()  // ← ДОБАВЛЕНО
+                        sharedViewModel.loadORU220CommentsFromStorage()
+                        sharedViewModel.loadORU500CommentsFromStorage()
                         Toast.makeText(this, "Данные восстановлены", Toast.LENGTH_LONG).show()
                     }
                     .setNegativeButton("Начать новый осмотр") { _, _ ->
@@ -102,7 +104,8 @@ class MainActivity : AppCompatActivity() {
                         sharedViewModel.clearAllData()
                         sharedViewModel.loadCommentsFromAtgData()
                         sharedViewModel.loadORU35CommentsFromStorage()
-                        sharedViewModel.loadORU220CommentsFromStorage()  // ← ДОБАВЛЕНО
+                        sharedViewModel.loadORU220CommentsFromStorage()
+                        sharedViewModel.loadORU500CommentsFromStorage()
                         Toast.makeText(this, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
                     }
                     .setNeutralButton("Отмена", null)
@@ -113,7 +116,8 @@ class MainActivity : AppCompatActivity() {
             // Если нет автосохранения, всё равно загружаем комментарии
             sharedViewModel.loadCommentsFromAtgData()
             sharedViewModel.loadORU35CommentsFromStorage()
-            sharedViewModel.loadORU220CommentsFromStorage()  // ← ДОБАВЛЕНО
+            sharedViewModel.loadORU220CommentsFromStorage()
+            sharedViewModel.loadORU500CommentsFromStorage()
         }
     }
 

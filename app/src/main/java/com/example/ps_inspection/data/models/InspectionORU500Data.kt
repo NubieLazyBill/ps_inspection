@@ -145,5 +145,78 @@ data class InspectionORU500Data(
     var tn500Sgres1Cascade3C: String = "",
     var tn500Sgres1Cascade4A: String = "",
     var tn500Sgres1Cascade4B: String = "",
-    var tn500Sgres1Cascade4C: String = ""
+    var tn500Sgres1Cascade4C: String = "",
+
+    // ========== ФОТО ==========
+    // Списки фото для каждого оборудования
+    var oru500PhotoFiles: List<String> = emptyList(),  // общий список (для совместимости)
+
+    // Фото для В-500 (выключатели)
+    var photoR5002s: List<String> = emptyList(),
+    var photoVsht31: List<String> = emptyList(),
+    var photoVlt30: List<String> = emptyList(),
+    var photoVshl32: List<String> = emptyList(),
+    var photoVshl21: List<String> = emptyList(),
+    var photoVsht22: List<String> = emptyList(),
+    var photoVlt20: List<String> = emptyList(),
+    var photoVsht11: List<String> = emptyList(),
+    var photoVshl12: List<String> = emptyList(),
+
+    // Фото для ТТ-500
+    var photoTtVsht31: List<String> = emptyList(),
+    var photoTtVlt30: List<String> = emptyList(),
+    var photoTtVshl32: List<String> = emptyList(),
+    var photoTtVshl21: List<String> = emptyList(),
+    var photoTtVsht22: List<String> = emptyList(),
+    var photoTtVlt20: List<String> = emptyList(),
+    var photoTtVsht11: List<String> = emptyList(),
+    var photoTtVshl12: List<String> = emptyList(),
+
+    // Фото для ТН-500 (трансформаторы напряжения)
+    var photoTn1500: List<String> = emptyList(),
+    var photoTn2500: List<String> = emptyList(),
+    var photoTn500Sgres1: List<String> = emptyList(),
+
+    // Фото для Трачуковской
+    var photoTrachukovskayaTt: List<String> = emptyList(),
+    var photoTrachukovskaya2tn: List<String> = emptyList(),
+    var photoTrachukovskaya1tn: List<String> = emptyList(),
+
+    // Фото для Белозёрной
+    var photoBelozernaya2tn: List<String> = emptyList(),
+
+    // ========== КОММЕНТАРИИ (с разделителем |||) ==========
+    // В-500 (выключатели)
+    var commentR5002s: String = "",
+    var commentVsht31: String = "",
+    var commentVlt30: String = "",
+    var commentVshl32: String = "",
+    var commentVshl21: String = "",
+    var commentVsht22: String = "",
+    var commentVlt20: String = "",
+    var commentVsht11: String = "",
+    var commentVshl12: String = "",
+
+    // ТТ-500
+    var commentTtVsht31: String = "",
+    var commentTtVlt30: String = "",
+    var commentTtVshl32: String = "",
+    var commentTtVshl21: String = "",
+    var commentTtVsht22: String = "",
+    var commentTtVlt20: String = "",
+    var commentTtVsht11: String = "",
+    var commentTtVshl12: String = "",
+
+    // ТН-500 (трансформаторы напряжения)
+    var commentTn1500: String = "",
+    var commentTn2500: String = "",
+    var commentTn500Sgres1: String = "",
+
+    // Трачуковская
+    var commentTrachukovskayaTt: String = "",
+    var commentTrachukovskaya2tn: String = "",
+    var commentTrachukovskaya1tn: String = "",
+
+    // Белозёрная
+    var commentBelozernaya2tn: String = ""
 )

@@ -8,14 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ps_inspection.R
 import com.example.ps_inspection.data.models.InspectionORU500Data
+import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionORU500Binding
+import com.example.ps_inspection.ui.fragments.dialogs.CommentsDialogFragment
+import com.example.ps_inspection.ui.fragments.dialogs.MediaDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -25,20 +31,25 @@ class InspectionORU500 : Fragment() {
     private val binding get() = _binding!!
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
+    private lateinit var mediaManager: InspectionMediaManager
 
-    // Флаг для отслеживания, обновляем ли мы UI программно
     private var isUpdatingUIFromViewModel = false
 
-    // Списки спиннеров для массового заполнения
     private val tn1500Spinners = mutableListOf<Spinner>()
     private val tn2500Spinners = mutableListOf<Spinner>()
     private val tn500Sgres1Spinners = mutableListOf<Spinner>()
+
+    // Маппинг для комментариев
+    private val commentButtons = mutableMapOf<ImageButton, String>()
+    // Маппинг для фото
+    private val mediaButtons = mutableMapOf<ImageButton, String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInspectionORU500Binding.inflate(inflater, container, false)
+        mediaManager = InspectionMediaManager(requireContext())  // ← как в ОРУ-220
         return binding.root
     }
 
@@ -51,13 +62,133 @@ class InspectionORU500 : Fragment() {
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            sharedViewModel.oru500Comments.collectLatest { comments ->
+                updateCommentButtonsState(comments)
+            }
+        }
+
         setupInputListeners()
         initSpinnerLists()
         setupFillButtons()
+        setupMediaButtons()  // ← как в ОРУ-220
+        updatePhotoButtonsState()
+    }
+
+    private fun setupMediaButtons() {
+        val inspectionId = "current_inspection"
+
+        // Регистрируем все кнопки фото
+        registerMediaButton(binding.btnMediaR5002s, "В-500 Р-500 2С")
+        registerMediaButton(binding.btnMediaVsht31, "В-500 ВШТ-31")
+        registerMediaButton(binding.btnMediaVlt30, "В-500 ВЛТ-30")
+        registerMediaButton(binding.btnMediaVshl32, "В-500 ВШЛ-32")
+        registerMediaButton(binding.btnMediaVshl21, "В-500 ВШЛ-21")
+        registerMediaButton(binding.btnMediaVsht22, "В-500 ВШТ-22")
+        registerMediaButton(binding.btnMediaVlt20, "В-500 ВЛТ-20")
+        registerMediaButton(binding.btnMediaVsht11, "В-500 ВШТ-11")
+        registerMediaButton(binding.btnMediaVshl12, "В-500 ВШЛ-12")
+
+        registerMediaButton(binding.btnMediaTtVsht31, "ТТ-500 ВШТ-31")
+        registerMediaButton(binding.btnMediaTtVlt30, "ТТ-500 ВЛТ-30")
+        registerMediaButton(binding.btnMediaTtVshl32, "ТТ-500 ВШЛ-32")
+        registerMediaButton(binding.btnMediaTtVshl21, "ТТ-500 ВШЛ-21")
+        registerMediaButton(binding.btnMediaTtVsht22, "ТТ-500 ВШТ-22")
+        registerMediaButton(binding.btnMediaTtVlt20, "ТТ-500 ВЛТ-20")
+        registerMediaButton(binding.btnMediaTtVsht11, "ТТ-500 ВШТ-11")
+        registerMediaButton(binding.btnMediaTtVshl12, "ТТ-500 ВШЛ-12")
+
+        registerMediaButton(binding.btnMediaTn1500, "1ТН-500")
+        registerMediaButton(binding.btnMediaTn2500, "2ТН-500")
+        registerMediaButton(binding.btnMediaTn500Sgres1, "ТН-500 СГРЭС-1")
+
+        registerMediaButton(binding.btnMediaTrachukovskayaTt, "Трачуковская ТТ")
+        registerMediaButton(binding.btnMediaTrachukovskaya2tn, "Трачуковская 2ТН")
+        registerMediaButton(binding.btnMediaTrachukovskaya1tn, "Трачуковская 1ТН")
+
+        registerMediaButton(binding.btnMediaBelozernaya2tn, "Белозёрная 2ТН")
+
+        // Регистрируем все кнопки комментариев
+        registerCommentButton(binding.btnCommentR5002s, "В-500 Р-500 2С")
+        registerCommentButton(binding.btnCommentVsht31, "В-500 ВШТ-31")
+        registerCommentButton(binding.btnCommentVlt30, "В-500 ВЛТ-30")
+        registerCommentButton(binding.btnCommentVshl32, "В-500 ВШЛ-32")
+        registerCommentButton(binding.btnCommentVshl21, "В-500 ВШЛ-21")
+        registerCommentButton(binding.btnCommentVsht22, "В-500 ВШТ-22")
+        registerCommentButton(binding.btnCommentVlt20, "В-500 ВЛТ-20")
+        registerCommentButton(binding.btnCommentVsht11, "В-500 ВШТ-11")
+        registerCommentButton(binding.btnCommentVshl12, "В-500 ВШЛ-12")
+
+        registerCommentButton(binding.btnCommentTtVsht31, "ТТ-500 ВШТ-31")
+        registerCommentButton(binding.btnCommentTtVlt30, "ТТ-500 ВЛТ-30")
+        registerCommentButton(binding.btnCommentTtVshl32, "ТТ-500 ВШЛ-32")
+        registerCommentButton(binding.btnCommentTtVshl21, "ТТ-500 ВШЛ-21")
+        registerCommentButton(binding.btnCommentTtVsht22, "ТТ-500 ВШТ-22")
+        registerCommentButton(binding.btnCommentTtVlt20, "ТТ-500 ВЛТ-20")
+        registerCommentButton(binding.btnCommentTtVsht11, "ТТ-500 ВШТ-11")
+        registerCommentButton(binding.btnCommentTtVshl12, "ТТ-500 ВШЛ-12")
+
+        registerCommentButton(binding.btnCommentTn1500, "1ТН-500")
+        registerCommentButton(binding.btnCommentTn2500, "2ТН-500")
+        registerCommentButton(binding.btnCommentTn500Sgres1, "ТН-500 СГРЭС-1")
+
+        registerCommentButton(binding.btnCommentTrachukovskayaTt, "Трачуковская ТТ")
+        registerCommentButton(binding.btnCommentTrachukovskaya2tn, "Трачуковская 2ТН")
+        registerCommentButton(binding.btnCommentTrachukovskaya1tn, "Трачуковская 1ТН")
+
+        registerCommentButton(binding.btnCommentBelozernaya2tn, "Белозёрная 2ТН")
+    }
+
+    private fun registerMediaButton(button: ImageButton?, equipmentKey: String) {
+        button?.let {
+            mediaButtons[it] = equipmentKey
+            it.setOnClickListener {
+                MediaDialogFragment.newInstance("current_inspection", equipmentKey)
+                    .show(childFragmentManager, "media_${equipmentKey.replace(" ", "_")}")
+            }
+        }
+    }
+
+    private fun registerCommentButton(button: ImageButton?, equipmentKey: String) {
+        button?.let {
+            commentButtons[it] = equipmentKey
+            it.setOnClickListener {
+                CommentsDialogFragment.newInstance(equipmentKey, "ORU500")
+                    .show(parentFragmentManager, "comment_${equipmentKey.replace(" ", "_")}")
+            }
+        }
+    }
+
+    private fun updatePhotoButtonsState() {
+        val inspectionId = "current_inspection"
+        mediaButtons.forEach { (button, key) ->
+            val hasPhotos = mediaManager.hasPhotos(inspectionId, key)
+            val color = if (hasPhotos) {
+                ContextCompat.getColor(requireContext(), R.color.green)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.gray)
+            }
+            button.setColorFilter(color)
+        }
+    }
+
+    fun updateCommentButtonsState(commentsMap: Map<String, List<String>>) {
+        commentButtons.forEach { (button, key) ->
+            val hasComments = commentsMap[key]?.isNotEmpty() == true
+            val color = if (hasComments) {
+                ContextCompat.getColor(requireContext(), R.color.green)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.gray)
+            }
+            button.setColorFilter(color)
+        }
+    }
+
+    fun refreshPhotoButtonsState() {
+        updatePhotoButtonsState()
     }
 
     private fun initSpinnerLists() {
-        // 1ТН-500
         tn1500Spinners.addAll(listOf(
             binding.tn1500Cascade1A, binding.tn1500Cascade1B, binding.tn1500Cascade1C,
             binding.tn1500Cascade2A, binding.tn1500Cascade2B, binding.tn1500Cascade2C,
@@ -65,7 +196,6 @@ class InspectionORU500 : Fragment() {
             binding.tn1500Cascade4A, binding.tn1500Cascade4B, binding.tn1500Cascade4C
         ))
 
-        // 2ТН-500
         tn2500Spinners.addAll(listOf(
             binding.tn2500Cascade1A, binding.tn2500Cascade1B, binding.tn2500Cascade1C,
             binding.tn2500Cascade2A, binding.tn2500Cascade2B, binding.tn2500Cascade2C,
@@ -73,7 +203,6 @@ class InspectionORU500 : Fragment() {
             binding.tn2500Cascade4A, binding.tn2500Cascade4B, binding.tn2500Cascade4C
         ))
 
-        // ТН-500 СГРЭС-1
         tn500Sgres1Spinners.addAll(listOf(
             binding.tn500Sgres1Cascade1A, binding.tn500Sgres1Cascade1B, binding.tn500Sgres1Cascade1C,
             binding.tn500Sgres1Cascade2A, binding.tn500Sgres1Cascade2B, binding.tn500Sgres1Cascade2C,
@@ -85,7 +214,6 @@ class InspectionORU500 : Fragment() {
     private fun setupFillButtons() {
         binding.btnFillAllTn1500.setOnClickListener {
             fillAllSpinners(tn1500Spinners, "1ТН-500") { value ->
-                // Обновляем ViewModel для каждого спиннера
                 updateTn1500ViewModel(value)
             }
         }
@@ -102,7 +230,6 @@ class InspectionORU500 : Fragment() {
             }
         }
 
-        // В-500 ВШТ-31 - ТТ
         binding.btnFillAllOilTtVsht31.setOnClickListener {
             fillTtSpinners(binding.oilTtVsht31A, binding.oilTtVsht31B, binding.oilTtVsht31C) { value ->
                 sharedViewModel.updateORU500Data {
@@ -112,7 +239,6 @@ class InspectionORU500 : Fragment() {
             }
         }
 
-        // В-500 ВЛТ-30 - ТТ
         binding.btnFillAllOilTtVlt30.setOnClickListener {
             fillTtSpinners(binding.oilTtVlt30A, binding.oilTtVlt30B, binding.oilTtVlt30C) { value ->
                 sharedViewModel.updateORU500Data {
@@ -122,7 +248,6 @@ class InspectionORU500 : Fragment() {
             }
         }
 
-        // В-500 ВШЛ-32 - ТТ
         binding.btnFillAllOilTtVshl32.setOnClickListener {
             fillTtSpinners(binding.oilTtVshl32A, binding.oilTtVshl32B, binding.oilTtVshl32C) { value ->
                 sharedViewModel.updateORU500Data {
@@ -132,7 +257,6 @@ class InspectionORU500 : Fragment() {
             }
         }
 
-        // В-500 ВШЛ-21 - ТТ
         binding.btnFillAllOilTtVshl21.setOnClickListener {
             fillTtSpinners(binding.oilTtVshl21A, binding.oilTtVshl21B, binding.oilTtVshl21C) { value ->
                 sharedViewModel.updateORU500Data {
@@ -142,7 +266,6 @@ class InspectionORU500 : Fragment() {
             }
         }
 
-        // В-500 ВШТ-22 - ТТ
         binding.btnFillAllOilTtVsht22.setOnClickListener {
             fillTtSpinners(binding.oilTtVsht22A, binding.oilTtVsht22B, binding.oilTtVsht22C) { value ->
                 sharedViewModel.updateORU500Data {
@@ -152,7 +275,6 @@ class InspectionORU500 : Fragment() {
             }
         }
 
-        // В-500 ВЛТ-20 - ТТ
         binding.btnFillAllOilTtVlt20.setOnClickListener {
             fillTtSpinners(binding.oilTtVlt20A, binding.oilTtVlt20B, binding.oilTtVlt20C) { value ->
                 sharedViewModel.updateORU500Data {
@@ -162,7 +284,6 @@ class InspectionORU500 : Fragment() {
             }
         }
 
-        // В-500 ВШТ-11 - ТТ
         binding.btnFillAllOilTtVsht11.setOnClickListener {
             fillTtSpinners(binding.oilTtVsht11A, binding.oilTtVsht11B, binding.oilTtVsht11C) { value ->
                 sharedViewModel.updateORU500Data {
@@ -172,7 +293,6 @@ class InspectionORU500 : Fragment() {
             }
         }
 
-        // В-500 ВШЛ-12 - ТТ
         binding.btnFillAllOilTtVshl12.setOnClickListener {
             fillTtSpinners(binding.oilTtVshl12A, binding.oilTtVshl12B, binding.oilTtVshl12C) { value ->
                 sharedViewModel.updateORU500Data {
@@ -181,11 +301,9 @@ class InspectionORU500 : Fragment() {
                 }
             }
         }
-
     }
 
     private fun fillAllSpinners(spinners: List<Spinner>, title: String, onUpdate: (String) -> Unit) {
-        // Берем значение из первого спиннера
         val firstSpinner = spinners.firstOrNull() ?: return
         val value = firstSpinner.selectedItem?.toString() ?: return
 
@@ -194,10 +312,8 @@ class InspectionORU500 : Fragment() {
             return
         }
 
-        // Временно отключаем флаг обновления UI
         isUpdatingUIFromViewModel = true
 
-        // Заполняем все спиннеры
         for (spinner in spinners) {
             val adapter = spinner.adapter
             for (i in 0 until adapter.count) {
@@ -208,13 +324,43 @@ class InspectionORU500 : Fragment() {
             }
         }
 
-        // Восстанавливаем флаг
         isUpdatingUIFromViewModel = false
-
-        // Обновляем ViewModel для всех спиннеров
         onUpdate(value)
 
         Toast.makeText(requireContext(), "Все каскады $title заполнены", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun fillTtSpinners(
+        spinnerA: Spinner,
+        spinnerB: Spinner,
+        spinnerC: Spinner,
+        onUpdate: (String) -> Unit
+    ) {
+        val value = spinnerA.selectedItem?.toString()
+        if (value.isNullOrEmpty() || value == "Выберите") {
+            Toast.makeText(requireContext(), "Сначала выберите значение в фазе А", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        isUpdatingUIFromViewModel = true
+
+        setSpinnerSilently(spinnerB, value)
+        setSpinnerSilently(spinnerC, value)
+
+        isUpdatingUIFromViewModel = false
+        onUpdate(value)
+
+        Toast.makeText(requireContext(), "Фазы B и C заполнены", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setSpinnerSilently(spinner: Spinner, value: String) {
+        val adapter = spinner.adapter
+        for (i in 0 until adapter.count) {
+            if (adapter.getItem(i).toString() == value) {
+                spinner.setSelection(i, false)
+                break
+            }
+        }
     }
 
     private fun updateTn1500ViewModel(value: String) {
@@ -271,7 +417,6 @@ class InspectionORU500 : Fragment() {
     private fun updateUIFromData(data: InspectionORU500Data) {
         isUpdatingUIFromViewModel = true
 
-        // Ячейка 1: В-500 Р-500 2С
         setSpinnerSelection(binding.purgingR5002sA1, data.purgingR5002sA1)
         setSpinnerSelection(binding.purgingR5002sB1, data.purgingR5002sB1)
         setSpinnerSelection(binding.purgingR5002sC1, data.purgingR5002sC1)
@@ -279,7 +424,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.purgingR5002sB2, data.purgingR5002sB2)
         setSpinnerSelection(binding.purgingR5002sC2, data.purgingR5002sC2)
 
-        // Ячейка 2: В-500 ВШТ-31
         updateEditTextIfNeeded(binding.gasPressureVsht31A, data.gasPressureVsht31A)
         updateEditTextIfNeeded(binding.gasPressureVsht31B, data.gasPressureVsht31B)
         updateEditTextIfNeeded(binding.gasPressureVsht31C, data.gasPressureVsht31C)
@@ -287,7 +431,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.oilTtVsht31B, data.oilTtVsht31B)
         setSpinnerSelection(binding.oilTtVsht31C, data.oilTtVsht31C)
 
-        // Ячейка 3: В-500 ВЛТ-30
         updateEditTextIfNeeded(binding.gasPressureVlt30A, data.gasPressureVlt30A)
         updateEditTextIfNeeded(binding.gasPressureVlt30B, data.gasPressureVlt30B)
         updateEditTextIfNeeded(binding.gasPressureVlt30C, data.gasPressureVlt30C)
@@ -304,7 +447,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.oil1tnTrachukovskayaB, data.oil1tnTrachukovskayaB)
         setSpinnerSelection(binding.oil1tnTrachukovskayaC, data.oil1tnTrachukovskayaC)
 
-        // Ячейка 4: В-500 ВШЛ-32
         setSpinnerSelection(binding.purgingVshl32A1, data.purgingVshl32A1)
         setSpinnerSelection(binding.purgingVshl32B1, data.purgingVshl32B1)
         setSpinnerSelection(binding.purgingVshl32C1, data.purgingVshl32C1)
@@ -315,7 +457,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.oilTtVshl32B, data.oilTtVshl32B)
         setSpinnerSelection(binding.oilTtVshl32C, data.oilTtVshl32C)
 
-        // Ячейка 5: В-500 ВШЛ-21
         setSpinnerSelection(binding.purgingVshl21A1, data.purgingVshl21A1)
         setSpinnerSelection(binding.purgingVshl21B1, data.purgingVshl21B1)
         setSpinnerSelection(binding.purgingVshl21C1, data.purgingVshl21C1)
@@ -326,7 +467,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.oilTtVshl21B, data.oilTtVshl21B)
         setSpinnerSelection(binding.oilTtVshl21C, data.oilTtVshl21C)
 
-        // Ячейка 6: В-500 ВШТ-22
         setSpinnerSelection(binding.purgingVsht22A1, data.purgingVsht22A1)
         setSpinnerSelection(binding.purgingVsht22B1, data.purgingVsht22B1)
         setSpinnerSelection(binding.purgingVsht22C1, data.purgingVsht22C1)
@@ -337,7 +477,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.oilTtVsht22B, data.oilTtVsht22B)
         setSpinnerSelection(binding.oilTtVsht22C, data.oilTtVsht22C)
 
-        //В-500 ВЛТ-20
         setSpinnerSelection(binding.purgingVlt20A1, data.purgingVlt20A1)
         setSpinnerSelection(binding.purgingVlt20B1, data.purgingVlt20B1)
         setSpinnerSelection(binding.purgingVlt20C1, data.purgingVlt20C1)
@@ -348,7 +487,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.oilTtVlt20B, data.oilTtVlt20B)
         setSpinnerSelection(binding.oilTtVlt20C, data.oilTtVlt20C)
 
-        // Ячейка 7: В-500 ВШТ-11
         setSpinnerSelection(binding.purgingVsht11A1, data.purgingVsht11A1)
         setSpinnerSelection(binding.purgingVsht11B1, data.purgingVsht11B1)
         setSpinnerSelection(binding.purgingVsht11C1, data.purgingVsht11C1)
@@ -359,7 +497,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.oilTtVsht11B, data.oilTtVsht11B)
         setSpinnerSelection(binding.oilTtVsht11C, data.oilTtVsht11C)
 
-        // Ячейка 8: В-500 ВШЛ-12
         setSpinnerSelection(binding.purgingVshl12A1, data.purgingVshl12A1)
         setSpinnerSelection(binding.purgingVshl12B1, data.purgingVshl12B1)
         setSpinnerSelection(binding.purgingVshl12C1, data.purgingVshl12C1)
@@ -373,7 +510,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.oil2tnBelozernayaB, data.oil2tnBelozernayaB)
         setSpinnerSelection(binding.oil2tnBelozernayaC, data.oil2tnBelozernayaC)
 
-        // 1ТН-500 Каскады
         setSpinnerSelection(binding.tn1500Cascade1A, data.tn1500Cascade1A)
         setSpinnerSelection(binding.tn1500Cascade1B, data.tn1500Cascade1B)
         setSpinnerSelection(binding.tn1500Cascade1C, data.tn1500Cascade1C)
@@ -387,7 +523,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.tn1500Cascade4B, data.tn1500Cascade4B)
         setSpinnerSelection(binding.tn1500Cascade4C, data.tn1500Cascade4C)
 
-        // 2ТН-500 Каскады
         setSpinnerSelection(binding.tn2500Cascade1A, data.tn2500Cascade1A)
         setSpinnerSelection(binding.tn2500Cascade1B, data.tn2500Cascade1B)
         setSpinnerSelection(binding.tn2500Cascade1C, data.tn2500Cascade1C)
@@ -401,7 +536,6 @@ class InspectionORU500 : Fragment() {
         setSpinnerSelection(binding.tn2500Cascade4B, data.tn2500Cascade4B)
         setSpinnerSelection(binding.tn2500Cascade4C, data.tn2500Cascade4C)
 
-        // ТН-500 СГРЭС-1 Каскады
         setSpinnerSelection(binding.tn500Sgres1Cascade1A, data.tn500Sgres1Cascade1A)
         setSpinnerSelection(binding.tn500Sgres1Cascade1B, data.tn500Sgres1Cascade1B)
         setSpinnerSelection(binding.tn500Sgres1Cascade1C, data.tn500Sgres1Cascade1C)
@@ -441,7 +575,6 @@ class InspectionORU500 : Fragment() {
     }
 
     private fun setupInputListeners() {
-        // Слушатели для EditText
         setupEditTextListener(binding.gasPressureVsht31A) { text ->
             sharedViewModel.updateORU500Data { gasPressureVsht31A = text }
         }
@@ -461,7 +594,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { gasPressureVlt30C = text }
         }
 
-        // Ячейка 1: В-500 Р-500 2С
         setupSpinnerListener(binding.purgingR5002sA1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingR5002sA1 = selectedItem.toString() }
         }
@@ -481,7 +613,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { purgingR5002sC2 = selectedItem.toString() }
         }
 
-        // Ячейка 2: В-500 ВШТ-31
         setupSpinnerListener(binding.oilTtVsht31A) { selectedItem ->
             sharedViewModel.updateORU500Data { oilTtVsht31A = selectedItem.toString() }
         }
@@ -492,7 +623,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { oilTtVsht31C = selectedItem.toString() }
         }
 
-        // Ячейка 3: В-500 ВЛТ-30
         setupSpinnerListener(binding.oilTtVlt30A) { selectedItem ->
             sharedViewModel.updateORU500Data { oilTtVlt30A = selectedItem.toString() }
         }
@@ -530,7 +660,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { oil1tnTrachukovskayaC = selectedItem.toString() }
         }
 
-        // Ячейка 4: В-500 ВШЛ-32
         setupSpinnerListener(binding.purgingVshl32A1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVshl32A1 = selectedItem.toString() }
         }
@@ -559,7 +688,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { oilTtVshl32C = selectedItem.toString() }
         }
 
-        // Ячейка 5: В-500 ВШЛ-21
         setupSpinnerListener(binding.purgingVshl21A1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVshl21A1 = selectedItem.toString() }
         }
@@ -588,7 +716,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { oilTtVshl21C = selectedItem.toString() }
         }
 
-        // Ячейка 6: В-500 ВШТ-22
         setupSpinnerListener(binding.purgingVsht22A1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVsht22A1 = selectedItem.toString() }
         }
@@ -617,45 +744,34 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { oilTtVsht22C = selectedItem.toString() }
         }
 
-        //Ячейка В-500 ВЛТ-20
-        // В-500 ВЛТ-20
         setupSpinnerListener(binding.purgingVlt20A1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVlt20A1 = selectedItem.toString() }
         }
-
         setupSpinnerListener(binding.purgingVlt20B1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVlt20B1 = selectedItem.toString() }
         }
-
         setupSpinnerListener(binding.purgingVlt20C1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVlt20C1 = selectedItem.toString() }
         }
-
         setupSpinnerListener(binding.purgingVlt20A2) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVlt20A2 = selectedItem.toString() }
         }
-
         setupSpinnerListener(binding.purgingVlt20B2) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVlt20B2 = selectedItem.toString() }
         }
-
         setupSpinnerListener(binding.purgingVlt20C2) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVlt20C2 = selectedItem.toString() }
         }
-
         setupSpinnerListener(binding.oilTtVlt20A) { selectedItem ->
             sharedViewModel.updateORU500Data { oilTtVlt20A = selectedItem.toString() }
         }
-
         setupSpinnerListener(binding.oilTtVlt20B) { selectedItem ->
             sharedViewModel.updateORU500Data { oilTtVlt20B = selectedItem.toString() }
         }
-
         setupSpinnerListener(binding.oilTtVlt20C) { selectedItem ->
             sharedViewModel.updateORU500Data { oilTtVlt20C = selectedItem.toString() }
         }
 
-        // Ячейка 7: В-500 ВШТ-11
         setupSpinnerListener(binding.purgingVsht11A1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVsht11A1 = selectedItem.toString() }
         }
@@ -684,7 +800,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { oilTtVsht11C = selectedItem.toString() }
         }
 
-        // Ячейка 8: В-500 ВШЛ-12
         setupSpinnerListener(binding.purgingVshl12A1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingVshl12A1 = selectedItem.toString() }
         }
@@ -722,7 +837,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { oil2tnBelozernayaC = selectedItem.toString() }
         }
 
-        // 1ТН-500 Каскады
         setupSpinnerListener(binding.tn1500Cascade1A) { selectedItem ->
             sharedViewModel.updateORU500Data { tn1500Cascade1A = selectedItem.toString() }
         }
@@ -760,7 +874,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { tn1500Cascade4C = selectedItem.toString() }
         }
 
-        // 2ТН-500 Каскады
         setupSpinnerListener(binding.tn2500Cascade1A) { selectedItem ->
             sharedViewModel.updateORU500Data { tn2500Cascade1A = selectedItem.toString() }
         }
@@ -798,7 +911,6 @@ class InspectionORU500 : Fragment() {
             sharedViewModel.updateORU500Data { tn2500Cascade4C = selectedItem.toString() }
         }
 
-        // ТН-500 СГРЭС-1 Каскады
         setupSpinnerListener(binding.tn500Sgres1Cascade1A) { selectedItem ->
             sharedViewModel.updateORU500Data { tn500Sgres1Cascade1A = selectedItem.toString() }
         }
@@ -852,7 +964,7 @@ class InspectionORU500 : Fragment() {
     private fun setupSpinnerListener(spinner: Spinner, onItemSelected: (Any?) -> Unit) {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position > 0) {
+                if (position > 0 && !isUpdatingUIFromViewModel) {
                     onItemSelected(parent?.getItemAtPosition(position))
                 }
             }
@@ -869,39 +981,4 @@ class InspectionORU500 : Fragment() {
         @JvmStatic
         fun newInstance() = InspectionORU500()
     }
-
-    private fun fillTtSpinners(
-        spinnerA: Spinner,
-        spinnerB: Spinner,
-        spinnerC: Spinner,
-        onUpdate: (String) -> Unit
-    ) {
-        val value = spinnerA.selectedItem?.toString()
-        if (value.isNullOrEmpty() || value == "Выберите") {
-            Toast.makeText(requireContext(), "Сначала выберите значение в фазе А", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        isUpdatingUIFromViewModel = true
-
-        setSpinnerSilently(spinnerB, value)
-        setSpinnerSilently(spinnerC, value)
-
-        isUpdatingUIFromViewModel = false
-        onUpdate(value)
-
-        Toast.makeText(requireContext(), "Фазы B и C заполнены", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun setSpinnerSilently(spinner: Spinner, value: String) {
-        val adapter = spinner.adapter
-        for (i in 0 until adapter.count) {
-            if (adapter.getItem(i).toString() == value) {
-                spinner.setSelection(i, false)
-                break
-            }
-        }
-    }
-
-
 }
