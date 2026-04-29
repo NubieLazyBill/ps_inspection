@@ -119,5 +119,33 @@ data class InspectionORU220Data(
     var tn2UpperC: String = "",
     var tn2LowerA: String = "",
     var tn2LowerB: String = "",
-    var tn2LowerC: String = ""
+    var tn2LowerC: String = "",
+
+    // ========== ФОТО ==========
+    var oru220PhotoFiles: List<String> = emptyList(),
+
+    // ========== КОММЕНТАРИИ (для всех 23 единиц) ==========
+    var commentMirnaya: String = "",           // 1
+    var commentMirnayaTT: String = "",         // 2
+    var commentTopaz: String = "",             // 3
+    var commentTopazTT: String = "",           // 4
+    var commentOv: String = "",                // 5
+    var commentOvTT: String = "",              // 6
+    var commentOssh: String = "",              // 7
+    var commentV2atg: String = "",             // 8
+    var commentV2atgTT: String = "",           // 9
+    var commentShsv: String = "",              // 10
+    var commentShsvTT: String = "",            // 11
+    var commentV3atg: String = "",             // 12
+    var commentV3atgTT: String = "",           // 13
+    var commentOrbita: String = "",            // 14
+    var commentOrbitaTT: String = "",          // 15
+    var commentFakel: String = "",             // 16
+    var commentFakelTT: String = "",           // 17
+    var commentCometa1: String = "",           // 18
+    var commentCometa1TT: String = "",         // 19
+    var commentCometa2: String = "",           // 20
+    var commentCometa2TT: String = "",         // 21
+    var commentTn1: String = "",               // 22
+    var commentTn2: String = ""                // 23
 )

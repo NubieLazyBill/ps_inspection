@@ -319,4 +319,138 @@ class SharedInspectionViewModel : ViewModel() {
         _oru35Comments.value = saved
     }
 
+    // ========== КОММЕНТАРИИ ДЛЯ ОРУ-220 (СПИСОК) ==========
+
+    private val _oru220Comments = MutableStateFlow<Map<String, List<String>>>(emptyMap())
+    val oru220Comments: StateFlow<Map<String, List<String>>> = _oru220Comments
+
+    fun addORU220Comment(equipmentKey: String, comment: String) {
+        if (comment.isBlank()) return
+
+        val currentMap = _oru220Comments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
+        currentList.add(comment)
+        currentMap[equipmentKey] = currentList
+        _oru220Comments.value = currentMap
+
+        val allComments = commentStorage.loadAllComments().toMutableMap()
+        allComments[equipmentKey] = currentList
+        commentStorage.saveAllComments(allComments)
+
+        saveORU220CommentsToData(equipmentKey, currentList)
+    }
+
+    fun removeORU220Comment(equipmentKey: String, commentIndex: Int) {
+        val currentMap = _oru220Comments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList.removeAt(commentIndex)
+            if (currentList.isEmpty()) {
+                currentMap.remove(equipmentKey)
+            } else {
+                currentMap[equipmentKey] = currentList
+            }
+            _oru220Comments.value = currentMap
+
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            if (currentList.isEmpty()) {
+                allComments.remove(equipmentKey)
+            } else {
+                allComments[equipmentKey] = currentList
+            }
+            commentStorage.saveAllComments(allComments)
+
+            saveORU220CommentsToData(equipmentKey, currentList)
+        }
+    }
+
+    fun updateORU220Comment(equipmentKey: String, commentIndex: Int, newComment: String) {
+        if (newComment.isBlank()) return
+
+        val currentMap = _oru220Comments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList[commentIndex] = newComment
+            currentMap[equipmentKey] = currentList
+            _oru220Comments.value = currentMap
+
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            allComments[equipmentKey] = currentList
+            commentStorage.saveAllComments(allComments)
+
+            saveORU220CommentsToData(equipmentKey, currentList)
+        }
+    }
+
+    private fun saveORU220CommentsToData(equipmentKey: String, comments: List<String>) {
+        val commentString = comments.joinToString("|||")
+        updateORU220Data {
+            when (equipmentKey) {
+                "Мирная" -> commentMirnaya = commentString
+                "Мирная ТТ" -> commentMirnayaTT = commentString
+                "Топаз" -> commentTopaz = commentString
+                "Топаз ТТ" -> commentTopazTT = commentString
+                "ОВ" -> commentOv = commentString
+                "ОВ ТТ" -> commentOvTT = commentString
+                "ТН-220 ОСШ" -> commentOssh = commentString
+                "2АТГ" -> commentV2atg = commentString
+                "2АТГ ТТ" -> commentV2atgTT = commentString
+                "ШСВ" -> commentShsv = commentString
+                "ШСВ ТТ" -> commentShsvTT = commentString
+                "3АТГ" -> commentV3atg = commentString
+                "3АТГ ТТ" -> commentV3atgTT = commentString
+                "Орбита" -> commentOrbita = commentString
+                "Орбита ТТ" -> commentOrbitaTT = commentString
+                "Факел" -> commentFakel = commentString
+                "Факел ТТ" -> commentFakelTT = commentString
+                "Комета-1" -> commentCometa1 = commentString
+                "Комета-1 ТТ" -> commentCometa1TT = commentString
+                "Комета-2" -> commentCometa2 = commentString
+                "Комета-2 ТТ" -> commentCometa2TT = commentString
+                "1ТН-220" -> commentTn1 = commentString
+                "2ТН-220" -> commentTn2 = commentString
+            }
+        }
+    }
+
+    fun loadORU220CommentsFromStorage() {
+        val saved = commentStorage.loadAllComments()
+        _oru220Comments.value = saved
+    }
+
+    fun loadORU220CommentsFromData() {
+        val data = _oru220Data.value
+        val commentsMap = mutableMapOf<String, List<String>>()
+
+        fun parseComments(str: String): List<String> {
+            return if (str.isBlank()) emptyList() else str.split("|||")
+        }
+
+        commentsMap["Мирная"] = parseComments(data.commentMirnaya)
+        commentsMap["Мирная ТТ"] = parseComments(data.commentMirnayaTT)
+        commentsMap["Топаз"] = parseComments(data.commentTopaz)
+        commentsMap["Топаз ТТ"] = parseComments(data.commentTopazTT)
+        commentsMap["ОВ"] = parseComments(data.commentOv)
+        commentsMap["ОВ ТТ"] = parseComments(data.commentOvTT)
+        commentsMap["ТН-220 ОСШ"] = parseComments(data.commentOssh)
+        commentsMap["2АТГ"] = parseComments(data.commentV2atg)
+        commentsMap["2АТГ ТТ"] = parseComments(data.commentV2atgTT)
+        commentsMap["ШСВ"] = parseComments(data.commentShsv)
+        commentsMap["ШСВ ТТ"] = parseComments(data.commentShsvTT)
+        commentsMap["3АТГ"] = parseComments(data.commentV3atg)
+        commentsMap["3АТГ ТТ"] = parseComments(data.commentV3atgTT)
+        commentsMap["Орбита"] = parseComments(data.commentOrbita)
+        commentsMap["Орбита ТТ"] = parseComments(data.commentOrbitaTT)
+        commentsMap["Факел"] = parseComments(data.commentFakel)
+        commentsMap["Факел ТТ"] = parseComments(data.commentFakelTT)
+        commentsMap["Комета-1"] = parseComments(data.commentCometa1)
+        commentsMap["Комета-1 ТТ"] = parseComments(data.commentCometa1TT)
+        commentsMap["Комета-2"] = parseComments(data.commentCometa2)
+        commentsMap["Комета-2 ТТ"] = parseComments(data.commentCometa2TT)
+        commentsMap["1ТН-220"] = parseComments(data.commentTn1)
+        commentsMap["2ТН-220"] = parseComments(data.commentTn2)
+
+        _oru220Comments.value = commentsMap
+    }
+
 }

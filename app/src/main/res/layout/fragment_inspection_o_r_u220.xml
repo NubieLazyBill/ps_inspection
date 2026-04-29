@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Секция: Мирная -->
+        <!-- ==================== Секция: Мирная ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,15 +20,49 @@
             android:padding="16dp"
             android:layout_marginTop="16dp">
 
-            <TextView
+            <!-- Заголовок Выключатель -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:background="#E3F2FD"
                 android:padding="8dp"
-                android:text="@string/mirnaya"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/mirnaya"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaMirnaya"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentMirnaya"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -36,7 +70,6 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -72,7 +105,6 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -93,8 +125,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_mirnaya_b"
@@ -102,8 +133,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_mirnaya_c"
@@ -111,100 +141,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllMirnayaTT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_mirnaya_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_mirnaya_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_mirnaya_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- Секция: Топаз -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
+            <!-- Заголовок ТТ -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E3F2FD"
+                android:orientation="horizontal"
+                android:background="#F5F5F5"
                 android:padding="8dp"
-                android:text="@string/topaz"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ТТ Мирная"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaMirnayaTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentMirnayaTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -240,7 +232,158 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_mirnaya_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_mirnaya_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_mirnaya_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllMirnayaTT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ Мирная"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== Секция: Топаз ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/topaz"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaTopaz"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentTopaz"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -261,8 +404,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_topaz_b"
@@ -270,8 +412,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_topaz_c"
@@ -279,100 +420,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllTopazTT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_topaz_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_topaz_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_topaz_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- Секция: ОВ -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
+            <!-- ТТ Топаз -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E3F2FD"
+                android:orientation="horizontal"
+                android:background="#F5F5F5"
                 android:padding="8dp"
-                android:text="@string/o_v"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ТТ Топаз"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaTopazTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentTopazTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -408,7 +511,158 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_topaz_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_topaz_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_topaz_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllTopazTT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ Топаз"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== Секция: ОВ ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/o_v"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaOv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentOv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -429,8 +683,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_ov_b"
@@ -438,8 +691,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_ov_c"
@@ -447,94 +699,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllOvTT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_ov_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_ov_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_ov_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Секция: ТН-220 ОСШ ф.В -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp"
-            android:layout_marginTop="8dp">
-
-            <TextView
+            <!-- ТТ ОВ -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tn_220_o_s_sh"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:orientation="horizontal"
+                android:background="#F5F5F5"
                 android:padding="8dp"
-                android:background="#E3F2FD" />
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ТТ ОВ"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaOvTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentOvTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -570,7 +790,159 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Верх -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_ov_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_ov_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_ov_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllOvTT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ ОВ"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== ТН-220 ОСШ ф.В ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tn_220_o_s_sh"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaOssh"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentOssh"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -588,8 +960,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:gravity="center" />
+                        android:layout_weight="1" />
 
                     <Spinner
                         android:id="@+id/tn_ossh_fv_upper"
@@ -597,17 +968,14 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:gravity="center" />
+                        android:layout_weight="1" />
                 </TableRow>
 
-                <!-- Низ -->
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -625,8 +993,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:gravity="center" />
+                        android:layout_weight="1" />
 
                     <Spinner
                         android:id="@+id/tn_ossh_fv_lower"
@@ -634,16 +1001,13 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:gravity="center" />
+                        android:layout_weight="1" />
                 </TableRow>
-
             </TableLayout>
         </LinearLayout>
 
@@ -654,7 +1018,7 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- Секция: В-220 2АТГ -->
+        <!-- ==================== В-220 2АТГ ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -663,15 +1027,48 @@
             android:elevation="2dp"
             android:padding="16dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:background="#E3F2FD"
                 android:padding="8dp"
-                android:text="@string/atg_2"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/atg_2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaV2atg"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentV2atg"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -679,7 +1076,6 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -715,7 +1111,6 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -736,8 +1131,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_v_2atg_b"
@@ -745,8 +1139,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_v_2atg_c"
@@ -754,100 +1147,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllV2atgTT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_tt_2atg_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_tt_2atg_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_tt_2atg_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- Секция: ШСВ-220 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
+            <!-- ТТ 2АТГ -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E3F2FD"
+                android:orientation="horizontal"
+                android:background="#F5F5F5"
                 android:padding="8dp"
-                android:text="@string/sh_s_v"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ТТ 2АТГ"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaV2atgTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentV2atgTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -883,7 +1238,158 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_tt_2atg_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_tt_2atg_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_tt_2atg_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllV2atgTT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ 2АТГ"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== ШСВ-220 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sh_s_v"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaShsv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentShsv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -904,8 +1410,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_sh_s_v_b"
@@ -913,8 +1418,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_sh_s_v_c"
@@ -922,100 +1426,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllShsvTT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_tt_sh_s_v_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_tt_sh_s_v_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_tt_sh_s_v_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- Секция: В-220 3АТГ -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
+            <!-- ТТ ШСВ -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E3F2FD"
+                android:orientation="horizontal"
+                android:background="#F5F5F5"
                 android:padding="8dp"
-                android:text="@string/atg_3"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ТТ ШСВ"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaShsvTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentShsvTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -1051,7 +1517,158 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_tt_sh_s_v_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_tt_sh_s_v_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_tt_sh_s_v_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllShsvTT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ ШСВ"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== В-220 3АТГ ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/atg_3"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaV3atg"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentV3atg"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -1072,8 +1689,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_v_3atg_b"
@@ -1081,8 +1697,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_v_3atg_c"
@@ -1090,100 +1705,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllV3atgTT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_tt_3atg_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_tt_3atg_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_tt_3atg_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- Секция: Орбита -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
+            <!-- ТТ 3АТГ -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E3F2FD"
+                android:orientation="horizontal"
+                android:background="#F5F5F5"
                 android:padding="8dp"
-                android:text="@string/orbita"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ТТ 3АТГ"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaV3atgTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentV3atgTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -1219,7 +1796,158 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_tt_3atg_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_tt_3atg_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_tt_3atg_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllV3atgTT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ 3АТГ"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== Орбита ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/orbita"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaOrbita"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentOrbita"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -1240,8 +1968,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_orbita_b"
@@ -1249,8 +1976,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_orbita_c"
@@ -1258,100 +1984,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllOrbitaTT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_orbita_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_orbita_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_orbita_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- Секция: Факел -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
+            <!-- ТТ Орбита -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E3F2FD"
+                android:orientation="horizontal"
+                android:background="#F5F5F5"
                 android:padding="8dp"
-                android:text="@string/fakel"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ТТ Орбита"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaOrbitaTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentOrbitaTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -1387,7 +2075,158 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_orbita_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_orbita_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_orbita_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllOrbitaTT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ Орбита"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== Факел ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/fakel"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaFakel"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentFakel"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -1408,8 +2247,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_fakel_b"
@@ -1417,8 +2255,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_fakel_c"
@@ -1426,100 +2263,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllFakelTT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_fakel_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_fakel_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_fakel_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- Секция: Комета-2 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
+            <!-- ТТ Факел -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E3F2FD"
+                android:orientation="horizontal"
+                android:background="#F5F5F5"
                 android:padding="8dp"
-                android:text="@string/comet_2"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ТТ Факел"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaFakelTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentFakelTT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -1555,7 +2354,158 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_fakel_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_fakel_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_fakel_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllFakelTT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ Факел"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== Комета-2 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/comet_2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaCometa2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentCometa2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -1576,8 +2526,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_cometa2_b"
@@ -1585,8 +2534,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_cometa2_c"
@@ -1594,100 +2542,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllCometa2TT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_cometa2_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_cometa2_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_cometa2_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- Секция: Комета-1 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
-            <TextView
+            <!-- ТТ Комета-2 -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E3F2FD"
+                android:orientation="horizontal"
+                android:background="#F5F5F5"
                 android:padding="8dp"
-                android:text="@string/comet_1"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ТТ Комета-2"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaCometa2TT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentCometa2TT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -1723,7 +2633,158 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Выключатель -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_cometa2_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_cometa2_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_cometa2_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllCometa2TT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ Комета-2"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== Комета-1 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/comet_1"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaCometa1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentCometa1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -1744,8 +2805,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_cometa1_b"
@@ -1753,8 +2813,7 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/purging_cometa1_c"
@@ -1762,117 +2821,62 @@
                         android:layout_height="48dp"
                         android:layout_weight="1"
                         android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
-
-                <!-- Трансформатор тока с кнопкой -->
-                <TableRow>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:background="#F5F5F5"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="@string/current_transformer"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <Button
-                        android:id="@+id/btnFillAllCometa1TT"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:text="Заполнить все"
-                        android:textSize="11sp"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="0dp"
-                        android:backgroundTint="#4CAF50" />
-                </TableRow>
-
-                <TableRow>
-                    <Spinner
-                        android:id="@+id/oil_cometa1_a"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_cometa1_b"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-
-                    <Spinner
-                        android:id="@+id/oil_cometa1_c"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:entries="@array/purging_and_oil_readings"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
-                </TableRow>
-
             </TableLayout>
-        </LinearLayout>
 
-        <!-- Разделитель -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#DDD"
-            android:layout_marginVertical="8dp" />
-
-        <!-- Секция: 1ТН-220 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@color/white"
-            android:elevation="2dp"
-            android:padding="16dp">
-
+            <!-- ТТ Комета-1 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="#E3F2FD"
-                android:padding="8dp">
+                android:background="#F5F5F5"
+                android:padding="8dp"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/tn_220_1"
+                    android:text="ТТ Комета-1"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/btnFillAllTn1"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="Заполнить всё"
-                    android:textSize="11sp"
-                    android:paddingHorizontal="12dp"
-                    android:backgroundTint="#4CAF50" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaCometa1TT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentCometa1TT"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
             </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
-                android:shrinkColumns="*">
+                android:shrinkColumns="*"
+                android:layout_marginTop="4dp">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -1908,7 +2912,158 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Верх -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="@string/current_transformer"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </TableRow>
+
+                <TableRow>
+                    <Spinner
+                        android:id="@+id/oil_cometa1_a"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_cometa1_b"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+
+                    <Spinner
+                        android:id="@+id/oil_cometa1_c"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:entries="@array/purging_and_oil_readings"
+                        android:gravity="center" />
+                </TableRow>
+
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllCometa1TT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё ТТ Комета-1"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <!-- Разделитель -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDD"
+            android:layout_marginVertical="8dp" />
+
+        <!-- ==================== 1ТН-220 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="8dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/tn_220_1"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaTn1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentTn1"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*"
+                android:shrinkColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_A"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_B"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/f_C"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:padding="8dp" />
+                </TableRow>
+
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -1929,8 +3084,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/tn_1_upper_b"
@@ -1938,8 +3092,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/tn_1_upper_c"
@@ -1947,11 +3100,9 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
 
-                <!-- Низ -->
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -1972,8 +3123,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/tn_1_lower_b"
@@ -1981,8 +3131,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/tn_1_lower_c"
@@ -1990,10 +3139,19 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
 
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllTn1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё 1ТН-220"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
             </TableLayout>
         </LinearLayout>
 
@@ -2004,22 +3162,23 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- Секция: 2ТН-220 -->
+        <!-- ==================== 2ТН-220 ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@color/white"
             android:elevation="2dp"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:layout_marginBottom="24dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
                 android:background="#E3F2FD"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="0dp"
@@ -2030,14 +3189,30 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/btnFillAllTn2"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="Заполнить всё"
-                    android:textSize="11sp"
-                    android:paddingHorizontal="12dp"
-                    android:backgroundTint="#4CAF50" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnMediaTn2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_camera"
+                        android:contentDescription="@string/add_photo"
+                        android:scaleType="centerInside"
+                        android:layout_marginEnd="8dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCommentTn2"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_comment"
+                        android:contentDescription="@string/add_comment"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
             </LinearLayout>
 
             <TableLayout
@@ -2046,7 +3221,6 @@
                 android:stretchColumns="*"
                 android:shrinkColumns="*">
 
-                <!-- Заголовок фаз -->
                 <TableRow>
                     <TextView
                         android:layout_width="0dp"
@@ -2082,7 +3256,6 @@
                         android:padding="8dp" />
                 </TableRow>
 
-                <!-- Верх -->
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -2103,8 +3276,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/tn_2_upper_b"
@@ -2112,8 +3284,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/tn_2_upper_c"
@@ -2121,11 +3292,9 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_up"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
 
-                <!-- Низ -->
                 <TableRow>
                     <TextView
                         android:layout_width="match_parent"
@@ -2146,8 +3315,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/tn_2_lower_b"
@@ -2155,8 +3323,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
 
                     <Spinner
                         android:id="@+id/tn_2_lower_c"
@@ -2164,10 +3331,19 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:entries="@array/oil_readings_tn_220_down"
-                        android:gravity="center"
-                        android:minWidth="120dp" />
+                        android:gravity="center" />
                 </TableRow>
 
+                <TableRow>
+                    <Button
+                        android:id="@+id/btnFillAllTn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:layout_span="3"
+                        android:text="Заполнить всё 2ТН-220"
+                        android:backgroundTint="#4CAF50" />
+                </TableRow>
             </TableLayout>
         </LinearLayout>
 

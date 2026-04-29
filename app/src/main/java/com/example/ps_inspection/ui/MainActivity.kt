@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toolbarTitle: TextView
     private lateinit var autoSaveManager: AutoSaveManager
     private val sharedViewModel: SharedInspectionViewModel by lazy {
-        // Получаем ViewModel через ViewModelProvider
         ViewModelProvider(this)[SharedInspectionViewModel::class.java]
     }
 
@@ -32,9 +31,8 @@ class MainActivity : AppCompatActivity() {
         autoSaveManager = AutoSaveManager(this)
 
         sharedViewModel.loadCommentsFromAtgData()
-
-        // ЗАГРУЖАЕМ КОММЕНТАРИИ ДЛЯ ОРУ-35
         sharedViewModel.loadORU35CommentsFromStorage()
+        sharedViewModel.loadORU220CommentsFromStorage()  // ← ДОБАВЛЕНО для ОРУ-220
 
         // Находим кастомный TextView
         toolbarTitle = findViewById(R.id.toolbar_title)
@@ -77,8 +75,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Очищаем автосохранение только если приложение завершается полностью
-        // и нет несохранённых данных (опционально)
         if (isFinishing) {
             // Если пользователь явно закрыл приложение, можно очистить автосохранение
             // Но лучше оставить до следующего запуска, чтобы пользователь мог восстановить
@@ -96,15 +92,17 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton("Восстановить") { _, _ ->
                         restoreAutoSave(autoSave)
                         autoSaveManager.clearAutoSave()
-                        sharedViewModel.loadCommentsFromAtgData()      // для АТГ
-                        sharedViewModel.loadORU35CommentsFromStorage() // ← ИСПРАВЛЕНО
+                        sharedViewModel.loadCommentsFromAtgData()
+                        sharedViewModel.loadORU35CommentsFromStorage()
+                        sharedViewModel.loadORU220CommentsFromStorage()  // ← ДОБАВЛЕНО
                         Toast.makeText(this, "Данные восстановлены", Toast.LENGTH_LONG).show()
                     }
                     .setNegativeButton("Начать новый осмотр") { _, _ ->
                         autoSaveManager.clearAutoSave()
                         sharedViewModel.clearAllData()
                         sharedViewModel.loadCommentsFromAtgData()
-                        sharedViewModel.loadORU35CommentsFromStorage() // ← ИСПРАВЛЕНО
+                        sharedViewModel.loadORU35CommentsFromStorage()
+                        sharedViewModel.loadORU220CommentsFromStorage()  // ← ДОБАВЛЕНО
                         Toast.makeText(this, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
                     }
                     .setNeutralButton("Отмена", null)
@@ -114,7 +112,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             // Если нет автосохранения, всё равно загружаем комментарии
             sharedViewModel.loadCommentsFromAtgData()
-            sharedViewModel.loadORU35CommentsFromStorage() // ← ИСПРАВЛЕНО
+            sharedViewModel.loadORU35CommentsFromStorage()
+            sharedViewModel.loadORU220CommentsFromStorage()  // ← ДОБАВЛЕНО
         }
     }
 
@@ -136,8 +135,6 @@ class MainActivity : AppCompatActivity() {
             v353tsnA = autoSave.oru35.v353tsnA
             v353tsnB = autoSave.oru35.v353tsnB
             v353tsnC = autoSave.oru35.v353tsnC
-            //tn352atg = autoSave.oru35.tn352atg
-            //tn353atg = autoSave.oru35.tn353atg
         }
 
         // Восстанавливаем ORU220 данные
@@ -220,7 +217,6 @@ class MainActivity : AppCompatActivity() {
 
         // Восстанавливаем ATG данные
         sharedViewModel.updateATGData {
-            // 2 АТГ ф.С
             atg2_c_oil_tank = autoSave.atg.atg2_c_oil_tank
             atg2_c_oil_rpn = autoSave.atg.atg2_c_oil_rpn
             atg2_c_pressure_500 = autoSave.atg.atg2_c_pressure_500
@@ -231,7 +227,6 @@ class MainActivity : AppCompatActivity() {
             atg2_c_pump_group2 = autoSave.atg.atg2_c_pump_group2
             atg2_c_pump_group3 = autoSave.atg.atg2_c_pump_group3
             atg2_c_pump_group4 = autoSave.atg.atg2_c_pump_group4
-            // 2 АТГ ф.В
             atg2_b_oil_tank = autoSave.atg.atg2_b_oil_tank
             atg2_b_oil_rpn = autoSave.atg.atg2_b_oil_rpn
             atg2_b_pressure_500 = autoSave.atg.atg2_b_pressure_500
@@ -242,7 +237,6 @@ class MainActivity : AppCompatActivity() {
             atg2_b_pump_group2 = autoSave.atg.atg2_b_pump_group2
             atg2_b_pump_group3 = autoSave.atg.atg2_b_pump_group3
             atg2_b_pump_group4 = autoSave.atg.atg2_b_pump_group4
-            // 2 АТГ ф.А
             atg2_a_oil_tank = autoSave.atg.atg2_a_oil_tank
             atg2_a_oil_rpn = autoSave.atg.atg2_a_oil_rpn
             atg2_a_pressure_500 = autoSave.atg.atg2_a_pressure_500
@@ -253,7 +247,6 @@ class MainActivity : AppCompatActivity() {
             atg2_a_pump_group2 = autoSave.atg.atg2_a_pump_group2
             atg2_a_pump_group3 = autoSave.atg.atg2_a_pump_group3
             atg2_a_pump_group4 = autoSave.atg.atg2_a_pump_group4
-            // АТГ резервная фаза
             atg_reserve_oil_tank = autoSave.atg.atg_reserve_oil_tank
             atg_reserve_oil_rpn = autoSave.atg.atg_reserve_oil_rpn
             atg_reserve_pressure_500 = autoSave.atg.atg_reserve_pressure_500
@@ -264,10 +257,8 @@ class MainActivity : AppCompatActivity() {
             atg_reserve_pump_group2 = autoSave.atg.atg_reserve_pump_group2
             atg_reserve_pump_group3 = autoSave.atg.atg_reserve_pump_group3
             atg_reserve_pump_group4 = autoSave.atg.atg_reserve_pump_group4
-            // ТН-35
             tn352atg = autoSave.atg.tn352atg
             tn353atg = autoSave.atg.tn353atg
-            // 3 АТГ ф.С
             atg3_c_oil_tank = autoSave.atg.atg3_c_oil_tank
             atg3_c_oil_rpn = autoSave.atg.atg3_c_oil_rpn
             atg3_c_pressure_500 = autoSave.atg.atg3_c_pressure_500
@@ -278,7 +269,6 @@ class MainActivity : AppCompatActivity() {
             atg3_c_pump_group2 = autoSave.atg.atg3_c_pump_group2
             atg3_c_pump_group3 = autoSave.atg.atg3_c_pump_group3
             atg3_c_pump_group4 = autoSave.atg.atg3_c_pump_group4
-            // 3 АТГ ф.В
             atg3_b_oil_tank = autoSave.atg.atg3_b_oil_tank
             atg3_b_oil_rpn = autoSave.atg.atg3_b_oil_rpn
             atg3_b_pressure_500 = autoSave.atg.atg3_b_pressure_500
@@ -289,7 +279,6 @@ class MainActivity : AppCompatActivity() {
             atg3_b_pump_group2 = autoSave.atg.atg3_b_pump_group2
             atg3_b_pump_group3 = autoSave.atg.atg3_b_pump_group3
             atg3_b_pump_group4 = autoSave.atg.atg3_b_pump_group4
-            // 3 АТГ ф.А
             atg3_a_oil_tank = autoSave.atg.atg3_a_oil_tank
             atg3_a_oil_rpn = autoSave.atg.atg3_a_oil_rpn
             atg3_a_pressure_500 = autoSave.atg.atg3_a_pressure_500
@@ -300,7 +289,6 @@ class MainActivity : AppCompatActivity() {
             atg3_a_pump_group2 = autoSave.atg.atg3_a_pump_group2
             atg3_a_pump_group3 = autoSave.atg.atg3_a_pump_group3
             atg3_a_pump_group4 = autoSave.atg.atg3_a_pump_group4
-            // Реакторы
             reactor_c_oil_tank = autoSave.atg.reactor_c_oil_tank
             reactor_c_pressure_500 = autoSave.atg.reactor_c_pressure_500
             reactor_c_temp_ts = autoSave.atg.reactor_c_temp_ts
@@ -482,7 +470,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Обрабатываем нажатие кнопки "Назад"
     override fun onSupportNavigateUp(): Boolean {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment

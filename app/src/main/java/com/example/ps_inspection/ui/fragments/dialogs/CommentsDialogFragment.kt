@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.ps_inspection.ui.fragments.inspections.InspectionATG
+import com.example.ps_inspection.ui.fragments.inspections.InspectionORU220
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU35
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -101,47 +102,71 @@ class CommentsDialogFragment : DialogFragment() {
     private fun getCurrentComments(): List<String> {
         return if (equipmentType == "ATG") {
             sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
-        } else {
+        } else if (equipmentType == "ORU35") {
             sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
+        } else if (equipmentType == "ORU220") {
+            sharedViewModel.oru220Comments.value[equipmentName] ?: emptyList()
+        } else {
+            emptyList()
         }
     }
 
     private fun saveComment(comment: String) {
-        if (equipmentType == "ATG") {
-            sharedViewModel.addATGComment(equipmentName, comment)
-        } else {
-            sharedViewModel.addORU35Comment(equipmentName, comment)  // ← новый метод
+        when (equipmentType) {
+            "ATG" -> sharedViewModel.addATGComment(equipmentName, comment)
+            "ORU35" -> sharedViewModel.addORU35Comment(equipmentName, comment)
+            "ORU220" -> sharedViewModel.addORU220Comment(equipmentName, comment)
         }
     }
 
     private fun deleteComment() {
-        if (equipmentType == "ATG") {
-            val comments = sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
-            if (comments.isNotEmpty()) {
-                sharedViewModel.removeATGComment(equipmentName, comments.size - 1)
+        when (equipmentType) {
+            "ATG" -> {
+                val comments = sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.removeATGComment(equipmentName, comments.size - 1)
+                }
             }
-        } else {
-            val comments = sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
-            if (comments.isNotEmpty()) {
-                sharedViewModel.removeORU35Comment(equipmentName, comments.size - 1)  // ← новый метод
+            "ORU35" -> {
+                val comments = sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.removeORU35Comment(equipmentName, comments.size - 1)
+                }
+            }
+            "ORU220" -> {
+                val comments = sharedViewModel.oru220Comments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.removeORU220Comment(equipmentName, comments.size - 1)
+                }
             }
         }
     }
 
     private fun updateComment(newComment: String) {
-        if (equipmentType == "ATG") {
-            val comments = sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
-            if (comments.isNotEmpty()) {
-                sharedViewModel.updateATGComment(equipmentName, comments.size - 1, newComment)
-            } else {
-                sharedViewModel.addATGComment(equipmentName, newComment)
+        when (equipmentType) {
+            "ATG" -> {
+                val comments = sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.updateATGComment(equipmentName, comments.size - 1, newComment)
+                } else {
+                    sharedViewModel.addATGComment(equipmentName, newComment)
+                }
             }
-        } else {
-            val comments = sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
-            if (comments.isNotEmpty()) {
-                sharedViewModel.updateORU35Comment(equipmentName, comments.size - 1, newComment)
-            } else {
-                sharedViewModel.addORU35Comment(equipmentName, newComment)
+            "ORU35" -> {
+                val comments = sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.updateORU35Comment(equipmentName, comments.size - 1, newComment)
+                } else {
+                    sharedViewModel.addORU35Comment(equipmentName, newComment)
+                }
+            }
+            "ORU220" -> {
+                val comments = sharedViewModel.oru220Comments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.updateORU220Comment(equipmentName, comments.size - 1, newComment)
+                } else {
+                    sharedViewModel.addORU220Comment(equipmentName, newComment)
+                }
             }
         }
     }
@@ -253,10 +278,10 @@ class CommentsDialogFragment : DialogFragment() {
     }
 
     private fun updateParentButtonState() {
-        if (equipmentType == "ATG") {
-            (parentFragment as? InspectionATG)?.updateCommentButtonsState(sharedViewModel.atgComments.value)
-        } else {
-            (parentFragment as? InspectionORU35)?.updateCommentButtonsState(sharedViewModel.oru35Comments.value)
+        when (equipmentType) {
+            "ATG" -> (parentFragment as? InspectionATG)?.updateCommentButtonsState(sharedViewModel.atgComments.value)
+            "ORU35" -> (parentFragment as? InspectionORU35)?.updateCommentButtonsState(sharedViewModel.oru35Comments.value)
+            "ORU220" -> (parentFragment as? InspectionORU220)?.updateCommentButtonsState(sharedViewModel.oru220Comments.value)
         }
     }
 }
