@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
@@ -38,6 +37,8 @@ class InspectionBuildings : Fragment() {
     private val commentButtons = mutableMapOf<ImageButton, String>()
     // Маппинг кнопок фото
     private val mediaButtons = mutableMapOf<ImageButton, String>()
+    // Маппинг кнопок-переключателей (арматура, обогрев)
+    private val stateButtons = mutableMapOf<ImageButton, (String) -> Unit>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -166,71 +167,73 @@ class InspectionBuildings : Fragment() {
         isUpdatingUIFromViewModel = true
 
         // Компрессорная №1
-        updateButtonState(findButton(R.id.btnCompressor1Valve), data.compressor1Valve)
-        updateButtonState(findButton(R.id.btnCompressor1Heating), data.compressor1Heating)
+        updateButtonState(findImageButton(R.id.btnCompressor1Valve), data.compressor1Valve)
+        updateButtonState(findImageButton(R.id.btnCompressor1Heating), data.compressor1Heating)
         updateEditTextIfNeeded(findEditText(R.id.etCompressor1Temp), data.compressor1Temp)
 
         // Баллоная №1
-        updateButtonState(findButton(R.id.btnBallroom1Valve), data.ballroom1Valve)
-        updateButtonState(findButton(R.id.btnBallroom1Heating), data.ballroom1Heating)
+        updateButtonState(findImageButton(R.id.btnBallroom1Valve), data.ballroom1Valve)
+        updateButtonState(findImageButton(R.id.btnBallroom1Heating), data.ballroom1Heating)
         updateEditTextIfNeeded(findEditText(R.id.etBallroom1Temp), data.ballroom1Temp)
 
         // Компрессорная №2
-        updateButtonState(findButton(R.id.btnCompressor2Valve), data.compressor2Valve)
-        updateButtonState(findButton(R.id.btnCompressor2Heating), data.compressor2Heating)
+        updateButtonState(findImageButton(R.id.btnCompressor2Valve), data.compressor2Valve)
+        updateButtonState(findImageButton(R.id.btnCompressor2Heating), data.compressor2Heating)
         updateEditTextIfNeeded(findEditText(R.id.etCompressor2Temp), data.compressor2Temp)
 
         // Баллоная №2
-        updateButtonState(findButton(R.id.btnBallroom2Valve), data.ballroom2Valve)
-        updateButtonState(findButton(R.id.btnBallroom2Heating), data.ballroom2Heating)
+        updateButtonState(findImageButton(R.id.btnBallroom2Valve), data.ballroom2Valve)
+        updateButtonState(findImageButton(R.id.btnBallroom2Heating), data.ballroom2Heating)
         updateEditTextIfNeeded(findEditText(R.id.etBallroom2Temp), data.ballroom2Temp)
 
         // КПЗ ОПУ
-        updateButtonState(findButton(R.id.btnKpzOpuValve), data.kpzOpuValve)
-        updateButtonState(findButton(R.id.btnKpzOpuHeating), data.kpzOpuHeating)
+        updateButtonState(findImageButton(R.id.btnKpzOpuValve), data.kpzOpuValve)
+        updateButtonState(findImageButton(R.id.btnKpzOpuHeating), data.kpzOpuHeating)
         updateEditTextIfNeeded(findEditText(R.id.etKpzOpuTemp), data.kpzOpuTemp)
 
         // КПЗ-2
-        updateButtonState(findButton(R.id.btnKpz2Valve), data.kpz2Valve)
-        updateButtonState(findButton(R.id.btnKpz2Heating), data.kpz2Heating)
+        updateButtonState(findImageButton(R.id.btnKpz2Valve), data.kpz2Valve)
+        updateButtonState(findImageButton(R.id.btnKpz2Heating), data.kpz2Heating)
         updateEditTextIfNeeded(findEditText(R.id.etKpz2Temp), data.kpz2Temp)
 
         // Насосная пожаротушения
-        updateButtonState(findButton(R.id.btnFirePumpValve), data.firePumpValve)
-        updateButtonState(findButton(R.id.btnFirePumpHeating), data.firePumpHeating)
+        updateButtonState(findImageButton(R.id.btnFirePumpValve), data.firePumpValve)
+        updateButtonState(findImageButton(R.id.btnFirePumpHeating), data.firePumpHeating)
         updateEditTextIfNeeded(findEditText(R.id.etFirePumpTemp), data.firePumpTemp)
 
         // Мастерская по ремонту ВВ
-        updateButtonState(findButton(R.id.btnWorkshopHeating), data.workshopHeating)
+        updateButtonState(findImageButton(R.id.btnWorkshopHeating), data.workshopHeating)
         updateEditTextIfNeeded(findEditText(R.id.etWorkshopTemp), data.workshopTemp)
 
         // Артскважина
-        updateButtonState(findButton(R.id.btnArtWellHeating), data.artWellHeating)
+        updateButtonState(findImageButton(R.id.btnArtWellHeating), data.artWellHeating)
 
         // Здание артезианской скважины
-        updateButtonState(findButton(R.id.btnArtesianWellHeating), data.artesianWellHeating)
+        updateButtonState(findImageButton(R.id.btnArtesianWellHeating), data.artesianWellHeating)
 
         // Помещение 1 (2) АБ
-        updateButtonState(findButton(R.id.btnRoomAbHeating), data.roomAbHeating)
+        updateButtonState(findImageButton(R.id.btnRoomAbHeating), data.roomAbHeating)
         updateEditTextIfNeeded(findEditText(R.id.etRoomAbTemp), data.roomAbTemp)
 
         // Помещение п/этажа №1,2,3
-        updateButtonState(findButton(R.id.btnBasementHeating), data.basementHeating)
+        updateButtonState(findImageButton(R.id.btnBasementHeating), data.basementHeating)
         updateEditTextIfNeeded(findEditText(R.id.etBasementTemp), data.basementTemp)
 
         isUpdatingUIFromViewModel = false
     }
 
-    private fun findButton(id: Int): Button = rootView.findViewById(id)
     private fun findEditText(id: Int): EditText = rootView.findViewById(id)
 
-    private fun updateButtonState(button: Button, state: String) {
-        if (button.text.toString() != state) {
-            button.text = state
-            when (state) {
-                "+" -> button.setTextColor(Color.GREEN)
-                "−" -> button.setTextColor(Color.RED)
-                else -> button.setTextColor(Color.GRAY)
+    private fun updateButtonState(button: ImageButton?, state: String) {
+        button?.let {
+            val currentState = it.tag as? String ?: "○"
+            if (currentState != state) {
+                it.tag = state
+                when (state) {
+                    "+" -> it.setColorFilter(Color.GREEN)
+                    "−" -> it.setColorFilter(Color.RED)
+                    else -> it.setColorFilter(Color.GRAY)
+                }
             }
         }
     }
@@ -357,25 +360,40 @@ class InspectionBuildings : Fragment() {
     }
 
     private fun setupButtonListener(buttonId: Int, onStateChanged: (String) -> Unit) {
-        val button = rootView.findViewById<Button>(buttonId)
+        val button = rootView.findViewById<ImageButton>(buttonId)
         button.setOnClickListener {
             if (isUpdatingUIFromViewModel) return@setOnClickListener
 
-            val currentState = button.text.toString()
+            val currentState = button.tag as? String ?: "○"
             val newState = when (currentState) {
                 "○" -> "+"
                 "+" -> "−"
                 else -> "○"
             }
 
-            button.text = newState
+            button.tag = newState
             when (newState) {
-                "+" -> button.setTextColor(Color.GREEN)
-                "−" -> button.setTextColor(Color.RED)
-                else -> button.setTextColor(Color.GRAY)
+                "+" -> {
+                    button.setImageResource(R.drawable.ic_state_ok)
+                    button.setColorFilter(null)
+                }
+                "−" -> {
+                    button.setImageResource(R.drawable.ic_state_error)
+                    button.setColorFilter(null)
+                }
+                else -> {
+                    button.setImageResource(R.drawable.ic_state_normal)
+                    button.setColorFilter(null)
+                }
             }
 
             onStateChanged(newState)
+        }
+        // Инициализация
+        if (button.tag == null) {
+            button.tag = "○"
+            button.setImageResource(R.drawable.ic_state_normal)
+            button.setColorFilter(null)
         }
     }
 

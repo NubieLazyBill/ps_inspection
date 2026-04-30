@@ -1,131 +1,1439 @@
-<!-- Компрессорная №1 -->
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@color/white"
-    android:elevation="2dp"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
     android:padding="16dp"
-    android:layout_marginTop="8dp">
+    tools:context=".ui.fragments.inspections.InspectionBuildings">
 
-    <!-- Заголовок с кнопками -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#E3F2FD"
-        android:padding="8dp"
-        android:gravity="center_vertical">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="0dp"
+        <!-- ==================== Компрессорная №1 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Компрессорная №1"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
 
-        <ImageButton
-            android:id="@+id/btnMediaCompressor1"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_camera"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="6dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
 
-        <ImageButton
-            android:id="@+id/btnCommentCompressor1"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_comment"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="6dp" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Компрессорная №1"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaCompressor1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentCompressor1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запорная арматура"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCompressor1Valve"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCompressor1Heating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etCompressor1Temp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== Баллонная №1 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Баллонная №1"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaBallroom1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentBallroom1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запорная арматура"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnBallroom1Valve"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnBallroom1Heating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etBallroom1Temp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== Компрессорная №2 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Компрессорная №2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaCompressor2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentCompressor2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запорная арматура"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCompressor2Valve"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnCompressor2Heating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etCompressor2Temp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== Баллонная №2 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Баллонная №2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaBallroom2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentBallroom2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запорная арматура"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnBallroom2Valve"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnBallroom2Heating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etBallroom2Temp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== КПЗ ОПУ ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="КПЗ ОПУ"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaKpzOpu"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentKpzOpu"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запорная арматура"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnKpzOpuValve"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnKpzOpuHeating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etKpzOpuTemp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== КПЗ-2 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="КПЗ-2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaKpz2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentKpz2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запорная арматура"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnKpz2Valve"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnKpz2Heating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etKpz2Temp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== Насосная пожаротушения ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Насосная пожаротушения"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaFirePump"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentFirePump"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запорная арматура"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnFirePumpValve"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnFirePumpHeating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etFirePumpTemp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== Мастерская по ремонту ВВ ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Мастерская по ремонту ВВ"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaWorkshop"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentWorkshop"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnWorkshopHeating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etWorkshopTemp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== Артскважина ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Артскважина"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaArtWell"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentArtWell"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnArtWellHeating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== Здание артезианской скважины ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Здание артезианской скважины"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaArtesianWell"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentArtesianWell"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnArtesianWellHeating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== Помещение 1 (2) АБ ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Помещение 1 (2) АБ"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaRoomAb"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentRoomAb"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnRoomAbHeating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etRoomAbTemp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ==================== Помещение п/этажа №1,2,3 ==================== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E3F2FD"
+                android:padding="12dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Помещение п/этажа №1,2,3"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnMediaBasement"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+
+                <ImageButton
+                    android:id="@+id/btnCommentBasement"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_comment"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="6dp"
+                    android:tint="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Обогрев"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <ImageButton
+                        android:id="@+id/btnBasementHeating"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_state_normal"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Температура, °C"
+                        android:textSize="11sp"
+                        android:textColor="#666"
+                        android:gravity="center"
+                        android:layout_marginBottom="4dp" />
+
+                    <EditText
+                        android:id="@+id/etBasementTemp"
+                        android:layout_width="70dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:hint="0"
+                        android:inputType="numberSigned|numberDecimal"
+                        android:background="@drawable/edittext_border"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
-
-    <!-- Тело карточки -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="12dp">
-
-        <!-- Запорная арматура -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Арматура"
-                android:textSize="12sp"
-                android:textColor="#666" />
-
-            <ImageButton
-                android:id="@+id/btnCompressor1Valve"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_valve"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="8dp" />
-        </LinearLayout>
-
-        <!-- Обогрев -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Обогрев"
-                android:textSize="12sp"
-                android:textColor="#666" />
-
-            <ImageButton
-                android:id="@+id/btnCompressor1Heating"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_heating"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="8dp" />
-        </LinearLayout>
-
-        <!-- Температура -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Температура, °C"
-                android:textSize="12sp"
-                android:textColor="#666" />
-
-            <EditText
-                android:id="@+id/etCompressor1Temp"
-                android:layout_width="80dp"
-                android:layout_height="48dp"
-                android:gravity="center"
-                android:hint="0"
-                android:inputType="numberSigned|numberDecimal"
-                android:background="@drawable/edittext_border"
-                android:padding="8dp" />
-        </LinearLayout>
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>
