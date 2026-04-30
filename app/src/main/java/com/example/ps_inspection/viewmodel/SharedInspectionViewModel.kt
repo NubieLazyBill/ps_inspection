@@ -69,8 +69,13 @@ class SharedInspectionViewModel : ViewModel() {
     // Инициализация хранилища комментариев
     fun initCommentStorage(context: Context) {
         commentStorage = CommentStorageManager(context)
-        loadCommentsFromStorage()         // для АТГ
-        loadORU35CommentsFromStorage()   // для ОРУ-35
+
+        // Загружаем комментарии для всех фрагментов
+        loadCommentsFromStorage()              // АТГ
+        loadORU35CommentsFromStorage()         // ОРУ-35
+        loadORU220CommentsFromStorage()        // ОРУ-220
+        loadORU500CommentsFromStorage()        // ОРУ-500
+        loadBuildingsCommentsFromStorage()     // Buildings
     }
 
     // Очистка всех данных осмотра (комментарии НЕ трогаем!)
@@ -611,6 +616,125 @@ class SharedInspectionViewModel : ViewModel() {
         commentsMap["Белозёрная 2ТН"] = parseComments(data.commentBelozernaya2tn)
 
         _oru500Comments.value = commentsMap
+    }
+
+    // ========== КОММЕНТАРИИ ДЛЯ BUILDINGS (СПИСОК) ==========
+
+    private val _buildingsComments = MutableStateFlow<Map<String, List<String>>>(emptyMap())
+    val buildingsComments: StateFlow<Map<String, List<String>>> = _buildingsComments
+
+    fun addBuildingsComment(equipmentKey: String, comment: String) {
+        if (comment.isBlank()) return
+
+        val currentMap = _buildingsComments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
+        currentList.add(comment)
+        currentMap[equipmentKey] = currentList
+        _buildingsComments.value = currentMap
+
+        val allComments = commentStorage.loadAllComments().toMutableMap()
+        allComments[equipmentKey] = currentList
+        commentStorage.saveAllComments(allComments)
+
+        saveBuildingsCommentsToData(equipmentKey, currentList)
+    }
+
+    fun removeBuildingsComment(equipmentKey: String, commentIndex: Int) {
+        val currentMap = _buildingsComments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList.removeAt(commentIndex)
+            if (currentList.isEmpty()) {
+                currentMap.remove(equipmentKey)
+            } else {
+                currentMap[equipmentKey] = currentList
+            }
+            _buildingsComments.value = currentMap
+
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            if (currentList.isEmpty()) {
+                allComments.remove(equipmentKey)
+            } else {
+                allComments[equipmentKey] = currentList
+            }
+            commentStorage.saveAllComments(allComments)
+
+            saveBuildingsCommentsToData(equipmentKey, currentList)
+        }
+    }
+
+    fun updateBuildingsComment(equipmentKey: String, commentIndex: Int, newComment: String) {
+        if (newComment.isBlank()) return
+
+        val currentMap = _buildingsComments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList[commentIndex] = newComment
+            currentMap[equipmentKey] = currentList
+            _buildingsComments.value = currentMap
+
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            allComments[equipmentKey] = currentList
+            commentStorage.saveAllComments(allComments)
+
+            saveBuildingsCommentsToData(equipmentKey, currentList)
+        }
+    }
+
+    private fun saveBuildingsCommentsToData(equipmentKey: String, comments: List<String>) {
+        val commentString = comments.joinToString("|||")
+        updateBuildingsData {
+            when (equipmentKey) {
+                "Компрессорная №1" -> commentCompressor1 = commentString
+                "Баллоная №1" -> commentBallroom1 = commentString
+                "Компрессорная №2" -> commentCompressor2 = commentString
+                "Баллоная №2" -> commentBallroom2 = commentString
+                "КПЗ ОПУ" -> commentKpzOpu = commentString
+                "КПЗ-2" -> commentKpz2 = commentString
+                "Насосная пожаротушения" -> commentFirePump = commentString
+                "Мастерская по ремонту ВВ" -> commentWorkshop = commentString
+                "Артскважина" -> commentArtWell = commentString
+                "Здание артезианской скважины" -> commentArtesianWell = commentString
+                "Помещение 1 (2) АБ" -> commentRoomAb = commentString
+                "Помещение п/этажа №1,2,3" -> commentBasement = commentString
+            }
+        }
+    }
+
+    fun loadBuildingsCommentsFromStorage() {
+        val saved = commentStorage.loadAllComments()
+        // Фильтруем только комментарии для Buildings
+        val buildingsKeys = setOf(
+            "Компрессорная №1", "Баллоная №1", "Компрессорная №2", "Баллоная №2",
+            "КПЗ ОПУ", "КПЗ-2", "Насосная пожаротушения", "Мастерская по ремонту ВВ",
+            "Артскважина", "Здание артезианской скважины", "Помещение 1 (2) АБ",
+            "Помещение п/этажа №1,2,3"
+        )
+        _buildingsComments.value = saved.filterKeys { it in buildingsKeys }
+    }
+
+    fun loadBuildingsCommentsFromData() {
+        val data = _buildingsData.value
+        val commentsMap = mutableMapOf<String, List<String>>()
+
+        fun parseComments(str: String): List<String> {
+            return if (str.isBlank()) emptyList() else str.split("|||")
+        }
+
+        commentsMap["Компрессорная №1"] = parseComments(data.commentCompressor1)
+        commentsMap["Баллоная №1"] = parseComments(data.commentBallroom1)
+        commentsMap["Компрессорная №2"] = parseComments(data.commentCompressor2)
+        commentsMap["Баллоная №2"] = parseComments(data.commentBallroom2)
+        commentsMap["КПЗ ОПУ"] = parseComments(data.commentKpzOpu)
+        commentsMap["КПЗ-2"] = parseComments(data.commentKpz2)
+        commentsMap["Насосная пожаротушения"] = parseComments(data.commentFirePump)
+        commentsMap["Мастерская по ремонту ВВ"] = parseComments(data.commentWorkshop)
+        commentsMap["Артскважина"] = parseComments(data.commentArtWell)
+        commentsMap["Здание артезианской скважины"] = parseComments(data.commentArtesianWell)
+        commentsMap["Помещение 1 (2) АБ"] = parseComments(data.commentRoomAb)
+        commentsMap["Помещение п/этажа №1,2,3"] = parseComments(data.commentBasement)
+
+        _buildingsComments.value = commentsMap
     }
 
 }

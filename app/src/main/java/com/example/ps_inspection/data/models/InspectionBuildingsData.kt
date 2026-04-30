@@ -52,5 +52,22 @@ data class InspectionBuildingsData(
 
     // Помещение п/этажа №1,2,3
     var basementHeating: String = "○",
-    var basementTemp: String = ""
+    var basementTemp: String = "",
+
+    // ========== ФОТО ==========
+    var buildingsPhotoFiles: List<String> = emptyList(),  // общий список фото для Buildings
+
+// ========== КОММЕНТАРИИ (с разделителем |||) ==========
+    var commentCompressor1: String = "",
+    var commentBallroom1: String = "",
+    var commentCompressor2: String = "",
+    var commentBallroom2: String = "",
+    var commentKpzOpu: String = "",
+    var commentKpz2: String = "",
+    var commentFirePump: String = "",
+    var commentWorkshop: String = "",
+    var commentArtWell: String = "",
+    var commentArtesianWell: String = "",
+    var commentRoomAb: String = "",
+    var commentBasement: String = "",
 )

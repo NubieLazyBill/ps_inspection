@@ -25,15 +25,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Инициализируем хранилище комментариев
+        // Инициализируем хранилище комментариев (загружает ВСЕ комментарии)
         sharedViewModel.initCommentStorage(this)
 
         autoSaveManager = AutoSaveManager(this)
-
-        sharedViewModel.loadCommentsFromAtgData()
-        sharedViewModel.loadORU35CommentsFromStorage()
-        sharedViewModel.loadORU220CommentsFromStorage()
-        sharedViewModel.loadORU500CommentsFromStorage()
 
         // Находим кастомный TextView
         toolbarTitle = findViewById(R.id.toolbar_title)
@@ -93,19 +88,15 @@ class MainActivity : AppCompatActivity() {
                     .setPositiveButton("Восстановить") { _, _ ->
                         restoreAutoSave(autoSave)
                         autoSaveManager.clearAutoSave()
-                        sharedViewModel.loadCommentsFromAtgData()
-                        sharedViewModel.loadORU35CommentsFromStorage()
-                        sharedViewModel.loadORU220CommentsFromStorage()
-                        sharedViewModel.loadORU500CommentsFromStorage()
+                        // После восстановления данных перезагружаем комментарии
+                        sharedViewModel.initCommentStorage(this)
                         Toast.makeText(this, "Данные восстановлены", Toast.LENGTH_LONG).show()
                     }
                     .setNegativeButton("Начать новый осмотр") { _, _ ->
                         autoSaveManager.clearAutoSave()
                         sharedViewModel.clearAllData()
-                        sharedViewModel.loadCommentsFromAtgData()
-                        sharedViewModel.loadORU35CommentsFromStorage()
-                        sharedViewModel.loadORU220CommentsFromStorage()
-                        sharedViewModel.loadORU500CommentsFromStorage()
+                        // Комментарии НЕ очищаем, просто перезагружаем их
+                        sharedViewModel.initCommentStorage(this)
                         Toast.makeText(this, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
                     }
                     .setNeutralButton("Отмена", null)
@@ -114,10 +105,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             // Если нет автосохранения, всё равно загружаем комментарии
-            sharedViewModel.loadCommentsFromAtgData()
-            sharedViewModel.loadORU35CommentsFromStorage()
-            sharedViewModel.loadORU220CommentsFromStorage()
-            sharedViewModel.loadORU500CommentsFromStorage()
+            sharedViewModel.initCommentStorage(this)
         }
     }
 

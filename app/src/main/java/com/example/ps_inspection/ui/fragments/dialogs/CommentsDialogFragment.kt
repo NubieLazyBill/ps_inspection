@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.ps_inspection.ui.fragments.inspections.InspectionATG
+import com.example.ps_inspection.ui.fragments.inspections.InspectionBuildings
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU220
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU35
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU500
@@ -27,7 +28,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class CommentsDialogFragment : DialogFragment() {
 
     private var equipmentName: String = ""
-    private var equipmentType: String = ""  // "ATG" или "ORU35"
+    private var equipmentType: String = ""
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
     private lateinit var listView: ListView
     private lateinit var adapter: ArrayAdapter<String>
@@ -101,16 +102,13 @@ class CommentsDialogFragment : DialogFragment() {
     }
 
     private fun getCurrentComments(): List<String> {
-        return if (equipmentType == "ATG") {
-            sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
-        } else if (equipmentType == "ORU35") {
-            sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
-        } else if (equipmentType == "ORU220") {
-            sharedViewModel.oru220Comments.value[equipmentName] ?: emptyList()
-        } else if (equipmentType == "ORU500") {
-            sharedViewModel.oru500Comments.value[equipmentName] ?: emptyList()
-        } else {
-            emptyList()
+        return when (equipmentType) {
+            "ATG" -> sharedViewModel.atgComments.value[equipmentName] ?: emptyList()
+            "ORU35" -> sharedViewModel.oru35Comments.value[equipmentName] ?: emptyList()
+            "ORU220" -> sharedViewModel.oru220Comments.value[equipmentName] ?: emptyList()
+            "ORU500" -> sharedViewModel.oru500Comments.value[equipmentName] ?: emptyList()
+            "BUILDINGS" -> sharedViewModel.buildingsComments.value[equipmentName] ?: emptyList()
+            else -> emptyList()
         }
     }
 
@@ -120,6 +118,7 @@ class CommentsDialogFragment : DialogFragment() {
             "ORU35" -> sharedViewModel.addORU35Comment(equipmentName, comment)
             "ORU220" -> sharedViewModel.addORU220Comment(equipmentName, comment)
             "ORU500" -> sharedViewModel.addORU500Comment(equipmentName, comment)
+            "BUILDINGS" -> sharedViewModel.addBuildingsComment(equipmentName, comment)
         }
     }
 
@@ -147,6 +146,12 @@ class CommentsDialogFragment : DialogFragment() {
                 val comments = sharedViewModel.oru500Comments.value[equipmentName] ?: emptyList()
                 if (comments.isNotEmpty()) {
                     sharedViewModel.removeORU500Comment(equipmentName, comments.size - 1)
+                }
+            }
+            "BUILDINGS" -> {
+                val comments = sharedViewModel.buildingsComments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.removeBuildingsComment(equipmentName, comments.size - 1)
                 }
             }
         }
@@ -184,6 +189,14 @@ class CommentsDialogFragment : DialogFragment() {
                     sharedViewModel.updateORU500Comment(equipmentName, comments.size - 1, newComment)
                 } else {
                     sharedViewModel.addORU500Comment(equipmentName, newComment)
+                }
+            }
+            "BUILDINGS" -> {
+                val comments = sharedViewModel.buildingsComments.value[equipmentName] ?: emptyList()
+                if (comments.isNotEmpty()) {
+                    sharedViewModel.updateBuildingsComment(equipmentName, comments.size - 1, newComment)
+                } else {
+                    sharedViewModel.addBuildingsComment(equipmentName, newComment)
                 }
             }
         }
@@ -301,6 +314,7 @@ class CommentsDialogFragment : DialogFragment() {
             "ORU35" -> (parentFragment as? InspectionORU35)?.updateCommentButtonsState(sharedViewModel.oru35Comments.value)
             "ORU220" -> (parentFragment as? InspectionORU220)?.updateCommentButtonsState(sharedViewModel.oru220Comments.value)
             "ORU500" -> (parentFragment as? InspectionORU500)?.refreshAllStates()
+            "BUILDINGS" -> (parentFragment as? InspectionBuildings)?.refreshAllStates()
         }
     }
 }

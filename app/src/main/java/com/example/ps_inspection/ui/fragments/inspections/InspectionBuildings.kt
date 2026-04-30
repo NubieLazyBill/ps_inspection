@@ -9,107 +9,224 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.ps_inspection.data.models.InspectionBuildingsData
 import com.example.ps_inspection.R
+import com.example.ps_inspection.data.models.InspectionBuildingsData
+import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
+import com.example.ps_inspection.ui.fragments.dialogs.CommentsDialogFragment
+import com.example.ps_inspection.ui.fragments.dialogs.MediaDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class InspectionBuildings : Fragment() {
 
-    // Переименовываем свойство, чтобы избежать конфликта с getView() из Fragment
     private var _rootView: View? = null
     private val rootView get() = _rootView!!
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
+    private lateinit var mediaManager: InspectionMediaManager
+
     private var isUpdatingUIFromViewModel = false
+
+    // Маппинг кнопок комментариев
+    private val commentButtons = mutableMapOf<ImageButton, String>()
+    // Маппинг кнопок фото
+    private val mediaButtons = mutableMapOf<ImageButton, String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _rootView = inflater.inflate(R.layout.fragment_inspection_buildings, container, false)
+        mediaManager = InspectionMediaManager(requireContext())
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Загружаем комментарии из хранилища
+        sharedViewModel.loadBuildingsCommentsFromStorage()
+
+        // Подписываемся на изменения данных
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.buildingsData.collectLatest { data ->
                 updateUIFromData(data)
             }
         }
 
+        // Подписываемся на изменения комментариев
+        viewLifecycleOwner.lifecycleScope.launch {
+            sharedViewModel.buildingsComments.collectLatest { comments ->
+                updateCommentButtonsState(comments)
+            }
+        }
+
         setupInputListeners()
+        setupMediaButtons()
+        updatePhotoButtonsState()
+        refreshAllStates()
+    }
+
+    private fun setupMediaButtons() {
+        val inspectionId = "current_inspection"
+
+        // Регистрируем все кнопки фото
+        registerMediaButton(findImageButton(R.id.btnMediaCompressor1), "Компрессорная №1")
+        registerMediaButton(findImageButton(R.id.btnMediaBallroom1), "Баллоная №1")
+        registerMediaButton(findImageButton(R.id.btnMediaCompressor2), "Компрессорная №2")
+        registerMediaButton(findImageButton(R.id.btnMediaBallroom2), "Баллоная №2")
+        registerMediaButton(findImageButton(R.id.btnMediaKpzOpu), "КПЗ ОПУ")
+        registerMediaButton(findImageButton(R.id.btnMediaKpz2), "КПЗ-2")
+        registerMediaButton(findImageButton(R.id.btnMediaFirePump), "Насосная пожаротушения")
+        registerMediaButton(findImageButton(R.id.btnMediaWorkshop), "Мастерская по ремонту ВВ")
+        registerMediaButton(findImageButton(R.id.btnMediaArtWell), "Артскважина")
+        registerMediaButton(findImageButton(R.id.btnMediaArtesianWell), "Здание артезианской скважины")
+        registerMediaButton(findImageButton(R.id.btnMediaRoomAb), "Помещение 1 (2) АБ")
+        registerMediaButton(findImageButton(R.id.btnMediaBasement), "Помещение п/этажа №1,2,3")
+
+        // Регистрируем все кнопки комментариев
+        registerCommentButton(findImageButton(R.id.btnCommentCompressor1), "Компрессорная №1")
+        registerCommentButton(findImageButton(R.id.btnCommentBallroom1), "Баллоная №1")
+        registerCommentButton(findImageButton(R.id.btnCommentCompressor2), "Компрессорная №2")
+        registerCommentButton(findImageButton(R.id.btnCommentBallroom2), "Баллоная №2")
+        registerCommentButton(findImageButton(R.id.btnCommentKpzOpu), "КПЗ ОПУ")
+        registerCommentButton(findImageButton(R.id.btnCommentKpz2), "КПЗ-2")
+        registerCommentButton(findImageButton(R.id.btnCommentFirePump), "Насосная пожаротушения")
+        registerCommentButton(findImageButton(R.id.btnCommentWorkshop), "Мастерская по ремонту ВВ")
+        registerCommentButton(findImageButton(R.id.btnCommentArtWell), "Артскважина")
+        registerCommentButton(findImageButton(R.id.btnCommentArtesianWell), "Здание артезианской скважины")
+        registerCommentButton(findImageButton(R.id.btnCommentRoomAb), "Помещение 1 (2) АБ")
+        registerCommentButton(findImageButton(R.id.btnCommentBasement), "Помещение п/этажа №1,2,3")
+    }
+
+    private fun findImageButton(id: Int): ImageButton? {
+        return try {
+            rootView.findViewById<ImageButton>(id)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun registerMediaButton(button: ImageButton?, equipmentKey: String) {
+        button?.let {
+            mediaButtons[it] = equipmentKey
+            it.setOnClickListener {
+                MediaDialogFragment.newInstance("current_inspection", equipmentKey)
+                    .show(childFragmentManager, "media_${equipmentKey.replace(" ", "_")}")
+            }
+        }
+    }
+
+    private fun registerCommentButton(button: ImageButton?, equipmentKey: String) {
+        button?.let {
+            commentButtons[it] = equipmentKey
+            it.setOnClickListener {
+                CommentsDialogFragment.newInstance(equipmentKey, "BUILDINGS")
+                    .show(parentFragmentManager, "comment_${equipmentKey.replace(" ", "_")}")
+            }
+        }
+    }
+
+    private fun updatePhotoButtonsState() {
+        val inspectionId = "current_inspection"
+        val hasAnyPhotos = mediaManager.hasPhotos(inspectionId, "Buildings")
+        mediaButtons.keys.forEach { button ->
+            button.setColorFilter(if (hasAnyPhotos) {
+                ContextCompat.getColor(requireContext(), R.color.green)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.gray)
+            })
+        }
+    }
+
+    fun updateCommentButtonsState(commentsMap: Map<String, List<String>>) {
+        commentButtons.forEach { (button, key) ->
+            val hasComments = commentsMap[key]?.isNotEmpty() == true
+            button.setColorFilter(if (hasComments) {
+                ContextCompat.getColor(requireContext(), R.color.green)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.gray)
+            })
+        }
+    }
+
+    fun refreshAllStates() {
+        updatePhotoButtonsState()
+        updateCommentButtonsState(sharedViewModel.buildingsComments.value)
     }
 
     private fun updateUIFromData(data: InspectionBuildingsData) {
         isUpdatingUIFromViewModel = true
 
         // Компрессорная №1
-        updateButtonState(rootView.findViewById(R.id.btnCompressor1Valve), data.compressor1Valve)
-        updateButtonState(rootView.findViewById(R.id.btnCompressor1Heating), data.compressor1Heating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etCompressor1Temp), data.compressor1Temp)
+        updateButtonState(findButton(R.id.btnCompressor1Valve), data.compressor1Valve)
+        updateButtonState(findButton(R.id.btnCompressor1Heating), data.compressor1Heating)
+        updateEditTextIfNeeded(findEditText(R.id.etCompressor1Temp), data.compressor1Temp)
 
         // Баллоная №1
-        updateButtonState(rootView.findViewById(R.id.btnBallroom1Valve), data.ballroom1Valve)
-        updateButtonState(rootView.findViewById(R.id.btnBallroom1Heating), data.ballroom1Heating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etBallroom1Temp), data.ballroom1Temp)
+        updateButtonState(findButton(R.id.btnBallroom1Valve), data.ballroom1Valve)
+        updateButtonState(findButton(R.id.btnBallroom1Heating), data.ballroom1Heating)
+        updateEditTextIfNeeded(findEditText(R.id.etBallroom1Temp), data.ballroom1Temp)
 
         // Компрессорная №2
-        updateButtonState(rootView.findViewById(R.id.btnCompressor2Valve), data.compressor2Valve)
-        updateButtonState(rootView.findViewById(R.id.btnCompressor2Heating), data.compressor2Heating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etCompressor2Temp), data.compressor2Temp)
+        updateButtonState(findButton(R.id.btnCompressor2Valve), data.compressor2Valve)
+        updateButtonState(findButton(R.id.btnCompressor2Heating), data.compressor2Heating)
+        updateEditTextIfNeeded(findEditText(R.id.etCompressor2Temp), data.compressor2Temp)
 
         // Баллоная №2
-        updateButtonState(rootView.findViewById(R.id.btnBallroom2Valve), data.ballroom2Valve)
-        updateButtonState(rootView.findViewById(R.id.btnBallroom2Heating), data.ballroom2Heating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etBallroom2Temp), data.ballroom2Temp)
+        updateButtonState(findButton(R.id.btnBallroom2Valve), data.ballroom2Valve)
+        updateButtonState(findButton(R.id.btnBallroom2Heating), data.ballroom2Heating)
+        updateEditTextIfNeeded(findEditText(R.id.etBallroom2Temp), data.ballroom2Temp)
 
         // КПЗ ОПУ
-        updateButtonState(rootView.findViewById(R.id.btnKpzOpuValve), data.kpzOpuValve)
-        updateButtonState(rootView.findViewById(R.id.btnKpzOpuHeating), data.kpzOpuHeating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etKpzOpuTemp), data.kpzOpuTemp)
+        updateButtonState(findButton(R.id.btnKpzOpuValve), data.kpzOpuValve)
+        updateButtonState(findButton(R.id.btnKpzOpuHeating), data.kpzOpuHeating)
+        updateEditTextIfNeeded(findEditText(R.id.etKpzOpuTemp), data.kpzOpuTemp)
 
         // КПЗ-2
-        updateButtonState(rootView.findViewById(R.id.btnKpz2Valve), data.kpz2Valve)
-        updateButtonState(rootView.findViewById(R.id.btnKpz2Heating), data.kpz2Heating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etKpz2Temp), data.kpz2Temp)
+        updateButtonState(findButton(R.id.btnKpz2Valve), data.kpz2Valve)
+        updateButtonState(findButton(R.id.btnKpz2Heating), data.kpz2Heating)
+        updateEditTextIfNeeded(findEditText(R.id.etKpz2Temp), data.kpz2Temp)
 
         // Насосная пожаротушения
-        updateButtonState(rootView.findViewById(R.id.btnFirePumpValve), data.firePumpValve)
-        updateButtonState(rootView.findViewById(R.id.btnFirePumpHeating), data.firePumpHeating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etFirePumpTemp), data.firePumpTemp)
+        updateButtonState(findButton(R.id.btnFirePumpValve), data.firePumpValve)
+        updateButtonState(findButton(R.id.btnFirePumpHeating), data.firePumpHeating)
+        updateEditTextIfNeeded(findEditText(R.id.etFirePumpTemp), data.firePumpTemp)
 
         // Мастерская по ремонту ВВ
-        updateButtonState(rootView.findViewById(R.id.btnWorkshopHeating), data.workshopHeating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etWorkshopTemp), data.workshopTemp)
+        updateButtonState(findButton(R.id.btnWorkshopHeating), data.workshopHeating)
+        updateEditTextIfNeeded(findEditText(R.id.etWorkshopTemp), data.workshopTemp)
 
         // Артскважина
-        updateButtonState(rootView.findViewById(R.id.btnArtWellHeating), data.artWellHeating)
+        updateButtonState(findButton(R.id.btnArtWellHeating), data.artWellHeating)
 
         // Здание артезианской скважины
-        updateButtonState(rootView.findViewById(R.id.btnArtesianWellHeating), data.artesianWellHeating)
+        updateButtonState(findButton(R.id.btnArtesianWellHeating), data.artesianWellHeating)
 
         // Помещение 1 (2) АБ
-        updateButtonState(rootView.findViewById(R.id.btnRoomAbHeating), data.roomAbHeating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etRoomAbTemp), data.roomAbTemp)
+        updateButtonState(findButton(R.id.btnRoomAbHeating), data.roomAbHeating)
+        updateEditTextIfNeeded(findEditText(R.id.etRoomAbTemp), data.roomAbTemp)
 
         // Помещение п/этажа №1,2,3
-        updateButtonState(rootView.findViewById(R.id.btnBasementHeating), data.basementHeating)
-        updateEditTextIfNeeded(rootView.findViewById(R.id.etBasementTemp), data.basementTemp)
+        updateButtonState(findButton(R.id.btnBasementHeating), data.basementHeating)
+        updateEditTextIfNeeded(findEditText(R.id.etBasementTemp), data.basementTemp)
 
         isUpdatingUIFromViewModel = false
     }
 
+    private fun findButton(id: Int): Button = rootView.findViewById(id)
+    private fun findEditText(id: Int): EditText = rootView.findViewById(id)
+
     private fun updateButtonState(button: Button, state: String) {
         if (button.text.toString() != state) {
             button.text = state
-            // Устанавливаем цвет в зависимости от состояния
             when (state) {
                 "+" -> button.setTextColor(Color.GREEN)
                 "−" -> button.setTextColor(Color.RED)
