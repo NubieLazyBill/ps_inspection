@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -46,7 +47,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentCompressor1"
@@ -55,95 +56,101 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                <TableRow>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Запорная арматура"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnCompressor1Valve"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnCompressor1Heating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
+                </TableRow>
 
-                    <EditText
-                        android:id="@+id/etCompressor1Temp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                <TableRow>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnCompressor1Valve"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnCompressor1Heating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <EditText
+                            android:id="@+id/etCompressor1Temp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== Баллонная №1 ==================== -->
@@ -180,7 +187,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentBallroom1"
@@ -189,95 +196,101 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                <TableRow>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Запорная арматура"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnBallroom1Valve"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnBallroom1Heating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
+                </TableRow>
 
-                    <EditText
-                        android:id="@+id/etBallroom1Temp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                <TableRow>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnBallroom1Valve"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnBallroom1Heating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <EditText
+                            android:id="@+id/etBallroom1Temp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== Компрессорная №2 ==================== -->
@@ -314,7 +327,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentCompressor2"
@@ -323,95 +336,101 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                <TableRow>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Запорная арматура"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnCompressor2Valve"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnCompressor2Heating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
+                </TableRow>
 
-                    <EditText
-                        android:id="@+id/etCompressor2Temp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                <TableRow>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnCompressor2Valve"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnCompressor2Heating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <EditText
+                            android:id="@+id/etCompressor2Temp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== Баллонная №2 ==================== -->
@@ -448,7 +467,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentBallroom2"
@@ -457,95 +476,101 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                <TableRow>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Запорная арматура"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnBallroom2Valve"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnBallroom2Heating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
+                </TableRow>
 
-                    <EditText
-                        android:id="@+id/etBallroom2Temp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                <TableRow>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnBallroom2Valve"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnBallroom2Heating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <EditText
+                            android:id="@+id/etBallroom2Temp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== КПЗ ОПУ ==================== -->
@@ -582,7 +607,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentKpzOpu"
@@ -591,95 +616,101 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                <TableRow>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Запорная арматура"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnKpzOpuValve"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnKpzOpuHeating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
+                </TableRow>
 
-                    <EditText
-                        android:id="@+id/etKpzOpuTemp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                <TableRow>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnKpzOpuValve"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnKpzOpuHeating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <EditText
+                            android:id="@+id/etKpzOpuTemp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== КПЗ-2 ==================== -->
@@ -716,7 +747,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentKpz2"
@@ -725,95 +756,101 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                <TableRow>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Запорная арматура"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnKpz2Valve"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnKpz2Heating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
+                </TableRow>
 
-                    <EditText
-                        android:id="@+id/etKpz2Temp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                <TableRow>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnKpz2Valve"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:id="@+id/btnKpz2Heating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+
+                        <EditText
+                            android:id="@+id/etKpz2Temp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== Насосная пожаротушения ==================== -->
@@ -850,7 +887,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentFirePump"
@@ -859,95 +896,136 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
-
+                <!-- Заголовки -->
+                <TableRow>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Запорная арматура"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnFirePumpValve"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnFirePumpHeating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
+                </TableRow>
 
-                    <EditText
-                        android:id="@+id/etFirePumpTemp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
+                <!-- Строка с запорной арматурой, обогревом и температурой -->
+                <TableRow>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <ImageButton
+                            android:id="@+id/btnFirePumpValve"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <ImageButton
+                            android:id="@+id/btnFirePumpHeating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <EditText
+                            android:id="@+id/etFirePumpTemp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </TableRow>
+
+                <!-- Строка с уровнем воды в ёмкостях НПТ -->
+                <TableRow>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Уровень воды в ёмкостях НПТ, %"
+                        android:textSize="11sp"
+                        android:textColor="#666"
                         android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:padding="4dp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <EditText
+                            android:id="@+id/etFirePumpWaterLevel"
+                            android:layout_width="100dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== Мастерская по ремонту ВВ ==================== -->
@@ -984,7 +1062,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentWorkshop"
@@ -993,74 +1071,90 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
-
+                <TableRow>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnWorkshopHeating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
 
-                    <EditText
-                        android:id="@+id/etWorkshopTemp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:padding="4dp" />
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <ImageButton
+                            android:id="@+id/btnWorkshopHeating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <EditText
+                            android:id="@+id/etWorkshopTemp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== Артскважина ==================== -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <LinearLayout            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@color/white"
@@ -1092,7 +1186,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentArtWell"
@@ -1101,41 +1195,74 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
-
+                <TableRow>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
 
-                    <ImageButton
-                        android:id="@+id/btnArtWellHeating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:padding="4dp" />
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <ImageButton
+                            android:id="@+id/btnArtWellHeating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== Здание артезианской скважины ==================== -->
@@ -1172,7 +1299,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentArtesianWell"
@@ -1181,41 +1308,74 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
-
+                <TableRow>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
 
-                    <ImageButton
-                        android:id="@+id/btnArtesianWellHeating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:padding="4dp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:padding="4dp" />
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <ImageButton
+                            android:id="@+id/btnArtesianWellHeating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== Помещение 1 (2) АБ ==================== -->
@@ -1252,7 +1412,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentRoomAb"
@@ -1261,69 +1421,86 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
-
+                <TableRow>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnRoomAbHeating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
 
-                    <EditText
-                        android:id="@+id/etRoomAbTemp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:padding="4dp" />
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <ImageButton
+                            android:id="@+id/btnRoomAbHeating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <EditText
+                            android:id="@+id/etRoomAbTemp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
         <!-- ==================== Помещение п/этажа №1,2,3 ==================== -->
@@ -1361,7 +1538,7 @@
                     android:src="@drawable/ic_camera"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
 
                 <ImageButton
                     android:id="@+id/btnCommentBasement"
@@ -1370,69 +1547,86 @@
                     android:src="@drawable/ic_comment"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="6dp"
-                    android:tint="@color/gray" />
+                    app:tint="@color/gray" />
             </LinearLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"
+                android:stretchColumns="*">
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
-
+                <TableRow>
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Обогрев"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
-
-                    <ImageButton
-                        android:id="@+id/btnBasementHeating"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/ic_state_normal"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="8dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:padding="4dp">
+                        android:padding="4dp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="Температура, °C"
                         android:textSize="11sp"
                         android:textColor="#666"
                         android:gravity="center"
-                        android:layout_marginBottom="4dp" />
+                        android:padding="4dp" />
 
-                    <EditText
-                        android:id="@+id/etBasementTemp"
-                        android:layout_width="70dp"
-                        android:layout_height="48dp"
-                        android:gravity="center"
-                        android:hint="0"
-                        android:inputType="numberSigned|numberDecimal"
-                        android:background="@drawable/edittext_border"
-                        android:padding="8dp" />
-                </LinearLayout>
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text=""
+                        android:padding="4dp" />
+                </TableRow>
+
+                <TableRow>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <ImageButton
+                            android:id="@+id/btnBasementHeating"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_state_normal"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                        <EditText
+                            android:id="@+id/etBasementTemp"
+                            android:layout_width="70dp"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:hint="0"
+                            android:inputType="numberSigned|numberDecimal"
+                            android:background="@drawable/edittext_border"
+                            android:padding="8dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:layout_gravity="center">
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
         </LinearLayout>
 
     </LinearLayout>

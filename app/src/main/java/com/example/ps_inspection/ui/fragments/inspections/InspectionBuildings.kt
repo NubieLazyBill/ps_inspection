@@ -33,12 +33,8 @@ class InspectionBuildings : Fragment() {
 
     private var isUpdatingUIFromViewModel = false
 
-    // Маппинг кнопок комментариев
     private val commentButtons = mutableMapOf<ImageButton, String>()
-    // Маппинг кнопок фото
     private val mediaButtons = mutableMapOf<ImageButton, String>()
-    // Маппинг кнопок-переключателей (арматура, обогрев)
-    private val stateButtons = mutableMapOf<ImageButton, (String) -> Unit>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,17 +48,14 @@ class InspectionBuildings : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Загружаем комментарии из хранилища
         sharedViewModel.loadBuildingsCommentsFromStorage()
 
-        // Подписываемся на изменения данных
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.buildingsData.collectLatest { data ->
                 updateUIFromData(data)
             }
         }
 
-        // Подписываемся на изменения комментариев
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.buildingsComments.collectLatest { comments ->
                 updateCommentButtonsState(comments)
@@ -78,7 +71,6 @@ class InspectionBuildings : Fragment() {
     private fun setupMediaButtons() {
         val inspectionId = "current_inspection"
 
-        // Регистрируем все кнопки фото
         registerMediaButton(findImageButton(R.id.btnMediaCompressor1), "Компрессорная №1")
         registerMediaButton(findImageButton(R.id.btnMediaBallroom1), "Баллоная №1")
         registerMediaButton(findImageButton(R.id.btnMediaCompressor2), "Компрессорная №2")
@@ -92,7 +84,6 @@ class InspectionBuildings : Fragment() {
         registerMediaButton(findImageButton(R.id.btnMediaRoomAb), "Помещение 1 (2) АБ")
         registerMediaButton(findImageButton(R.id.btnMediaBasement), "Помещение п/этажа №1,2,3")
 
-        // Регистрируем все кнопки комментариев
         registerCommentButton(findImageButton(R.id.btnCommentCompressor1), "Компрессорная №1")
         registerCommentButton(findImageButton(R.id.btnCommentBallroom1), "Баллоная №1")
         registerCommentButton(findImageButton(R.id.btnCommentCompressor2), "Компрессорная №2")
@@ -137,9 +128,9 @@ class InspectionBuildings : Fragment() {
 
     private fun updatePhotoButtonsState() {
         val inspectionId = "current_inspection"
-        val hasAnyPhotos = mediaManager.hasPhotos(inspectionId, "Buildings")
-        mediaButtons.keys.forEach { button ->
-            button.setColorFilter(if (hasAnyPhotos) {
+        mediaButtons.forEach { (button, equipmentKey) ->
+            val hasPhotos = mediaManager.hasPhotos(inspectionId, equipmentKey)
+            button.setColorFilter(if (hasPhotos) {
                 ContextCompat.getColor(requireContext(), R.color.green)
             } else {
                 ContextCompat.getColor(requireContext(), R.color.gray)
@@ -166,58 +157,45 @@ class InspectionBuildings : Fragment() {
     private fun updateUIFromData(data: InspectionBuildingsData) {
         isUpdatingUIFromViewModel = true
 
-        // Компрессорная №1
         updateButtonState(findImageButton(R.id.btnCompressor1Valve), data.compressor1Valve)
         updateButtonState(findImageButton(R.id.btnCompressor1Heating), data.compressor1Heating)
         updateEditTextIfNeeded(findEditText(R.id.etCompressor1Temp), data.compressor1Temp)
 
-        // Баллоная №1
         updateButtonState(findImageButton(R.id.btnBallroom1Valve), data.ballroom1Valve)
         updateButtonState(findImageButton(R.id.btnBallroom1Heating), data.ballroom1Heating)
         updateEditTextIfNeeded(findEditText(R.id.etBallroom1Temp), data.ballroom1Temp)
 
-        // Компрессорная №2
         updateButtonState(findImageButton(R.id.btnCompressor2Valve), data.compressor2Valve)
         updateButtonState(findImageButton(R.id.btnCompressor2Heating), data.compressor2Heating)
         updateEditTextIfNeeded(findEditText(R.id.etCompressor2Temp), data.compressor2Temp)
 
-        // Баллоная №2
         updateButtonState(findImageButton(R.id.btnBallroom2Valve), data.ballroom2Valve)
         updateButtonState(findImageButton(R.id.btnBallroom2Heating), data.ballroom2Heating)
         updateEditTextIfNeeded(findEditText(R.id.etBallroom2Temp), data.ballroom2Temp)
 
-        // КПЗ ОПУ
         updateButtonState(findImageButton(R.id.btnKpzOpuValve), data.kpzOpuValve)
         updateButtonState(findImageButton(R.id.btnKpzOpuHeating), data.kpzOpuHeating)
         updateEditTextIfNeeded(findEditText(R.id.etKpzOpuTemp), data.kpzOpuTemp)
 
-        // КПЗ-2
         updateButtonState(findImageButton(R.id.btnKpz2Valve), data.kpz2Valve)
         updateButtonState(findImageButton(R.id.btnKpz2Heating), data.kpz2Heating)
         updateEditTextIfNeeded(findEditText(R.id.etKpz2Temp), data.kpz2Temp)
 
-        // Насосная пожаротушения
         updateButtonState(findImageButton(R.id.btnFirePumpValve), data.firePumpValve)
         updateButtonState(findImageButton(R.id.btnFirePumpHeating), data.firePumpHeating)
         updateEditTextIfNeeded(findEditText(R.id.etFirePumpTemp), data.firePumpTemp)
 
-        // Мастерская по ремонту ВВ
         updateButtonState(findImageButton(R.id.btnWorkshopHeating), data.workshopHeating)
         updateEditTextIfNeeded(findEditText(R.id.etWorkshopTemp), data.workshopTemp)
 
-        // Артскважина
         updateButtonState(findImageButton(R.id.btnArtWellHeating), data.artWellHeating)
-
-        // Здание артезианской скважины
         updateButtonState(findImageButton(R.id.btnArtesianWellHeating), data.artesianWellHeating)
-
-        // Помещение 1 (2) АБ
         updateButtonState(findImageButton(R.id.btnRoomAbHeating), data.roomAbHeating)
         updateEditTextIfNeeded(findEditText(R.id.etRoomAbTemp), data.roomAbTemp)
-
-        // Помещение п/этажа №1,2,3
         updateButtonState(findImageButton(R.id.btnBasementHeating), data.basementHeating)
         updateEditTextIfNeeded(findEditText(R.id.etBasementTemp), data.basementTemp)
+
+        updateEditTextIfNeeded(findEditText(R.id.etFirePumpWaterLevel), data.firePumpWaterLevel)
 
         isUpdatingUIFromViewModel = false
     }
@@ -229,11 +207,24 @@ class InspectionBuildings : Fragment() {
             val currentState = it.tag as? String ?: "○"
             if (currentState != state) {
                 it.tag = state
-                when (state) {
-                    "+" -> it.setColorFilter(Color.GREEN)
-                    "−" -> it.setColorFilter(Color.RED)
-                    else -> it.setColorFilter(Color.GRAY)
-                }
+                setButtonIconForState(it, state)
+            }
+        }
+    }
+
+    private fun setButtonIconForState(button: ImageButton, state: String) {
+        when (state) {
+            "+" -> {
+                button.setImageResource(R.drawable.ic_state_ok)
+                button.setColorFilter(null)
+            }
+            "−" -> {
+                button.setImageResource(R.drawable.ic_state_error)
+                button.setColorFilter(null)
+            }
+            else -> {
+                button.setImageResource(R.drawable.ic_state_normal)
+                button.setColorFilter(null)
             }
         }
     }
@@ -247,7 +238,6 @@ class InspectionBuildings : Fragment() {
     }
 
     private fun setupInputListeners() {
-        // Компрессорная №1
         setupButtonListener(R.id.btnCompressor1Valve) { state ->
             sharedViewModel.updateBuildingsData { compressor1Valve = state }
         }
@@ -258,7 +248,6 @@ class InspectionBuildings : Fragment() {
             sharedViewModel.updateBuildingsData { compressor1Temp = text }
         }
 
-        // Баллоная №1
         setupButtonListener(R.id.btnBallroom1Valve) { state ->
             sharedViewModel.updateBuildingsData { ballroom1Valve = state }
         }
@@ -269,7 +258,6 @@ class InspectionBuildings : Fragment() {
             sharedViewModel.updateBuildingsData { ballroom1Temp = text }
         }
 
-        // Компрессорная №2
         setupButtonListener(R.id.btnCompressor2Valve) { state ->
             sharedViewModel.updateBuildingsData { compressor2Valve = state }
         }
@@ -280,7 +268,6 @@ class InspectionBuildings : Fragment() {
             sharedViewModel.updateBuildingsData { compressor2Temp = text }
         }
 
-        // Баллоная №2
         setupButtonListener(R.id.btnBallroom2Valve) { state ->
             sharedViewModel.updateBuildingsData { ballroom2Valve = state }
         }
@@ -291,7 +278,6 @@ class InspectionBuildings : Fragment() {
             sharedViewModel.updateBuildingsData { ballroom2Temp = text }
         }
 
-        // КПЗ ОПУ
         setupButtonListener(R.id.btnKpzOpuValve) { state ->
             sharedViewModel.updateBuildingsData { kpzOpuValve = state }
         }
@@ -302,7 +288,6 @@ class InspectionBuildings : Fragment() {
             sharedViewModel.updateBuildingsData { kpzOpuTemp = text }
         }
 
-        // КПЗ-2
         setupButtonListener(R.id.btnKpz2Valve) { state ->
             sharedViewModel.updateBuildingsData { kpz2Valve = state }
         }
@@ -313,7 +298,6 @@ class InspectionBuildings : Fragment() {
             sharedViewModel.updateBuildingsData { kpz2Temp = text }
         }
 
-        // Насосная пожаротушения
         setupButtonListener(R.id.btnFirePumpValve) { state ->
             sharedViewModel.updateBuildingsData { firePumpValve = state }
         }
@@ -324,7 +308,6 @@ class InspectionBuildings : Fragment() {
             sharedViewModel.updateBuildingsData { firePumpTemp = text }
         }
 
-        // Мастерская по ремонту ВВ
         setupButtonListener(R.id.btnWorkshopHeating) { state ->
             sharedViewModel.updateBuildingsData { workshopHeating = state }
         }
@@ -332,30 +315,26 @@ class InspectionBuildings : Fragment() {
             sharedViewModel.updateBuildingsData { workshopTemp = text }
         }
 
-        // Артскважина
         setupButtonListener(R.id.btnArtWellHeating) { state ->
             sharedViewModel.updateBuildingsData { artWellHeating = state }
         }
-
-        // Здание артезианской скважины
         setupButtonListener(R.id.btnArtesianWellHeating) { state ->
             sharedViewModel.updateBuildingsData { artesianWellHeating = state }
         }
-
-        // Помещение 1 (2) АБ
         setupButtonListener(R.id.btnRoomAbHeating) { state ->
             sharedViewModel.updateBuildingsData { roomAbHeating = state }
         }
         setupEditTextListener(R.id.etRoomAbTemp) { text ->
             sharedViewModel.updateBuildingsData { roomAbTemp = text }
         }
-
-        // Помещение п/этажа №1,2,3
         setupButtonListener(R.id.btnBasementHeating) { state ->
             sharedViewModel.updateBuildingsData { basementHeating = state }
         }
         setupEditTextListener(R.id.etBasementTemp) { text ->
             sharedViewModel.updateBuildingsData { basementTemp = text }
+        }
+        setupEditTextListener(R.id.etFirePumpWaterLevel) { text ->
+            sharedViewModel.updateBuildingsData { firePumpWaterLevel = text }
         }
     }
 
@@ -372,24 +351,10 @@ class InspectionBuildings : Fragment() {
             }
 
             button.tag = newState
-            when (newState) {
-                "+" -> {
-                    button.setImageResource(R.drawable.ic_state_ok)
-                    button.setColorFilter(null)
-                }
-                "−" -> {
-                    button.setImageResource(R.drawable.ic_state_error)
-                    button.setColorFilter(null)
-                }
-                else -> {
-                    button.setImageResource(R.drawable.ic_state_normal)
-                    button.setColorFilter(null)
-                }
-            }
-
+            setButtonIconForState(button, newState)
             onStateChanged(newState)
         }
-        // Инициализация
+        // Инициализация начального состояния
         if (button.tag == null) {
             button.tag = "○"
             button.setImageResource(R.drawable.ic_state_normal)

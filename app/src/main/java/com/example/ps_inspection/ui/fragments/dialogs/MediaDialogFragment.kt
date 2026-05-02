@@ -21,6 +21,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.ui.fragments.inspections.InspectionATG
+import com.example.ps_inspection.ui.fragments.inspections.InspectionBuildings
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU220
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU35
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU500
@@ -167,6 +168,7 @@ class MediaDialogFragment : DialogFragment() {
                 is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
                 is InspectionORU220 -> (parentFragment as InspectionORU220).refreshPhotoButtonsState()
                 is InspectionORU500 -> (parentFragment as InspectionORU500).refreshAllStates()
+                is InspectionBuildings -> (parentFragment as InspectionBuildings).refreshAllStates()
             }
 
             Toast.makeText(requireContext(), "Фото добавлено", Toast.LENGTH_SHORT).show()
@@ -215,6 +217,7 @@ class MediaDialogFragment : DialogFragment() {
                                 is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
                                 is InspectionORU220 -> (parentFragment as InspectionORU220).refreshPhotoButtonsState()
                                 is InspectionORU500 -> (parentFragment as InspectionORU500).refreshAllStates()
+                                is InspectionBuildings -> (parentFragment as InspectionBuildings).refreshAllStates()
                             }
 
                             Toast.makeText(requireContext(), "Фото удалено", Toast.LENGTH_SHORT).show()

@@ -35,6 +35,7 @@ data class InspectionBuildingsData(
     var firePumpValve: String = "○",
     var firePumpHeating: String = "○",
     var firePumpTemp: String = "",
+    var firePumpWaterLevel: String = "",
 
     // Мастерская по ремонту ВВ
     var workshopHeating: String = "○",
