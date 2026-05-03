@@ -1,64 +1,87 @@
 package com.example.ps_inspection.data.repositories
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.example.ps_inspection.data.models.Comment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.io.File
 
 class CommentStorageManager(context: Context) {
-    private val prefs: SharedPreferences = context.getSharedPreferences("comments_prefs_v2", Context.MODE_PRIVATE)
-    private val gson = Gson()
 
-    companion object {
-        private const val KEY_COMMENTS = "equipment_comments"
-        private const val OLD_PREFS_NAME = "comments_prefs"
-        private const val OLD_KEY_COMMENTS = "equipment_comments"
-    }
+    private val gson = Gson()
+    private val commentsFile: File = File(context.filesDir, "comments_data.json")
+
+    private val OLD_PREFS_NAME = "comments_prefs"
+    private val OLD_KEY_COMMENTS = "equipment_comments"
+    private val NEW_PREFS_NAME = "comments_prefs_v2"
+    private val NEW_KEY_COMMENTS = "equipment_comments"
 
     init {
-        // Миграция старых комментариев при первом запуске
-        migrateOldComments(context)
+        // Миграция старых комментариев из SharedPreferences
+        migrateFromPreferences(context)
     }
 
-    private fun migrateOldComments(context: Context) {
-        // Проверяем, есть ли уже данные в новом хранилище
-        if (prefs.contains(KEY_COMMENTS)) return
+    private fun migrateFromPreferences(context: Context) {
+        // Если файл уже существует, миграция не нужна
+        if (commentsFile.exists()) return
 
-        // Пытаемся загрузить старые комментарии
-        val oldPrefs = context.getSharedPreferences(OLD_PREFS_NAME, Context.MODE_PRIVATE)
-        val oldJson = oldPrefs.getString(OLD_KEY_COMMENTS, null) ?: return
+        var oldComments: Map<String, List<Comment>>? = null
 
+        // Пробуем из новой версии SharedPreferences (v2)
+        val newPrefs = context.getSharedPreferences(NEW_PREFS_NAME, Context.MODE_PRIVATE)
+        val newJson = newPrefs.getString(NEW_KEY_COMMENTS, null)
+
+        if (!newJson.isNullOrEmpty()) {
+            try {
+                val type = object : TypeToken<Map<String, List<Comment>>>() {}.type
+                oldComments = gson.fromJson(newJson, type)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        // Если нет, пробуем из старой версии SharedPreferences
+        if (oldComments == null || oldComments.isEmpty()) {
+            val oldPrefs = context.getSharedPreferences(OLD_PREFS_NAME, Context.MODE_PRIVATE)
+            val oldJson = oldPrefs.getString(OLD_KEY_COMMENTS, null)
+
+            if (!oldJson.isNullOrEmpty()) {
+                try {
+                    val type = object : TypeToken<Map<String, List<String>>>() {}.type
+                    val oldMap: Map<String, List<String>> = gson.fromJson(oldJson, type)
+                    oldComments = oldMap.mapValues { (_, strings) ->
+                        strings.map { Comment(text = it) }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
+        // Сохраняем в файл, если есть данные
+        if (!oldComments.isNullOrEmpty()) {
+            saveAllComments(oldComments)
+        }
+    }
+
+    fun saveAllComments(comments: Map<String, List<Comment>>) {
         try {
-            // Пробуем распарсить как старый формат (Map<String, List<String>>)
-            val type = object : TypeToken<Map<String, List<String>>>() {}.type
-            val oldMap: Map<String, List<String>> = gson.fromJson(oldJson, type)
-            val newMap = mutableMapOf<String, List<Comment>>()
-
-            oldMap.forEach { (key, strings) ->
-                newMap[key] = strings.map { Comment(text = it) }
-            }
-
-            if (newMap.isNotEmpty()) {
-                saveAllComments(newMap)
-            }
+            val json = gson.toJson(comments)
+            commentsFile.writeText(json)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    fun saveAllComments(comments: Map<String, List<Comment>>) {
-        val json = gson.toJson(comments)
-        prefs.edit().putString(KEY_COMMENTS, json).apply()
-    }
-
     fun loadAllComments(): Map<String, List<Comment>> {
-        val json = prefs.getString(KEY_COMMENTS, null) ?: return emptyMap()
-        try {
+        return try {
+            if (!commentsFile.exists()) return emptyMap()
+            val json = commentsFile.readText()
             val type = object : TypeToken<Map<String, List<Comment>>>() {}.type
-            return gson.fromJson(json, type)
+            gson.fromJson(json, type) ?: emptyMap()
         } catch (e: Exception) {
-            return emptyMap()
+            e.printStackTrace()
+            emptyMap()
         }
     }
 
@@ -100,8 +123,6 @@ class CommentStorageManager(context: Context) {
     }
 
     fun clearAllComments() {
-        prefs.edit().remove(KEY_COMMENTS).apply()
-        // Также очищаем старые префы для чистоты
-        val oldPrefs = prefs
+        commentsFile.delete()
     }
 }

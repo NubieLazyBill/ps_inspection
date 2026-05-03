@@ -1,7 +1,9 @@
 package com.example.ps_inspection.ui
 
 import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsetsController
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Добавь ДО super.onCreate
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window?.setDecorFitsSystemWindows(false)
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
