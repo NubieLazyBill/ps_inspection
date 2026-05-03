@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.ps_inspection.R
+import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionATGData
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
@@ -127,7 +128,8 @@ class InspectionATG : Fragment() {
         }
     }
 
-    fun updateCommentButtonsState(comments: Map<String, List<String>>) {
+    // ИСПРАВЛЕНО: тип изменён с Map<String, List<String>> на Map<String, List<Comment>>
+    fun updateCommentButtonsState(comments: Map<String, List<Comment>>) {
         val buttonKeys = mapOf(
             binding.btnCommentAtg2C to "2 АТГ ф.С",
             binding.btnCommentAtg2B to "2 АТГ ф.В",
@@ -230,7 +232,6 @@ class InspectionATG : Fragment() {
         // ТН-35
         updateEditTextIfNeeded(binding.etTn352atg, data.tn352atg)
         updateEditTextIfNeeded(binding.etTn353atg, data.tn353atg)
-        // Комментарий для ТН-35 уже загрузится через подписку, но кнопка должна быть зарегистрирована
 
         // 3 АТГ ф.С
         updateEditTextIfNeeded(binding.atg3COilTank, data.atg3_c_oil_tank)

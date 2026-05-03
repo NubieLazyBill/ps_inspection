@@ -1,5 +1,6 @@
 package com.example.ps_inspection.ui.fragments.dialogs
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.google.android.material.button.MaterialButton
 
@@ -39,7 +41,6 @@ class GlobalCommentsDialog : DialogFragment() {
 
         totalCommentsCount = countTotalComments()
 
-        // Заголовок со счётчиком
         root.addView(TextView(requireContext()).apply {
             text = "💬 Все комментарии ($totalCommentsCount)"
             textSize = 18f
@@ -47,40 +48,37 @@ class GlobalCommentsDialog : DialogFragment() {
             setTypeface(null, Typeface.BOLD)
         })
 
-        // ScrollView с комментариями
         val scrollView = ScrollView(requireContext())
         val contentLayout = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(0, 0, 0, 16)
         }
 
-        // Собираем все комментарии из ViewModel с сортировкой по алфавиту
-        fun addCommentSection(title: String, comments: List<String>) {
-            if (comments.isEmpty() || comments.all { it.isBlank() }) return
+        fun addCommentSection(title: String, comments: List<Comment>) {
+            if (comments.isEmpty()) return
 
-            // Сортируем комментарии по алфавиту
-            val sortedComments = comments.filter { it.isNotBlank() }.sorted()
+            val sortedComments = comments.sortedByDescending { it.timestamp }
 
             val titleView = TextView(requireContext()).apply {
                 text = "📌 $title (${sortedComments.size})"
                 textSize = 16f
                 setTypeface(null, Typeface.BOLD)
                 setPadding(0, 16, 0, 8)
-                setTextColor(android.graphics.Color.parseColor("#4CAF50"))
+                setTextColor(Color.parseColor("#4CAF50"))
             }
             contentLayout.addView(titleView)
 
             sortedComments.forEach { comment ->
                 val commentView = TextView(requireContext()).apply {
-                    text = "• $comment"
+                    text = "• ${comment.getFormattedTime()}\n  ${comment.text}"
                     textSize = 14f
-                    setPadding(16, 4, 16, 4)
+                    setPadding(16, 8, 16, 8)
                 }
                 contentLayout.addView(commentView)
             }
         }
 
-        // ОРУ-35 (сортируем по названию оборудования)
+        // ОРУ-35
         sharedViewModel.oru35Comments.value.toSortedMap().forEach { (equipment, comments) ->
             addCommentSection("ОРУ-35: $equipment", comments)
         }
@@ -121,7 +119,6 @@ class GlobalCommentsDialog : DialogFragment() {
             1f
         ))
 
-        // Кнопка закрытия
         val btnClose = MaterialButton(requireContext()).apply {
             text = "Закрыть"
         }

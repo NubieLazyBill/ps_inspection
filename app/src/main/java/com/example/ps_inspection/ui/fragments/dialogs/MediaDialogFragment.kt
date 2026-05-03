@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
+import com.example.ps_inspection.data.models.Photo
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.ui.fragments.inspections.InspectionATG
 import com.example.ps_inspection.ui.fragments.inspections.InspectionBuildings
@@ -35,6 +35,7 @@ class MediaDialogFragment : DialogFragment() {
     private var equipmentName: String = ""
     private lateinit var mediaManager: InspectionMediaManager
     private lateinit var gridLayout: GridLayout
+    private var currentPhotos = listOf<Photo>()
 
     // 📸 Лаунчер для камеры
     private var currentPhotoUri: Uri? = null
@@ -147,31 +148,30 @@ class MediaDialogFragment : DialogFragment() {
 
     private fun createImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val storageDir = requireContext().getExternalFilesDir(android.os.Environment.DIRECTORY_PICTURES)
         return File.createTempFile("IMG_${timeStamp}_", ".jpg", storageDir)
     }
 
     private fun savePhotoFromUri(uri: Uri) {
         try {
-            val inputStream = requireContext().contentResolver.openInputStream(uri)
-            val dir = mediaManager.getMediaDir(inspectionId, equipmentName)
-            val fileName = "IMG_${System.currentTimeMillis()}.jpg"
-            val target = File(dir, fileName)
+            val newPhoto = mediaManager.savePhoto(inspectionId, equipmentName, uri)
 
-            inputStream?.use { it.copyTo(target.outputStream()) }
+            if (newPhoto != null) {
+                loadPhotosToGrid()
 
-            loadPhotosToGrid()
+                // Обновляем состояние кнопок фото
+                when (parentFragment) {
+                    is InspectionATG -> (parentFragment as InspectionATG).refreshPhotoButtonsState()
+                    is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
+                    is InspectionORU220 -> (parentFragment as InspectionORU220).refreshPhotoButtonsState()
+                    is InspectionORU500 -> (parentFragment as InspectionORU500).refreshAllStates()
+                    is InspectionBuildings -> (parentFragment as InspectionBuildings).refreshAllStates()
+                }
 
-            // Универсальное обновление состояния кнопок фото
-            when (parentFragment) {
-                is InspectionATG -> (parentFragment as InspectionATG).refreshPhotoButtonsState()
-                is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
-                is InspectionORU220 -> (parentFragment as InspectionORU220).refreshPhotoButtonsState()
-                is InspectionORU500 -> (parentFragment as InspectionORU500).refreshAllStates()
-                is InspectionBuildings -> (parentFragment as InspectionBuildings).refreshAllStates()
+                Toast.makeText(requireContext(), "Фото добавлено", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Ошибка сохранения фото", Toast.LENGTH_SHORT).show()
             }
-
-            Toast.makeText(requireContext(), "Фото добавлено", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
         }
@@ -179,55 +179,80 @@ class MediaDialogFragment : DialogFragment() {
 
     private fun loadPhotosToGrid() {
         gridLayout.removeAllViews()
-        val photoFiles = mediaManager.getPhotoFiles(inspectionId, equipmentName)
+        currentPhotos = mediaManager.getPhotos(inspectionId, equipmentName)
+            .sortedByDescending { it.timestamp } // Сначала новые
 
-        photoFiles.forEach { fileName ->
-            val imageView = ImageView(requireContext()).apply {
+        if (currentPhotos.isEmpty()) {
+            val emptyText = TextView(requireContext()).apply {
+                text = "📭 Нет фото"
+                textSize = 14f
+                gravity = android.view.Gravity.CENTER
+                setPadding(0, 32, 0, 32)
+            }
+            gridLayout.addView(emptyText)
+            return
+        }
+
+        currentPhotos.forEach { photo ->
+            val container = LinearLayout(requireContext()).apply {
+                orientation = LinearLayout.VERTICAL
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 200
-                    height = 200
+                    height = 260
                     setMargins(8, 8, 8, 8)
                 }
+            }
+
+            val imageView = ImageView(requireContext()).apply {
+                layoutParams = LinearLayout.LayoutParams(200, 200)
                 scaleType = ImageView.ScaleType.CENTER_CROP
 
-                // Загружаем миниатюру
-                val fullPath = mediaManager.getFullPhotoPath(inspectionId, equipmentName, fileName)
+                val fullPath = mediaManager.getFullPhotoPath(inspectionId, equipmentName, photo.fileName)
                 val bitmap = BitmapFactory.decodeFile(fullPath)
                 if (bitmap != null) {
                     setImageBitmap(bitmap)
                 }
 
-                // Клик → полноэкранный просмотр с зумом
                 setOnClickListener {
                     showFullscreenPhoto(fullPath)
                 }
-
-                // Долгое нажатие → удаление
-                setOnLongClickListener {
-                    AlertDialog.Builder(requireContext())
-                        .setTitle("Удалить фото?")
-                        .setMessage("Это действие нельзя отменить")
-                        .setPositiveButton("Удалить") { _, _ ->
-                            mediaManager.deletePhoto(inspectionId, equipmentName, fileName)
-                            loadPhotosToGrid()
-
-                            // Универсальное обновление состояния кнопок фото
-                            when (parentFragment) {
-                                is InspectionATG -> (parentFragment as InspectionATG).refreshPhotoButtonsState()
-                                is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
-                                is InspectionORU220 -> (parentFragment as InspectionORU220).refreshPhotoButtonsState()
-                                is InspectionORU500 -> (parentFragment as InspectionORU500).refreshAllStates()
-                                is InspectionBuildings -> (parentFragment as InspectionBuildings).refreshAllStates()
-                            }
-
-                            Toast.makeText(requireContext(), "Фото удалено", Toast.LENGTH_SHORT).show()
-                        }
-                        .setNegativeButton("Отмена", null)
-                        .show()
-                    true
-                }
             }
-            gridLayout.addView(imageView)
+            container.addView(imageView)
+
+            val dateLabel = TextView(requireContext()).apply {
+                text = photo.getFormattedTimeShort()
+                textSize = 10f
+                gravity = android.view.Gravity.CENTER
+                setPadding(0, 4, 0, 0)
+                setTextColor(android.graphics.Color.GRAY)
+            }
+            container.addView(dateLabel)
+
+            // Долгое нажатие → удаление
+            container.setOnLongClickListener {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Удалить фото?")
+                    .setMessage("${photo.getFormattedTime()}\n\nУдалить это фото?")
+                    .setPositiveButton("Удалить") { _, _ ->
+                        mediaManager.deletePhoto(inspectionId, equipmentName, photo.fileName)
+                        loadPhotosToGrid()
+
+                        when (parentFragment) {
+                            is InspectionATG -> (parentFragment as InspectionATG).refreshPhotoButtonsState()
+                            is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
+                            is InspectionORU220 -> (parentFragment as InspectionORU220).refreshPhotoButtonsState()
+                            is InspectionORU500 -> (parentFragment as InspectionORU500).refreshAllStates()
+                            is InspectionBuildings -> (parentFragment as InspectionBuildings).refreshAllStates()
+                        }
+
+                        Toast.makeText(requireContext(), "Фото удалено", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton("Отмена", null)
+                    .show()
+                true
+            }
+
+            gridLayout.addView(container)
         }
     }
 
@@ -238,6 +263,5 @@ class MediaDialogFragment : DialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Очищаем ссылки
     }
 }

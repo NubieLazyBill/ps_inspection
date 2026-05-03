@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import com.example.ps_inspection.data.models.Photo
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import java.io.File
 
@@ -20,7 +21,7 @@ class GlobalMediaDialog : DialogFragment() {
 
     private lateinit var mediaManager: InspectionMediaManager
     private lateinit var gridLayout: GridLayout
-    private val allPhotos = mutableListOf<Pair<String, String>>() // (путь, название оборудования)
+    private val allPhotos = mutableListOf<Triple<String, String, Long>>() // (путь, оборудование, timestamp)
 
     companion object {
         fun newInstance(): GlobalMediaDialog = GlobalMediaDialog()
@@ -91,16 +92,40 @@ class GlobalMediaDialog : DialogFragment() {
             return
         }
 
-        // Ищем ВСЕ jpg/jpeg/png файлы рекурсивно
+        // Ищем ВСЕ jpg/jpeg/png файлы рекурсивно и извлекаем timestamp
         baseDir.walkTopDown().forEach { file ->
             if (file.extension in listOf("jpg", "jpeg", "png")) {
                 val equipment = file.parentFile?.name ?: "Неизвестно"
-                allPhotos.add(file.absolutePath to equipment)
-                Log.d("GlobalMediaDialog", "Найдено фото: ${file.absolutePath} (оборудование: $equipment)")
+                val timestamp = extractTimestampFromFileName(file.name) ?: file.lastModified()
+                allPhotos.add(Triple(file.absolutePath, equipment, timestamp))
+                Log.d("GlobalMediaDialog", "Найдено фото: ${file.absolutePath} (оборудование: $equipment, время: $timestamp)")
             }
         }
 
+        // Сортируем по времени (сначала новые)
+        allPhotos.sortByDescending { it.third }
+
         Log.d("GlobalMediaDialog", "Всего найдено фото: ${allPhotos.size}")
+    }
+
+    private fun extractTimestampFromFileName(fileName: String): Long? {
+        val pattern = Regex("IMG_(\\d{8})_(\\d{6})\\.jpg")
+        val matchResult = pattern.find(fileName)
+        return matchResult?.let {
+            val dateStr = it.groupValues[1]
+            val timeStr = it.groupValues[2]
+            try {
+                val sdf = java.text.SimpleDateFormat("yyyyMMdd HHmmss", java.util.Locale.getDefault())
+                sdf.parse("$dateStr $timeStr")?.time
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
+    private fun formatTime(timestamp: Long): String {
+        val sdf = java.text.SimpleDateFormat("dd.MM.yy HH:mm", java.util.Locale.getDefault())
+        return sdf.format(java.util.Date(timestamp))
     }
 
     private fun loadPhotosToGrid() {
@@ -117,12 +142,12 @@ class GlobalMediaDialog : DialogFragment() {
             return
         }
 
-        allPhotos.forEach { (photoPath, equipment) ->
+        allPhotos.forEach { (photoPath, equipment, timestamp) ->
             val container = LinearLayout(requireContext()).apply {
                 orientation = LinearLayout.VERTICAL
                 layoutParams = GridLayout.LayoutParams().apply {
                     width = 200
-                    height = 240
+                    height = 260
                     setMargins(8, 8, 8, 8)
                 }
             }
@@ -143,10 +168,11 @@ class GlobalMediaDialog : DialogFragment() {
             container.addView(imageView)
 
             val label = TextView(requireContext()).apply {
-                text = equipment
-                textSize = 12f
+                text = "$equipment\n${formatTime(timestamp)}"
+                textSize = 11f
                 gravity = android.view.Gravity.CENTER
                 setPadding(0, 4, 0, 0)
+                setTextColor(android.graphics.Color.GRAY)
             }
             container.addView(label)
 

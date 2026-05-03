@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.ps_inspection.R
+import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionORU500Data
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
@@ -49,15 +50,12 @@ class InspectionORU500 : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInspectionORU500Binding.inflate(inflater, container, false)
-        mediaManager = InspectionMediaManager(requireContext())  // ← как в ОРУ-220
+        mediaManager = InspectionMediaManager(requireContext())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Сначала загружаем комментарии из хранилища
-        sharedViewModel.loadORU500CommentsFromStorage()
 
         // Подписываемся на изменения данных
         viewLifecycleOwner.lifecycleScope.launch {
@@ -80,7 +78,7 @@ class InspectionORU500 : Fragment() {
 
         // Обновляем состояние всех кнопок
         updatePhotoButtonsState()
-        refreshAllStates()  // ← этот метод нужно добавить в класс
+        refreshAllStates()
     }
 
     private fun setupMediaButtons() {
@@ -180,7 +178,8 @@ class InspectionORU500 : Fragment() {
         }
     }
 
-    fun updateCommentButtonsState(commentsMap: Map<String, List<String>>) {
+    // ИСПРАВЛЕНО: тип изменён с Map<String, List<String>> на Map<String, List<Comment>>
+    fun updateCommentButtonsState(commentsMap: Map<String, List<Comment>>) {
         commentButtons.forEach { (button, key) ->
             val hasComments = commentsMap[key]?.isNotEmpty() == true
             val color = if (hasComments) {

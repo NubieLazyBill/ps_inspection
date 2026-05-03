@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.ps_inspection.R
+import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionBuildingsData
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
@@ -47,8 +48,6 @@ class InspectionBuildings : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        sharedViewModel.loadBuildingsCommentsFromStorage()
 
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.buildingsData.collectLatest { data ->
@@ -138,7 +137,8 @@ class InspectionBuildings : Fragment() {
         }
     }
 
-    fun updateCommentButtonsState(commentsMap: Map<String, List<String>>) {
+    // ИСПРАВЛЕНО: тип изменён с Map<String, List<String>> на Map<String, List<Comment>>
+    fun updateCommentButtonsState(commentsMap: Map<String, List<Comment>>) {
         commentButtons.forEach { (button, key) ->
             val hasComments = commentsMap[key]?.isNotEmpty() == true
             button.setColorFilter(if (hasComments) {

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionORU220Data
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
@@ -108,7 +109,7 @@ class InspectionORU220 : Fragment() {
         }
     }
 
-    fun updateCommentButtonsState(comments: Map<String, List<String>>) {
+    fun updateCommentButtonsState(comments: Map<String, List<Comment>>) {
         val buttonKeys = mapOf(
             binding.btnCommentMirnaya to "Мирная",
             binding.btnCommentMirnayaTT to "Мирная ТТ",

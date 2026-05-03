@@ -13,6 +13,7 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionORU35Data
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
@@ -63,7 +64,7 @@ class InspectionORU35 : Fragment() {
         updatePhotoButtonsState()
     }
 
-    fun updateCommentButtonsState(comments: Map<String, List<String>>) {
+    fun updateCommentButtonsState(comments: Map<String, List<Comment>>) {
         val buttonKeys = mapOf(
             binding.btnCommentTsn to "ТСН",
             binding.btnCommentTt352 to "ТТ-35 2ТСН",
