@@ -23,7 +23,10 @@ data class ArchiveItem(
     val statusORU500: FillStatus,
     val statusATG: FillStatus,
     val statusBuildings: FillStatus,
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val photoCount: Int = 0,
+    val hasComments: Boolean = false,
+    val hasPhotos: Boolean = false      // ← добавить это поле
 )
 
 class InspectionArchiveManager(private val context: Context) {
@@ -61,6 +64,9 @@ class InspectionArchiveManager(private val context: Context) {
             if (file.isFile && file.extension == "json") {
                 try {
                     val data = gson.fromJson(file.readText(), InspectionArchiveData::class.java)
+                    val photoCount = countPhotosInArchive(data)
+                    val hasComments = hasCommentsInArchive(data)
+                    val hasPhotos = photoCount > 0
 
                     archives.add(ArchiveItem(
                         fileName = file.name,
@@ -70,12 +76,61 @@ class InspectionArchiveManager(private val context: Context) {
                         statusORU220 = data.oru220.getFillStatus(),
                         statusORU500 = data.oru500.getFillStatus(),
                         statusATG = data.atg.getFillStatus(),
-                        statusBuildings = data.buildings.getFillStatus()
+                        statusBuildings = data.buildings.getFillStatus(),
+                        photoCount = photoCount,
+                        hasComments = hasComments,
+                        hasPhotos = hasPhotos        // ← добавить
                     ))
                 } catch (e: Exception) { e.printStackTrace() }
             }
         }
         return archives.sortedByDescending { it.displayDate }
+    }
+
+    // В InspectionArchiveManager.kt добавить:
+
+    private fun countPhotosInArchive(data: InspectionArchiveData): Int {
+        var count = 0
+        count += data.oru35.oru35PhotoFiles?.size ?: 0
+        count += data.oru220.oru220PhotoFiles?.size ?: 0
+        count += data.oru500.oru500PhotoFiles?.size ?: 0
+        count += data.atg.atgPhotoFiles?.size ?: 0
+        count += data.buildings.buildingsPhotoFiles?.size ?: 0
+        return count
+    }
+
+    private fun hasCommentsInArchive(data: InspectionArchiveData): Boolean {
+        val comments = listOf(
+            data.oru35.commentTsn, data.oru35.commentTt352, data.oru35.commentTt353,
+            data.oru35.commentV352, data.oru35.commentV353,
+            data.oru220.commentMirnaya, data.oru220.commentMirnayaTT, data.oru220.commentTopaz,
+            data.oru220.commentTopazTT, data.oru220.commentOv, data.oru220.commentOvTT,
+            data.oru220.commentOssh, data.oru220.commentV2atg, data.oru220.commentV2atgTT,
+            data.oru220.commentShsv, data.oru220.commentShsvTT, data.oru220.commentV3atg,
+            data.oru220.commentV3atgTT, data.oru220.commentOrbita, data.oru220.commentOrbitaTT,
+            data.oru220.commentFakel, data.oru220.commentFakelTT, data.oru220.commentCometa1,
+            data.oru220.commentCometa1TT, data.oru220.commentCometa2, data.oru220.commentCometa2TT,
+            data.oru220.commentTn1, data.oru220.commentTn2,
+            data.oru500.commentR5002s, data.oru500.commentVsht31, data.oru500.commentVlt30,
+            data.oru500.commentVshl32, data.oru500.commentVshl21, data.oru500.commentVsht22,
+            data.oru500.commentVlt20, data.oru500.commentVsht11, data.oru500.commentVshl12,
+            data.oru500.commentTtVsht31, data.oru500.commentTtVlt30, data.oru500.commentTtVshl32,
+            data.oru500.commentTtVshl21, data.oru500.commentTtVsht22, data.oru500.commentTtVlt20,
+            data.oru500.commentTtVsht11, data.oru500.commentTtVshl12, data.oru500.commentTn1500,
+            data.oru500.commentTn2500, data.oru500.commentTn500Sgres1,
+            data.oru500.commentTrachukovskayaTt, data.oru500.commentTrachukovskaya2tn,
+            data.oru500.commentTrachukovskaya1tn, data.oru500.commentBelozernaya2tn,
+            data.atg.commentAtg2C, data.atg.commentAtg2B, data.atg.commentAtg2A,
+            data.atg.commentAtgReserve, data.atg.commentAtg3C, data.atg.commentAtg3B,
+            data.atg.commentAtg3A, data.atg.commentReactorC, data.atg.commentReactorB,
+            data.atg.commentReactorA, data.atg.commentTn35,
+            data.buildings.commentCompressor1, data.buildings.commentBallroom1,
+            data.buildings.commentCompressor2, data.buildings.commentBallroom2,
+            data.buildings.commentKpzOpu, data.buildings.commentKpz2, data.buildings.commentFirePump,
+            data.buildings.commentWorkshop, data.buildings.commentArtWell,
+            data.buildings.commentArtesianWell, data.buildings.commentRoomAb, data.buildings.commentBasement
+        )
+        return comments.any { it.isNotBlank() }
     }
 
     // Вспомогательный метод для определения типа осмотра

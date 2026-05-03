@@ -131,6 +131,8 @@ data class InspectionATGData(
 
     //ТН-35:
     var tn352atg: String = "",
-    var tn353atg: String = ""
+    var tn353atg: String = "",
+
+    var commentTn35: String = ""  // комментарий для ТН-35
 
 )

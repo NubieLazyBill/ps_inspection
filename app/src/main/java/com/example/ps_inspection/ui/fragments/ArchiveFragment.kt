@@ -29,6 +29,8 @@ import com.example.ps_inspection.data.utils.mergeORU220
 import com.example.ps_inspection.data.utils.mergeORU35
 import com.example.ps_inspection.data.utils.mergeORU500
 import com.example.ps_inspection.ui.MainActivity
+import com.example.ps_inspection.ui.fragments.dialogs.GlobalCommentsDialog
+import com.example.ps_inspection.ui.fragments.dialogs.GlobalMediaDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ArchiveFragment : Fragment() {
@@ -47,12 +49,27 @@ class ArchiveFragment : Fragment() {
 
         override fun onMenuItemSelected(item: MenuItem): Boolean {
             return when (item.itemId) {
+                R.id.action_global_photos -> {
+                    showGlobalPhotos()
+                    true
+                }
+                R.id.action_global_comments -> {
+                    showGlobalComments()
+                    true
+                }
                 R.id.action_clear_archive -> {
                     showClearAllDialog()
                     true
                 }
                 else -> false
             }
+        }
+
+        override fun onPrepareMenu(menu: Menu) {
+            // Устанавливаем цвета иконок
+            menu.findItem(R.id.action_global_photos)?.icon?.setTint(android.graphics.Color.parseColor("#4CAF50"))
+            menu.findItem(R.id.action_global_comments)?.icon?.setTint(android.graphics.Color.parseColor("#4CAF50"))
+            // Корзину не трогаем
         }
     }
 
@@ -85,10 +102,21 @@ class ArchiveFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.recyclerViewArchives.layoutManager = LinearLayoutManager(requireContext())
-        adapter = ArchiveAdapter(emptyList()) { archive, view ->
-            showArchiveOptions(archive, view)
-        }
+        adapter = ArchiveAdapter(
+            records = emptyList(),
+            onMenuClick = { archive, view -> showArchiveOptions(archive, view) }
+        )
         binding.recyclerViewArchives.adapter = adapter
+    }
+
+    private fun showGlobalPhotos() {
+        val dialog = GlobalMediaDialog.newInstance()
+        dialog.show(childFragmentManager, "global_media")
+    }
+
+    private fun showGlobalComments() {
+        val dialog = GlobalCommentsDialog.newInstance()
+        dialog.show(childFragmentManager, "global_comments")
     }
 
     private fun loadArchives() {
@@ -154,7 +182,6 @@ class ArchiveFragment : Fragment() {
         val archiveData = archiveManager.loadFromArchive(fileName) ?: return
         var count = 0
 
-        // Используем методы из MergeUtils.kt через sharedViewModel
         if (sections[0]) { sharedViewModel.mergeORU35(archiveData.oru35); count++ }
         if (sections[1]) { sharedViewModel.mergeORU220(archiveData.oru220); count++ }
         if (sections[2]) { sharedViewModel.mergeORU500(archiveData.oru500); count++ }
@@ -169,8 +196,6 @@ class ArchiveFragment : Fragment() {
         }
     }
 
-    // ========== ОСТАЛЬНЫЕ МЕТОДЫ ==========
-
     private fun shareArchive(fileName: String) {
         val archiveData = archiveManager.loadFromArchive(fileName) ?: run {
             Toast.makeText(requireContext(), "Ошибка загрузки архива", Toast.LENGTH_SHORT).show()
@@ -182,7 +207,7 @@ class ArchiveFragment : Fragment() {
         if (fileUri != null) {
             Toast.makeText(requireContext(), "Файл готов к отправке", Toast.LENGTH_LONG).show()
             startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply {
-                type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  // ← исправлено
+                type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                 putExtra(Intent.EXTRA_STREAM, fileUri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }, "Поделиться файлом осмотра"))

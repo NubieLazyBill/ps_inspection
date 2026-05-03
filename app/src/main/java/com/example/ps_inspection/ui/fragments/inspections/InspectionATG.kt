@@ -9,10 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Spinner
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ps_inspection.R
 import com.example.ps_inspection.data.models.InspectionATGData
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
@@ -29,10 +32,14 @@ class InspectionATG : Fragment() {
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
 
-    // Флаг для отслеживания, обновляем ли мы UI программно
     private var isUpdatingUIFromViewModel = false
 
     private lateinit var mediaManager: InspectionMediaManager
+
+    // Маппинг для кнопок комментариев
+    private val commentButtons = mutableMapOf<ImageButton, String>()
+    // Маппинг для кнопок фото
+    private val mediaButtons = mutableMapOf<ImageButton, String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +59,6 @@ class InspectionATG : Fragment() {
             }
         }
 
-        // Подписываемся на изменения комментариев
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.atgComments.collectLatest { comments ->
                 updateCommentButtonsState(comments)
@@ -63,6 +69,36 @@ class InspectionATG : Fragment() {
         setupMediaButtons()
         updatePhotoButtonsState()
     }
+
+    // ========== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ==========
+
+    private fun registerMediaCommentPair(mediaBtn: ImageButton?, commentBtn: ImageButton?, equipmentKey: String) {
+        mediaBtn?.let {
+            mediaButtons[it] = equipmentKey
+            it.setOnClickListener {
+                MediaDialogFragment.newInstance("current_inspection", equipmentKey)
+                    .show(childFragmentManager, "media_${equipmentKey.replace(" ", "_")}")
+            }
+        }
+        commentBtn?.let {
+            commentButtons[it] = equipmentKey
+            it.setOnClickListener {
+                CommentsDialogFragment.newInstance(equipmentKey, "ATG")
+                    .show(parentFragmentManager, "comment_${equipmentKey.replace(" ", "_")}")
+            }
+        }
+    }
+
+    private fun loadComment(button: ImageButton, commentText: String, equipmentKey: String) {
+        button.tag = equipmentKey
+        commentButtons[button] = equipmentKey
+        button.setOnClickListener {
+            CommentsDialogFragment.newInstance(equipmentKey, "ATG")
+                .show(parentFragmentManager, "comment_${equipmentKey.replace(" ", "_")}")
+        }
+    }
+
+    // ========== ОБНОВЛЕНИЕ СОСТОЯНИЙ ==========
 
     private fun updatePhotoButtonsState() {
         val inspectionId = "current_inspection"
@@ -76,15 +112,16 @@ class InspectionATG : Fragment() {
             binding.btnMediaAtg3A to "3 АТГ ф.А",
             binding.btnMediaReactorC to "Реактор ф.С",
             binding.btnMediaReactorB to "Реактор ф.В",
-            binding.btnMediaReactorA to "Реактор ф.А"
+            binding.btnMediaReactorA to "Реактор ф.А",
+            binding.btnMediaTn35 to "ТН-35"
         )
 
         photoButtons.forEach { (button, name) ->
             val hasPhotos = mediaManager.hasPhotos(inspectionId, name)
             val color = if (hasPhotos) {
-                Color.parseColor("#4CAF50")  // зелёный
+                ContextCompat.getColor(requireContext(), R.color.green)
             } else {
-                Color.parseColor("#9E9E9E")  // серый
+                ContextCompat.getColor(requireContext(), R.color.gray)
             }
             button.setColorFilter(color)
         }
@@ -101,7 +138,8 @@ class InspectionATG : Fragment() {
             binding.btnCommentAtg3A to "3 АТГ ф.А",
             binding.btnCommentReactorC to "Реактор ф.С",
             binding.btnCommentReactorB to "Реактор ф.В",
-            binding.btnCommentReactorA to "Реактор ф.А"
+            binding.btnCommentReactorA to "Реактор ф.А",
+            binding.btnCommentTn35 to "ТН-35",
         )
 
         buttonKeys.forEach { (button, key) ->
@@ -120,49 +158,23 @@ class InspectionATG : Fragment() {
     }
 
     private fun setupMediaButtons() {
-        // 📷 Кнопки фото
-        val photoButtons = mapOf(
-            binding.btnMediaAtg2C to "2 АТГ ф.С", binding.btnMediaAtg2B to "2 АТГ ф.В",
-            binding.btnMediaAtg2A to "2 АТГ ф.А", binding.btnMediaAtgReserve to "АТГ резервная",
-            binding.btnMediaAtg3C to "3 АТГ ф.С", binding.btnMediaAtg3B to "3 АТГ ф.В",
-            binding.btnMediaAtg3A to "3 АТГ ф.А", binding.btnMediaReactorC to "Реактор ф.С",
-            binding.btnMediaReactorB to "Реактор ф.В", binding.btnMediaReactorA to "Реактор ф.А"
-        )
+        // Регистрируем все пары (фото + комментарий) для существующих секций
+        registerMediaCommentPair(binding.btnMediaAtg2C, binding.btnCommentAtg2C, "2 АТГ ф.С")
+        registerMediaCommentPair(binding.btnMediaAtg2B, binding.btnCommentAtg2B, "2 АТГ ф.В")
+        registerMediaCommentPair(binding.btnMediaAtg2A, binding.btnCommentAtg2A, "2 АТГ ф.А")
+        registerMediaCommentPair(binding.btnMediaAtgReserve, binding.btnCommentAtgReserve, "АТГ резервная")
+        registerMediaCommentPair(binding.btnMediaAtg3C, binding.btnCommentAtg3C, "3 АТГ ф.С")
+        registerMediaCommentPair(binding.btnMediaAtg3B, binding.btnCommentAtg3B, "3 АТГ ф.В")
+        registerMediaCommentPair(binding.btnMediaAtg3A, binding.btnCommentAtg3A, "3 АТГ ф.А")
+        registerMediaCommentPair(binding.btnMediaReactorC, binding.btnCommentReactorC, "Реактор ф.С")
+        registerMediaCommentPair(binding.btnMediaReactorB, binding.btnCommentReactorB, "Реактор ф.В")
+        registerMediaCommentPair(binding.btnMediaReactorA, binding.btnCommentReactorA, "Реактор ф.А")
 
-        // 💬 Кнопки комментариев
-        val commentButtons = mapOf(
-            binding.btnCommentAtg2C to "2 АТГ ф.С",
-            binding.btnCommentAtg2B to "2 АТГ ф.В",
-            binding.btnCommentAtg2A to "2 АТГ ф.А",
-            binding.btnCommentAtgReserve to "АТГ резервная",
-            binding.btnCommentAtg3C to "3 АТГ ф.С",
-            binding.btnCommentAtg3B to "3 АТГ ф.В",
-            binding.btnCommentAtg3A to "3 АТГ ф.А",
-            binding.btnCommentReactorC to "Реактор ф.С",
-            binding.btnCommentReactorB to "Реактор ф.В",
-            binding.btnCommentReactorA to "Реактор ф.А"
-        )
-
-        val inspectionId = "current_inspection"
-
-        // Привязываем фото
-        photoButtons.forEach { (btn, name) ->
-            btn.setOnClickListener {
-                MediaDialogFragment.Companion.newInstance(inspectionId, name)
-                    .show(childFragmentManager, "media_$name")
-            }
-        }
-
-        // Привязываем комментарии — открываем диалог для конкретного оборудования
-        commentButtons.forEach { (btn, name) ->
-            btn.setOnClickListener {
-                val dialog = CommentsDialogFragment.Companion.newInstance(name)  // ← передаём name
-                dialog.show(childFragmentManager, "comments_dialog")
-            }
-        }
+        // ТН-35
+        registerMediaCommentPair(binding.btnMediaTn35, binding.btnCommentTn35, "ТН-35")
     }
 
-
+    // ========== ОБНОВЛЕНИЕ UI ИЗ DATA ==========
 
     private fun updateUIFromData(data: InspectionATGData) {
         isUpdatingUIFromViewModel = true
@@ -218,6 +230,7 @@ class InspectionATG : Fragment() {
         // ТН-35
         updateEditTextIfNeeded(binding.etTn352atg, data.tn352atg)
         updateEditTextIfNeeded(binding.etTn353atg, data.tn353atg)
+        // Комментарий для ТН-35 уже загрузится через подписку, но кнопка должна быть зарегистрирована
 
         // 3 АТГ ф.С
         updateEditTextIfNeeded(binding.atg3COilTank, data.atg3_c_oil_tank)
@@ -235,7 +248,7 @@ class InspectionATG : Fragment() {
         updateEditTextIfNeeded(binding.atg3BOilTank, data.atg3_b_oil_tank)
         updateEditTextIfNeeded(binding.atg3BOilRpn, data.atg3_b_oil_rpn)
         updateEditTextIfNeeded(binding.atg3BPressure500, data.atg3_b_pressure_500)
-        setupSpinnerSelection(binding.atg3BPressure220, data.atg3_b_pressure_220)
+        updateSpinnerIfNeeded(binding.atg3BPressure220, data.atg3_b_pressure_220)
         updateEditTextIfNeeded(binding.atg3BTempTs1, data.atg3_b_temp_ts1)
         updateEditTextIfNeeded(binding.atg3BTempTs2, data.atg3_b_temp_ts2)
         updateEditTextIfNeeded(binding.atg3BPumpGroup1, data.atg3_b_pump_group1)
@@ -305,17 +318,7 @@ class InspectionATG : Fragment() {
         }
     }
 
-    private fun setupSpinnerSelection(spinner: Spinner, value: String?) {
-        if (!value.isNullOrEmpty()) {
-            val adapter = spinner.adapter
-            for (i in 0 until adapter.count) {
-                if (adapter.getItem(i).toString() == value) {
-                    spinner.setSelection(i)
-                    break
-                }
-            }
-        }
-    }
+    // ========== НАСТРОЙКА СЛУШАТЕЛЕЙ ==========
 
     private fun setupInputListeners() {
         // 2 АТГ ф.С
@@ -414,7 +417,7 @@ class InspectionATG : Fragment() {
             sharedViewModel.updateATGData { atg2_a_pump_group4 = text }
         }
 
-        // АТГ резервная фаза
+        // АТГ резервная
         setupEditTextListener(binding.atgReserveOilTank) { text ->
             sharedViewModel.updateATGData { atg_reserve_oil_tank = text }
         }
@@ -550,7 +553,7 @@ class InspectionATG : Fragment() {
             sharedViewModel.updateATGData { atg3_a_pump_group4 = text }
         }
 
-        // Реакторы ф.С
+        // Реакторы
         setupEditTextListener(binding.reactorCOilTank) { text ->
             sharedViewModel.updateATGData { reactor_c_oil_tank = text }
         }
@@ -569,11 +572,10 @@ class InspectionATG : Fragment() {
         setupEditTextListener(binding.reactorCPumpGroup3) { text ->
             sharedViewModel.updateATGData { reactor_c_pump_group3 = text }
         }
-        setupSpinnerListener(binding.reactorCTtNeutral) { selectedItem ->
-            sharedViewModel.updateATGData { reactor_c_tt_neutral = selectedItem.toString() }
+        setupSpinnerListener(binding.reactorCTtNeutral) { text ->
+            sharedViewModel.updateATGData { reactor_c_tt_neutral = text }
         }
 
-        // Реакторы ф.В
         setupEditTextListener(binding.reactorBOilTank) { text ->
             sharedViewModel.updateATGData { reactor_b_oil_tank = text }
         }
@@ -592,11 +594,10 @@ class InspectionATG : Fragment() {
         setupEditTextListener(binding.reactorBPumpGroup3) { text ->
             sharedViewModel.updateATGData { reactor_b_pump_group3 = text }
         }
-        setupSpinnerListener(binding.reactorBTtNeutral) { selectedItem ->
-            sharedViewModel.updateATGData { reactor_b_tt_neutral = selectedItem.toString() }
+        setupSpinnerListener(binding.reactorBTtNeutral) { text ->
+            sharedViewModel.updateATGData { reactor_b_tt_neutral = text }
         }
 
-        // Реакторы ф.А
         setupEditTextListener(binding.reactorAOilTank) { text ->
             sharedViewModel.updateATGData { reactor_a_oil_tank = text }
         }
@@ -615,23 +616,33 @@ class InspectionATG : Fragment() {
         setupEditTextListener(binding.reactorAPumpGroup3) { text ->
             sharedViewModel.updateATGData { reactor_a_pump_group3 = text }
         }
-        setupSpinnerListener(binding.reactorATtNeutral) { selectedItem ->
-            sharedViewModel.updateATGData { reactor_a_tt_neutral = selectedItem.toString() }
+        setupSpinnerListener(binding.reactorATtNeutral) { text ->
+            sharedViewModel.updateATGData { reactor_a_tt_neutral = text }
         }
     }
 
     private fun setupEditTextListener(editText: EditText, onTextChanged: (String) -> Unit) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (isUpdatingUIFromViewModel) return
                 val newText = s?.toString() ?: ""
                 onTextChanged(newText)
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
+    }
+
+    private fun setupSpinnerListener(spinner: Spinner, onItemSelected: (String) -> Unit) {
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                if (position > 0 && !isUpdatingUIFromViewModel) {
+                    val text = parent.getItemAtPosition(position).toString()
+                    onItemSelected(text)
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
     }
 
     override fun onDestroyView() {
@@ -639,17 +650,8 @@ class InspectionATG : Fragment() {
         _binding = null
     }
 
-    private fun setupSpinnerListener(spinner: Spinner, onItemSelected: (String) -> Unit) {
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val text = parent.getItemAtPosition(position).toString()
-                onItemSelected(text)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Обработка случая, когда ничего не выбрано
-            }
-        }
+    companion object {
+        @JvmStatic
+        fun newInstance() = InspectionATG()
     }
-
 }

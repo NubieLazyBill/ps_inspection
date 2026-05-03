@@ -36,27 +36,23 @@ class ArchiveAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(record: ArchiveItem) {
-            // Фиксированный заголовок "Осмотр"
             binding.tvTitle.text = "Осмотр"
 
-            // Разбиваем дату и время
             val parts = record.displayDate.split(" ")
             if (parts.size >= 2) {
-                binding.tvDate.text = parts[0]  // дата
-                binding.tvTime.text = parts[1]  // время
+                binding.tvDate.text = parts[0]
+                binding.tvTime.text = parts[1]
             } else {
                 binding.tvDate.text = record.displayDate
                 binding.tvTime.text = ""
             }
 
-            // Устанавливаем индикаторы
             setIndicator(binding.indicatorOru35Dot, record.statusORU35)
             setIndicator(binding.indicatorOru220Dot, record.statusORU220)
             setIndicator(binding.indicatorOru500Dot, record.statusORU500)
             setIndicator(binding.indicatorAtgDot, record.statusATG)
             setIndicator(binding.indicatorBuildingsDot, record.statusBuildings)
 
-            // Меню (три точки)
             binding.btnMenu.setOnClickListener { view ->
                 onMenuClick(record, view)
             }

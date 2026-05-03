@@ -162,7 +162,8 @@ class SharedInspectionViewModel : ViewModel() {
             commentAtg3A = if (equipmentKey == "3 АТГ ф.А") commentString else currentData.commentAtg3A,
             commentReactorC = if (equipmentKey == "Реактор ф.С") commentString else currentData.commentReactorC,
             commentReactorB = if (equipmentKey == "Реактор ф.В") commentString else currentData.commentReactorB,
-            commentReactorA = if (equipmentKey == "Реактор ф.А") commentString else currentData.commentReactorA
+            commentReactorA = if (equipmentKey == "Реактор ф.А") commentString else currentData.commentReactorA,
+            commentTn35 = if (equipmentKey == "ТН-35") commentString else currentData.commentTn35   // ← добавить
         )
     }
 
@@ -185,12 +186,12 @@ class SharedInspectionViewModel : ViewModel() {
         commentsMap["Реактор ф.С"] = parseComments(data.commentReactorC)
         commentsMap["Реактор ф.В"] = parseComments(data.commentReactorB)
         commentsMap["Реактор ф.А"] = parseComments(data.commentReactorA)
+        commentsMap["ТН-35"] = parseComments(data.commentTn35)   // ← добавить
 
         // Сохраняем в постоянное хранилище
         commentsMap.forEach { (key, value) ->
             if (value.isNotEmpty()) {
-                commentStorage.addComment(key, value.last()) // Восстанавливаем последний комментарий
-                // Для списка нужно более сложное восстановление, но пока так
+                commentStorage.addComment(key, value.last())
             }
         }
         loadCommentsFromStorage()

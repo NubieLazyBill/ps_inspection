@@ -3,8 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_global_photos"
+        android:title="Все фото"
+        android:icon="@drawable/ic_camera"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_global_comments"
+        android:title="Все комментарии"
+        android:icon="@drawable/ic_comment"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_clear_archive"
         android:title="Очистить весь архив"
         android:icon="@drawable/ic_delete_outline"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
+
 </menu>
