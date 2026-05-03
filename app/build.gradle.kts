@@ -63,6 +63,7 @@ dependencies {
 
     implementation(libs.gson)
     implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("com.google.android.material:material:1.11.0")
 
     // PhotoView для зума фото (используем jitpack)
     implementation("com.github.chrisbanes:PhotoView:2.3.0") {

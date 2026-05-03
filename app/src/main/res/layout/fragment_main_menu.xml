@@ -3,25 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/img_kustovaya">
+    android:layout_height="match_parent">
 
-    <!-- Фоновое изображение с затемнением -->
+    <!-- Фоновое изображение на весь экран -->
     <ImageView
         android:id="@+id/ivBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/background_substation"
-        android:alpha="0.35"
+        android:src="@drawable/img_kustovaya"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Затемняющий градиент -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/gradient_overlay" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -53,15 +45,19 @@
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:gravity="center"
+                android:shadowColor="#000000"
+                android:shadowRadius="4"
                 android:layout_marginTop="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Система осмотра оборудования"
-                android:textColor="#B0B0B0"
+                android:textColor="#CCCCCC"
                 android:textSize="14sp"
                 android:gravity="center"
+                android:shadowColor="#000000"
+                android:shadowRadius="3"
                 android:layout_marginBottom="48dp" />
 
             <!-- Кнопка НАЧАТЬ ОСМОТР -->
@@ -158,16 +154,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="⚙️ Настройки"
-                    android:textColor="#AAAAAA"
+                    android:textColor="#CCCCCC"
                     android:textSize="14sp"
                     android:padding="12dp"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="3"
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="20dp"
-                    android:background="#444444"
+                    android:background="#777777"
                     android:layout_marginHorizontal="8dp" />
 
                 <TextView
@@ -175,9 +173,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ℹ️ О программе"
-                    android:textColor="#AAAAAA"
+                    android:textColor="#CCCCCC"
                     android:textSize="14sp"
                     android:padding="12dp"
+                    android:shadowColor="#000000"
+                    android:shadowRadius="3"
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground" />
             </LinearLayout>

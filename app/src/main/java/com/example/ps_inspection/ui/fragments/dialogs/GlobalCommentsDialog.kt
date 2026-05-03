@@ -16,6 +16,7 @@ import com.google.android.material.button.MaterialButton
 class GlobalCommentsDialog : DialogFragment() {
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
+    private var totalCommentsCount = 0
 
     companion object {
         fun newInstance(): GlobalCommentsDialog = GlobalCommentsDialog()
@@ -36,9 +37,11 @@ class GlobalCommentsDialog : DialogFragment() {
             setPadding(32, 32, 32, 32)
         }
 
-        // Заголовок
+        totalCommentsCount = countTotalComments()
+
+        // Заголовок со счётчиком
         root.addView(TextView(requireContext()).apply {
-            text = "💬 Все комментарии"
+            text = "💬 Все комментарии ($totalCommentsCount)"
             textSize = 18f
             setPadding(0, 0, 0, 16)
             setTypeface(null, Typeface.BOLD)
@@ -51,12 +54,15 @@ class GlobalCommentsDialog : DialogFragment() {
             setPadding(0, 0, 0, 16)
         }
 
-        // Собираем все комментарии из ViewModel
+        // Собираем все комментарии из ViewModel с сортировкой по алфавиту
         fun addCommentSection(title: String, comments: List<String>) {
             if (comments.isEmpty() || comments.all { it.isBlank() }) return
 
+            // Сортируем комментарии по алфавиту
+            val sortedComments = comments.filter { it.isNotBlank() }.sorted()
+
             val titleView = TextView(requireContext()).apply {
-                text = "📌 $title"
+                text = "📌 $title (${sortedComments.size})"
                 textSize = 16f
                 setTypeface(null, Typeface.BOLD)
                 setPadding(0, 16, 0, 8)
@@ -64,40 +70,38 @@ class GlobalCommentsDialog : DialogFragment() {
             }
             contentLayout.addView(titleView)
 
-            comments.forEach { comment ->
-                if (comment.isNotBlank()) {
-                    val commentView = TextView(requireContext()).apply {
-                        text = "• $comment"
-                        textSize = 14f
-                        setPadding(16, 4, 16, 4)
-                    }
-                    contentLayout.addView(commentView)
+            sortedComments.forEach { comment ->
+                val commentView = TextView(requireContext()).apply {
+                    text = "• $comment"
+                    textSize = 14f
+                    setPadding(16, 4, 16, 4)
                 }
+                contentLayout.addView(commentView)
             }
         }
 
-        // ОРУ-35
-        sharedViewModel.oru35Comments.value.forEach { (equipment, comments) ->
+        // ОРУ-35 (сортируем по названию оборудования)
+        sharedViewModel.oru35Comments.value.toSortedMap().forEach { (equipment, comments) ->
             addCommentSection("ОРУ-35: $equipment", comments)
         }
 
         // ОРУ-220
-        sharedViewModel.oru220Comments.value.forEach { (equipment, comments) ->
+        sharedViewModel.oru220Comments.value.toSortedMap().forEach { (equipment, comments) ->
             addCommentSection("ОРУ-220: $equipment", comments)
         }
 
         // ОРУ-500
-        sharedViewModel.oru500Comments.value.forEach { (equipment, comments) ->
+        sharedViewModel.oru500Comments.value.toSortedMap().forEach { (equipment, comments) ->
             addCommentSection("ОРУ-500: $equipment", comments)
         }
 
         // АТГ
-        sharedViewModel.atgComments.value.forEach { (equipment, comments) ->
+        sharedViewModel.atgComments.value.toSortedMap().forEach { (equipment, comments) ->
             addCommentSection("АТГ: $equipment", comments)
         }
 
         // Здания
-        sharedViewModel.buildingsComments.value.forEach { (equipment, comments) ->
+        sharedViewModel.buildingsComments.value.toSortedMap().forEach { (equipment, comments) ->
             addCommentSection("Здания: $equipment", comments)
         }
 
@@ -134,5 +138,15 @@ class GlobalCommentsDialog : DialogFragment() {
         )
 
         return root
+    }
+
+    private fun countTotalComments(): Int {
+        var count = 0
+        count += sharedViewModel.oru35Comments.value.values.sumOf { it.size }
+        count += sharedViewModel.oru220Comments.value.values.sumOf { it.size }
+        count += sharedViewModel.oru500Comments.value.values.sumOf { it.size }
+        count += sharedViewModel.atgComments.value.values.sumOf { it.size }
+        count += sharedViewModel.buildingsComments.value.values.sumOf { it.size }
+        return count
     }
 }

@@ -67,8 +67,83 @@ class SharedInspectionViewModel : ViewModel() {
     }
 
     // Инициализация хранилища комментариев
+
+    // Добавь в класс SharedInspectionViewModel
+    private fun migrateOldComments() {
+        val allComments = commentStorage.loadAllComments()
+        var needSave = false
+        val migrated = allComments.toMutableMap()
+
+        // Список известных ключей оборудования (без префиксов)
+        val knownKeys = setOf(
+            // АТГ
+            "2 АТГ ф.С", "2 АТГ ф.В", "2 АТГ ф.А", "АТГ резервная",
+            "3 АТГ ф.С", "3 АТГ ф.В", "3 АТГ ф.А", "Реактор ф.С", "Реактор ф.В", "Реактор ф.А", "ТН-35",
+            // ОРУ-35
+            "ТСН", "ТТ-35 2ТСН", "ТТ-35 3ТСН", "В-35 2ТСН", "В-35 3ТСН",
+            // ОРУ-220
+            "Мирная", "Мирная ТТ", "Топаз", "Топаз ТТ", "ОВ", "ОВ ТТ", "ТН-220 ОСШ",
+            "2АТГ", "2АТГ ТТ", "ШСВ", "ШСВ ТТ", "3АТГ", "3АТГ ТТ", "Орбита", "Орбита ТТ",
+            "Факел", "Факел ТТ", "Комета-1", "Комета-1 ТТ", "Комета-2", "Комета-2 ТТ",
+            "1ТН-220", "2ТН-220",
+            // ОРУ-500
+            "В-500 Р-500 2С", "В-500 ВШТ-31", "В-500 ВЛТ-30", "В-500 ВШЛ-32", "В-500 ВШЛ-21",
+            "В-500 ВШТ-22", "В-500 ВЛТ-20", "В-500 ВШТ-11", "В-500 ВШЛ-12",
+            "ТТ-500 ВШТ-31", "ТТ-500 ВЛТ-30", "ТТ-500 ВШЛ-32", "ТТ-500 ВШЛ-21",
+            "ТТ-500 ВШТ-22", "ТТ-500 ВЛТ-20", "ТТ-500 ВШТ-11", "ТТ-500 ВШЛ-12",
+            "1ТН-500", "2ТН-500", "ТН-500 СГРЭС-1", "Трачуковская ТТ", "Трачуковская 2ТН",
+            "Трачуковская 1ТН", "Белозёрная 2ТН",
+            // Buildings
+            "Компрессорная №1", "Баллоная №1", "Компрессорная №2", "Баллоная №2",
+            "КПЗ ОПУ", "КПЗ-2", "Насосная пожаротушения", "Мастерская по ремонту ВВ",
+            "Артскважина", "Здание артезианской скважины", "Помещение 1 (2) АБ", "Помещение п/этажа №1,2,3"
+        )
+
+        for ((key, value) in allComments) {
+            // Если ключ без префикса и это известное оборудование
+            if (!key.startsWith("ATG_") && !key.startsWith("ORU35_") &&
+                !key.startsWith("ORU220_") && !key.startsWith("ORU500_") &&
+                !key.startsWith("BUILDINGS_") && key in knownKeys) {
+
+                // Определяем, к какой секции относится ключ
+                val prefix = when (key) {
+                    // АТГ
+                    "2 АТГ ф.С", "2 АТГ ф.В", "2 АТГ ф.А", "АТГ резервная",
+                    "3 АТГ ф.С", "3 АТГ ф.В", "3 АТГ ф.А", "Реактор ф.С", "Реактор ф.В", "Реактор ф.А", "ТН-35" -> "ATG_"
+                    // ОРУ-35
+                    "ТСН", "ТТ-35 2ТСН", "ТТ-35 3ТСН", "В-35 2ТСН", "В-35 3ТСН" -> "ORU35_"
+                    // ОРУ-500
+                    "В-500 Р-500 2С", "В-500 ВШТ-31", "В-500 ВЛТ-30", "В-500 ВШЛ-32", "В-500 ВШЛ-21",
+                    "В-500 ВШТ-22", "В-500 ВЛТ-20", "В-500 ВШТ-11", "В-500 ВШЛ-12",
+                    "ТТ-500 ВШТ-31", "ТТ-500 ВЛТ-30", "ТТ-500 ВШЛ-32", "ТТ-500 ВШЛ-21",
+                    "ТТ-500 ВШТ-22", "ТТ-500 ВЛТ-20", "ТТ-500 ВШТ-11", "ТТ-500 ВШЛ-12",
+                    "1ТН-500", "2ТН-500", "ТН-500 СГРЭС-1", "Трачуковская ТТ", "Трачуковская 2ТН",
+                    "Трачуковская 1ТН", "Белозёрная 2ТН" -> "ORU500_"
+                    // Buildings
+                    "Компрессорная №1", "Баллоная №1", "Компрессорная №2", "Баллоная №2",
+                    "КПЗ ОПУ", "КПЗ-2", "Насосная пожаротушения", "Мастерская по ремонту ВВ",
+                    "Артскважина", "Здание артезианской скважины", "Помещение 1 (2) АБ",
+                    "Помещение п/этажа №1,2,3" -> "BUILDINGS_"
+                    // ОРУ-220 (по умолчанию, так как их больше всего)
+                    else -> "ORU220_"
+                }
+
+                val newKey = "$prefix$key"
+                migrated[newKey] = value
+                migrated.remove(key)
+                needSave = true
+            }
+        }
+
+        if (needSave) {
+            commentStorage.saveAllComments(migrated)
+        }
+    }
     fun initCommentStorage(context: Context) {
         commentStorage = CommentStorageManager(context)
+
+        // Мигрируем старые комментарии (только один раз)
+        migrateOldComments()
 
         // Загружаем комментарии для всех фрагментов
         loadCommentsFromStorage()              // АТГ
@@ -85,14 +160,16 @@ class SharedInspectionViewModel : ViewModel() {
         _atgData.value = InspectionATGData()
         _oru500Data.value = InspectionORU500Data()
         _buildingsData.value = InspectionBuildingsData()
-        // НЕ очищаем комментарии - они остаются!
-
     }
 
     // Очистка только комментариев (если нужно)
     fun clearAllComments() {
         commentStorage.clearAllComments()
         loadCommentsFromStorage()
+        loadORU35CommentsFromStorage()
+        loadORU220CommentsFromStorage()
+        loadORU500CommentsFromStorage()
+        loadBuildingsCommentsFromStorage()
     }
 
     // --- Функции для фото АТГ ---
@@ -113,42 +190,73 @@ class SharedInspectionViewModel : ViewModel() {
         }
     }
 
-    // ========== КОММЕНТАРИИ (СПИСОК) ==========
+    // ========== КОММЕНТАРИИ ДЛЯ АТГ (СПИСОК) ==========
 
     private val _atgComments = MutableStateFlow<Map<String, List<String>>>(emptyMap())
     val atgComments: StateFlow<Map<String, List<String>>> = _atgComments
 
-    // Загрузить комментарии из хранилища
-    private fun loadCommentsFromStorage() {
-        val saved = commentStorage.loadAllComments()
-        _atgComments.value = saved
-    }
-
-    // Добавить комментарий
     fun addATGComment(equipmentKey: String, comment: String) {
         if (comment.isBlank()) return
-        commentStorage.addComment(equipmentKey, comment)
-        loadCommentsFromStorage()
-        // Сохраняем также в _atgData для архива
-        saveCommentsToAtgData(equipmentKey, commentStorage.getComments(equipmentKey))
+
+        val prefixedKey = "ATG_$equipmentKey"
+
+        val currentMap = _atgComments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
+        currentList.add(comment)
+        currentMap[equipmentKey] = currentList
+        _atgComments.value = currentMap
+
+        val allComments = commentStorage.loadAllComments().toMutableMap()
+        allComments[prefixedKey] = currentList
+        commentStorage.saveAllComments(allComments)
+
+        saveCommentsToAtgData(equipmentKey, currentList)
     }
 
-    // Удалить комментарий по индексу
     fun removeATGComment(equipmentKey: String, commentIndex: Int) {
-        commentStorage.removeComment(equipmentKey, commentIndex)
-        loadCommentsFromStorage()
-        saveCommentsToAtgData(equipmentKey, commentStorage.getComments(equipmentKey))
+        val currentMap = _atgComments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList.removeAt(commentIndex)
+            if (currentList.isEmpty()) {
+                currentMap.remove(equipmentKey)
+            } else {
+                currentMap[equipmentKey] = currentList
+            }
+            _atgComments.value = currentMap
+
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            val prefixedKey = "ATG_$equipmentKey"
+            if (currentList.isEmpty()) {
+                allComments.remove(prefixedKey)
+            } else {
+                allComments[prefixedKey] = currentList
+            }
+            commentStorage.saveAllComments(allComments)
+
+            saveCommentsToAtgData(equipmentKey, currentList)
+        }
     }
 
-    // Редактировать комментарий по индексу
     fun updateATGComment(equipmentKey: String, commentIndex: Int, newComment: String) {
         if (newComment.isBlank()) return
-        commentStorage.updateComment(equipmentKey, commentIndex, newComment)
-        loadCommentsFromStorage()
-        saveCommentsToAtgData(equipmentKey, commentStorage.getComments(equipmentKey))
+
+        val currentMap = _atgComments.value.toMutableMap()
+        val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
+        if (commentIndex in currentList.indices) {
+            currentList[commentIndex] = newComment
+            currentMap[equipmentKey] = currentList
+            _atgComments.value = currentMap
+
+            val allComments = commentStorage.loadAllComments().toMutableMap()
+            val prefixedKey = "ATG_$equipmentKey"
+            allComments[prefixedKey] = currentList
+            commentStorage.saveAllComments(allComments)
+
+            saveCommentsToAtgData(equipmentKey, currentList)
+        }
     }
 
-    // Сохранить комментарии в _atgData (для архива)
     private fun saveCommentsToAtgData(equipmentKey: String, comments: List<String>) {
         val commentString = comments.joinToString("|||")
         val currentData = _atgData.value
@@ -163,11 +271,17 @@ class SharedInspectionViewModel : ViewModel() {
             commentReactorC = if (equipmentKey == "Реактор ф.С") commentString else currentData.commentReactorC,
             commentReactorB = if (equipmentKey == "Реактор ф.В") commentString else currentData.commentReactorB,
             commentReactorA = if (equipmentKey == "Реактор ф.А") commentString else currentData.commentReactorA,
-            commentTn35 = if (equipmentKey == "ТН-35") commentString else currentData.commentTn35   // ← добавить
+            commentTn35 = if (equipmentKey == "ТН-35") commentString else currentData.commentTn35
         )
     }
 
-    // Загрузить комментарии из _atgData (при загрузке архива)
+    fun loadCommentsFromStorage() {
+        val saved = commentStorage.loadAllComments()
+        val filtered = saved.filterKeys { it.startsWith("ATG_") }
+            .mapKeys { it.key.removePrefix("ATG_") }
+        _atgComments.value = filtered
+    }
+
     fun loadCommentsFromAtgData() {
         val data = _atgData.value
         val commentsMap = mutableMapOf<String, List<String>>()
@@ -186,12 +300,11 @@ class SharedInspectionViewModel : ViewModel() {
         commentsMap["Реактор ф.С"] = parseComments(data.commentReactorC)
         commentsMap["Реактор ф.В"] = parseComments(data.commentReactorB)
         commentsMap["Реактор ф.А"] = parseComments(data.commentReactorA)
-        commentsMap["ТН-35"] = parseComments(data.commentTn35)   // ← добавить
+        commentsMap["ТН-35"] = parseComments(data.commentTn35)
 
-        // Сохраняем в постоянное хранилище
         commentsMap.forEach { (key, value) ->
             if (value.isNotEmpty()) {
-                commentStorage.addComment(key, value.last())
+                commentStorage.addComment("ATG_$key", value.last())
             }
         }
         loadCommentsFromStorage()
@@ -220,9 +333,10 @@ class SharedInspectionViewModel : ViewModel() {
     private val _oru35Comments = MutableStateFlow<Map<String, List<String>>>(emptyMap())
     val oru35Comments: StateFlow<Map<String, List<String>>> = _oru35Comments
 
-    // Добавить комментарий
     fun addORU35Comment(equipmentKey: String, comment: String) {
         if (comment.isBlank()) return
+
+        val prefixedKey = "ORU35_$equipmentKey"
 
         val currentMap = _oru35Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
@@ -230,16 +344,13 @@ class SharedInspectionViewModel : ViewModel() {
         currentMap[equipmentKey] = currentList
         _oru35Comments.value = currentMap
 
-        // Сохраняем в хранилище
         val allComments = commentStorage.loadAllComments().toMutableMap()
-        allComments[equipmentKey] = currentList
+        allComments[prefixedKey] = currentList
         commentStorage.saveAllComments(allComments)
 
-        // Сохраняем в _oru35Data как строку с разделителем
         saveORU35CommentsToData(equipmentKey, currentList)
     }
 
-    // Удалить комментарий по индексу
     fun removeORU35Comment(equipmentKey: String, commentIndex: Int) {
         val currentMap = _oru35Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: return
@@ -252,21 +363,19 @@ class SharedInspectionViewModel : ViewModel() {
             }
             _oru35Comments.value = currentMap
 
-            // Обновляем хранилище
             val allComments = commentStorage.loadAllComments().toMutableMap()
+            val prefixedKey = "ORU35_$equipmentKey"
             if (currentList.isEmpty()) {
-                allComments.remove(equipmentKey)
+                allComments.remove(prefixedKey)
             } else {
-                allComments[equipmentKey] = currentList
+                allComments[prefixedKey] = currentList
             }
             commentStorage.saveAllComments(allComments)
 
-            // Обновляем _oru35Data
             saveORU35CommentsToData(equipmentKey, currentList)
         }
     }
 
-    // Редактировать комментарий
     fun updateORU35Comment(equipmentKey: String, commentIndex: Int, newComment: String) {
         if (newComment.isBlank()) return
 
@@ -277,17 +386,15 @@ class SharedInspectionViewModel : ViewModel() {
             currentMap[equipmentKey] = currentList
             _oru35Comments.value = currentMap
 
-            // Обновляем хранилище
             val allComments = commentStorage.loadAllComments().toMutableMap()
-            allComments[equipmentKey] = currentList
+            val prefixedKey = "ORU35_$equipmentKey"
+            allComments[prefixedKey] = currentList
             commentStorage.saveAllComments(allComments)
 
-            // Обновляем _oru35Data
             saveORU35CommentsToData(equipmentKey, currentList)
         }
     }
 
-    // Сохранить комментарии в _oru35Data (для архива)
     private fun saveORU35CommentsToData(equipmentKey: String, comments: List<String>) {
         val commentString = comments.joinToString("|||")
         updateORU35Data {
@@ -301,7 +408,6 @@ class SharedInspectionViewModel : ViewModel() {
         }
     }
 
-    // Загрузить комментарии из _oru35Data
     fun loadORU35CommentsFromData() {
         val data = _oru35Data.value
         val commentsMap = mutableMapOf<String, List<String>>()
@@ -319,10 +425,11 @@ class SharedInspectionViewModel : ViewModel() {
         _oru35Comments.value = commentsMap
     }
 
-    // Загрузить комментарии из хранилища
     fun loadORU35CommentsFromStorage() {
         val saved = commentStorage.loadAllComments()
-        _oru35Comments.value = saved
+        val filtered = saved.filterKeys { it.startsWith("ORU35_") }
+            .mapKeys { it.key.removePrefix("ORU35_") }
+        _oru35Comments.value = filtered
     }
 
     // ========== КОММЕНТАРИИ ДЛЯ ОРУ-220 (СПИСОК) ==========
@@ -333,6 +440,8 @@ class SharedInspectionViewModel : ViewModel() {
     fun addORU220Comment(equipmentKey: String, comment: String) {
         if (comment.isBlank()) return
 
+        val prefixedKey = "ORU220_$equipmentKey"
+
         val currentMap = _oru220Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
         currentList.add(comment)
@@ -340,7 +449,7 @@ class SharedInspectionViewModel : ViewModel() {
         _oru220Comments.value = currentMap
 
         val allComments = commentStorage.loadAllComments().toMutableMap()
-        allComments[equipmentKey] = currentList
+        allComments[prefixedKey] = currentList
         commentStorage.saveAllComments(allComments)
 
         saveORU220CommentsToData(equipmentKey, currentList)
@@ -359,10 +468,11 @@ class SharedInspectionViewModel : ViewModel() {
             _oru220Comments.value = currentMap
 
             val allComments = commentStorage.loadAllComments().toMutableMap()
+            val prefixedKey = "ORU220_$equipmentKey"
             if (currentList.isEmpty()) {
-                allComments.remove(equipmentKey)
+                allComments.remove(prefixedKey)
             } else {
-                allComments[equipmentKey] = currentList
+                allComments[prefixedKey] = currentList
             }
             commentStorage.saveAllComments(allComments)
 
@@ -381,7 +491,8 @@ class SharedInspectionViewModel : ViewModel() {
             _oru220Comments.value = currentMap
 
             val allComments = commentStorage.loadAllComments().toMutableMap()
-            allComments[equipmentKey] = currentList
+            val prefixedKey = "ORU220_$equipmentKey"
+            allComments[prefixedKey] = currentList
             commentStorage.saveAllComments(allComments)
 
             saveORU220CommentsToData(equipmentKey, currentList)
@@ -421,7 +532,9 @@ class SharedInspectionViewModel : ViewModel() {
 
     fun loadORU220CommentsFromStorage() {
         val saved = commentStorage.loadAllComments()
-        _oru220Comments.value = saved
+        val filtered = saved.filterKeys { it.startsWith("ORU220_") }
+            .mapKeys { it.key.removePrefix("ORU220_") }
+        _oru220Comments.value = filtered
     }
 
     fun loadORU220CommentsFromData() {
@@ -467,6 +580,8 @@ class SharedInspectionViewModel : ViewModel() {
     fun addORU500Comment(equipmentKey: String, comment: String) {
         if (comment.isBlank()) return
 
+        val prefixedKey = "ORU500_$equipmentKey"
+
         val currentMap = _oru500Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
         currentList.add(comment)
@@ -474,7 +589,7 @@ class SharedInspectionViewModel : ViewModel() {
         _oru500Comments.value = currentMap
 
         val allComments = commentStorage.loadAllComments().toMutableMap()
-        allComments[equipmentKey] = currentList
+        allComments[prefixedKey] = currentList
         commentStorage.saveAllComments(allComments)
 
         saveORU500CommentsToData(equipmentKey, currentList)
@@ -493,10 +608,11 @@ class SharedInspectionViewModel : ViewModel() {
             _oru500Comments.value = currentMap
 
             val allComments = commentStorage.loadAllComments().toMutableMap()
+            val prefixedKey = "ORU500_$equipmentKey"
             if (currentList.isEmpty()) {
-                allComments.remove(equipmentKey)
+                allComments.remove(prefixedKey)
             } else {
-                allComments[equipmentKey] = currentList
+                allComments[prefixedKey] = currentList
             }
             commentStorage.saveAllComments(allComments)
 
@@ -515,7 +631,8 @@ class SharedInspectionViewModel : ViewModel() {
             _oru500Comments.value = currentMap
 
             val allComments = commentStorage.loadAllComments().toMutableMap()
-            allComments[equipmentKey] = currentList
+            val prefixedKey = "ORU500_$equipmentKey"
+            allComments[prefixedKey] = currentList
             commentStorage.saveAllComments(allComments)
 
             saveORU500CommentsToData(equipmentKey, currentList)
@@ -526,7 +643,6 @@ class SharedInspectionViewModel : ViewModel() {
         val commentString = comments.joinToString("|||")
         updateORU500Data {
             when (equipmentKey) {
-                // В-500
                 "В-500 Р-500 2С" -> commentR5002s = commentString
                 "В-500 ВШТ-31" -> commentVsht31 = commentString
                 "В-500 ВЛТ-30" -> commentVlt30 = commentString
@@ -536,7 +652,6 @@ class SharedInspectionViewModel : ViewModel() {
                 "В-500 ВЛТ-20" -> commentVlt20 = commentString
                 "В-500 ВШТ-11" -> commentVsht11 = commentString
                 "В-500 ВШЛ-12" -> commentVshl12 = commentString
-                // ТТ-500
                 "ТТ-500 ВШТ-31" -> commentTtVsht31 = commentString
                 "ТТ-500 ВЛТ-30" -> commentTtVlt30 = commentString
                 "ТТ-500 ВШЛ-32" -> commentTtVshl32 = commentString
@@ -545,15 +660,12 @@ class SharedInspectionViewModel : ViewModel() {
                 "ТТ-500 ВЛТ-20" -> commentTtVlt20 = commentString
                 "ТТ-500 ВШТ-11" -> commentTtVsht11 = commentString
                 "ТТ-500 ВШЛ-12" -> commentTtVshl12 = commentString
-                // ТН-500
                 "1ТН-500" -> commentTn1500 = commentString
                 "2ТН-500" -> commentTn2500 = commentString
                 "ТН-500 СГРЭС-1" -> commentTn500Sgres1 = commentString
-                // Трачуковская
                 "Трачуковская ТТ" -> commentTrachukovskayaTt = commentString
                 "Трачуковская 2ТН" -> commentTrachukovskaya2tn = commentString
                 "Трачуковская 1ТН" -> commentTrachukovskaya1tn = commentString
-                // Белозёрная
                 "Белозёрная 2ТН" -> commentBelozernaya2tn = commentString
             }
         }
@@ -561,17 +673,9 @@ class SharedInspectionViewModel : ViewModel() {
 
     fun loadORU500CommentsFromStorage() {
         val saved = commentStorage.loadAllComments()
-        // Фильтруем только комментарии для ОРУ-500
-        val oru500Keys = setOf(
-            "В-500 Р-500 2С", "В-500 ВШТ-31", "В-500 ВЛТ-30", "В-500 ВШЛ-32", "В-500 ВШЛ-21",
-            "В-500 ВШТ-22", "В-500 ВЛТ-20", "В-500 ВШТ-11", "В-500 ВШЛ-12",
-            "ТТ-500 ВШТ-31", "ТТ-500 ВЛТ-30", "ТТ-500 ВШЛ-32", "ТТ-500 ВШЛ-21",
-            "ТТ-500 ВШТ-22", "ТТ-500 ВЛТ-20", "ТТ-500 ВШТ-11", "ТТ-500 ВШЛ-12",
-            "1ТН-500", "2ТН-500", "ТН-500 СГРЭС-1",
-            "Трачуковская ТТ", "Трачуковская 2ТН", "Трачуковская 1ТН",
-            "Белозёрная 2ТН"
-        )
-        _oru500Comments.value = saved.filterKeys { it in oru500Keys }
+        val filtered = saved.filterKeys { it.startsWith("ORU500_") }
+            .mapKeys { it.key.removePrefix("ORU500_") }
+        _oru500Comments.value = filtered
     }
 
     fun loadORU500CommentsFromData() {
@@ -582,7 +686,6 @@ class SharedInspectionViewModel : ViewModel() {
             return if (str.isBlank()) emptyList() else str.split("|||")
         }
 
-        // В-500
         commentsMap["В-500 Р-500 2С"] = parseComments(data.commentR5002s)
         commentsMap["В-500 ВШТ-31"] = parseComments(data.commentVsht31)
         commentsMap["В-500 ВЛТ-30"] = parseComments(data.commentVlt30)
@@ -592,8 +695,6 @@ class SharedInspectionViewModel : ViewModel() {
         commentsMap["В-500 ВЛТ-20"] = parseComments(data.commentVlt20)
         commentsMap["В-500 ВШТ-11"] = parseComments(data.commentVsht11)
         commentsMap["В-500 ВШЛ-12"] = parseComments(data.commentVshl12)
-
-        // ТТ-500
         commentsMap["ТТ-500 ВШТ-31"] = parseComments(data.commentTtVsht31)
         commentsMap["ТТ-500 ВЛТ-30"] = parseComments(data.commentTtVlt30)
         commentsMap["ТТ-500 ВШЛ-32"] = parseComments(data.commentTtVshl32)
@@ -602,18 +703,12 @@ class SharedInspectionViewModel : ViewModel() {
         commentsMap["ТТ-500 ВЛТ-20"] = parseComments(data.commentTtVlt20)
         commentsMap["ТТ-500 ВШТ-11"] = parseComments(data.commentTtVsht11)
         commentsMap["ТТ-500 ВШЛ-12"] = parseComments(data.commentTtVshl12)
-
-        // ТН-500
         commentsMap["1ТН-500"] = parseComments(data.commentTn1500)
         commentsMap["2ТН-500"] = parseComments(data.commentTn2500)
         commentsMap["ТН-500 СГРЭС-1"] = parseComments(data.commentTn500Sgres1)
-
-        // Трачуковская
         commentsMap["Трачуковская ТТ"] = parseComments(data.commentTrachukovskayaTt)
         commentsMap["Трачуковская 2ТН"] = parseComments(data.commentTrachukovskaya2tn)
         commentsMap["Трачуковская 1ТН"] = parseComments(data.commentTrachukovskaya1tn)
-
-        // Белозёрная
         commentsMap["Белозёрная 2ТН"] = parseComments(data.commentBelozernaya2tn)
 
         _oru500Comments.value = commentsMap
@@ -627,6 +722,8 @@ class SharedInspectionViewModel : ViewModel() {
     fun addBuildingsComment(equipmentKey: String, comment: String) {
         if (comment.isBlank()) return
 
+        val prefixedKey = "BUILDINGS_$equipmentKey"
+
         val currentMap = _buildingsComments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
         currentList.add(comment)
@@ -634,7 +731,7 @@ class SharedInspectionViewModel : ViewModel() {
         _buildingsComments.value = currentMap
 
         val allComments = commentStorage.loadAllComments().toMutableMap()
-        allComments[equipmentKey] = currentList
+        allComments[prefixedKey] = currentList
         commentStorage.saveAllComments(allComments)
 
         saveBuildingsCommentsToData(equipmentKey, currentList)
@@ -653,10 +750,11 @@ class SharedInspectionViewModel : ViewModel() {
             _buildingsComments.value = currentMap
 
             val allComments = commentStorage.loadAllComments().toMutableMap()
+            val prefixedKey = "BUILDINGS_$equipmentKey"
             if (currentList.isEmpty()) {
-                allComments.remove(equipmentKey)
+                allComments.remove(prefixedKey)
             } else {
-                allComments[equipmentKey] = currentList
+                allComments[prefixedKey] = currentList
             }
             commentStorage.saveAllComments(allComments)
 
@@ -675,7 +773,8 @@ class SharedInspectionViewModel : ViewModel() {
             _buildingsComments.value = currentMap
 
             val allComments = commentStorage.loadAllComments().toMutableMap()
-            allComments[equipmentKey] = currentList
+            val prefixedKey = "BUILDINGS_$equipmentKey"
+            allComments[prefixedKey] = currentList
             commentStorage.saveAllComments(allComments)
 
             saveBuildingsCommentsToData(equipmentKey, currentList)
@@ -704,14 +803,9 @@ class SharedInspectionViewModel : ViewModel() {
 
     fun loadBuildingsCommentsFromStorage() {
         val saved = commentStorage.loadAllComments()
-        // Фильтруем только комментарии для Buildings
-        val buildingsKeys = setOf(
-            "Компрессорная №1", "Баллоная №1", "Компрессорная №2", "Баллоная №2",
-            "КПЗ ОПУ", "КПЗ-2", "Насосная пожаротушения", "Мастерская по ремонту ВВ",
-            "Артскважина", "Здание артезианской скважины", "Помещение 1 (2) АБ",
-            "Помещение п/этажа №1,2,3"
-        )
-        _buildingsComments.value = saved.filterKeys { it in buildingsKeys }
+        val filtered = saved.filterKeys { it.startsWith("BUILDINGS_") }
+            .mapKeys { it.key.removePrefix("BUILDINGS_") }
+        _buildingsComments.value = filtered
     }
 
     fun loadBuildingsCommentsFromData() {
@@ -737,5 +831,4 @@ class SharedInspectionViewModel : ViewModel() {
 
         _buildingsComments.value = commentsMap
     }
-
 }
