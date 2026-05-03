@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.Workbook
 import java.io.File
 import java.io.FileOutputStream
 import android.util.Log
+import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionATGData
 import com.example.ps_inspection.data.models.InspectionBuildingsData
 import com.example.ps_inspection.data.models.InspectionORU220Data
@@ -746,6 +747,66 @@ class ExcelExportService(private val context: Context) {
             null
         } finally {
             workbook.close()
+        }
+    }
+
+    private val dateFormat = SimpleDateFormat("dd.MM.yyyy_HH-mm-ss", Locale.getDefault())
+
+    fun exportCommentsToExcel(
+        comments: List<Pair<String, Comment>>,
+        filterSection: String = "Все"
+    ): Uri? {
+        return try {
+            val workbook = XSSFWorkbook()
+            val sheet = workbook.createSheet("Комментарии")
+
+            // Заголовки
+            val headerRow = sheet.createRow(0)
+            val headers = arrayOf("№", "Секция", "Оборудование", "Дата и время", "Текст комментария")
+            headers.forEachIndexed { index, title ->
+                val cell = headerRow.createCell(index)
+                cell.setCellValue(title)
+            }
+
+            // Данные
+            comments.forEachIndexed { index, (sectionEquipment, comment) ->
+                val row = sheet.createRow(index + 1)
+                row.createCell(0).setCellValue((index + 1).toDouble())
+
+                val parts = sectionEquipment.split(": ")
+                val section = parts.getOrNull(0) ?: ""
+                val equipment = parts.getOrNull(1) ?: sectionEquipment
+
+                row.createCell(1).setCellValue(section)
+                row.createCell(2).setCellValue(equipment)
+                row.createCell(3).setCellValue(comment.getFormattedTime())
+                row.createCell(4).setCellValue(comment.text)
+            }
+
+            // Вручную устанавливаем ширину колонок (вместо autoSizeColumn)
+            sheet.setColumnWidth(0, 8 * 256)    // №
+            sheet.setColumnWidth(1, 20 * 256)   // Секция
+            sheet.setColumnWidth(2, 30 * 256)   // Оборудование
+            sheet.setColumnWidth(3, 20 * 256)   // Дата и время
+            sheet.setColumnWidth(4, 50 * 256)   // Текст комментария
+
+            // Сохраняем в кэш
+            val fileName = "comments_${System.currentTimeMillis()}.xlsx"
+            val file = File(context.cacheDir, fileName)
+            FileOutputStream(file).use { outputStream ->
+                workbook.write(outputStream)
+            }
+            workbook.close()
+
+            // Получаем URI для sharing
+            FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                file
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }
