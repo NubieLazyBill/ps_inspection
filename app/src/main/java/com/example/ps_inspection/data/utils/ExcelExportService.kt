@@ -38,32 +38,33 @@ class ExcelExportService(private val context: Context) {
         oru500Data: InspectionORU500Data,
         buildingsData: InspectionBuildingsData
     ): Uri? {
-        // 🔒 ШАГ 1: СНАЧАЛА СОХРАНЯЕМ ВСЕ ДАННЫЕ
-        try {
-            val lastInspectionManager = LastInspectionManager(context)
-            lastInspectionManager.saveLastInspection(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+        // 🔒 ШАГ 1: СНАЧАЛА сохраняем данные ВЕЗДЕ
+        saveAllDataEverywhere(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
-            val archiveManager = InspectionArchiveManager(context)
-            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            // Даже если сохранение упало — продолжаем экспорт
-        }
-
-        // 🔒 ШАГ 2: ТОЛЬКО ПОТОМ ДЕЛАЕМ ЭКСПОРТ В EXCEL
+        // 🔒 ШАГ 2: ТОЛЬКО ПОТОМ пытаемся создать Excel
         return try {
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
             val workbook = XSSFWorkbook(inputStream)
             val sheet = workbook.getSheetAt(0)
 
+            // 🔧 ШАГ 3: Запоминаем где были прочерки в шаблоне
+            rememberDashCells(sheet)
+
+            // ШАГ 4: Заполняем данные
             fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
+            // 🔧 ШАГ 5: Восстанавливаем прочерки только где не заполнили
+            restoreDashCells(sheet)
+
+            // ШАГ 6: Добавляем лист с комментариями
             addCommentsSheet(workbook, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
-            val uri = saveWorkbookFromTemplate(workbook, inputStream)
+            val uri = saveWorkbook(workbook)
+            inputStream.close()
             uri
         } catch (e: Exception) {
             e.printStackTrace()
-            null  // Данные УЖЕ сохранены, просто Excel не создался
+            null
         }
     }
 
@@ -123,6 +124,10 @@ class ExcelExportService(private val context: Context) {
             val workbook = XSSFWorkbook(inputStream)
             val sheet = workbook.getSheetAt(0)
 
+            // 🔧 Запоминаем прочерки из шаблона
+            rememberDashCells(sheet)
+
+            // Заполняем данные из архива
             fillDataToTemplate(sheet,
                 archiveData.oru35,
                 archiveData.oru220,
@@ -130,6 +135,11 @@ class ExcelExportService(private val context: Context) {
                 archiveData.oru500,
                 archiveData.buildings
             )
+
+            // 🔧 Восстанавливаем прочерки
+            restoreDashCells(sheet)
+
+            // Добавляем комментарии из архива
             addCommentsSheet(workbook,
                 archiveData.oru35,
                 archiveData.oru220,
@@ -139,7 +149,9 @@ class ExcelExportService(private val context: Context) {
             )
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                saveWorkbookFromTemplate(workbook, inputStream)
+                val uri = saveWorkbook(workbook)
+                inputStream.close()
+                uri
             } else {
                 saveWorkbookLegacy(workbook, inputStream)
             }
@@ -754,22 +766,27 @@ class ExcelExportService(private val context: Context) {
         oru500Data: InspectionORU500Data,
         buildingsData: InspectionBuildingsData
     ): Uri? {
+        // 🔒 СНАЧАЛА сохраняем данные ВЕЗДЕ
+        saveAllDataEverywhere(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
         return try {
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
             val workbook = XSSFWorkbook(inputStream)
             val sheet = workbook.getSheetAt(0)
 
+            // 🔧 Запоминаем прочерки из шаблона
+            rememberDashCells(sheet)
+
+            // Заполняем данные
             fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
+            // 🔧 Восстанавливаем прочерки
+            restoreDashCells(sheet)
+
+            // Добавляем комментарии
             addCommentsSheet(workbook, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
             val uri = saveWorkbookLegacy(workbook, inputStream)
-
-            val lastInspectionManager = LastInspectionManager(context)
-            lastInspectionManager.saveLastInspection(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-
-            val archiveManager = InspectionArchiveManager(context)
-            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-
             uri
         } catch (e: Exception) {
             e.printStackTrace()
@@ -861,6 +878,70 @@ class ExcelExportService(private val context: Context) {
         } catch (e: Exception) {
             e.printStackTrace()
             null
+        }
+    }
+
+    // 🔧 Список для хранения ячеек с прочерками из шаблона
+    private val dashCells = mutableSetOf<Pair<Int, Int>>()
+
+    /**
+     * Сохраняет данные во всех хранилищах ДО экспорта
+     */
+    private fun saveAllDataEverywhere(
+        oru35Data: InspectionORU35Data,
+        oru220Data: InspectionORU220Data,
+        atgData: InspectionATGData,
+        oru500Data: InspectionORU500Data,
+        buildingsData: InspectionBuildingsData
+    ) {
+        try {
+            val lastInspectionManager = LastInspectionManager(context)
+            lastInspectionManager.saveLastInspection(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        try {
+            val archiveManager = InspectionArchiveManager(context)
+            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Запоминает все ячейки с "---" из шаблона ДО заполнения данными
+     */
+    private fun rememberDashCells(sheet: Sheet) {
+        dashCells.clear()
+        for (rowNum in 0..sheet.lastRowNum) {
+            val row = sheet.getRow(rowNum) ?: continue
+            for (colNum in 0 until row.lastCellNum.toInt()) {
+                val cell = row.getCell(colNum)
+                if (cell != null && cell.cellType == CellType.STRING && cell.stringCellValue.trim() == "---") {
+                    dashCells.add(Pair(rowNum, colNum))
+                }
+            }
+        }
+    }
+
+    /**
+     * Восстанавливает "---" только в тех ячейках, где они были в шаблоне,
+     * но сейчас пустые (не были заполнены данными)
+     */
+    private fun restoreDashCells(sheet: Sheet) {
+        for ((rowNum, colNum) in dashCells) {
+            val row = sheet.getRow(rowNum) ?: continue
+            val cell = row.getCell(colNum)
+
+            // Восстанавливаем "---" только если ячейка пустая
+            if (cell == null || cell.cellType == CellType.BLANK ||
+                (cell.cellType == CellType.STRING && cell.stringCellValue.isBlank())) {
+
+                val targetCell = cell ?: row.createCell(colNum)
+                targetCell.setCellValue("---")
+            }
+            // Если ячейка уже заполнена данными — НЕ трогаем
         }
     }
 }
