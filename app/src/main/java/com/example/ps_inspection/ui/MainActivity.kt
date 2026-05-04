@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.ps_inspection.data.repositories.AutoSaveManager
+import com.example.ps_inspection.data.repositories.LastInspectionManager
 import com.example.ps_inspection.R
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var toolbarTitle: TextView
     private lateinit var autoSaveManager: AutoSaveManager
+    private lateinit var lastInspectionManager: LastInspectionManager
     private val sharedViewModel: SharedInspectionViewModel by lazy {
         ViewModelProvider(this)[SharedInspectionViewModel::class.java]
     }
@@ -31,10 +33,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Инициализируем менеджеры
+        autoSaveManager = AutoSaveManager(this)
+        lastInspectionManager = LastInspectionManager(this)
+
         // Инициализируем хранилище комментариев (загружает ВСЕ комментарии)
         sharedViewModel.initCommentStorage(this)
-
-        autoSaveManager = AutoSaveManager(this)
 
         // Находим кастомный TextView
         toolbarTitle = findViewById(R.id.toolbar_title)
@@ -65,23 +69,28 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        // Сохраняем все данные при сворачивании приложения
-        autoSaveManager.saveAllData(
-            sharedViewModel.oru35Data.value,
-            sharedViewModel.oru220Data.value,
-            sharedViewModel.atgData.value,
-            sharedViewModel.oru500Data.value,
-            sharedViewModel.buildingsData.value
-        )
+        // 🔒 ТРОЙНОЕ СОХРАНЕНИЕ при сворачивании
+        val oru35 = sharedViewModel.oru35Data.value
+        val oru220 = sharedViewModel.oru220Data.value
+        val atg = sharedViewModel.atgData.value
+        val oru500 = sharedViewModel.oru500Data.value
+        val buildings = sharedViewModel.buildingsData.value
+
+        // 1. Автосохранение (JSON файл)
+        autoSaveManager.saveAllData(oru35, oru220, atg, oru500, buildings)
+
+        // 2. LastInspection (SharedPreferences)
+        try {
+            lastInspectionManager.saveLastInspection(oru35, oru220, atg, oru500, buildings)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (isFinishing) {
-            // Если пользователь явно закрыл приложение, можно очистить автосохранение
-            // Но лучше оставить до следующего запуска, чтобы пользователь мог восстановить
-            // autoSaveManager.clearAutoSave()
-        }
+        // 🔒 НЕ удаляем автосохранение при закрытии!
+        // Оно удалится только когда пользователь ЯВНО начнёт новый осмотр
     }
 
     private fun checkForAutoSave() {
@@ -90,27 +99,36 @@ class MainActivity : AppCompatActivity() {
             if (autoSave != null) {
                 AlertDialog.Builder(this)
                     .setTitle("Восстановление данных")
-                    .setMessage("Обнаружены несохранённые данные от ${autoSave.displayDate}. Восстановить?")
+                    .setMessage("Обнаружены несохранённые данные от ${autoSave.displayDate}.\n\nВосстановить последний осмотр?")
                     .setPositiveButton("Восстановить") { _, _ ->
                         restoreAutoSave(autoSave)
-                        autoSaveManager.clearAutoSave()
-                        // После восстановления данных перезагружаем комментарии
+                        // 🔒 НЕ удаляем автосохранение — оно останется как резервная копия
                         sharedViewModel.initCommentStorage(this)
-                        Toast.makeText(this, "Данные восстановлены", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "✅ Данные восстановлены", Toast.LENGTH_LONG).show()
                     }
                     .setNegativeButton("Начать новый осмотр") { _, _ ->
-                        autoSaveManager.clearAutoSave()
-                        sharedViewModel.clearAllData()
-                        // Комментарии НЕ очищаем, просто перезагружаем их
-                        sharedViewModel.initCommentStorage(this)
-                        Toast.makeText(this, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
+                        // 🔒 ДВОЙНОЕ ПОДТВЕРЖДЕНИЕ для нового осмотра
+                        AlertDialog.Builder(this@MainActivity)
+                            .setTitle("⚠️ Предупреждение")
+                            .setMessage("Все несохранённые данные будут безвозвратно удалены.\n\nТочно начать новый осмотр?")
+                            .setPositiveButton("Да, очистить всё") { _, _ ->
+                                autoSaveManager.clearAutoSave()
+                                lastInspectionManager.clearLastInspection()
+                                sharedViewModel.clearAllData()
+                                sharedViewModel.initCommentStorage(this@MainActivity)
+                                Toast.makeText(this@MainActivity, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
+                            }
+                            .setNegativeButton("Отмена", null)
+                            .show()
                     }
-                    .setNeutralButton("Отмена", null)
+                    .setNeutralButton("Позже") { _, _ ->
+                        // Ничего не делаем, пользователь сам решит позже
+                        Toast.makeText(this, "Данные сохранены, вы можете восстановить их позже", Toast.LENGTH_SHORT).show()
+                    }
                     .setCancelable(false)
                     .show()
             }
         } else {
-            // Если нет автосохранения, всё равно загружаем комментарии
             sharedViewModel.initCommentStorage(this)
         }
     }
@@ -133,6 +151,16 @@ class MainActivity : AppCompatActivity() {
             v353tsnA = autoSave.oru35.v353tsnA
             v353tsnB = autoSave.oru35.v353tsnB
             v353tsnC = autoSave.oru35.v353tsnC
+
+            // 🔒 Восстанавливаем комментарии
+            commentTsn = autoSave.oru35.commentTsn
+            commentTt352 = autoSave.oru35.commentTt352
+            commentTt353 = autoSave.oru35.commentTt353
+            commentV352 = autoSave.oru35.commentV352
+            commentV353 = autoSave.oru35.commentV353
+
+            // 🔒 Восстанавливаем фото
+            oru35PhotoFiles = autoSave.oru35.oru35PhotoFiles
         }
 
         // Восстанавливаем ORU220 данные
@@ -211,6 +239,31 @@ class MainActivity : AppCompatActivity() {
             tn2LowerA = autoSave.oru220.tn2LowerA
             tn2LowerB = autoSave.oru220.tn2LowerB
             tn2LowerC = autoSave.oru220.tn2LowerC
+
+            // 🔒 Восстанавливаем комментарии ORU220
+            commentMirnaya = autoSave.oru220.commentMirnaya
+            commentMirnayaTT = autoSave.oru220.commentMirnayaTT
+            commentTopaz = autoSave.oru220.commentTopaz
+            commentTopazTT = autoSave.oru220.commentTopazTT
+            commentOv = autoSave.oru220.commentOv
+            commentOvTT = autoSave.oru220.commentOvTT
+            commentOssh = autoSave.oru220.commentOssh
+            commentV2atg = autoSave.oru220.commentV2atg
+            commentV2atgTT = autoSave.oru220.commentV2atgTT
+            commentShsv = autoSave.oru220.commentShsv
+            commentShsvTT = autoSave.oru220.commentShsvTT
+            commentV3atg = autoSave.oru220.commentV3atg
+            commentV3atgTT = autoSave.oru220.commentV3atgTT
+            commentOrbita = autoSave.oru220.commentOrbita
+            commentOrbitaTT = autoSave.oru220.commentOrbitaTT
+            commentFakel = autoSave.oru220.commentFakel
+            commentFakelTT = autoSave.oru220.commentFakelTT
+            commentCometa1 = autoSave.oru220.commentCometa1
+            commentCometa1TT = autoSave.oru220.commentCometa1TT
+            commentCometa2 = autoSave.oru220.commentCometa2
+            commentCometa2TT = autoSave.oru220.commentCometa2TT
+            commentTn1 = autoSave.oru220.commentTn1
+            commentTn2 = autoSave.oru220.commentTn2
         }
 
         // Восстанавливаем ATG данные
@@ -308,6 +361,22 @@ class MainActivity : AppCompatActivity() {
             reactor_a_pump_group2 = autoSave.atg.reactor_a_pump_group2
             reactor_a_pump_group3 = autoSave.atg.reactor_a_pump_group3
             reactor_a_tt_neutral = autoSave.atg.reactor_a_tt_neutral
+
+            // 🔒 Восстанавливаем комментарии ATG
+            commentAtg2C = autoSave.atg.commentAtg2C
+            commentAtg2B = autoSave.atg.commentAtg2B
+            commentAtg2A = autoSave.atg.commentAtg2A
+            commentAtgReserve = autoSave.atg.commentAtgReserve
+            commentAtg3C = autoSave.atg.commentAtg3C
+            commentAtg3B = autoSave.atg.commentAtg3B
+            commentAtg3A = autoSave.atg.commentAtg3A
+            commentReactorC = autoSave.atg.commentReactorC
+            commentReactorB = autoSave.atg.commentReactorB
+            commentReactorA = autoSave.atg.commentReactorA
+            commentTn35 = autoSave.atg.commentTn35
+
+            // 🔒 Восстанавливаем фото ATG
+            atgPhotoFiles = autoSave.atg.atgPhotoFiles
         }
 
         // Восстанавливаем ORU500 данные
@@ -432,6 +501,32 @@ class MainActivity : AppCompatActivity() {
             oil2tnBelozernayaA = autoSave.oru500.oil2tnBelozernayaA
             oil2tnBelozernayaB = autoSave.oru500.oil2tnBelozernayaB
             oil2tnBelozernayaC = autoSave.oru500.oil2tnBelozernayaC
+
+            // 🔒 Восстанавливаем комментарии ORU500
+            commentR5002s = autoSave.oru500.commentR5002s
+            commentVsht31 = autoSave.oru500.commentVsht31
+            commentVlt30 = autoSave.oru500.commentVlt30
+            commentVshl32 = autoSave.oru500.commentVshl32
+            commentVshl21 = autoSave.oru500.commentVshl21
+            commentVsht22 = autoSave.oru500.commentVsht22
+            commentVlt20 = autoSave.oru500.commentVlt20
+            commentVsht11 = autoSave.oru500.commentVsht11
+            commentVshl12 = autoSave.oru500.commentVshl12
+            commentTtVsht31 = autoSave.oru500.commentTtVsht31
+            commentTtVlt30 = autoSave.oru500.commentTtVlt30
+            commentTtVshl32 = autoSave.oru500.commentTtVshl32
+            commentTtVshl21 = autoSave.oru500.commentTtVshl21
+            commentTtVsht22 = autoSave.oru500.commentTtVsht22
+            commentTtVlt20 = autoSave.oru500.commentTtVlt20
+            commentTtVsht11 = autoSave.oru500.commentTtVsht11
+            commentTtVshl12 = autoSave.oru500.commentTtVshl12
+            commentTn1500 = autoSave.oru500.commentTn1500
+            commentTn2500 = autoSave.oru500.commentTn2500
+            commentTn500Sgres1 = autoSave.oru500.commentTn500Sgres1
+            commentTrachukovskayaTt = autoSave.oru500.commentTrachukovskayaTt
+            commentTrachukovskaya2tn = autoSave.oru500.commentTrachukovskaya2tn
+            commentTrachukovskaya1tn = autoSave.oru500.commentTrachukovskaya1tn
+            commentBelozernaya2tn = autoSave.oru500.commentBelozernaya2tn
         }
 
         // Восстанавливаем Buildings данные
@@ -465,6 +560,20 @@ class MainActivity : AppCompatActivity() {
             roomAbTemp = autoSave.buildings.roomAbTemp
             basementHeating = autoSave.buildings.basementHeating
             basementTemp = autoSave.buildings.basementTemp
+
+            // 🔒 Восстанавливаем комментарии Buildings
+            commentCompressor1 = autoSave.buildings.commentCompressor1
+            commentBallroom1 = autoSave.buildings.commentBallroom1
+            commentCompressor2 = autoSave.buildings.commentCompressor2
+            commentBallroom2 = autoSave.buildings.commentBallroom2
+            commentKpzOpu = autoSave.buildings.commentKpzOpu
+            commentKpz2 = autoSave.buildings.commentKpz2
+            commentFirePump = autoSave.buildings.commentFirePump
+            commentWorkshop = autoSave.buildings.commentWorkshop
+            commentArtWell = autoSave.buildings.commentArtWell
+            commentArtesianWell = autoSave.buildings.commentArtesianWell
+            commentRoomAb = autoSave.buildings.commentRoomAb
+            commentBasement = autoSave.buildings.commentBasement
         }
     }
 

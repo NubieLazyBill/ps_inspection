@@ -38,6 +38,19 @@ class ExcelExportService(private val context: Context) {
         oru500Data: InspectionORU500Data,
         buildingsData: InspectionBuildingsData
     ): Uri? {
+        // 🔒 ШАГ 1: СНАЧАЛА СОХРАНЯЕМ ВСЕ ДАННЫЕ
+        try {
+            val lastInspectionManager = LastInspectionManager(context)
+            lastInspectionManager.saveLastInspection(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
+            val archiveManager = InspectionArchiveManager(context)
+            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Даже если сохранение упало — продолжаем экспорт
+        }
+
+        // 🔒 ШАГ 2: ТОЛЬКО ПОТОМ ДЕЛАЕМ ЭКСПОРТ В EXCEL
         return try {
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
             val workbook = XSSFWorkbook(inputStream)
@@ -47,17 +60,58 @@ class ExcelExportService(private val context: Context) {
             addCommentsSheet(workbook, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
             val uri = saveWorkbookFromTemplate(workbook, inputStream)
-
-            val lastInspectionManager = LastInspectionManager(context)
-            lastInspectionManager.saveLastInspection(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-
-            val archiveManager = InspectionArchiveManager(context)
-            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-
             uri
         } catch (e: Exception) {
             e.printStackTrace()
+            null  // Данные УЖЕ сохранены, просто Excel не создался
+        }
+    }
+
+    // Унифицированный метод сохранения
+    private fun saveWorkbook(workbook: Workbook): Uri? {
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy_HH-mm", Locale.getDefault())
+        val fileName = "Осмотр_${dateFormat.format(Date())}.xlsx"
+
+        return try {
+            val resolver = context.contentResolver
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS)
+                }
+
+                val uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues)
+                uri?.let {
+                    resolver.openOutputStream(it)?.use { outputStream ->
+                        workbook.write(outputStream)
+                    }
+                    it
+                }
+            } else {
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                if (!downloadsDir.exists()) {
+                    downloadsDir.mkdirs()
+                }
+
+                val file = File(downloadsDir, fileName)
+
+                FileOutputStream(file).use { outputStream ->
+                    workbook.write(outputStream)
+                }
+
+                FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
             null
+        } finally {
+            try {
+                workbook.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -204,9 +258,9 @@ class ExcelExportService(private val context: Context) {
         addComment("Помещение 1 (2) АБ", buildingsData.commentRoomAb)
         addComment("Помещение п/этажа №1,2,3", buildingsData.commentBasement)
 
-        for (i in 0..1) {
-            commentsSheet.autoSizeColumn(i)
-        }
+        // 🔧 Вручную устанавливаем ширину колонок (вместо autoSizeColumn, который не работает на Android)
+        commentsSheet.setColumnWidth(0, 30 * 256)   // "Оборудование" - 30 символов
+        commentsSheet.setColumnWidth(1, 50 * 256)   // "Комментарий" - 50 символов
     }
 
     private fun fillDataToTemplate(
