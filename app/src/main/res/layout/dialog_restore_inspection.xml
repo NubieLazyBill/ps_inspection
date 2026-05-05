@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/dialog_background">
+
+    <!-- Иконка предупреждения -->
+    <TextView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:text="⚠️"
+        android:textSize="48sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Заголовок -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Восстановление данных"
+        android:textColor="#1E293B"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Описание -->
+    <TextView
+        android:id="@+id/tvRestoreMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Обнаружены несохранённые данные осмотра от 05.05.2026 10:30:15"
+        android:textColor="#64748B"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"
+        android:lineSpacingExtra="4dp" />
+
+    <!-- Кнопка ПРОДОЛЖИТЬ -->
+    <Button
+        android:id="@+id/btnRestore"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="📋 Продолжить осмотр"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/btn_green_rounded"
+        android:layout_marginBottom="12dp"
+        android:textAllCaps="false" />
+
+    <!-- Кнопка НАЧАТЬ НОВЫЙ -->
+    <Button
+        android:id="@+id/btnNewInspection"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="🔄 Начать новый осмотр"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/btn_red_rounded"
+        android:textAllCaps="false" />
+
+</LinearLayout>

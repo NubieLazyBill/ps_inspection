@@ -204,11 +204,9 @@ class InspectionBuildings : Fragment() {
 
     private fun updateButtonState(button: ImageButton?, state: String) {
         button?.let {
-            val currentState = it.tag as? String ?: "○"
-            if (currentState != state) {
-                it.tag = state
-                setButtonIconForState(it, state)
-            }
+            // Всегда обновляем состояние, не сравниваем с текущим
+            it.tag = state
+            setButtonIconForState(it, state)
         }
     }
 
@@ -347,6 +345,7 @@ class InspectionBuildings : Fragment() {
             val newState = when (currentState) {
                 "○" -> "+"
                 "+" -> "−"
+                "−" -> "○"
                 else -> "○"
             }
 

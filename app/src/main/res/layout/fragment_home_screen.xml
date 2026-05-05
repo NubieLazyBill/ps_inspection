@@ -73,11 +73,11 @@
             android:alignmentMode="alignMargins"
             android:columnOrderPreserved="false">
 
-            <!-- Карточка ОРУ-35 -->
+            <!-- 1. Карточка ОРУ-35 -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardOru35"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="130dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
@@ -97,14 +97,25 @@
                     android:padding="8dp">
                     <TextView android:text="⚡" android:textSize="32sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     <TextView android:text="ОРУ-35" android:textSize="16sp" android:textStyle="bold" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tvProgressOru35"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textSize="12sp"
+                        android:textColor="#9E9E9E"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_progress_empty"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="3dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Карточка ОРУ-220 -->
+            <!-- 2. Карточка АТГ (с иконкой трансформатора) -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardOru220"
+                android:id="@+id/cardAtg"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="130dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
@@ -122,16 +133,69 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:padding="8dp">
-                    <TextView android:text="🔌" android:textSize="32sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:text="ОРУ-220" android:textSize="16sp" android:textStyle="bold" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_transformer"
+                        android:contentDescription="Трансформатор" />
+                    <TextView android:text="АТГ" android:textSize="16sp" android:textStyle="bold" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tvProgressAtg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textSize="12sp"
+                        android:textColor="#9E9E9E"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_progress_empty"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="3dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Карточка ОРУ-500 -->
+            <!-- 3. Карточка ОРУ-220 (с молнией) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOru220"
+                android:layout_width="0dp"
+                android:layout_height="130dp"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:strokeColor="#000000"
+                app:strokeWidth="2dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="8dp">
+                    <TextView android:text="⚡" android:textSize="32sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView android:text="ОРУ-220" android:textSize="16sp" android:textStyle="bold" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tvProgressOru220"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textSize="12sp"
+                        android:textColor="#9E9E9E"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_progress_empty"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="3dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 4. Карточка ОРУ-500 (с молнией) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardOru500"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="130dp"
                 android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
@@ -151,37 +215,21 @@
                     android:padding="8dp">
                     <TextView android:text="⚡" android:textSize="32sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
                     <TextView android:text="ОРУ-500" android:textSize="16sp" android:textStyle="bold" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tvProgressOru500"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textSize="12sp"
+                        android:textColor="#9E9E9E"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_progress_empty"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="3dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Карточка АТГ -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardAtg"
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="#FFFFFF"
-                app:strokeColor="#000000"
-                app:strokeWidth="2dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="8dp">
-                    <TextView android:text="🏗️" android:textSize="32sp" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                    <TextView android:text="АТГ" android:textSize="16sp" android:textStyle="bold" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Карточка Здания -->
+            <!-- 5. Карточка Здания (широкая, на всю строку) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardBuildings"
                 android:layout_width="0dp"
@@ -204,7 +252,25 @@
                     android:gravity="center"
                     android:padding="16dp">
                     <TextView android:text="🏢" android:textSize="32sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="16dp"/>
-                    <TextView android:text="Здания и помещения" android:textSize="18sp" android:textStyle="bold" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical">
+                        <TextView android:text="Здания и помещения" android:textSize="18sp" android:textStyle="bold" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvProgressBuildings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0%"
+                        android:textSize="12sp"
+                        android:textColor="#9E9E9E"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_progress_empty"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="3dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

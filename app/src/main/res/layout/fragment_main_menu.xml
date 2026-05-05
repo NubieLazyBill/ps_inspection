@@ -30,11 +30,12 @@
 
             <!-- Логотип -->
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/ic_substation"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_marginTop="48dp"
-                android:alpha="0.9"/>
+                android:alpha="0.9"
+                android:src="@drawable/img_logo"
+                android:scaleType="fitCenter" />
 
             <!-- Название ПС -->
             <TextView

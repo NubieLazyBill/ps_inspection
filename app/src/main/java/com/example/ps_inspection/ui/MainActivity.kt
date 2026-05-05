@@ -15,6 +15,7 @@ import com.example.ps_inspection.data.repositories.AutoSaveManager
 import com.example.ps_inspection.data.repositories.LastInspectionManager
 import com.example.ps_inspection.R
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
+import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
 
@@ -97,36 +98,54 @@ class MainActivity : AppCompatActivity() {
         if (autoSaveManager.hasAutoSave()) {
             val autoSave = autoSaveManager.loadAllData()
             if (autoSave != null) {
-                AlertDialog.Builder(this)
-                    .setTitle("Восстановление данных")
-                    .setMessage("Обнаружены несохранённые данные от ${autoSave.displayDate}.\n\nВосстановить последний осмотр?")
-                    .setPositiveButton("Восстановить") { _, _ ->
-                        restoreAutoSave(autoSave)
-                        // 🔒 НЕ удаляем автосохранение — оно останется как резервная копия
-                        sharedViewModel.initCommentStorage(this)
-                        Toast.makeText(this, "✅ Данные восстановлены", Toast.LENGTH_LONG).show()
-                    }
-                    .setNegativeButton("Начать новый осмотр") { _, _ ->
-                        // 🔒 ДВОЙНОЕ ПОДТВЕРЖДЕНИЕ для нового осмотра
-                        AlertDialog.Builder(this@MainActivity)
-                            .setTitle("⚠️ Предупреждение")
-                            .setMessage("Все несохранённые данные будут безвозвратно удалены.\n\nТочно начать новый осмотр?")
-                            .setPositiveButton("Да, очистить всё") { _, _ ->
-                                autoSaveManager.clearAutoSave()
-                                lastInspectionManager.clearLastInspection()
-                                sharedViewModel.clearAllData()
-                                sharedViewModel.initCommentStorage(this@MainActivity)
-                                Toast.makeText(this@MainActivity, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
-                            }
-                            .setNegativeButton("Отмена", null)
-                            .show()
-                    }
-                    .setNeutralButton("Позже") { _, _ ->
-                        // Ничего не делаем, пользователь сам решит позже
-                        Toast.makeText(this, "Данные сохранены, вы можете восстановить их позже", Toast.LENGTH_SHORT).show()
-                    }
+                // Кастомный диалог
+                val dialogView = layoutInflater.inflate(R.layout.dialog_restore_inspection, null)
+                val tvMessage = dialogView.findViewById<TextView>(R.id.tvRestoreMessage)
+                val btnRestore = dialogView.findViewById<Button>(R.id.btnRestore)
+                val btnNew = dialogView.findViewById<Button>(R.id.btnNewInspection)
+
+                tvMessage.text = "Обнаружены несохранённые данные осмотра\nот ${autoSave.displayDate}"
+
+                val dialog = AlertDialog.Builder(this, R.style.TransparentDialog)
+                    .setView(dialogView)
                     .setCancelable(false)
-                    .show()
+                    .create()
+
+                btnRestore.setOnClickListener {
+                    dialog.dismiss()
+                    restoreAutoSave(autoSave)
+                    sharedViewModel.initCommentStorage(this)
+                    Toast.makeText(this, "✅ Данные восстановлены", Toast.LENGTH_LONG).show()
+                }
+
+                btnNew.setOnClickListener {
+                    dialog.dismiss()
+                    // Кастомный диалог подтверждения
+                    val confirmView = layoutInflater.inflate(R.layout.dialog_confirm_new_inspection, null)
+                    val btnConfirmYes = confirmView.findViewById<Button>(R.id.btnConfirmYes)
+                    val btnConfirmNo = confirmView.findViewById<Button>(R.id.btnConfirmNo)
+
+                    val confirmDialog = AlertDialog.Builder(this@MainActivity, R.style.TransparentDialog)
+                        .setView(confirmView)
+                        .setCancelable(false)
+                        .create()
+
+                    btnConfirmYes.setOnClickListener {
+                        confirmDialog.dismiss()
+                        autoSaveManager.clearAutoSave()
+                        sharedViewModel.clearAllData()
+                        sharedViewModel.initCommentStorage(this@MainActivity)
+                        Toast.makeText(this@MainActivity, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
+                    }
+
+                    btnConfirmNo.setOnClickListener {
+                        confirmDialog.dismiss()
+                    }
+
+                    confirmDialog.show()
+                }
+
+                dialog.show()
             }
         } else {
             sharedViewModel.initCommentStorage(this)
