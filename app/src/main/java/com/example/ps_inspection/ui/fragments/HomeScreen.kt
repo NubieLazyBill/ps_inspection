@@ -39,6 +39,18 @@ class HomeScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Температура наружного воздуха
+        binding.etOutdoorTemp.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                sharedViewModel.updateOutdoorTemp(s?.toString() ?: "")
+            }
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
+
+        // Восстановить сохранённую температуру
+        binding.etOutdoorTemp.setText(sharedViewModel.outdoorTemp.value)
+
         // Подписываемся на обновление данных для прогресса
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.oru35Data.collectLatest { updateProgressIndicators() }
@@ -310,8 +322,12 @@ class HomeScreen : Fragment() {
             val oru500Data = sharedViewModel.oru500Data.value
             val buildingsData = sharedViewModel.buildingsData.value
 
+
             val exportService = ExcelExportService(requireContext())
-            val fileUri = exportService.exportToExcel(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+            val fileUri = exportService.exportToExcel(
+                oru35Data, oru220Data, atgData, oru500Data, buildingsData,
+                outdoorTemp = sharedViewModel.outdoorTemp.value
+            )
 
             if (fileUri != null) {
                 Toast.makeText(requireContext(), "✅ Осмотр сохранён в Excel", Toast.LENGTH_LONG).show()

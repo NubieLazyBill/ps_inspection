@@ -153,6 +153,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun restoreAutoSave(autoSave: AutoSaveManager.AutoSaveData) {
+
+        // Восстанавливаем температуру
+
+        sharedViewModel.updateOutdoorTemp(autoSave.outdoorTemp)
         // Восстанавливаем ORU35 данные
         sharedViewModel.updateORU35Data {
             tsn2 = autoSave.oru35.tsn2
@@ -593,6 +597,7 @@ class MainActivity : AppCompatActivity() {
             commentArtesianWell = autoSave.buildings.commentArtesianWell
             commentRoomAb = autoSave.buildings.commentRoomAb
             commentBasement = autoSave.buildings.commentBasement
+
         }
     }
 

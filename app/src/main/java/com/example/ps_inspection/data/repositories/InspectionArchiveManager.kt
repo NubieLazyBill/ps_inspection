@@ -79,12 +79,13 @@ class InspectionArchiveManager(private val context: Context) {
                         statusBuildings = data.buildings.getFillStatus(),
                         photoCount = photoCount,
                         hasComments = hasComments,
-                        hasPhotos = hasPhotos        // ← добавить
+                        hasPhotos = hasPhotos,
+                        timestamp = data.timestamp
                     ))
                 } catch (e: Exception) { e.printStackTrace() }
             }
         }
-        return archives.sortedByDescending { it.displayDate }
+        return archives.sortedByDescending { it.timestamp }
     }
 
     // В InspectionArchiveManager.kt добавить:

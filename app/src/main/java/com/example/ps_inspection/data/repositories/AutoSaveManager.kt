@@ -23,7 +23,8 @@ class AutoSaveManager(private val context: Context) {
         val oru220: InspectionORU220Data,
         val atg: InspectionATGData,
         val oru500: InspectionORU500Data,
-        val buildings: InspectionBuildingsData
+        val buildings: InspectionBuildingsData,
+        val outdoorTemp: String = ""  // ← Добавить
     )
 
     fun saveAllData(
@@ -31,7 +32,8 @@ class AutoSaveManager(private val context: Context) {
         oru220: InspectionORU220Data,
         atg: InspectionATGData,
         oru500: InspectionORU500Data,
-        buildings: InspectionBuildingsData
+        buildings: InspectionBuildingsData,
+        outdoorTemp: String = ""
     ) {
         try {
             val now = Date()
@@ -44,7 +46,8 @@ class AutoSaveManager(private val context: Context) {
                 oru220 = oru220,
                 atg = atg,
                 oru500 = oru500,
-                buildings = buildings
+                buildings = buildings,
+                outdoorTemp = outdoorTemp
             )
             autoSaveFile.writeText(gson.toJson(data))
             println("✅ AutoSave: данные сохранены в ${dateFormat.format(now)}")

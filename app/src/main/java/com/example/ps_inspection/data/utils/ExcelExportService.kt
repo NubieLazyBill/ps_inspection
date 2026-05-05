@@ -36,7 +36,8 @@ class ExcelExportService(private val context: Context) {
         oru220Data: InspectionORU220Data,
         atgData: InspectionATGData,
         oru500Data: InspectionORU500Data,
-        buildingsData: InspectionBuildingsData
+        buildingsData: InspectionBuildingsData,
+        outdoorTemp: String = ""  // ← Добавить
     ): Uri? {
         // 🔒 ШАГ 1: СНАЧАЛА сохраняем данные ВЕЗДЕ
         saveAllDataEverywhere(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
@@ -58,6 +59,8 @@ class ExcelExportService(private val context: Context) {
 
             // ШАГ 6: Добавляем лист с комментариями
             addCommentsSheet(workbook, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+
+            fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData, outdoorTemp)
 
             val uri = saveWorkbook(workbook)
             inputStream.close()
@@ -134,6 +137,7 @@ class ExcelExportService(private val context: Context) {
                 archiveData.atg,
                 archiveData.oru500,
                 archiveData.buildings
+                // температура для архива не передаётся
             )
 
             // 🔧 Восстанавливаем прочерки
@@ -281,7 +285,8 @@ class ExcelExportService(private val context: Context) {
         oru220Data: InspectionORU220Data,
         atgData: InspectionATGData,
         oru500Data: InspectionORU500Data,
-        buildingsData: InspectionBuildingsData
+        buildingsData: InspectionBuildingsData,
+        outdoorTemp: String = ""  // ← Добавить
     ) {
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
@@ -290,6 +295,11 @@ class ExcelExportService(private val context: Context) {
 
         setCellValue(sheet, 0, 1, currentDate)
         setCellValue(sheet, 0, 14, currentDate)
+
+        // t нв
+        if (outdoorTemp.isNotBlank()) {
+            setCellValue(sheet, 0, 18, outdoorTemp)
+        }
 
         // ОРУ-35 кВ данные
         setCellValue(sheet, 5, 2, oru35Data.v352tsnA)
@@ -764,7 +774,8 @@ class ExcelExportService(private val context: Context) {
         oru220Data: InspectionORU220Data,
         atgData: InspectionATGData,
         oru500Data: InspectionORU500Data,
-        buildingsData: InspectionBuildingsData
+        buildingsData: InspectionBuildingsData,
+        outdoorTemp: String = ""
     ): Uri? {
         // 🔒 СНАЧАЛА сохраняем данные ВЕЗДЕ
         saveAllDataEverywhere(oru35Data, oru220Data, atgData, oru500Data, buildingsData)

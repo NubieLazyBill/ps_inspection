@@ -69,7 +69,8 @@ class SharedInspectionViewModel : ViewModel() {
                 _oru220Data.value,
                 _atgData.value,
                 _oru500Data.value,
-                _buildingsData.value
+                _buildingsData.value,
+                _outdoorTemp.value  // ← Добавить
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -129,7 +130,7 @@ class SharedInspectionViewModel : ViewModel() {
         _atgData.value = InspectionATGData()
         _oru500Data.value = InspectionORU500Data()
         _buildingsData.value = InspectionBuildingsData()
-        // 🔒 НЕ вызываем autoSave() здесь — это намеренная очистка
+        _outdoorTemp.value = ""  // ← Добавить
     }
 
     fun clearAllComments() {
@@ -645,5 +646,14 @@ class SharedInspectionViewModel : ViewModel() {
         val filtered = saved.filterKeys { it.startsWith("BUILDINGS_") }
             .mapKeys { it.key.removePrefix("BUILDINGS_") }
         _buildingsComments.value = filtered
+    }
+
+    // Температура наружного воздуха
+    private val _outdoorTemp = MutableStateFlow("")
+    val outdoorTemp: StateFlow<String> = _outdoorTemp
+
+    fun updateOutdoorTemp(temp: String) {
+        _outdoorTemp.value = temp
+        autoSave()
     }
 }
