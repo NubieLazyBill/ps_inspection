@@ -345,10 +345,22 @@ class HomeScreen : Fragment() {
             val buildingsData = sharedViewModel.buildingsData.value
             val temp = sharedViewModel.outdoorTemp.value
 
+            // Считаем проценты заполнения
+            val progressOru35 = calculateORU35Progress()
+            val progressOru220 = calculateORU220Progress()
+            val progressOru500 = calculateORU500Progress()
+            val progressAtg = calculateATGProgress()
+            val progressBuildings = calculateBuildingsProgress()
+
             val exportService = ExcelExportService(requireContext())
             val fileUri = exportService.exportToExcel(
                 oru35Data, oru220Data, atgData, oru500Data, buildingsData,
-                outdoorTemp = temp
+                outdoorTemp = temp,
+                progressOru35 = progressOru35,
+                progressOru220 = progressOru220,
+                progressOru500 = progressOru500,
+                progressAtg = progressAtg,
+                progressBuildings = progressBuildings
             )
 
             if (fileUri != null) {

@@ -27,6 +27,10 @@ import com.example.ps_inspection.data.repositories.InspectionArchiveData
 import com.example.ps_inspection.data.repositories.InspectionArchiveManager
 import com.example.ps_inspection.data.repositories.LastInspectionManager
 import com.example.ps_inspection.data.repositories.UserManager
+import com.example.ps_inspection.data.services.GoogleSheetsService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ExcelExportService(private val context: Context) {
@@ -38,9 +42,18 @@ class ExcelExportService(private val context: Context) {
         atgData: InspectionATGData,
         oru500Data: InspectionORU500Data,
         buildingsData: InspectionBuildingsData,
-        outdoorTemp: String = ""
+        outdoorTemp: String = "",
+        progressOru35: Int = 0,
+        progressOru220: Int = 0,
+        progressOru500: Int = 0,
+        progressAtg: Int = 0,
+        progressBuildings: Int = 0
     ): Uri? {
-        saveAllDataEverywhere(oru35Data, oru220Data, atgData, oru500Data, buildingsData, outdoorTemp)
+        saveAllDataEverywhere(
+            oru35Data, oru220Data, atgData, oru500Data, buildingsData,
+            outdoorTemp,
+            progressOru35, progressOru220, progressOru500, progressAtg, progressBuildings
+        )
 
         return try {
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
@@ -883,7 +896,12 @@ class ExcelExportService(private val context: Context) {
         atgData: InspectionATGData,
         oru500Data: InspectionORU500Data,
         buildingsData: InspectionBuildingsData,
-        outdoorTemp: String = ""
+        outdoorTemp: String = "",
+        progressOru35: Int = 0,
+        progressOru220: Int = 0,
+        progressOru500: Int = 0,
+        progressAtg: Int = 0,
+        progressBuildings: Int = 0
     ) {
         try {
             val lastInspectionManager = LastInspectionManager(context)
@@ -903,6 +921,41 @@ class ExcelExportService(private val context: Context) {
                 currentUser.name,
                 currentUser.position
             )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        // 🔄 Отправка в Google Sheets (в фоне)
+        try {
+            val sheetsService = GoogleSheetsService(context)
+            val userManager = UserManager(context)
+            val user = userManager.getCurrentUser()
+
+            val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val now = Date()
+
+            val data = mapOf(
+                "Дата" to dateFormat.format(now),
+                "Время" to timeFormat.format(now),
+                "ФИО дежурного" to user.name,
+                "Должность" to user.position,
+                "t наружного воздуха" to outdoorTemp.ifBlank { "-" },
+                "ОРУ-35 %" to "$progressOru35%",
+                "ОРУ-220 %" to "$progressOru220%",
+                "ОРУ-500 %" to "$progressOru500%",
+                "АТГ %" to "$progressAtg%",
+                "Здания %" to "$progressBuildings%"
+            )
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val success = sheetsService.uploadInspection(data)
+                if (success) {
+                    android.util.Log.d("GoogleSheets", "✅ Данные отправлены в Google Sheets")
+                } else {
+                    android.util.Log.d("GoogleSheets", "❌ Ошибка отправки в Google Sheets")
+                }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
