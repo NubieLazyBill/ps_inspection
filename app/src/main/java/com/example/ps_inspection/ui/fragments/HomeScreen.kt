@@ -390,7 +390,7 @@ class HomeScreen : Fragment() {
             .setMessage("Вы уверены, что хотите очистить все данные осмотра?")
             .setPositiveButton("Очистить") { _, _ ->
                 sharedViewModel.clearAllData()
-                Toast.makeText(requireContext(), "Все данные очищены", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Все данные осмотра очищены", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Отмена", null)
             .show()
