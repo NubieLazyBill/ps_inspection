@@ -3,6 +3,7 @@ package com.example.ps_inspection.ui.fragments
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +42,7 @@ class HomeScreen : Fragment() {
 
         // Получаем погоду для ПС Кустовая (примерные координаты)
 // Нужно заменить на реальные координаты вашей ПС!
-        sharedViewModel.fetchWeather(55.0, 37.0) // ← Заменить на координаты ПС
+        sharedViewModel.fetchWeather(61.22, 76.64) // ← Заменить на координаты ПС
 
 
         // Наблюдаем за изменениями погоды
@@ -55,7 +56,7 @@ class HomeScreen : Fragment() {
         }
 
         binding.btnRefreshWeather.setOnClickListener {
-            sharedViewModel.fetchWeather(55.0, 37.0) // Ваши координаты
+            sharedViewModel.fetchWeather(61.22, 76.64)
             Toast.makeText(requireContext(), "🔄 Погода обновляется...", Toast.LENGTH_SHORT).show()
         }
 
@@ -341,12 +342,16 @@ class HomeScreen : Fragment() {
             val atgData = sharedViewModel.atgData.value
             val oru500Data = sharedViewModel.oru500Data.value
             val buildingsData = sharedViewModel.buildingsData.value
+            val temp = sharedViewModel.outdoorTemp.value
 
+            // ОТЛАДКА
+            Log.d("HomeScreen", "Температура: '$temp'")
+            Toast.makeText(requireContext(), "Temp: '$temp'", Toast.LENGTH_SHORT).show()
 
             val exportService = ExcelExportService(requireContext())
             val fileUri = exportService.exportToExcel(
                 oru35Data, oru220Data, atgData, oru500Data, buildingsData,
-                outdoorTemp = sharedViewModel.outdoorTemp.value
+                outdoorTemp = temp
             )
 
             if (fileUri != null) {

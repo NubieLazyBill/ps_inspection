@@ -41,7 +41,8 @@ class InspectionArchiveManager(private val context: Context) {
     fun saveToArchive(
         oru35Data: InspectionORU35Data, oru220Data: InspectionORU220Data,
         atgData: InspectionATGData, oru500Data: InspectionORU500Data,
-        buildingsData: InspectionBuildingsData
+        buildingsData: InspectionBuildingsData,
+        outdoorTemp: String = ""  // ← Добавить параметр
     ): File? {
         return try {
             if (!archiveDir.exists()) archiveDir.mkdirs()
@@ -49,7 +50,9 @@ class InspectionArchiveManager(private val context: Context) {
             val file = File(archiveDir, "${DATE_FORMAT.format(now)}_Осмотр_ПС.json")
             val archiveData = InspectionArchiveData(
                 timestamp = now.time, displayDate = DISPLAY_FORMAT.format(now),
-                oru35 = oru35Data, oru220 = oru220Data, atg = atgData, oru500 = oru500Data, buildings = buildingsData
+                oru35 = oru35Data, oru220 = oru220Data, atg = atgData,
+                oru500 = oru500Data, buildings = buildingsData,
+                outdoorTemp = outdoorTemp  // ← Сохраняем
             )
             file.writeText(gson.toJson(archiveData))
             file
@@ -184,5 +187,6 @@ data class InspectionArchiveData(
     val oru220: InspectionORU220Data,
     val atg: InspectionATGData,
     val oru500: InspectionORU500Data,
-    val buildings: InspectionBuildingsData
+    val buildings: InspectionBuildingsData,
+    val outdoorTemp: String = ""  // ← Добавить
 )

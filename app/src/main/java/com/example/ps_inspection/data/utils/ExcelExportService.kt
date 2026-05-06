@@ -37,30 +37,22 @@ class ExcelExportService(private val context: Context) {
         atgData: InspectionATGData,
         oru500Data: InspectionORU500Data,
         buildingsData: InspectionBuildingsData,
-        outdoorTemp: String = ""  // ← Добавить
+        outdoorTemp: String = ""
     ): Uri? {
-        // 🔒 ШАГ 1: СНАЧАЛА сохраняем данные ВЕЗДЕ
-        saveAllDataEverywhere(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+        saveAllDataEverywhere(oru35Data, oru220Data, atgData, oru500Data, buildingsData, outdoorTemp)
 
-        // 🔒 ШАГ 2: ТОЛЬКО ПОТОМ пытаемся создать Excel
         return try {
             val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
             val workbook = XSSFWorkbook(inputStream)
             val sheet = workbook.getSheetAt(0)
 
-            // 🔧 ШАГ 3: Запоминаем где были прочерки в шаблоне
             rememberDashCells(sheet)
 
-            // ШАГ 4: Заполняем данные
-            fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-
-            // 🔧 ШАГ 5: Восстанавливаем прочерки только где не заполнили
-            restoreDashCells(sheet)
-
-            // ШАГ 6: Добавляем лист с комментариями
-            addCommentsSheet(workbook, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-
+            // Вызываем ОДИН раз с температурой
             fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData, outdoorTemp)
+
+            restoreDashCells(sheet)
+            addCommentsSheet(workbook, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
 
             val uri = saveWorkbook(workbook)
             inputStream.close()
@@ -130,14 +122,16 @@ class ExcelExportService(private val context: Context) {
             // 🔧 Запоминаем прочерки из шаблона
             rememberDashCells(sheet)
 
+            Log.d("ExcelExport", "fillDataToTemplate вызван из:", Exception())
+
             // Заполняем данные из архива
             fillDataToTemplate(sheet,
                 archiveData.oru35,
                 archiveData.oru220,
                 archiveData.atg,
                 archiveData.oru500,
-                archiveData.buildings
-                // температура для архива не передаётся
+                archiveData.buildings,
+                archiveData.outdoorTemp
             )
 
             // 🔧 Восстанавливаем прочерки
@@ -297,8 +291,13 @@ class ExcelExportService(private val context: Context) {
         setCellValue(sheet, 0, 14, currentDate)
 
         // t нв
+        Log.d("ExcelExport", "outdoorTemp='$outdoorTemp', isNotBlank=${outdoorTemp.isNotBlank()}")
         if (outdoorTemp.isNotBlank()) {
-            setCellValue(sheet, 0, 18, outdoorTemp)
+            Log.d("ExcelExport", "Пишем в R0(17) и F54(5)")
+            setCellValue(sheet, 0, 19, outdoorTemp)
+            setCellValue(sheet, 54, 7, outdoorTemp)
+        } else {
+            Log.d("ExcelExport", "outdoorTemp ПУСТОЙ - не пишем")
         }
 
         // ОРУ-35 кВ данные
@@ -769,7 +768,7 @@ class ExcelExportService(private val context: Context) {
         }
     }
 
-    fun exportToExcelLegacy(
+    /*fun exportToExcelLegacy(
         oru35Data: InspectionORU35Data,
         oru220Data: InspectionORU220Data,
         atgData: InspectionATGData,
@@ -789,7 +788,7 @@ class ExcelExportService(private val context: Context) {
             rememberDashCells(sheet)
 
             // Заполняем данные
-            fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+            fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData, outdoorTemp)
 
             // 🔧 Восстанавливаем прочерки
             restoreDashCells(sheet)
@@ -803,7 +802,7 @@ class ExcelExportService(private val context: Context) {
             e.printStackTrace()
             null
         }
-    }
+    }*/
 
     private fun saveWorkbookLegacy(workbook: Workbook, inputStream: InputStream): Uri? {
         inputStream.close()
@@ -903,7 +902,8 @@ class ExcelExportService(private val context: Context) {
         oru220Data: InspectionORU220Data,
         atgData: InspectionATGData,
         oru500Data: InspectionORU500Data,
-        buildingsData: InspectionBuildingsData
+        buildingsData: InspectionBuildingsData,
+        outdoorTemp: String = ""  // ← Добавить параметр
     ) {
         try {
             val lastInspectionManager = LastInspectionManager(context)
@@ -914,7 +914,7 @@ class ExcelExportService(private val context: Context) {
 
         try {
             val archiveManager = InspectionArchiveManager(context)
-            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
+            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData, outdoorTemp)
         } catch (e: Exception) {
             e.printStackTrace()
         }
