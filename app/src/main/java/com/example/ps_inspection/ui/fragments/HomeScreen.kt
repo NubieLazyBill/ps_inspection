@@ -1,6 +1,7 @@
 package com.example.ps_inspection.ui.fragments
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -344,10 +345,6 @@ class HomeScreen : Fragment() {
             val buildingsData = sharedViewModel.buildingsData.value
             val temp = sharedViewModel.outdoorTemp.value
 
-            // ОТЛАДКА
-            Log.d("HomeScreen", "Температура: '$temp'")
-            Toast.makeText(requireContext(), "Temp: '$temp'", Toast.LENGTH_SHORT).show()
-
             val exportService = ExcelExportService(requireContext())
             val fileUri = exportService.exportToExcel(
                 oru35Data, oru220Data, atgData, oru500Data, buildingsData,
@@ -356,6 +353,17 @@ class HomeScreen : Fragment() {
 
             if (fileUri != null) {
                 Toast.makeText(requireContext(), "✅ Осмотр сохранён в Excel", Toast.LENGTH_LONG).show()
+
+                // Открываем файл для просмотра
+                try {
+                    val openIntent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(fileUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    }
+                    startActivity(Intent.createChooser(openIntent, "Открыть Excel"))
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), "Нет приложения для просмотра Excel", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(requireContext(), "❌ Ошибка при сохранении", Toast.LENGTH_SHORT).show()
             }

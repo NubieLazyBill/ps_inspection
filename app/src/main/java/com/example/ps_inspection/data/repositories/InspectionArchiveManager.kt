@@ -42,7 +42,9 @@ class InspectionArchiveManager(private val context: Context) {
         oru35Data: InspectionORU35Data, oru220Data: InspectionORU220Data,
         atgData: InspectionATGData, oru500Data: InspectionORU500Data,
         buildingsData: InspectionBuildingsData,
-        outdoorTemp: String = ""  // ← Добавить параметр
+        outdoorTemp: String = "",
+        inspectorName: String = "",
+        inspectorPosition: String = ""
     ): File? {
         return try {
             if (!archiveDir.exists()) archiveDir.mkdirs()
@@ -52,7 +54,9 @@ class InspectionArchiveManager(private val context: Context) {
                 timestamp = now.time, displayDate = DISPLAY_FORMAT.format(now),
                 oru35 = oru35Data, oru220 = oru220Data, atg = atgData,
                 oru500 = oru500Data, buildings = buildingsData,
-                outdoorTemp = outdoorTemp  // ← Сохраняем
+                outdoorTemp = outdoorTemp,
+                inspectorName = inspectorName,
+                inspectorPosition = inspectorPosition
             )
             file.writeText(gson.toJson(archiveData))
             file
@@ -188,5 +192,7 @@ data class InspectionArchiveData(
     val atg: InspectionATGData,
     val oru500: InspectionORU500Data,
     val buildings: InspectionBuildingsData,
-    val outdoorTemp: String = ""  // ← Добавить
+    val outdoorTemp: String = "",
+    val inspectorName: String = "",
+    val inspectorPosition: String = ""
 )

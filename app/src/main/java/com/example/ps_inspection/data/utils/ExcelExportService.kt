@@ -26,6 +26,7 @@ import com.example.ps_inspection.data.models.InspectionORU500Data
 import com.example.ps_inspection.data.repositories.InspectionArchiveData
 import com.example.ps_inspection.data.repositories.InspectionArchiveManager
 import com.example.ps_inspection.data.repositories.LastInspectionManager
+import com.example.ps_inspection.data.repositories.UserManager
 
 
 class ExcelExportService(private val context: Context) {
@@ -49,7 +50,10 @@ class ExcelExportService(private val context: Context) {
             rememberDashCells(sheet)
 
             // Вызываем ОДИН раз с температурой
-            fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData, outdoorTemp)
+            val userManager = UserManager(context)
+            val inspector = userManager.getCurrentUser()
+            fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData,
+                outdoorTemp, inspector.name, inspector.position)
 
             restoreDashCells(sheet)
             addCommentsSheet(workbook, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
@@ -122,8 +126,6 @@ class ExcelExportService(private val context: Context) {
             // 🔧 Запоминаем прочерки из шаблона
             rememberDashCells(sheet)
 
-            Log.d("ExcelExport", "fillDataToTemplate вызван из:", Exception())
-
             // Заполняем данные из архива
             fillDataToTemplate(sheet,
                 archiveData.oru35,
@@ -131,7 +133,9 @@ class ExcelExportService(private val context: Context) {
                 archiveData.atg,
                 archiveData.oru500,
                 archiveData.buildings,
-                archiveData.outdoorTemp
+                archiveData.outdoorTemp,
+                archiveData.inspectorName,
+                archiveData.inspectorPosition
             )
 
             // 🔧 Восстанавливаем прочерки
@@ -280,7 +284,9 @@ class ExcelExportService(private val context: Context) {
         atgData: InspectionATGData,
         oru500Data: InspectionORU500Data,
         buildingsData: InspectionBuildingsData,
-        outdoorTemp: String = ""  // ← Добавить
+        outdoorTemp: String = "",
+        inspectorName: String = "",
+        inspectorPosition: String = ""
     ) {
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
@@ -711,6 +717,15 @@ class ExcelExportService(private val context: Context) {
 
         setCellValue(sheet, 34, 18, buildingsData.basementHeating)
         setCellValue(sheet, 34, 21, buildingsData.basementTemp)
+
+        // Осмотр выполнил (сначала должность, потом ФИО — как в шаблоне)
+        if (inspectorName.isNotBlank()) {
+            // Левая часть — "Осмотр выполнил:"
+            setCellValue(sheet, 58, 8, "$inspectorPosition $inspectorName")
+
+            // Правая часть — "Осмотр выполнил:"
+            setCellValue(sheet, 59, 19, "$inspectorPosition $inspectorName")
+        }
     }
 
     private fun setCellValue(sheet: Sheet, rowNum: Int, colNum: Int, value: String) {
@@ -768,41 +783,6 @@ class ExcelExportService(private val context: Context) {
         }
     }
 
-    /*fun exportToExcelLegacy(
-        oru35Data: InspectionORU35Data,
-        oru220Data: InspectionORU220Data,
-        atgData: InspectionATGData,
-        oru500Data: InspectionORU500Data,
-        buildingsData: InspectionBuildingsData,
-        outdoorTemp: String = ""
-    ): Uri? {
-        // 🔒 СНАЧАЛА сохраняем данные ВЕЗДЕ
-        saveAllDataEverywhere(oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-
-        return try {
-            val inputStream: InputStream = context.assets.open("blanks_template.xlsx")
-            val workbook = XSSFWorkbook(inputStream)
-            val sheet = workbook.getSheetAt(0)
-
-            // 🔧 Запоминаем прочерки из шаблона
-            rememberDashCells(sheet)
-
-            // Заполняем данные
-            fillDataToTemplate(sheet, oru35Data, oru220Data, atgData, oru500Data, buildingsData, outdoorTemp)
-
-            // 🔧 Восстанавливаем прочерки
-            restoreDashCells(sheet)
-
-            // Добавляем комментарии
-            addCommentsSheet(workbook, oru35Data, oru220Data, atgData, oru500Data, buildingsData)
-
-            val uri = saveWorkbookLegacy(workbook, inputStream)
-            uri
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }*/
 
     private fun saveWorkbookLegacy(workbook: Workbook, inputStream: InputStream): Uri? {
         inputStream.close()
@@ -903,7 +883,7 @@ class ExcelExportService(private val context: Context) {
         atgData: InspectionATGData,
         oru500Data: InspectionORU500Data,
         buildingsData: InspectionBuildingsData,
-        outdoorTemp: String = ""  // ← Добавить параметр
+        outdoorTemp: String = ""
     ) {
         try {
             val lastInspectionManager = LastInspectionManager(context)
@@ -913,8 +893,16 @@ class ExcelExportService(private val context: Context) {
         }
 
         try {
+            val userManager = UserManager(context)
+            val currentUser = userManager.getCurrentUser()
+
             val archiveManager = InspectionArchiveManager(context)
-            archiveManager.saveToArchive(oru35Data, oru220Data, atgData, oru500Data, buildingsData, outdoorTemp)
+            archiveManager.saveToArchive(
+                oru35Data, oru220Data, atgData, oru500Data, buildingsData,
+                outdoorTemp,
+                currentUser.name,
+                currentUser.position
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }

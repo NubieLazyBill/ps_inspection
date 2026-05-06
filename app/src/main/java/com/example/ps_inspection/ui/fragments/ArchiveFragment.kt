@@ -3,6 +3,7 @@ package com.example.ps_inspection.ui.fragments
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -32,6 +34,7 @@ import com.example.ps_inspection.ui.MainActivity
 import com.example.ps_inspection.ui.fragments.dialogs.GlobalCommentsDialog
 import com.example.ps_inspection.ui.fragments.dialogs.GlobalMediaDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.io.File
 
 class ArchiveFragment : Fragment() {
     private var _binding: FragmentArchiveBinding? = null
@@ -135,6 +138,7 @@ class ArchiveFragment : Fragment() {
     private fun showArchiveOptions(archive: ArchiveItem, anchorView: View) {
         val options = arrayOf(
             "📤 Отправить (Excel)",
+            "📂 Открыть Excel",
             "🗑️ Удалить",
             "📥 Перенести данные из этого осмотра"
         )
@@ -144,11 +148,35 @@ class ArchiveFragment : Fragment() {
             .setItems(options) { _, which ->
                 when (which) {
                     0 -> shareArchive(archive.fileName)
-                    1 -> deleteArchive(archive.fileName)
-                    2 -> showMergeDialog(archive.fileName)
+                    1 -> openArchiveExcel(archive.fileName)
+                    2 -> deleteArchive(archive.fileName)
+                    3 -> showMergeDialog(archive.fileName)
                 }
             }
             .show()
+    }
+
+    private fun openArchiveExcel(fileName: String) {
+        val archiveData = archiveManager.loadFromArchive(fileName) ?: run {
+            Toast.makeText(requireContext(), "Ошибка загрузки архива", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val exportService = ExcelExportService(requireContext())
+        val fileUri = exportService.exportArchiveToExcel(archiveData)
+
+        if (fileUri != null) {
+            try {
+                val openIntent = Intent(Intent.ACTION_VIEW).apply {
+                    setDataAndType(fileUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                }
+                startActivity(Intent.createChooser(openIntent, "Открыть Excel"))
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Нет приложения для просмотра Excel", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), "Ошибка при создании файла", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showMergeDialog(fileName: String) {
@@ -250,4 +278,5 @@ class ArchiveFragment : Fragment() {
         _binding = null
         requireActivity().removeMenuProvider(menuProvider)
     }
+
 }
