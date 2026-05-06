@@ -77,8 +77,13 @@ class MainActivity : AppCompatActivity() {
         val oru500 = sharedViewModel.oru500Data.value
         val buildings = sharedViewModel.buildingsData.value
 
-        // 1. Автосохранение (JSON файл)
-        autoSaveManager.saveAllData(oru35, oru220, atg, oru500, buildings)
+        autoSaveManager.saveAllData(
+            oru35,
+            oru220,
+            atg,
+            oru500,
+            buildings,
+            sharedViewModel.outdoorTemp.value)
 
         // 2. LastInspection (SharedPreferences)
         try {
@@ -98,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         if (autoSaveManager.hasAutoSave()) {
             val autoSave = autoSaveManager.loadAllData()
             if (autoSave != null) {
-                // Кастомный диалог
+                // Кастомный диалог восстановления
                 val dialogView = layoutInflater.inflate(R.layout.dialog_restore_inspection, null)
                 val tvMessage = dialogView.findViewById<TextView>(R.id.tvRestoreMessage)
                 val btnRestore = dialogView.findViewById<Button>(R.id.btnRestore)
@@ -120,29 +125,8 @@ class MainActivity : AppCompatActivity() {
 
                 btnNew.setOnClickListener {
                     dialog.dismiss()
-                    // Кастомный диалог подтверждения
-                    val confirmView = layoutInflater.inflate(R.layout.dialog_confirm_new_inspection, null)
-                    val btnConfirmYes = confirmView.findViewById<Button>(R.id.btnConfirmYes)
-                    val btnConfirmNo = confirmView.findViewById<Button>(R.id.btnConfirmNo)
-
-                    val confirmDialog = AlertDialog.Builder(this@MainActivity, R.style.TransparentDialog)
-                        .setView(confirmView)
-                        .setCancelable(false)
-                        .create()
-
-                    btnConfirmYes.setOnClickListener {
-                        confirmDialog.dismiss()
-                        autoSaveManager.clearAutoSave()
-                        sharedViewModel.clearAllData()
-                        sharedViewModel.initCommentStorage(this@MainActivity)
-                        Toast.makeText(this@MainActivity, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
-                    }
-
-                    btnConfirmNo.setOnClickListener {
-                        confirmDialog.dismiss()
-                    }
-
-                    confirmDialog.show()
+                    // Открываем диалог подтверждения
+                    showNewInspectionConfirmDialog()
                 }
 
                 dialog.show()
@@ -152,9 +136,43 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Показывает диалог подтверждения нового осмотра
+     */
+    private fun showNewInspectionConfirmDialog() {
+        val confirmView = layoutInflater.inflate(R.layout.dialog_confirm_new_inspection, null)
+        val btnConfirmYes = confirmView.findViewById<Button>(R.id.btnConfirmYes)
+        val btnConfirmNo = confirmView.findViewById<Button>(R.id.btnConfirmNo)
+
+        // Меняем текст на "Назад"
+        btnConfirmNo.text = "↩ Назад"
+
+        val confirmDialog = AlertDialog.Builder(this, R.style.TransparentDialog)
+            .setView(confirmView)
+            .setCancelable(false)
+            .create()
+
+        btnConfirmYes.setOnClickListener {
+            confirmDialog.dismiss()
+            autoSaveManager.clearAutoSave()
+            sharedViewModel.clearAllData()
+            sharedViewModel.initCommentStorage(this)
+            Toast.makeText(this, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
+        }
+
+        btnConfirmNo.setOnClickListener {
+            confirmDialog.dismiss()
+            // Открываем снова диалог восстановления
+            checkForAutoSave()
+        }
+
+        confirmDialog.show()
+    }
+
     private fun restoreAutoSave(autoSave: AutoSaveManager.AutoSaveData) {
 
         // Восстанавливаем температуру
+        sharedViewModel.updateOutdoorTemp(autoSave.outdoorTemp)
 
         sharedViewModel.updateOutdoorTemp(autoSave.outdoorTemp)
         // Восстанавливаем ORU35 данные

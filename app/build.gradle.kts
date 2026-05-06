@@ -12,7 +12,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 24
-        versionName = "2.3.6"
+        versionName = "2.3.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -64,6 +64,11 @@ dependencies {
     implementation(libs.gson)
     implementation("androidx.activity:activity-ktx:1.8.2")
     implementation("com.google.android.material:material:1.11.0")
+
+    // Для HTTP-запросов
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    // Для парсинга JSON
+    implementation("com.google.code.gson:gson:2.10.1")
     
 
     // PhotoView для зума фото (используем jitpack)

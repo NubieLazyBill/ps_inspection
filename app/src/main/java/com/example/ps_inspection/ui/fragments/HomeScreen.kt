@@ -39,6 +39,26 @@ class HomeScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Получаем погоду для ПС Кустовая (примерные координаты)
+// Нужно заменить на реальные координаты вашей ПС!
+        sharedViewModel.fetchWeather(55.0, 37.0) // ← Заменить на координаты ПС
+
+
+        // Наблюдаем за изменениями погоды
+        viewLifecycleOwner.lifecycleScope.launch {
+            sharedViewModel.weatherData.collectLatest { weather ->
+                weather?.let { w ->
+                    binding.etOutdoorTemp.setText(String.format("%.1f", w.temperature))
+                    binding.tvWeatherCondition.text = w.condition
+                }
+            }
+        }
+
+        binding.btnRefreshWeather.setOnClickListener {
+            sharedViewModel.fetchWeather(55.0, 37.0) // Ваши координаты
+            Toast.makeText(requireContext(), "🔄 Погода обновляется...", Toast.LENGTH_SHORT).show()
+        }
+
         // Температура наружного воздуха
         binding.etOutdoorTemp.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

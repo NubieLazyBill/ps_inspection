@@ -12,8 +12,29 @@ import com.example.ps_inspection.data.models.InspectionORU35Data
 import com.example.ps_inspection.data.models.InspectionORU500Data
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import com.example.ps_inspection.data.services.WeatherService
+import androidx.lifecycle.viewModelScope
+import com.example.ps_inspection.data.services.WeatherData
+import kotlinx.coroutines.launch
 
 class SharedInspectionViewModel : ViewModel() {
+
+    private val weatherService = WeatherService()
+
+    // Переменная для хранения погоды
+    private val _weatherData = MutableStateFlow<WeatherData?>(null)
+    val weatherData: StateFlow<WeatherData?> = _weatherData
+
+    // Функция получения погоды
+    fun fetchWeather(latitude: Double, longitude: Double) {
+        viewModelScope.launch {
+            val weather = weatherService.getCurrentWeather(latitude, longitude)
+            if (weather != null) {
+                _weatherData.value = weather
+                _outdoorTemp.value = String.format("%.1f", weather.temperature)
+            }
+        }
+    }
 
     // Данные для экрана ORU35
     private val _oru35Data = MutableStateFlow(InspectionORU35Data())
