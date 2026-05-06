@@ -13,3 +13,25 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# APK файлы
+*.apk
+
+# Аудио записи
+*.wav
+*.mp3
+
+# Изображения и скриншоты
+*.jpeg
+*.jpg
+*.png
+
+# Папки с debug/release сборками
+app/debug/
+app/release/
+
+# Ошибки Kotlin
+.kotlin/
+
+# Старые версии APK
+Старые версии/
