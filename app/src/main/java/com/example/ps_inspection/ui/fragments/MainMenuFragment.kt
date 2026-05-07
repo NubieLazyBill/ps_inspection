@@ -14,6 +14,8 @@ import com.example.ps_inspection.R
 import com.example.ps_inspection.databinding.FragmentMainMenuBinding
 import com.example.ps_inspection.data.repositories.UserManager
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.widget.Button
 
 class MainMenuFragment : Fragment() {
@@ -55,6 +57,12 @@ class MainMenuFragment : Fragment() {
 
         binding.btnAbout.setOnClickListener {
             showAboutDialog()
+        }
+
+
+        binding.cardGraphs.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("1716443098"))
+            startActivity(intent)
         }
     }
 

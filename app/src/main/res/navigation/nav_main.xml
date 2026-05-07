@@ -85,4 +85,5 @@
         android:name="com.example.ps_inspection.ui.fragments.ArchiveFragment"
         android:label="Архив осмотров" />
 
+
 </navigation>

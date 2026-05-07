@@ -12,7 +12,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 24
-        versionName = "2.4.0"
+        versionName = "2.4.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -87,4 +87,6 @@ dependencies {
     implementation("com.google.api-client:google-api-client-android:2.2.0")
     implementation("com.google.apis:google-api-services-sheets:v4-rev20230815-2.0.0")
     implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
+
+    implementation("com.github.chrisbanes:PhotoView:2.3.0")
 }
