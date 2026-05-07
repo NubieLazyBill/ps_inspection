@@ -66,6 +66,15 @@
                     android:textSize="14sp"
                     android:layout_marginTop="2dp" />
 
+                <TextView
+                    android:id="@+id/tvInspector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Иванов И.И."
+                    android:textColor="#4CAF50"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp" />
+
             </LinearLayout>
 
             <!-- Кнопка меню (три точки) -->

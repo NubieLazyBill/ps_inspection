@@ -637,7 +637,7 @@ class InspectionATG : Fragment() {
     private fun setupSpinnerListener(spinner: Spinner, onItemSelected: (String) -> Unit) {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                if (position > 0 && !isUpdatingUIFromViewModel) {
+                if (!isUpdatingUIFromViewModel) {
                     val text = parent.getItemAtPosition(position).toString()
                     onItemSelected(text)
                 }

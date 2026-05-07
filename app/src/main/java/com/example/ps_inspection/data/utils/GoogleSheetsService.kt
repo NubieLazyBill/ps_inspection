@@ -10,6 +10,11 @@ import com.google.auth.oauth2.GoogleCredentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStreamReader
+import com.google.api.services.sheets.v4.model.*
+import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest
+import com.google.api.services.sheets.v4.model.DeleteDimensionRequest
+import com.google.api.services.sheets.v4.model.DimensionRange
+import com.google.api.services.sheets.v4.model.Request
 
 class GoogleSheetsService(private val context: Context) {
 
@@ -56,11 +61,13 @@ class GoogleSheetsService(private val context: Context) {
             try {
                 val sheetsService = getSheetsService()
                 val result = sheetsService.spreadsheets().values()
-                    .get(SPREADSHEET_ID, "$SHEET_NAME!A:Z")
+                    .get(SPREADSHEET_ID, "$SHEET_NAME!A:IY")
                     .execute()
 
                 val values = result.getValues() ?: return@withContext null
-                val headers = values.firstOrNull()?.map { it.toString() } ?: return@withContext null
+                if (values.isEmpty()) return@withContext null
+
+                val headers = values[0].map { it.toString() }
 
                 values.drop(1).map { row ->
                     headers.mapIndexed { index, header ->
@@ -70,6 +77,37 @@ class GoogleSheetsService(private val context: Context) {
             } catch (e: Exception) {
                 e.printStackTrace()
                 null
+            }
+        }
+    }
+
+    suspend fun deleteRow(rowIndex: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                val sheetsService = getSheetsService()
+
+                // Сначала получаем sheetId
+                val spreadsheet = sheetsService.spreadsheets().get(SPREADSHEET_ID).execute()
+                val sheetId = spreadsheet.sheets.first { it.properties.title == SHEET_NAME }.properties.sheetId
+
+                // Удаляем строку (rowIndex = номер строки, которую нужно удалить)
+                val request = DeleteDimensionRequest()
+                    .setRange(
+                        DimensionRange()
+                            .setSheetId(sheetId)
+                            .setDimension("ROWS")
+                            .setStartIndex(rowIndex)
+                            .setEndIndex(rowIndex + 1)
+                    )
+
+                val batchRequest = BatchUpdateSpreadsheetRequest()
+                    .setRequests(listOf(Request().setDeleteDimension(request)))
+
+                sheetsService.spreadsheets().batchUpdate(SPREADSHEET_ID, batchRequest).execute()
+                true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                false
             }
         }
     }

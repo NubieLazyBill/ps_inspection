@@ -271,8 +271,8 @@ class HomeScreen : Fragment() {
             data.atg2_b_pressure_220, data.atg2_b_temp_ts1, data.atg2_b_temp_ts2,
             data.atg2_b_pump_group1, data.atg2_b_pump_group2, data.atg2_b_pump_group3, data.atg2_b_pump_group4,
             // 2 АТГ ф.А
-            data.atg2_a_oil_tank, data.atg2_a_oil_rpn, data.atg2_a_pressure_500,
-            data.atg2_a_pressure_220, data.atg2_a_temp_ts1, data.atg2_a_temp_ts2,
+            data.atg2_a_oil_tank, data.atg2_a_oil_rpn, /*data.atg2_a_pressure_500,
+            data.atg2_a_pressure_220,*/ data.atg2_a_temp_ts1, data.atg2_a_temp_ts2,
             data.atg2_a_pump_group1, data.atg2_a_pump_group2, data.atg2_a_pump_group3, data.atg2_a_pump_group4,
             // АТГ резерв
             data.atg_reserve_oil_tank, data.atg_reserve_oil_rpn, data.atg_reserve_pressure_500,
@@ -282,15 +282,15 @@ class HomeScreen : Fragment() {
             // ТН-35
             data.tn352atg, data.tn353atg,
             // 3 АТГ ф.С
-            data.atg3_c_oil_tank, data.atg3_c_oil_rpn, data.atg3_c_pressure_500,
-            data.atg3_c_pressure_220, data.atg3_c_temp_ts1, data.atg3_c_temp_ts2,
+            data.atg3_c_oil_tank, data.atg3_c_oil_rpn, /*data.atg3_c_pressure_500,
+            data.atg3_c_pressure_220,*/ data.atg3_c_temp_ts1, data.atg3_c_temp_ts2,
             data.atg3_c_pump_group1, data.atg3_c_pump_group2, data.atg3_c_pump_group3, data.atg3_c_pump_group4,
             // 3 АТГ ф.В
-            data.atg3_b_oil_tank, data.atg3_b_oil_rpn, data.atg3_b_pressure_500,
+            data.atg3_b_oil_tank, data.atg3_b_oil_rpn, /*data.atg3_b_pressure_500,*/
             data.atg3_b_pressure_220, data.atg3_b_temp_ts1, data.atg3_b_temp_ts2,
             data.atg3_b_pump_group1, data.atg3_b_pump_group2, data.atg3_b_pump_group3, data.atg3_b_pump_group4,
             // 3 АТГ ф.А
-            data.atg3_a_oil_tank, data.atg3_a_oil_rpn, data.atg3_a_pressure_500,
+            data.atg3_a_oil_tank, data.atg3_a_oil_rpn, /*data.atg3_a_pressure_500,*/
             data.atg3_a_pressure_220, data.atg3_a_temp_ts1, data.atg3_a_temp_ts2,
             data.atg3_a_pump_group1, data.atg3_a_pump_group2, data.atg3_a_pump_group3, data.atg3_a_pump_group4,
             // Реактор ф.С
@@ -302,7 +302,7 @@ class HomeScreen : Fragment() {
             data.reactor_b_pump_group1, data.reactor_b_pump_group2, data.reactor_b_pump_group3,
             data.reactor_b_tt_neutral,
             // Реактор ф.А
-            data.reactor_a_oil_tank, data.reactor_a_pressure_500, data.reactor_a_temp_ts,
+            data.reactor_a_oil_tank, /*data.reactor_a_pressure_500,*/ data.reactor_a_temp_ts,
             data.reactor_a_pump_group1, data.reactor_a_pump_group2, data.reactor_a_pump_group3,
             data.reactor_a_tt_neutral
         )
@@ -366,16 +366,7 @@ class HomeScreen : Fragment() {
             if (fileUri != null) {
                 Toast.makeText(requireContext(), "✅ Осмотр сохранён в Excel", Toast.LENGTH_LONG).show()
 
-                // Открываем файл для просмотра
-                try {
-                    val openIntent = Intent(Intent.ACTION_VIEW).apply {
-                        setDataAndType(fileUri, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    }
-                    startActivity(Intent.createChooser(openIntent, "Открыть Excel"))
-                } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "Нет приложения для просмотра Excel", Toast.LENGTH_SHORT).show()
-                }
+
             } else {
                 Toast.makeText(requireContext(), "❌ Ошибка при сохранении", Toast.LENGTH_SHORT).show()
             }

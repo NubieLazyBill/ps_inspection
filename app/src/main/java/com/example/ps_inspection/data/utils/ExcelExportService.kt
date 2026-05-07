@@ -136,25 +136,26 @@ class ExcelExportService(private val context: Context) {
             val workbook = XSSFWorkbook(inputStream)
             val sheet = workbook.getSheetAt(0)
 
-            // 🔧 Запоминаем прочерки из шаблона
             rememberDashCells(sheet)
 
-            // Заполняем данные из архива
+            // Безопасно получаем значения (могут отсутствовать в старых архивах)
+            val outdoorTemp = try { archiveData.outdoorTemp } catch (e: Exception) { "" }
+            val inspectorName = try { archiveData.inspectorName } catch (e: Exception) { "" }
+            val inspectorPosition = try { archiveData.inspectorPosition } catch (e: Exception) { "" }
+
             fillDataToTemplate(sheet,
                 archiveData.oru35,
                 archiveData.oru220,
                 archiveData.atg,
                 archiveData.oru500,
                 archiveData.buildings,
-                archiveData.outdoorTemp,
-                archiveData.inspectorName,
-                archiveData.inspectorPosition
+                outdoorTemp ?: "",
+                inspectorName ?: "",
+                inspectorPosition ?: ""
             )
 
-            // 🔧 Восстанавливаем прочерки
             restoreDashCells(sheet)
 
-            // Добавляем комментарии из архива
             addCommentsSheet(workbook,
                 archiveData.oru35,
                 archiveData.oru220,
@@ -941,11 +942,444 @@ class ExcelExportService(private val context: Context) {
                 "ФИО дежурного" to user.name,
                 "Должность" to user.position,
                 "t наружного воздуха" to outdoorTemp.ifBlank { "-" },
-                "ОРУ-35 %" to "$progressOru35%",
-                "ОРУ-220 %" to "$progressOru220%",
-                "ОРУ-500 %" to "$progressOru500%",
-                "АТГ %" to "$progressAtg%",
-                "Здания %" to "$progressBuildings%"
+
+                // ОРУ-35: ТСН
+                "ОРУ-35 2ТСН" to oru35Data.tsn2,
+                "ОРУ-35 3ТСН" to oru35Data.tsn3,
+                "ОРУ-35 4ТСН" to oru35Data.tsn4,
+                "ОРУ-35 ТТ-35 2ТСН А" to oru35Data.tt352tsnA,
+                "ОРУ-35 ТТ-35 2ТСН В" to oru35Data.tt352tsnB,
+                "ОРУ-35 ТТ-35 2ТСН С" to oru35Data.tt352tsnC,
+                "ОРУ-35 ТТ-35 3ТСН А" to oru35Data.tt353tsnA,
+                "ОРУ-35 ТТ-35 3ТСН В" to oru35Data.tt353tsnB,
+                "ОРУ-35 ТТ-35 3ТСН С" to oru35Data.tt353tsnC,
+                "ОРУ-35 В-35 2ТСН А" to oru35Data.v352tsnA,
+                "ОРУ-35 В-35 2ТСН В" to oru35Data.v352tsnB,
+                "ОРУ-35 В-35 2ТСН С" to oru35Data.v352tsnC,
+                "ОРУ-35 В-35 3ТСН А" to oru35Data.v353tsnA,
+                "ОРУ-35 В-35 3ТСН В" to oru35Data.v353tsnB,
+                "ОРУ-35 В-35 3ТСН С" to oru35Data.v353tsnC,
+
+                // ОРУ-220: Мирная
+                "Мирная прод А" to oru220Data.purgingMirnayaA,
+                "Мирная прод В" to oru220Data.purgingMirnayaB,
+                "Мирная прод С" to oru220Data.purgingMirnayaC,
+                "Мирная ТТ масло А" to oru220Data.oilMirnayaA,
+                "Мирная ТТ масло В" to oru220Data.oilMirnayaB,
+                "Мирная ТТ масло С" to oru220Data.oilMirnayaC,
+
+                // ОРУ-220: Топаз
+                "Топаз прод А" to oru220Data.purgingTopazA,
+                "Топаз прод В" to oru220Data.purgingTopazB,
+                "Топаз прод С" to oru220Data.purgingTopazC,
+                "Топаз ТТ масло А" to oru220Data.oilTopazA,
+                "Топаз ТТ масло В" to oru220Data.oilTopazB,
+                "Топаз ТТ масло С" to oru220Data.oilTopazC,
+
+                // ОРУ-220: ОВ
+                "ОВ прод А" to oru220Data.purgingOvA,
+                "ОВ прод В" to oru220Data.purgingOvB,
+                "ОВ прод С" to oru220Data.purgingOvC,
+                "ОВ ТТ масло А" to oru220Data.oilOvA,
+                "ОВ ТТ масло В" to oru220Data.oilOvB,
+                "ОВ ТТ масло С" to oru220Data.oilOvC,
+
+                // ОРУ-220: ОСШ
+                "ТН-220 ОСШ верх" to oru220Data.tnOsshFvUpper,
+                "ТН-220 ОСШ низ" to oru220Data.tnOsshFvLower,
+
+                // ОРУ-220: 2АТГ
+                "В-220 2АТГ прод А" to oru220Data.purgingV2atgA,
+                "В-220 2АТГ прод В" to oru220Data.purgingV2atgB,
+                "В-220 2АТГ прод С" to oru220Data.purgingV2atgC,
+                "2АТГ ТТ масло А" to oru220Data.oilTt2atgA,
+                "2АТГ ТТ масло В" to oru220Data.oilTt2atgB,
+                "2АТГ ТТ масло С" to oru220Data.oilTt2atgC,
+
+                // ОРУ-220: ШСВ
+                "ШСВ-220 прод А" to oru220Data.purgingShSV220A,
+                "ШСВ-220 прод В" to oru220Data.purgingShSV220B,
+                "ШСВ-220 прод С" to oru220Data.purgingShSV220C,
+                "ШСВ ТТ масло А" to oru220Data.oilTtShSV220A,
+                "ШСВ ТТ масло В" to oru220Data.oilTtShSV220B,
+                "ШСВ ТТ масло С" to oru220Data.oilTtShSV220C,
+
+                // ОРУ-220: 3АТГ
+                "В-220 3АТГ прод А" to oru220Data.purgingV3atgA,
+                "В-220 3АТГ прод В" to oru220Data.purgingV3atgB,
+                "В-220 3АТГ прод С" to oru220Data.purgingV3atgC,
+                "3АТГ ТТ масло А" to oru220Data.oilTt3atgA,
+                "3АТГ ТТ масло В" to oru220Data.oilTt3atgB,
+                "3АТГ ТТ масло С" to oru220Data.oilTt3atgC,
+
+                // ОРУ-220: Орбита
+                "Орбита прод А" to oru220Data.purgingOrbitaA,
+                "Орбита прод В" to oru220Data.purgingOrbitaB,
+                "Орбита прод С" to oru220Data.purgingOrbitaC,
+                "Орбита ТТ масло А" to oru220Data.oilOrbitaA,
+                "Орбита ТТ масло В" to oru220Data.oilOrbitaB,
+                "Орбита ТТ масло С" to oru220Data.oilOrbitaC,
+
+                // ОРУ-220: Факел
+                "Факел прод А" to oru220Data.purgingFakelA,
+                "Факел прод В" to oru220Data.purgingFakelB,
+                "Факел прод С" to oru220Data.purgingFakelC,
+                "Факел ТТ масло А" to oru220Data.oilFakelA,
+                "Факел ТТ масло В" to oru220Data.oilFakelB,
+                "Факел ТТ масло С" to oru220Data.oilFakelC,
+
+                // ОРУ-220: Комета-1
+                "Комета-1 прод А" to oru220Data.purgingCometa1A,
+                "Комета-1 прод В" to oru220Data.purgingCometa1B,
+                "Комета-1 прод С" to oru220Data.purgingCometa1C,
+                "Комета-1 ТТ масло А" to oru220Data.oilCometa1A,
+                "Комета-1 ТТ масло В" to oru220Data.oilCometa1B,
+                "Комета-1 ТТ масло С" to oru220Data.oilCometa1C,
+
+                // ОРУ-220: Комета-2
+                "Комета-2 прод А" to oru220Data.purgingCometa2A,
+                "Комета-2 прод В" to oru220Data.purgingCometa2B,
+                "Комета-2 прод С" to oru220Data.purgingCometa2C,
+                "Комета-2 ТТ масло А" to oru220Data.oilCometa2A,
+                "Комета-2 ТТ масло В" to oru220Data.oilCometa2B,
+                "Комета-2 ТТ масло С" to oru220Data.oilCometa2C,
+
+                // ОРУ-220: 1ТН-220
+                "1ТН-220 верх А" to oru220Data.tn1UpperA,
+                "1ТН-220 верх В" to oru220Data.tn1UpperB,
+                "1ТН-220 верх С" to oru220Data.tn1UpperC,
+                "1ТН-220 низ А" to oru220Data.tn1LowerA,
+                "1ТН-220 низ В" to oru220Data.tn1LowerB,
+                "1ТН-220 низ С" to oru220Data.tn1LowerC,
+
+                // ОРУ-220: 2ТН-220
+                "2ТН-220 верх А" to oru220Data.tn2UpperA,
+                "2ТН-220 верх В" to oru220Data.tn2UpperB,
+                "2ТН-220 верх С" to oru220Data.tn2UpperC,
+                "2ТН-220 низ А" to oru220Data.tn2LowerA,
+                "2ТН-220 низ В" to oru220Data.tn2LowerB,
+                "2ТН-220 низ С" to oru220Data.tn2LowerC,
+
+                // ОРУ-500: Р-500 2С
+                "Р-500 2С I А1" to oru500Data.purgingR5002sA1,
+                "Р-500 2С I В1" to oru500Data.purgingR5002sB1,
+                "Р-500 2С I С1" to oru500Data.purgingR5002sC1,
+                "Р-500 2С II А2" to oru500Data.purgingR5002sA2,
+                "Р-500 2С II В2" to oru500Data.purgingR5002sB2,
+                "Р-500 2С II С2" to oru500Data.purgingR5002sC2,
+
+                // ОРУ-500: ВШТ-31
+                "ВШТ-31 газ А" to oru500Data.gasPressureVsht31A,
+                "ВШТ-31 газ В" to oru500Data.gasPressureVsht31B,
+                "ВШТ-31 газ С" to oru500Data.gasPressureVsht31C,
+                "ВШТ-31 ТТ масло А" to oru500Data.oilTtVsht31A,
+                "ВШТ-31 ТТ масло В" to oru500Data.oilTtVsht31B,
+                "ВШТ-31 ТТ масло С" to oru500Data.oilTtVsht31C,
+
+                // ОРУ-500: ВЛТ-30
+                "ВЛТ-30 газ А" to oru500Data.gasPressureVlt30A,
+                "ВЛТ-30 газ В" to oru500Data.gasPressureVlt30B,
+                "ВЛТ-30 газ С" to oru500Data.gasPressureVlt30C,
+                "ВЛТ-30 ТТ масло А" to oru500Data.oilTtVlt30A,
+                "ВЛТ-30 ТТ масло В" to oru500Data.oilTtVlt30B,
+                "ВЛТ-30 ТТ масло С" to oru500Data.oilTtVlt30C,
+
+                // ОРУ-500: ВШЛ-32
+                "ВШЛ-32 I А1" to oru500Data.purgingVshl32A1,
+                "ВШЛ-32 I В1" to oru500Data.purgingVshl32B1,
+                "ВШЛ-32 I С1" to oru500Data.purgingVshl32C1,
+                "ВШЛ-32 II А2" to oru500Data.purgingVshl32A2,
+                "ВШЛ-32 II В2" to oru500Data.purgingVshl32B2,
+                "ВШЛ-32 II С2" to oru500Data.purgingVshl32C2,
+                "ВШЛ-32 ТТ масло А" to oru500Data.oilTtVshl32A,
+                "ВШЛ-32 ТТ масло В" to oru500Data.oilTtVshl32B,
+                "ВШЛ-32 ТТ масло С" to oru500Data.oilTtVshl32C,
+
+                // ОРУ-500: ВШЛ-21
+                "ВШЛ-21 I А1" to oru500Data.purgingVshl21A1,
+                "ВШЛ-21 I В1" to oru500Data.purgingVshl21B1,
+                "ВШЛ-21 I С1" to oru500Data.purgingVshl21C1,
+                "ВШЛ-21 II А2" to oru500Data.purgingVshl21A2,
+                "ВШЛ-21 II В2" to oru500Data.purgingVshl21B2,
+                "ВШЛ-21 II С2" to oru500Data.purgingVshl21C2,
+                "ВШЛ-21 ТТ масло А" to oru500Data.oilTtVshl21A,
+                "ВШЛ-21 ТТ масло В" to oru500Data.oilTtVshl21B,
+                "ВШЛ-21 ТТ масло С" to oru500Data.oilTtVshl21C,
+
+                // ОРУ-500: ВШТ-22
+                "ВШТ-22 I А1" to oru500Data.purgingVsht22A1,
+                "ВШТ-22 I В1" to oru500Data.purgingVsht22B1,
+                "ВШТ-22 I С1" to oru500Data.purgingVsht22C1,
+                "ВШТ-22 II А2" to oru500Data.purgingVsht22A2,
+                "ВШТ-22 II В2" to oru500Data.purgingVsht22B2,
+                "ВШТ-22 II С2" to oru500Data.purgingVsht22C2,
+                "ВШТ-22 ТТ масло А" to oru500Data.oilTtVsht22A,
+                "ВШТ-22 ТТ масло В" to oru500Data.oilTtVsht22B,
+                "ВШТ-22 ТТ масло С" to oru500Data.oilTtVsht22C,
+
+                // ОРУ-500: ВЛТ-20
+                "ВЛТ-20 I А1" to oru500Data.purgingVlt20A1,
+                "ВЛТ-20 I В1" to oru500Data.purgingVlt20B1,
+                "ВЛТ-20 I С1" to oru500Data.purgingVlt20C1,
+                "ВЛТ-20 II А2" to oru500Data.purgingVlt20A2,
+                "ВЛТ-20 II В2" to oru500Data.purgingVlt20B2,
+                "ВЛТ-20 II С2" to oru500Data.purgingVlt20C2,
+                "ВЛТ-20 ТТ масло А" to oru500Data.oilTtVlt20A,
+                "ВЛТ-20 ТТ масло В" to oru500Data.oilTtVlt20B,
+                "ВЛТ-20 ТТ масло С" to oru500Data.oilTtVlt20C,
+
+                // ОРУ-500: ВШТ-11
+                "ВШТ-11 I А1" to oru500Data.purgingVsht11A1,
+                "ВШТ-11 I В1" to oru500Data.purgingVsht11B1,
+                "ВШТ-11 I С1" to oru500Data.purgingVsht11C1,
+                "ВШТ-11 II А2" to oru500Data.purgingVsht11A2,
+                "ВШТ-11 II В2" to oru500Data.purgingVsht11B2,
+                "ВШТ-11 II С2" to oru500Data.purgingVsht11C2,
+                "ВШТ-11 ТТ масло А" to oru500Data.oilTtVsht11A,
+                "ВШТ-11 ТТ масло В" to oru500Data.oilTtVsht11B,
+                "ВШТ-11 ТТ масло С" to oru500Data.oilTtVsht11C,
+
+                // ОРУ-500: ВШЛ-12
+                "ВШЛ-12 I А1" to oru500Data.purgingVshl12A1,
+                "ВШЛ-12 I В1" to oru500Data.purgingVshl12B1,
+                "ВШЛ-12 I С1" to oru500Data.purgingVshl12C1,
+                "ВШЛ-12 II А2" to oru500Data.purgingVshl12A2,
+                "ВШЛ-12 II В2" to oru500Data.purgingVshl12B2,
+                "ВШЛ-12 II С2" to oru500Data.purgingVshl12C2,
+                "ВШЛ-12 ТТ масло А" to oru500Data.oilTtVshl12A,
+                "ВШЛ-12 ТТ масло В" to oru500Data.oilTtVshl12B,
+                "ВШЛ-12 ТТ масло С" to oru500Data.oilTtVshl12C,
+
+                // ОРУ-500: ТТ-500 Трачуковская
+                "Трачуковская ТТ масло А" to oru500Data.oilTtTrachukovskayaA,
+                "Трачуковская ТТ масло В" to oru500Data.oilTtTrachukovskayaB,
+                "Трачуковская ТТ масло С" to oru500Data.oilTtTrachukovskayaC,
+
+                // ОРУ-500: 1ТН-500
+                "1ТН-500 каск1 А" to oru500Data.tn1500Cascade1A,
+                "1ТН-500 каск1 В" to oru500Data.tn1500Cascade1B,
+                "1ТН-500 каск1 С" to oru500Data.tn1500Cascade1C,
+                "1ТН-500 каск2 А" to oru500Data.tn1500Cascade2A,
+                "1ТН-500 каск2 В" to oru500Data.tn1500Cascade2B,
+                "1ТН-500 каск2 С" to oru500Data.tn1500Cascade2C,
+                "1ТН-500 каск3 А" to oru500Data.tn1500Cascade3A,
+                "1ТН-500 каск3 В" to oru500Data.tn1500Cascade3B,
+                "1ТН-500 каск3 С" to oru500Data.tn1500Cascade3C,
+                "1ТН-500 каск4 А" to oru500Data.tn1500Cascade4A,
+                "1ТН-500 каск4 В" to oru500Data.tn1500Cascade4B,
+                "1ТН-500 каск4 С" to oru500Data.tn1500Cascade4C,
+
+                // ОРУ-500: 2ТН-500
+                "2ТН-500 каск1 А" to oru500Data.tn2500Cascade1A,
+                "2ТН-500 каск1 В" to oru500Data.tn2500Cascade1B,
+                "2ТН-500 каск1 С" to oru500Data.tn2500Cascade1C,
+                "2ТН-500 каск2 А" to oru500Data.tn2500Cascade2A,
+                "2ТН-500 каск2 В" to oru500Data.tn2500Cascade2B,
+                "2ТН-500 каск2 С" to oru500Data.tn2500Cascade2C,
+                "2ТН-500 каск3 А" to oru500Data.tn2500Cascade3A,
+                "2ТН-500 каск3 В" to oru500Data.tn2500Cascade3B,
+                "2ТН-500 каск3 С" to oru500Data.tn2500Cascade3C,
+                "2ТН-500 каск4 А" to oru500Data.tn2500Cascade4A,
+                "2ТН-500 каск4 В" to oru500Data.tn2500Cascade4B,
+                "2ТН-500 каск4 С" to oru500Data.tn2500Cascade4C,
+
+                // ОРУ-500: ТН-500 СГРЭС-1
+                "СГРЭС-1 каск1 А" to oru500Data.tn500Sgres1Cascade1A,
+                "СГРЭС-1 каск1 В" to oru500Data.tn500Sgres1Cascade1B,
+                "СГРЭС-1 каск1 С" to oru500Data.tn500Sgres1Cascade1C,
+                "СГРЭС-1 каск2 А" to oru500Data.tn500Sgres1Cascade2A,
+                "СГРЭС-1 каск2 В" to oru500Data.tn500Sgres1Cascade2B,
+                "СГРЭС-1 каск2 С" to oru500Data.tn500Sgres1Cascade2C,
+                "СГРЭС-1 каск3 А" to oru500Data.tn500Sgres1Cascade3A,
+                "СГРЭС-1 каск3 В" to oru500Data.tn500Sgres1Cascade3B,
+                "СГРЭС-1 каск3 С" to oru500Data.tn500Sgres1Cascade3C,
+                "СГРЭС-1 каск4 А" to oru500Data.tn500Sgres1Cascade4A,
+                "СГРЭС-1 каск4 В" to oru500Data.tn500Sgres1Cascade4B,
+                "СГРЭС-1 каск4 С" to oru500Data.tn500Sgres1Cascade4C,
+
+                // ОРУ-500: Трачуковская 1ТН
+                "Трачук 1ТН масло А" to oru500Data.oil1tnTrachukovskayaA,
+                "Трачук 1ТН масло В" to oru500Data.oil1tnTrachukovskayaB,
+                "Трачук 1ТН масло С" to oru500Data.oil1tnTrachukovskayaC,
+
+                // ОРУ-500: Трачуковская 2ТН
+                "Трачук 2ТН масло А" to oru500Data.oil2tnTrachukovskayaA,
+                "Трачук 2ТН масло В" to oru500Data.oil2tnTrachukovskayaB,
+                "Трачук 2ТН масло С" to oru500Data.oil2tnTrachukovskayaC,
+
+                // ОРУ-500: Белозёрная 2ТН
+                "Белозёрная 2ТН масло А" to oru500Data.oil2tnBelozernayaA,
+                "Белозёрная 2ТН масло В" to oru500Data.oil2tnBelozernayaB,
+                "Белозёрная 2ТН масло С" to oru500Data.oil2tnBelozernayaC,
+
+                // 2 АТГ ф.С
+                "2 АТГ С бак" to atgData.atg2_c_oil_tank,
+                "2 АТГ С РПН" to atgData.atg2_c_oil_rpn,
+                "2 АТГ С давл500" to atgData.atg2_c_pressure_500,
+                "2 АТГ С давл220" to atgData.atg2_c_pressure_220,
+                "2 АТГ С ТС1" to atgData.atg2_c_temp_ts1,
+                "2 АТГ С ТС2" to atgData.atg2_c_temp_ts2,
+                "2 АТГ С насос1" to atgData.atg2_c_pump_group1,
+                "2 АТГ С насос2" to atgData.atg2_c_pump_group2,
+                "2 АТГ С насос3" to atgData.atg2_c_pump_group3,
+                "2 АТГ С насос4" to atgData.atg2_c_pump_group4,
+
+                // 2 АТГ ф.В
+                "2 АТГ В бак" to atgData.atg2_b_oil_tank,
+                "2 АТГ В РПН" to atgData.atg2_b_oil_rpn,
+                "2 АТГ В давл500" to atgData.atg2_b_pressure_500,
+                "2 АТГ В давл220" to atgData.atg2_b_pressure_220,
+                "2 АТГ В ТС1" to atgData.atg2_b_temp_ts1,
+                "2 АТГ В ТС2" to atgData.atg2_b_temp_ts2,
+                "2 АТГ В насос1" to atgData.atg2_b_pump_group1,
+                "2 АТГ В насос2" to atgData.atg2_b_pump_group2,
+                "2 АТГ В насос3" to atgData.atg2_b_pump_group3,
+                "2 АТГ В насос4" to atgData.atg2_b_pump_group4,
+
+                // 2 АТГ ф.А
+                "2 АТГ А бак" to atgData.atg2_a_oil_tank,
+                "2 АТГ А РПН" to atgData.atg2_a_oil_rpn,
+                "2 АТГ А давл500" to atgData.atg2_a_pressure_500,
+                "2 АТГ А давл220" to atgData.atg2_a_pressure_220,
+                "2 АТГ А ТС1" to atgData.atg2_a_temp_ts1,
+                "2 АТГ А ТС2" to atgData.atg2_a_temp_ts2,
+                "2 АТГ А насос1" to atgData.atg2_a_pump_group1,
+                "2 АТГ А насос2" to atgData.atg2_a_pump_group2,
+                "2 АТГ А насос3" to atgData.atg2_a_pump_group3,
+                "2 АТГ А насос4" to atgData.atg2_a_pump_group4,
+
+                // АТГ резервная
+                "АТГ рез бак" to atgData.atg_reserve_oil_tank,
+                "АТГ рез РПН" to atgData.atg_reserve_oil_rpn,
+                "АТГ рез давл500" to atgData.atg_reserve_pressure_500,
+                "АТГ рез давл220" to atgData.atg_reserve_pressure_220,
+                "АТГ рез ТС1" to atgData.atg_reserve_temp_ts1,
+                "АТГ рез ТС2" to atgData.atg_reserve_temp_ts2,
+                "АТГ рез насос1" to atgData.atg_reserve_pump_group1,
+                "АТГ рез насос2" to atgData.atg_reserve_pump_group2,
+                "АТГ рез насос3" to atgData.atg_reserve_pump_group3,
+                "АТГ рез насос4" to atgData.atg_reserve_pump_group4,
+
+                // ТН-35
+                "ТН-35 2АТГ" to atgData.tn352atg,
+                "ТН-35 3АТГ" to atgData.tn353atg,
+
+                // 3 АТГ ф.С
+                "3 АТГ С бак" to atgData.atg3_c_oil_tank,
+                "3 АТГ С РПН" to atgData.atg3_c_oil_rpn,
+                "3 АТГ С давл500" to atgData.atg3_c_pressure_500,
+                "3 АТГ С давл220" to atgData.atg3_c_pressure_220,
+                "3 АТГ С ТС1" to atgData.atg3_c_temp_ts1,
+                "3 АТГ С ТС2" to atgData.atg3_c_temp_ts2,
+                "3 АТГ С насос1" to atgData.atg3_c_pump_group1,
+                "3 АТГ С насос2" to atgData.atg3_c_pump_group2,
+                "3 АТГ С насос3" to atgData.atg3_c_pump_group3,
+                "3 АТГ С насос4" to atgData.atg3_c_pump_group4,
+
+                // 3 АТГ ф.В
+                "3 АТГ В бак" to atgData.atg3_b_oil_tank,
+                "3 АТГ В РПН" to atgData.atg3_b_oil_rpn,
+                "3 АТГ В давл500" to atgData.atg3_b_pressure_500,
+                "3 АТГ В давл220" to atgData.atg3_b_pressure_220,
+                "3 АТГ В ТС1" to atgData.atg3_b_temp_ts1,
+                "3 АТГ В ТС2" to atgData.atg3_b_temp_ts2,
+                "3 АТГ В насос1" to atgData.atg3_b_pump_group1,
+                "3 АТГ В насос2" to atgData.atg3_b_pump_group2,
+                "3 АТГ В насос3" to atgData.atg3_b_pump_group3,
+                "3 АТГ В насос4" to atgData.atg3_b_pump_group4,
+
+                // 3 АТГ ф.А
+                "3 АТГ А бак" to atgData.atg3_a_oil_tank,
+                "3 АТГ А РПН" to atgData.atg3_a_oil_rpn,
+                "3 АТГ А давл500" to atgData.atg3_a_pressure_500,
+                "3 АТГ А давл220" to atgData.atg3_a_pressure_220,
+                "3 АТГ А ТС1" to atgData.atg3_a_temp_ts1,
+                "3 АТГ А ТС2" to atgData.atg3_a_temp_ts2,
+                "3 АТГ А насос1" to atgData.atg3_a_pump_group1,
+                "3 АТГ А насос2" to atgData.atg3_a_pump_group2,
+                "3 АТГ А насос3" to atgData.atg3_a_pump_group3,
+                "3 АТГ А насос4" to atgData.atg3_a_pump_group4,
+
+                // Реактор ф.С
+                "Реактор С бак" to atgData.reactor_c_oil_tank,
+                "Реактор С давл500" to atgData.reactor_c_pressure_500,
+                "Реактор С ТС" to atgData.reactor_c_temp_ts,
+                "Реактор С насос1" to atgData.reactor_c_pump_group1,
+                "Реактор С насос2" to atgData.reactor_c_pump_group2,
+                "Реактор С насос3" to atgData.reactor_c_pump_group3,
+                "Реактор С ТТ нейтр" to atgData.reactor_c_tt_neutral,
+
+                // Реактор ф.В
+                "Реактор В бак" to atgData.reactor_b_oil_tank,
+                "Реактор В давл500" to atgData.reactor_b_pressure_500,
+                "Реактор В ТС" to atgData.reactor_b_temp_ts,
+                "Реактор В насос1" to atgData.reactor_b_pump_group1,
+                "Реактор В насос2" to atgData.reactor_b_pump_group2,
+                "Реактор В насос3" to atgData.reactor_b_pump_group3,
+                "Реактор В ТТ нейтр" to atgData.reactor_b_tt_neutral,
+
+                // Реактор ф.А
+                "Реактор А бак" to atgData.reactor_a_oil_tank,
+                "Реактор А давл500" to atgData.reactor_a_pressure_500,
+                "Реактор А ТС" to atgData.reactor_a_temp_ts,
+                "Реактор А насос1" to atgData.reactor_a_pump_group1,
+                "Реактор А насос2" to atgData.reactor_a_pump_group2,
+                "Реактор А насос3" to atgData.reactor_a_pump_group3,
+                "Реактор А ТТ нейтр" to atgData.reactor_a_tt_neutral,
+
+                // Здания: Компрессорная №1
+                "Компр1 арматура" to buildingsData.compressor1Valve,
+                "Компр1 обогрев" to buildingsData.compressor1Heating,
+                "Компр1 темп" to buildingsData.compressor1Temp,
+
+                // Здания: Баллонная №1
+                "Баллон1 арматура" to buildingsData.ballroom1Valve,
+                "Баллон1 обогрев" to buildingsData.ballroom1Heating,
+                "Баллон1 темп" to buildingsData.ballroom1Temp,
+
+                // Здания: Компрессорная №2
+                "Компр2 арматура" to buildingsData.compressor2Valve,
+                "Компр2 обогрев" to buildingsData.compressor2Heating,
+                "Компр2 темп" to buildingsData.compressor2Temp,
+
+                // Здания: Баллонная №2
+                "Баллон2 арматура" to buildingsData.ballroom2Valve,
+                "Баллон2 обогрев" to buildingsData.ballroom2Heating,
+                "Баллон2 темп" to buildingsData.ballroom2Temp,
+
+                // Здания: КПЗ ОПУ
+                "КПЗ ОПУ арматура" to buildingsData.kpzOpuValve,
+                "КПЗ ОПУ обогрев" to buildingsData.kpzOpuHeating,
+                "КПЗ ОПУ темп" to buildingsData.kpzOpuTemp,
+
+                // Здания: КПЗ-2
+                "КПЗ-2 арматура" to buildingsData.kpz2Valve,
+                "КПЗ-2 обогрев" to buildingsData.kpz2Heating,
+                "КПЗ-2 темп" to buildingsData.kpz2Temp,
+
+                // Здания: Насосная пожаротушения
+                "НПТ арматура" to buildingsData.firePumpValve,
+                "НПТ обогрев" to buildingsData.firePumpHeating,
+                "НПТ темп" to buildingsData.firePumpTemp,
+                "НПТ уровень воды" to buildingsData.firePumpWaterLevel,
+
+                // Здания: Мастерская
+                "Мастерская обогрев" to buildingsData.workshopHeating,
+                "Мастерская темп" to buildingsData.workshopTemp,
+
+                // Здания: Артскважина
+                "Артскважина обогрев" to buildingsData.artWellHeating,
+
+                // Здания: Артезианская скважина
+                "Артез скважина обогрев" to buildingsData.artesianWellHeating,
+
+                // Здания: Помещение АБ
+                "Помещ АБ обогрев" to buildingsData.roomAbHeating,
+                "Помещ АБ темп" to buildingsData.roomAbTemp,
+
+                // Здания: Подвал
+                "Подвал обогрев" to buildingsData.basementHeating,
+                "Подвал темп" to buildingsData.basementTemp
             )
 
             CoroutineScope(Dispatchers.IO).launch {

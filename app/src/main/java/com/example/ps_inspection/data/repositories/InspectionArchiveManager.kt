@@ -26,7 +26,8 @@ data class ArchiveItem(
     val timestamp: Long = System.currentTimeMillis(),
     val photoCount: Int = 0,
     val hasComments: Boolean = false,
-    val hasPhotos: Boolean = false      // ← добавить это поле
+    val hasPhotos: Boolean = false,
+    val inspectorName: String = ""
 )
 
 class InspectionArchiveManager(private val context: Context) {
@@ -87,15 +88,14 @@ class InspectionArchiveManager(private val context: Context) {
                         photoCount = photoCount,
                         hasComments = hasComments,
                         hasPhotos = hasPhotos,
-                        timestamp = data.timestamp
+                        timestamp = data.timestamp,
+                        inspectorName = data.inspectorName
                     ))
                 } catch (e: Exception) { e.printStackTrace() }
             }
         }
         return archives.sortedByDescending { it.timestamp }
     }
-
-    // В InspectionArchiveManager.kt добавить:
 
     private fun countPhotosInArchive(data: InspectionArchiveData): Int {
         var count = 0

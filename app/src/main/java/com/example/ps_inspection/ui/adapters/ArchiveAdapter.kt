@@ -56,6 +56,7 @@ class ArchiveAdapter(
             binding.btnMenu.setOnClickListener { view ->
                 onMenuClick(record, view)
             }
+            binding.tvInspector.text = if (record.inspectorName.isNotBlank()) record.inspectorName else ""
         }
 
         private fun setIndicator(view: View, status: FillStatus) {

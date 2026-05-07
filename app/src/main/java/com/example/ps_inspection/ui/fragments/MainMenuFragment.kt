@@ -14,6 +14,7 @@ import com.example.ps_inspection.R
 import com.example.ps_inspection.databinding.FragmentMainMenuBinding
 import com.example.ps_inspection.data.repositories.UserManager
 import android.content.DialogInterface
+import android.widget.Button
 
 class MainMenuFragment : Fragment() {
     private var _binding: FragmentMainMenuBinding? = null
@@ -61,24 +62,19 @@ class MainMenuFragment : Fragment() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_about, null)
 
         val tvVersion = dialogView.findViewById<TextView>(R.id.tvVersion)
-        val tvCopyright = dialogView.findViewById<TextView>(R.id.tvCopyright)
-        val tvAuthor = dialogView.findViewById<TextView>(R.id.tvAuthor)
-        val tvLicense = dialogView.findViewById<TextView>(R.id.tvLicense)
-        val tvNote = dialogView.findViewById<TextView>(R.id.tvNote)
+        tvVersion.text = "Версия ${BuildConfig.VERSION_NAME} (сборка ${BuildConfig.VERSION_CODE})"
 
-        val versionName = BuildConfig.VERSION_NAME
-        tvVersion.text = "Версия $versionName"
-
-        tvCopyright.text = "© 2026"
-        tvAuthor.text = "Разработано: Плотников Алексей Петрович\n"
-        tvLicense.text = "Все права защищены.\n"
-        tvNote.text = "Программа предназначена исключительно для использования\nна ПС 500кВ «Кустовая».\nКоммерческое использование и тиражирование только с разрешения автора."
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("ℹ️ О программе")
+        val dialog = AlertDialog.Builder(requireContext(), R.style.TransparentDialog)
             .setView(dialogView)
-            .setPositiveButton("OK", null)
-            .show()
+            .setCancelable(true)
+            .create()
+
+        dialog.show()
+
+        val btnClose = dialogView.findViewById<Button>(R.id.btnClose)
+        btnClose?.setOnClickListener {
+            dialog.dismiss()
+        }
     }
 
     private fun updateUserDisplay() {
