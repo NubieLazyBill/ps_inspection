@@ -191,13 +191,11 @@ class ExcelExportService(private val context: Context) {
     ) {
         val commentsSheet = workbook.createSheet("Комментарии")
 
-        // 🔧 Стиль для выравнивания
         val commentStyle = workbook.createCellStyle().apply {
             alignment = HorizontalAlignment.CENTER
             verticalAlignment = VerticalAlignment.CENTER
         }
 
-        // Заголовки
         val headerRow = commentsSheet.createRow(0)
         headerRow.createCell(0).apply {
             setCellValue("Оборудование")
@@ -216,29 +214,23 @@ class ExcelExportService(private val context: Context) {
             cellStyle = commentStyle
         }
 
-        // 🔧 Берём ВСЕ комментарии из общего хранилища
         val commentStorage = CommentStorageManager(context)
         val allComments = commentStorage.loadAllComments()
 
-        // 🔧 Получаем текущего пользователя (кто сохраняет осмотр)
         val userManager = UserManager(context)
         val currentUser = userManager.getCurrentUser()
         val inspectorName = "${currentUser.position} ${currentUser.name}"
 
         var rowNum = 1
 
-        // Список оборудования в нужном порядке
         val equipmentOrder = listOf(
-            // ОРУ-35
             "ORU35_ТСН", "ORU35_ТТ-35 2ТСН", "ORU35_ТТ-35 3ТСН", "ORU35_В-35 2ТСН", "ORU35_В-35 3ТСН",
-            // ОРУ-220
             "ORU220_Мирная", "ORU220_Мирная ТТ", "ORU220_Топаз", "ORU220_Топаз ТТ",
             "ORU220_ОВ", "ORU220_ОВ ТТ", "ORU220_ТН-220 ОСШ",
             "ORU220_2АТГ", "ORU220_2АТГ ТТ", "ORU220_ШСВ", "ORU220_ШСВ ТТ",
             "ORU220_3АТГ", "ORU220_3АТГ ТТ", "ORU220_Орбита", "ORU220_Орбита ТТ",
             "ORU220_Факел", "ORU220_Факел ТТ", "ORU220_Комета-1", "ORU220_Комета-1 ТТ",
             "ORU220_Комета-2", "ORU220_Комета-2 ТТ", "ORU220_1ТН-220", "ORU220_2ТН-220",
-            // ОРУ-500
             "ORU500_В-500 Р-500 2С", "ORU500_В-500 ВШТ-31", "ORU500_В-500 ВЛТ-30",
             "ORU500_В-500 ВШЛ-32", "ORU500_В-500 ВШЛ-21", "ORU500_В-500 ВШТ-22",
             "ORU500_В-500 ВЛТ-20", "ORU500_В-500 ВШТ-11", "ORU500_В-500 ВШЛ-12",
@@ -247,11 +239,9 @@ class ExcelExportService(private val context: Context) {
             "ORU500_ТТ-500 ВШТ-11", "ORU500_ТТ-500 ВШЛ-12",
             "ORU500_1ТН-500", "ORU500_2ТН-500", "ORU500_ТН-500 СГРЭС-1",
             "ORU500_Трачуковская ТТ", "ORU500_Трачуковская 2ТН", "ORU500_Трачуковская 1ТН", "ORU500_Белозёрная 2ТН",
-            // АТГ
             "ATG_2 АТГ ф.С", "ATG_2 АТГ ф.В", "ATG_2 АТГ ф.А", "ATG_АТГ резервная",
             "ATG_3 АТГ ф.С", "ATG_3 АТГ ф.В", "ATG_3 АТГ ф.А",
             "ATG_Реактор ф.С", "ATG_Реактор ф.В", "ATG_Реактор ф.А", "ATG_ТН-35",
-            // Здания
             "BUILDINGS_Компрессорная №1", "BUILDINGS_Баллонная №1",
             "BUILDINGS_Компрессорная №2", "BUILDINGS_Баллонная №2",
             "BUILDINGS_КПЗ ОПУ", "BUILDINGS_КПЗ-2", "BUILDINGS_Насосная пожаротушения",
@@ -260,7 +250,6 @@ class ExcelExportService(private val context: Context) {
             "BUILDINGS_Помещение п/этажа №1,2,3"
         )
 
-        // 🔧 Формат даты для отображения
         val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
 
         for (key in equipmentOrder) {
@@ -268,7 +257,7 @@ class ExcelExportService(private val context: Context) {
             val displayName = key.substringAfter("_")
 
             for (comment in comments) {
-                if (comment.text.isNotBlank()) {
+                if (!comment.text.isNullOrBlank()) {
                     val row = commentsSheet.createRow(rowNum++)
                     row.createCell(0).apply {
                         setCellValue(displayName)
@@ -279,18 +268,18 @@ class ExcelExportService(private val context: Context) {
                         cellStyle = commentStyle
                     }
                     row.createCell(2).apply {
-                        setCellValue(dateFormat.format(Date(comment.timestamp)))  // 🔧 Дата комментария
+                        setCellValue(dateFormat.format(Date(comment.timestamp)))
                         cellStyle = commentStyle
                     }
                     row.createCell(3).apply {
-                        setCellValue(inspectorName)  // 🔧 Кто сохранил осмотр
+                        // 🔧 Безопасная проверка author
+                        setCellValue(comment.author?.ifBlank { inspectorName } ?: inspectorName)
                         cellStyle = commentStyle
                     }
                 }
             }
         }
 
-        // Если нет ни одного комментария — добавляем заглушку
         if (rowNum == 1) {
             val row = commentsSheet.createRow(1)
             row.createCell(0).apply {
@@ -299,11 +288,10 @@ class ExcelExportService(private val context: Context) {
             }
         }
 
-        // Ширина колонок
-        commentsSheet.setColumnWidth(0, 35 * 256)   // Оборудование
-        commentsSheet.setColumnWidth(1, 50 * 256)   // Комментарий
-        commentsSheet.setColumnWidth(2, 18 * 256)   // Дата
-        commentsSheet.setColumnWidth(3, 25 * 256)   // Осмотр выполнил
+        commentsSheet.setColumnWidth(0, 35 * 256)
+        commentsSheet.setColumnWidth(1, 50 * 256)
+        commentsSheet.setColumnWidth(2, 18 * 256)
+        commentsSheet.setColumnWidth(3, 25 * 256)
     }
 
     private fun fillDataToTemplate(
@@ -1469,11 +1457,11 @@ class ExcelExportService(private val context: Context) {
             val equipment = key.substringAfter("_")
 
             for (comment in comments) {
-                if (comment.text.isNotBlank()) {
+                if (!comment.text.isNullOrBlank()) {  // 🔧 ! перед условием
                     commentsData.add(mapOf(
                         "Дата" to currentDate,
                         "Время" to currentTime,
-                        "ФИО дежурного" to inspectorName,
+                        "ФИО дежурного" to (comment.author?.ifBlank { inspectorName } ?: inspectorName),
                         "Секция" to section,
                         "Оборудование" to equipment,
                         "Комментарий" to comment.text,

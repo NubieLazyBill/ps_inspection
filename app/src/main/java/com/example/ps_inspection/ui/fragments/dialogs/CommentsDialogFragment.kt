@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.example.ps_inspection.data.models.Comment
+import com.example.ps_inspection.data.repositories.UserManager
 import com.example.ps_inspection.ui.fragments.inspections.InspectionATG
 import com.example.ps_inspection.ui.fragments.inspections.InspectionBuildings
 import com.example.ps_inspection.ui.fragments.inspections.InspectionORU220
@@ -111,13 +112,23 @@ class CommentsDialogFragment : DialogFragment() {
         }
     }
 
+    /**
+     * 🔧 Получить автора комментария (текущий пользователь)
+     */
+    private fun getCurrentAuthor(): String {
+        val userManager = UserManager(requireContext())
+        val user = userManager.getCurrentUser()
+        return "${user.position} ${user.name}"
+    }
+
     private fun saveComment(commentText: String) {
+        val author = getCurrentAuthor()
         when (equipmentType) {
-            "ATG" -> sharedViewModel.addATGComment(equipmentName, commentText)
-            "ORU35" -> sharedViewModel.addORU35Comment(equipmentName, commentText)
-            "ORU220" -> sharedViewModel.addORU220Comment(equipmentName, commentText)
-            "ORU500" -> sharedViewModel.addORU500Comment(equipmentName, commentText)
-            "BUILDINGS" -> sharedViewModel.addBuildingsComment(equipmentName, commentText)
+            "ATG" -> sharedViewModel.addATGComment(equipmentName, commentText, author)
+            "ORU35" -> sharedViewModel.addORU35Comment(equipmentName, commentText, author)
+            "ORU220" -> sharedViewModel.addORU220Comment(equipmentName, commentText, author)
+            "ORU500" -> sharedViewModel.addORU500Comment(equipmentName, commentText, author)
+            "BUILDINGS" -> sharedViewModel.addBuildingsComment(equipmentName, commentText, author)
         }
     }
 
@@ -146,17 +157,16 @@ class CommentsDialogFragment : DialogFragment() {
         currentComments = getCurrentComments()
 
         if (currentComments.isNotEmpty()) {
-            // Форматируем с датой
+            // Форматируем с датой и автором
             val formatted = currentComments.map { comment ->
-                "${comment.getFormattedTimeShort()}\n${comment.text}"
+                val authorStr = if (comment.author.isNotBlank()) " (${comment.author})" else ""
+                "${comment.getFormattedTimeShort()}$authorStr\n${comment.text}"
             }
             commentsList.addAll(formatted)
             adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, commentsList)
-            Toast.makeText(requireContext(), "Загружено ${currentComments.size} комментариев", Toast.LENGTH_SHORT).show()
         } else {
             val emptyList = listOf("📝 Нет комментариев\n\nНажмите + чтобы добавить")
             adapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, emptyList)
-            Toast.makeText(requireContext(), "Нет комментариев для $equipmentName", Toast.LENGTH_SHORT).show()
         }
         listView.adapter = adapter
 
@@ -211,8 +221,10 @@ class CommentsDialogFragment : DialogFragment() {
             gravity = Gravity.TOP
         }
 
+        val authorStr = if (comment.author.isNotBlank()) "\nАвтор: ${comment.author}" else ""
+
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("✏️ Редактировать комментарий (${comment.getFormattedTimeShort()})")
+            .setTitle("✏️ Редактировать (${comment.getFormattedTimeShort()})$authorStr")
             .setView(input)
             .setPositiveButton("Сохранить") { _, _ ->
                 val newText = input.text.toString()

@@ -91,7 +91,7 @@ class SharedInspectionViewModel : ViewModel() {
                 _atgData.value,
                 _oru500Data.value,
                 _buildingsData.value,
-                _outdoorTemp.value  // ← Добавить
+                _outdoorTemp.value
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -102,37 +102,37 @@ class SharedInspectionViewModel : ViewModel() {
     fun updateORU35Data(update: InspectionORU35Data.() -> Unit) {
         val newData = _oru35Data.value.copy().apply(update)
         _oru35Data.value = newData
-        autoSave()  // 🔒 Автосохранение при изменении
+        autoSave()
     }
 
     fun updateORU220Data(update: InspectionORU220Data.() -> Unit) {
         val newData = _oru220Data.value.copy().apply(update)
         _oru220Data.value = newData
-        autoSave()  // 🔒 Автосохранение при изменении
+        autoSave()
     }
 
     fun updateATGData(update: InspectionATGData.() -> Unit) {
         val newData = _atgData.value.copy().apply(update)
         _atgData.value = newData
-        autoSave()  // 🔒 Автосохранение при изменении
+        autoSave()
     }
 
     fun updateBuildingsData(update: InspectionBuildingsData.() -> Unit) {
         val newData = _buildingsData.value.copy().apply(update)
         _buildingsData.value = newData
-        autoSave()  // 🔒 Автосохранение при изменении
+        autoSave()
     }
 
     fun updateORU500Data(update: InspectionORU500Data.() -> Unit) {
         val newData = _oru500Data.value.copy().apply(update)
         _oru500Data.value = newData
-        autoSave()  // 🔒 Автосохранение при изменении
+        autoSave()
     }
 
     // Инициализация
     fun initCommentStorage(context: Context) {
         commentStorage = CommentStorageManager(context)
-        autoSaveManager = AutoSaveManager(context)  // 🔒 Инициализируем автосохранение
+        autoSaveManager = AutoSaveManager(context)
         loadAllComments()
     }
 
@@ -151,7 +151,7 @@ class SharedInspectionViewModel : ViewModel() {
         _atgData.value = InspectionATGData()
         _oru500Data.value = InspectionORU500Data()
         _buildingsData.value = InspectionBuildingsData()
-        _outdoorTemp.value = ""  // ← Добавить
+        _outdoorTemp.value = ""
     }
 
     fun clearAllComments() {
@@ -165,7 +165,7 @@ class SharedInspectionViewModel : ViewModel() {
         if (!currentList.contains(fileName)) {
             currentList.add(fileName)
             _atgData.value = _atgData.value.copy(atgPhotoFiles = currentList)
-            autoSave()  // 🔒 Сохраняем после добавления фото
+            autoSave()
         }
     }
 
@@ -173,7 +173,7 @@ class SharedInspectionViewModel : ViewModel() {
         val currentList = _atgData.value.atgPhotoFiles.toMutableList()
         if (currentList.remove(fileName)) {
             _atgData.value = _atgData.value.copy(atgPhotoFiles = currentList)
-            autoSave()  // 🔒 Сохраняем после удаления фото
+            autoSave()
         }
     }
 
@@ -183,7 +183,7 @@ class SharedInspectionViewModel : ViewModel() {
         if (!currentList.contains(fileName)) {
             currentList.add(fileName)
             _oru35Data.value = _oru35Data.value.copy(oru35PhotoFiles = currentList)
-            autoSave()  // 🔒 Сохраняем после добавления фото
+            autoSave()
         }
     }
 
@@ -191,18 +191,18 @@ class SharedInspectionViewModel : ViewModel() {
         val currentList = _oru35Data.value.oru35PhotoFiles.toMutableList()
         if (currentList.remove(fileName)) {
             _oru35Data.value = _oru35Data.value.copy(oru35PhotoFiles = currentList)
-            autoSave()  // 🔒 Сохраняем после удаления фото
+            autoSave()
         }
     }
 
     // ========== АТГ КОММЕНТАРИИ ==========
-    fun addATGComment(equipmentKey: String, commentText: String) {
+    fun addATGComment(equipmentKey: String, commentText: String, author: String = "") {
         if (commentText.isBlank()) return
         val prefixedKey = "ATG_$equipmentKey"
 
         val currentMap = _atgComments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText))
+        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
         currentMap[equipmentKey] = currentList
         _atgComments.value = currentMap
 
@@ -211,7 +211,7 @@ class SharedInspectionViewModel : ViewModel() {
         commentStorage.saveAllComments(allComments)
 
         saveATGCommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()  // 🔒 Сохраняем после добавления комментария
+        autoSave()
     }
 
     fun removeATGComment(equipmentKey: String, commentIndex: Int) {
@@ -236,7 +236,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveATGCommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после удаления комментария
+            autoSave()
         }
     }
 
@@ -256,7 +256,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveATGCommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после обновления комментария
+            autoSave()
         }
     }
 
@@ -286,13 +286,13 @@ class SharedInspectionViewModel : ViewModel() {
     }
 
     // ========== ОРУ-35 КОММЕНТАРИИ ==========
-    fun addORU35Comment(equipmentKey: String, commentText: String) {
+    fun addORU35Comment(equipmentKey: String, commentText: String, author: String = "") {
         if (commentText.isBlank()) return
         val prefixedKey = "ORU35_$equipmentKey"
 
         val currentMap = _oru35Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText))
+        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
         currentMap[equipmentKey] = currentList
         _oru35Comments.value = currentMap
 
@@ -301,7 +301,7 @@ class SharedInspectionViewModel : ViewModel() {
         commentStorage.saveAllComments(allComments)
 
         saveORU35CommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()  // 🔒 Сохраняем после добавления комментария
+        autoSave()
     }
 
     fun removeORU35Comment(equipmentKey: String, commentIndex: Int) {
@@ -326,7 +326,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveORU35CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после удаления комментария
+            autoSave()
         }
     }
 
@@ -346,7 +346,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveORU35CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после обновления комментария
+            autoSave()
         }
     }
 
@@ -371,13 +371,13 @@ class SharedInspectionViewModel : ViewModel() {
     }
 
     // ========== ОРУ-220 КОММЕНТАРИИ ==========
-    fun addORU220Comment(equipmentKey: String, commentText: String) {
+    fun addORU220Comment(equipmentKey: String, commentText: String, author: String = "") {
         if (commentText.isBlank()) return
         val prefixedKey = "ORU220_$equipmentKey"
 
         val currentMap = _oru220Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText))
+        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
         currentMap[equipmentKey] = currentList
         _oru220Comments.value = currentMap
 
@@ -386,7 +386,7 @@ class SharedInspectionViewModel : ViewModel() {
         commentStorage.saveAllComments(allComments)
 
         saveORU220CommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()  // 🔒 Сохраняем после добавления комментария
+        autoSave()
     }
 
     fun removeORU220Comment(equipmentKey: String, commentIndex: Int) {
@@ -411,7 +411,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveORU220CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после удаления комментария
+            autoSave()
         }
     }
 
@@ -431,7 +431,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveORU220CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после обновления комментария
+            autoSave()
         }
     }
 
@@ -474,13 +474,13 @@ class SharedInspectionViewModel : ViewModel() {
     }
 
     // ========== ОРУ-500 КОММЕНТАРИИ ==========
-    fun addORU500Comment(equipmentKey: String, commentText: String) {
+    fun addORU500Comment(equipmentKey: String, commentText: String, author: String = "") {
         if (commentText.isBlank()) return
         val prefixedKey = "ORU500_$equipmentKey"
 
         val currentMap = _oru500Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText))
+        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
         currentMap[equipmentKey] = currentList
         _oru500Comments.value = currentMap
 
@@ -489,7 +489,7 @@ class SharedInspectionViewModel : ViewModel() {
         commentStorage.saveAllComments(allComments)
 
         saveORU500CommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()  // 🔒 Сохраняем после добавления комментария
+        autoSave()
     }
 
     fun removeORU500Comment(equipmentKey: String, commentIndex: Int) {
@@ -514,7 +514,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveORU500CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после удаления комментария
+            autoSave()
         }
     }
 
@@ -534,7 +534,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveORU500CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после обновления комментария
+            autoSave()
         }
     }
 
@@ -578,13 +578,13 @@ class SharedInspectionViewModel : ViewModel() {
     }
 
     // ========== BUILDINGS КОММЕНТАРИИ ==========
-    fun addBuildingsComment(equipmentKey: String, commentText: String) {
+    fun addBuildingsComment(equipmentKey: String, commentText: String, author: String = "") {
         if (commentText.isBlank()) return
         val prefixedKey = "BUILDINGS_$equipmentKey"
 
         val currentMap = _buildingsComments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText))
+        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
         currentMap[equipmentKey] = currentList
         _buildingsComments.value = currentMap
 
@@ -593,7 +593,7 @@ class SharedInspectionViewModel : ViewModel() {
         commentStorage.saveAllComments(allComments)
 
         saveBuildingsCommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()  // 🔒 Сохраняем после добавления комментария
+        autoSave()
     }
 
     fun removeBuildingsComment(equipmentKey: String, commentIndex: Int) {
@@ -618,7 +618,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveBuildingsCommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после удаления комментария
+            autoSave()
         }
     }
 
@@ -638,7 +638,7 @@ class SharedInspectionViewModel : ViewModel() {
             commentStorage.saveAllComments(allComments)
 
             saveBuildingsCommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()  // 🔒 Сохраняем после обновления комментария
+            autoSave()
         }
     }
 

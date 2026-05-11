@@ -64,6 +64,14 @@ class CommentStorageManager(context: Context) {
         }
     }
 
+    fun addComment(equipmentName: String, commentText: String, author: String = "") {
+        val all = loadAllComments().toMutableMap()
+        val current = all[equipmentName]?.toMutableList() ?: mutableListOf()
+        current.add(Comment(text = commentText, author = author))
+        all[equipmentName] = current
+        saveAllComments(all)
+    }
+
     fun saveAllComments(comments: Map<String, List<Comment>>) {
         try {
             val json = gson.toJson(comments)

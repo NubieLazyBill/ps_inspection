@@ -6,7 +6,8 @@ import java.util.Locale
 
 data class Comment(
     val text: String,
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val author: String = ""
 ) {
     fun getFormattedTime(): String {
         val format = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault())
