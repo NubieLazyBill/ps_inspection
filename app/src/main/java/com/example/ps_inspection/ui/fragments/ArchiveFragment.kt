@@ -26,11 +26,13 @@ import com.example.ps_inspection.data.repositories.InspectionArchiveManager
 import com.example.ps_inspection.data.services.GoogleSheetsService
 import com.example.ps_inspection.data.utils.FillStatus
 import com.example.ps_inspection.R
+import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionATGData
 import com.example.ps_inspection.data.models.InspectionBuildingsData
 import com.example.ps_inspection.data.models.InspectionORU220Data
 import com.example.ps_inspection.data.models.InspectionORU35Data
 import com.example.ps_inspection.data.models.InspectionORU500Data
+import com.example.ps_inspection.data.repositories.CommentStorageManager
 import com.example.ps_inspection.data.repositories.InspectionArchiveData
 import com.example.ps_inspection.data.utils.ProgressCalculator
 import com.example.ps_inspection.data.utils.getFillStatus
@@ -198,6 +200,7 @@ class ArchiveFragment : Fragment() {
                     Log.d("SERVER_KEYS", "[${keys.size - 5 + index}] '$key' -> '${firstRow[key]}'")
                 }
                 Log.d("SERVER_KEYS", "=== ВСЕГО КЛЮЧЕЙ: ${keys.size} ===")
+
                 val serverArchives = serverData.mapNotNull { row ->
                     try {
                         val archiveData = convertServerRowToArchiveData(row)
@@ -276,8 +279,61 @@ class ArchiveFragment : Fragment() {
                 }
 
                 allArchives = (allArchives + newServerArchives).sortedByDescending { it.displayDate }
-
                 Log.d("ARCHIVE_DEBUG", "Всего после объединения: ${allArchives.size}")
+
+                // 💬 Загружаем комментарии с сервера в общее хранилище
+                try {
+                    val serverComments = sheetsService.getAllComments()
+                    if (serverComments != null && serverComments.isNotEmpty()) {
+                        Log.d("COMMENTS_DEBUG", "Загружено ${serverComments.size} комментариев с сервера")
+
+                        val commentStorage = CommentStorageManager(requireContext())
+                        val existingComments = commentStorage.loadAllComments().toMutableMap()
+                        var addedCount = 0
+
+                        for (comment in serverComments) {
+                            val section = comment["Секция"] ?: ""
+                            val equipment = comment["Оборудование"] ?: ""
+                            val commentText = comment["Комментарий"] ?: ""
+                            val timestamp = comment["Timestamp"]?.toLongOrNull() ?: System.currentTimeMillis()  // 🔧 ВОТ ЭТА СТРОКА
+
+                            if (commentText.isBlank()) continue
+
+                            // Формируем ключ: "ORU35_ТСН", "ATG_2 АТГ ф.С" и т.д.
+                            val prefix = when (section) {
+                                "ОРУ-35" -> "ORU35"
+                                "ОРУ-220" -> "ORU220"
+                                "ОРУ-500" -> "ORU500"
+                                "АТГ" -> "ATG"
+                                "Здания" -> "BUILDINGS"
+                                else -> continue
+                            }
+                            val key = "${prefix}_${equipment}"
+
+                            val existing = existingComments[key] ?: mutableListOf()
+                            val isDuplicate = existing.any { it.text == commentText }
+
+                            if (!isDuplicate) {
+                                val list = existing.toMutableList()
+                                list.add(Comment(text = commentText, timestamp = timestamp))
+                                existingComments[key] = list
+                                addedCount++
+                                Log.d("COMMENTS_DEBUG", "✅ [$key] = '$commentText'")
+                            }
+                        }
+
+                        if (addedCount > 0) {
+                            commentStorage.saveAllComments(existingComments)
+                            Log.d("COMMENTS_DEBUG", "Сохранено $addedCount новых комментариев")
+                        } else {
+                            Log.d("COMMENTS_DEBUG", "Нет новых комментариев (все дубликаты)")
+                        }
+                    } else {
+                        Log.d("COMMENTS_DEBUG", "Нет комментариев на сервере")
+                    }
+                } catch (e: Exception) {
+                    Log.e("COMMENTS_DEBUG", "Ошибка загрузки комментариев", e)
+                }
 
                 if (allArchives.isNotEmpty() && _binding != null) {
                     binding.emptyState.visibility = View.GONE

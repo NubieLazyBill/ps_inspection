@@ -23,6 +23,7 @@ import com.example.ps_inspection.data.models.InspectionBuildingsData
 import com.example.ps_inspection.data.models.InspectionORU220Data
 import com.example.ps_inspection.data.models.InspectionORU35Data
 import com.example.ps_inspection.data.models.InspectionORU500Data
+import com.example.ps_inspection.data.repositories.CommentStorageManager
 import com.example.ps_inspection.data.repositories.InspectionArchiveData
 import com.example.ps_inspection.data.repositories.InspectionArchiveManager
 import com.example.ps_inspection.data.repositories.LastInspectionManager
@@ -190,108 +191,119 @@ class ExcelExportService(private val context: Context) {
     ) {
         val commentsSheet = workbook.createSheet("Комментарии")
 
+        // 🔧 Стиль для выравнивания
+        val commentStyle = workbook.createCellStyle().apply {
+            alignment = HorizontalAlignment.CENTER
+            verticalAlignment = VerticalAlignment.CENTER
+        }
+
+        // Заголовки
         val headerRow = commentsSheet.createRow(0)
-        headerRow.createCell(0).setCellValue("Оборудование")
-        headerRow.createCell(1).setCellValue("Комментарий")
+        headerRow.createCell(0).apply {
+            setCellValue("Оборудование")
+            cellStyle = commentStyle
+        }
+        headerRow.createCell(1).apply {
+            setCellValue("Комментарий")
+            cellStyle = commentStyle
+        }
+        headerRow.createCell(2).apply {
+            setCellValue("Дата")
+            cellStyle = commentStyle
+        }
+        headerRow.createCell(3).apply {
+            setCellValue("Осмотр выполнил")
+            cellStyle = commentStyle
+        }
+
+        // 🔧 Берём ВСЕ комментарии из общего хранилища
+        val commentStorage = CommentStorageManager(context)
+        val allComments = commentStorage.loadAllComments()
+
+        // 🔧 Получаем текущего пользователя (кто сохраняет осмотр)
+        val userManager = UserManager(context)
+        val currentUser = userManager.getCurrentUser()
+        val inspectorName = "${currentUser.position} ${currentUser.name}"
 
         var rowNum = 1
 
-        fun addComment(equipment: String, comment: String) {
-            if (comment.isNotBlank()) {
-                val row = commentsSheet.createRow(rowNum++)
-                row.createCell(0).setCellValue(equipment)
-                row.createCell(1).setCellValue(comment)
+        // Список оборудования в нужном порядке
+        val equipmentOrder = listOf(
+            // ОРУ-35
+            "ORU35_ТСН", "ORU35_ТТ-35 2ТСН", "ORU35_ТТ-35 3ТСН", "ORU35_В-35 2ТСН", "ORU35_В-35 3ТСН",
+            // ОРУ-220
+            "ORU220_Мирная", "ORU220_Мирная ТТ", "ORU220_Топаз", "ORU220_Топаз ТТ",
+            "ORU220_ОВ", "ORU220_ОВ ТТ", "ORU220_ТН-220 ОСШ",
+            "ORU220_2АТГ", "ORU220_2АТГ ТТ", "ORU220_ШСВ", "ORU220_ШСВ ТТ",
+            "ORU220_3АТГ", "ORU220_3АТГ ТТ", "ORU220_Орбита", "ORU220_Орбита ТТ",
+            "ORU220_Факел", "ORU220_Факел ТТ", "ORU220_Комета-1", "ORU220_Комета-1 ТТ",
+            "ORU220_Комета-2", "ORU220_Комета-2 ТТ", "ORU220_1ТН-220", "ORU220_2ТН-220",
+            // ОРУ-500
+            "ORU500_В-500 Р-500 2С", "ORU500_В-500 ВШТ-31", "ORU500_В-500 ВЛТ-30",
+            "ORU500_В-500 ВШЛ-32", "ORU500_В-500 ВШЛ-21", "ORU500_В-500 ВШТ-22",
+            "ORU500_В-500 ВЛТ-20", "ORU500_В-500 ВШТ-11", "ORU500_В-500 ВШЛ-12",
+            "ORU500_ТТ-500 ВШТ-31", "ORU500_ТТ-500 ВЛТ-30", "ORU500_ТТ-500 ВШЛ-32",
+            "ORU500_ТТ-500 ВШЛ-21", "ORU500_ТТ-500 ВШТ-22", "ORU500_ТТ-500 ВЛТ-20",
+            "ORU500_ТТ-500 ВШТ-11", "ORU500_ТТ-500 ВШЛ-12",
+            "ORU500_1ТН-500", "ORU500_2ТН-500", "ORU500_ТН-500 СГРЭС-1",
+            "ORU500_Трачуковская ТТ", "ORU500_Трачуковская 2ТН", "ORU500_Трачуковская 1ТН", "ORU500_Белозёрная 2ТН",
+            // АТГ
+            "ATG_2 АТГ ф.С", "ATG_2 АТГ ф.В", "ATG_2 АТГ ф.А", "ATG_АТГ резервная",
+            "ATG_3 АТГ ф.С", "ATG_3 АТГ ф.В", "ATG_3 АТГ ф.А",
+            "ATG_Реактор ф.С", "ATG_Реактор ф.В", "ATG_Реактор ф.А", "ATG_ТН-35",
+            // Здания
+            "BUILDINGS_Компрессорная №1", "BUILDINGS_Баллонная №1",
+            "BUILDINGS_Компрессорная №2", "BUILDINGS_Баллонная №2",
+            "BUILDINGS_КПЗ ОПУ", "BUILDINGS_КПЗ-2", "BUILDINGS_Насосная пожаротушения",
+            "BUILDINGS_Мастерская по ремонту ВВ", "BUILDINGS_Артскважина",
+            "BUILDINGS_Здание артезианской скважины", "BUILDINGS_Помещение 1 (2) АБ",
+            "BUILDINGS_Помещение п/этажа №1,2,3"
+        )
+
+        // 🔧 Формат даты для отображения
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+
+        for (key in equipmentOrder) {
+            val comments = allComments[key] ?: continue
+            val displayName = key.substringAfter("_")
+
+            for (comment in comments) {
+                if (comment.text.isNotBlank()) {
+                    val row = commentsSheet.createRow(rowNum++)
+                    row.createCell(0).apply {
+                        setCellValue(displayName)
+                        cellStyle = commentStyle
+                    }
+                    row.createCell(1).apply {
+                        setCellValue(comment.text)
+                        cellStyle = commentStyle
+                    }
+                    row.createCell(2).apply {
+                        setCellValue(dateFormat.format(Date(comment.timestamp)))  // 🔧 Дата комментария
+                        cellStyle = commentStyle
+                    }
+                    row.createCell(3).apply {
+                        setCellValue(inspectorName)  // 🔧 Кто сохранил осмотр
+                        cellStyle = commentStyle
+                    }
+                }
             }
         }
 
-        // ОРУ-35
-        addComment("ТСН", oru35Data.commentTsn)
-        addComment("ТТ-35 2ТСН", oru35Data.commentTt352)
-        addComment("ТТ-35 3ТСН", oru35Data.commentTt353)
-        addComment("В-35 2ТСН", oru35Data.commentV352)
-        addComment("В-35 3ТСН", oru35Data.commentV353)
+        // Если нет ни одного комментария — добавляем заглушку
+        if (rowNum == 1) {
+            val row = commentsSheet.createRow(1)
+            row.createCell(0).apply {
+                setCellValue("📝 Нет комментариев")
+                cellStyle = commentStyle
+            }
+        }
 
-        // ОРУ-220
-        addComment("Мирная", oru220Data.commentMirnaya)
-        addComment("Мирная ТТ", oru220Data.commentMirnayaTT)
-        addComment("Топаз", oru220Data.commentTopaz)
-        addComment("Топаз ТТ", oru220Data.commentTopazTT)
-        addComment("ОВ", oru220Data.commentOv)
-        addComment("ОВ ТТ", oru220Data.commentOvTT)
-        addComment("ТН-220 ОСШ", oru220Data.commentOssh)
-        addComment("2АТГ", oru220Data.commentV2atg)
-        addComment("2АТГ ТТ", oru220Data.commentV2atgTT)
-        addComment("ШСВ", oru220Data.commentShsv)
-        addComment("ШСВ ТТ", oru220Data.commentShsvTT)
-        addComment("3АТГ", oru220Data.commentV3atg)
-        addComment("3АТГ ТТ", oru220Data.commentV3atgTT)
-        addComment("Орбита", oru220Data.commentOrbita)
-        addComment("Орбита ТТ", oru220Data.commentOrbitaTT)
-        addComment("Факел", oru220Data.commentFakel)
-        addComment("Факел ТТ", oru220Data.commentFakelTT)
-        addComment("Комета-1", oru220Data.commentCometa1)
-        addComment("Комета-1 ТТ", oru220Data.commentCometa1TT)
-        addComment("Комета-2", oru220Data.commentCometa2)
-        addComment("Комета-2 ТТ", oru220Data.commentCometa2TT)
-        addComment("1ТН-220", oru220Data.commentTn1)
-        addComment("2ТН-220", oru220Data.commentTn2)
-
-        // ОРУ-500
-        addComment("В-500 Р-500 2С", oru500Data.commentR5002s)
-        addComment("В-500 ВШТ-31", oru500Data.commentVsht31)
-        addComment("В-500 ВЛТ-30", oru500Data.commentVlt30)
-        addComment("В-500 ВШЛ-32", oru500Data.commentVshl32)
-        addComment("В-500 ВШЛ-21", oru500Data.commentVshl21)
-        addComment("В-500 ВШТ-22", oru500Data.commentVsht22)
-        addComment("В-500 ВЛТ-20", oru500Data.commentVlt20)
-        addComment("В-500 ВШТ-11", oru500Data.commentVsht11)
-        addComment("В-500 ВШЛ-12", oru500Data.commentVshl12)
-        addComment("ТТ-500 ВШТ-31", oru500Data.commentTtVsht31)
-        addComment("ТТ-500 ВЛТ-30", oru500Data.commentTtVlt30)
-        addComment("ТТ-500 ВШЛ-32", oru500Data.commentTtVshl32)
-        addComment("ТТ-500 ВШЛ-21", oru500Data.commentTtVshl21)
-        addComment("ТТ-500 ВШТ-22", oru500Data.commentTtVsht22)
-        addComment("ТТ-500 ВЛТ-20", oru500Data.commentTtVlt20)
-        addComment("ТТ-500 ВШТ-11", oru500Data.commentTtVsht11)
-        addComment("ТТ-500 ВШЛ-12", oru500Data.commentTtVshl12)
-        addComment("1ТН-500", oru500Data.commentTn1500)
-        addComment("2ТН-500", oru500Data.commentTn2500)
-        addComment("ТН-500 СГРЭС-1", oru500Data.commentTn500Sgres1)
-        addComment("Трачуковская ТТ", oru500Data.commentTrachukovskayaTt)
-        addComment("Трачуковская 2ТН", oru500Data.commentTrachukovskaya2tn)
-        addComment("Трачуковская 1ТН", oru500Data.commentTrachukovskaya1tn)
-        addComment("Белозёрная 2ТН", oru500Data.commentBelozernaya2tn)
-
-        // АТГ
-        addComment("2 АТГ ф.С", atgData.commentAtg2C)
-        addComment("2 АТГ ф.В", atgData.commentAtg2B)
-        addComment("2 АТГ ф.А", atgData.commentAtg2A)
-        addComment("АТГ резервная", atgData.commentAtgReserve)
-        addComment("3 АТГ ф.С", atgData.commentAtg3C)
-        addComment("3 АТГ ф.В", atgData.commentAtg3B)
-        addComment("3 АТГ ф.А", atgData.commentAtg3A)
-        addComment("Реактор ф.С", atgData.commentReactorC)
-        addComment("Реактор ф.В", atgData.commentReactorB)
-        addComment("Реактор ф.А", atgData.commentReactorA)
-        addComment("ТН-35", atgData.commentTn35)
-
-        // Здания
-        addComment("Компрессорная №1", buildingsData.commentCompressor1)
-        addComment("Баллонная №1", buildingsData.commentBallroom1)
-        addComment("Компрессорная №2", buildingsData.commentCompressor2)
-        addComment("Баллонная №2", buildingsData.commentBallroom2)
-        addComment("КПЗ ОПУ", buildingsData.commentKpzOpu)
-        addComment("КПЗ-2", buildingsData.commentKpz2)
-        addComment("Насосная пожаротушения", buildingsData.commentFirePump)
-        addComment("Мастерская по ремонту ВВ", buildingsData.commentWorkshop)
-        addComment("Артскважина", buildingsData.commentArtWell)
-        addComment("Здание артезианской скважины", buildingsData.commentArtesianWell)
-        addComment("Помещение 1 (2) АБ", buildingsData.commentRoomAb)
-        addComment("Помещение п/этажа №1,2,3", buildingsData.commentBasement)
-
-        // 🔧 Вручную устанавливаем ширину колонок (вместо autoSizeColumn, который не работает на Android)
-        commentsSheet.setColumnWidth(0, 30 * 256)   // "Оборудование" - 30 символов
-        commentsSheet.setColumnWidth(1, 50 * 256)   // "Комментарий" - 50 символов
+        // Ширина колонок
+        commentsSheet.setColumnWidth(0, 35 * 256)   // Оборудование
+        commentsSheet.setColumnWidth(1, 50 * 256)   // Комментарий
+        commentsSheet.setColumnWidth(2, 18 * 256)   // Дата
+        commentsSheet.setColumnWidth(3, 25 * 256)   // Осмотр выполнил
     }
 
     private fun fillDataToTemplate(
@@ -949,10 +961,13 @@ class ExcelExportService(private val context: Context) {
             val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
             val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
             val now = Date()
+            val currentDate = dateFormat.format(now)
+            val currentTime = timeFormat.format(now)
 
+            // ==================== ОСНОВНЫЕ ДАННЫЕ ====================
             val data = mapOf(
-                "Дата" to dateFormat.format(now),
-                "Время" to timeFormat.format(now),
+                "Дата" to currentDate,
+                "Время" to currentTime,
                 "ФИО дежурного" to user.name,
                 "Должность" to user.position,
                 "t наружного воздуха" to outdoorTemp.ifBlank { "-" },
@@ -1396,22 +1411,85 @@ class ExcelExportService(private val context: Context) {
                 "Подвал темп" to buildingsData.basementTemp
             )
 
-            val keys = data.keys.toList()
-            val values = data.values.toList()
-            Log.d("GoogleSheets", "Отправляю значений: ${values.size}, ключей: ${keys.size}")
-            Log.d("GoogleSheets", "Первые 3: ${keys.take(3)}, значения: ${values.take(3)}")
-            Log.d("GoogleSheets", "Последние 3: ${keys.takeLast(3)}, значения: ${values.takeLast(3)}")
-
             CoroutineScope(Dispatchers.IO).launch {
                 val success = sheetsService.uploadInspection(data)
                 if (success) {
-                    android.util.Log.d("GoogleSheets", "✅ Данные отправлены в Google Sheets")
+                    Log.d("GoogleSheets", "✅ Данные отправлены в Google Sheets")
                 } else {
-                    android.util.Log.d("GoogleSheets", "❌ Ошибка отправки в Google Sheets")
+                    Log.d("GoogleSheets", "❌ Ошибка отправки в Google Sheets")
                 }
             }
+
+            // 🔧 ОДНА СТРОКА вместо 150 строк!
+            uploadCommentsToServer(sheetsService, currentDate, currentTime, user.name)
+
         } catch (e: Exception) {
+            Log.e("GoogleSheets", "Ошибка отправки в Google Sheets", e)
             e.printStackTrace()
+        }
+    }
+
+    /**
+     * Собирает и отправляет комментарии на сервер
+     */
+    /**
+     * Отправляет ВСЕ комментарии из локального хранилища на сервер
+     */
+    /**
+     * Отправляет ВСЕ комментарии из локального хранилища на сервер
+     */
+    private fun uploadCommentsToServer(
+        sheetsService: GoogleSheetsService,
+        currentDate: String,
+        currentTime: String,
+        inspectorName: String
+    ) {
+        Log.d("COMMENTS_DEBUG", "=== СБОР КОММЕНТАРИЕВ ИЗ ХРАНИЛИЩА ===")
+
+        val commentStorage = CommentStorageManager(context)
+        val allComments = commentStorage.loadAllComments()
+
+        if (allComments.isEmpty()) {
+            Log.d("COMMENTS_DEBUG", "📝 Нет комментариев в хранилище")
+            return
+        }
+
+        val commentsData = mutableListOf<Map<String, String>>()  // 🔧 ПЕРЕМЕСТИЛ СЮДА
+
+        for ((key, comments) in allComments) {
+            // key = "ORU35_ТСН", "ATG_2 АТГ ф.С" и т.д.
+            val section = when {
+                key.startsWith("ORU35_") -> "ОРУ-35"
+                key.startsWith("ORU220_") -> "ОРУ-220"
+                key.startsWith("ORU500_") -> "ОРУ-500"
+                key.startsWith("ATG_") -> "АТГ"
+                key.startsWith("BUILDINGS_") -> "Здания"
+                else -> continue
+            }
+            val equipment = key.substringAfter("_")
+
+            for (comment in comments) {
+                if (comment.text.isNotBlank()) {
+                    commentsData.add(mapOf(
+                        "Дата" to currentDate,
+                        "Время" to currentTime,
+                        "ФИО дежурного" to inspectorName,
+                        "Секция" to section,
+                        "Оборудование" to equipment,
+                        "Комментарий" to comment.text,
+                        "Timestamp" to comment.timestamp.toString()
+                    ))
+                }
+            }
+        }
+
+        Log.d("COMMENTS_DEBUG", "Всего собрано: ${commentsData.size} комментариев")
+
+        if (commentsData.isNotEmpty()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val success = sheetsService.uploadComments(commentsData)
+                Log.d("COMMENTS_DEBUG", if (success) "✅ Отправлены на сервер" else "❌ Ошибка отправки")
+            }
         }
     }
 
