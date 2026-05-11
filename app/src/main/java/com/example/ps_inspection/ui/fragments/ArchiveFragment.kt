@@ -305,18 +305,19 @@ class ArchiveFragment : Fragment() {
                         Log.d("COMMENTS_DEBUG", "Загружено ${serverComments.size} комментариев с сервера")
 
                         val commentStorage = CommentStorageManager(requireContext())
-                        val existingComments = commentStorage.loadAllComments().toMutableMap()
+                        // 🔧 Вместо загрузки существующих — создаём новую мапу
+                        val newComments = mutableMapOf<String, MutableList<Comment>>()
                         var addedCount = 0
 
                         for (comment in serverComments) {
                             val section = comment["Секция"] ?: ""
                             val equipment = comment["Оборудование"] ?: ""
                             val commentText = comment["Комментарий"] ?: ""
-                            val timestamp = comment["Timestamp"]?.toLongOrNull() ?: System.currentTimeMillis()  // 🔧 ВОТ ЭТА СТРОКА
+                            val timestamp = comment["Timestamp"]?.toLongOrNull() ?: System.currentTimeMillis()
+                            val author = comment["ФИО дежурного"] ?: ""
 
                             if (commentText.isBlank()) continue
 
-                            // Формируем ключ: "ORU35_ТСН", "ATG_2 АТГ ф.С" и т.д.
                             val prefix = when (section) {
                                 "ОРУ-35" -> "ORU35"
                                 "ОРУ-220" -> "ORU220"
@@ -327,24 +328,22 @@ class ArchiveFragment : Fragment() {
                             }
                             val key = "${prefix}_${equipment}"
 
-                            val existing = existingComments[key] ?: mutableListOf()
-                            val isDuplicate = existing.any { it.text == commentText }
-                            val author = comment["ФИО дежурного"] ?: ""
+                            val list = newComments.getOrPut(key) { mutableListOf() }
+                            // 🔧 Проверяем дубликат по тексту И timestamp
+                            val isDuplicate = list.any { it.text == commentText && it.timestamp == timestamp }
 
                             if (!isDuplicate) {
-                                val list = existing.toMutableList()
                                 list.add(Comment(text = commentText, timestamp = timestamp, author = author))
-                                existingComments[key] = list
                                 addedCount++
-                                Log.d("COMMENTS_DEBUG", "✅ [$key] = '$commentText'")
+                                Log.d("COMMENTS_DEBUG", "✅ [$key] = '$commentText' (автор: $author)")
+                            } else {
+                                Log.d("COMMENTS_DEBUG", "⏭️ Дубликат: [$key] = '$commentText'")
                             }
                         }
 
                         if (addedCount > 0) {
-                            commentStorage.saveAllComments(existingComments)
-                            Log.d("COMMENTS_DEBUG", "Сохранено $addedCount новых комментариев")
-                        } else {
-                            Log.d("COMMENTS_DEBUG", "Нет новых комментариев (все дубликаты)")
+                            commentStorage.saveAllComments(newComments)
+                            Log.d("COMMENTS_DEBUG", "Сохранено $addedCount комментариев (полная перезапись)")
                         }
                     } else {
                         Log.d("COMMENTS_DEBUG", "Нет комментариев на сервере")
