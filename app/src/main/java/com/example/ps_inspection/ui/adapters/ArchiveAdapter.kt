@@ -3,6 +3,7 @@ package com.example.ps_inspection.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ps_inspection.data.repositories.ArchiveItem
 import com.example.ps_inspection.data.utils.FillStatus
@@ -47,25 +48,37 @@ class ArchiveAdapter(
                 binding.tvTime.text = ""
             }
 
-            setIndicator(binding.indicatorOru35Dot, record.statusORU35)
-            setIndicator(binding.indicatorOru220Dot, record.statusORU220)
-            setIndicator(binding.indicatorOru500Dot, record.statusORU500)
-            setIndicator(binding.indicatorAtgDot, record.statusATG)
-            setIndicator(binding.indicatorBuildingsDot, record.statusBuildings)
+            // Проценты из ArchiveItem (уже посчитаны)
+            updateProgressBadge(binding.tvProgressOru35Archive, record.progressOru35)
+            updateProgressBadge(binding.tvProgressOru220Archive, record.progressOru220)
+            updateProgressBadge(binding.tvProgressOru500Archive, record.progressOru500)
+            updateProgressBadge(binding.tvProgressAtgArchive, record.progressAtg)
+            updateProgressBadge(binding.tvProgressBuildingsArchive, record.progressBuildings)
+
+            binding.tvInspector.text = if (record.inspectorName.isNotBlank()) record.inspectorName else ""
+            binding.tvSource.text = if (record.fileName.startsWith("server_")) "☁️ Сервер" else "📱 Локально"
 
             binding.btnMenu.setOnClickListener { view ->
                 onMenuClick(record, view)
             }
-            binding.tvInspector.text = if (record.inspectorName.isNotBlank()) record.inspectorName else ""
         }
 
-        private fun setIndicator(view: View, status: FillStatus) {
-            val drawableRes = when (status) {
-                FillStatus.EMPTY -> R.drawable.indicator_empty
-                FillStatus.PARTIAL -> R.drawable.indicator_partial
-                FillStatus.FULL -> R.drawable.indicator_full
+        private fun updateProgressBadge(textView: TextView, progress: Int) {
+            textView.text = "$progress%"
+            when {
+                progress == 0 -> {
+                    textView.setTextColor(0xFF9E9E9E.toInt())
+                    textView.setBackgroundResource(R.drawable.bg_progress_empty)
+                }
+                progress == 100 -> {
+                    textView.setTextColor(0xFF4CAF50.toInt())
+                    textView.setBackgroundResource(R.drawable.bg_progress_complete)
+                }
+                else -> {
+                    textView.setTextColor(0xFFFF9800.toInt())
+                    textView.setBackgroundResource(R.drawable.bg_progress_partial)
+                }
             }
-            view.setBackgroundResource(drawableRes)
         }
     }
 }

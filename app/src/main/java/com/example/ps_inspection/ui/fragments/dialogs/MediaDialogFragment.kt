@@ -180,7 +180,7 @@ class MediaDialogFragment : DialogFragment() {
     private fun loadPhotosToGrid() {
         gridLayout.removeAllViews()
         currentPhotos = mediaManager.getPhotos(inspectionId, equipmentName)
-            .sortedByDescending { it.timestamp } // Сначала новые
+            .sortedByDescending { it.timestamp }
 
         if (currentPhotos.isEmpty()) {
             val emptyText = TextView(requireContext()).apply {
@@ -201,20 +201,25 @@ class MediaDialogFragment : DialogFragment() {
                     height = 260
                     setMargins(8, 8, 8, 8)
                 }
+                isLongClickable = true
+                isClickable = true
+                // 🔧 Фон для визуальной обратной связи при нажатии
+                setBackgroundColor(0x00000000)  // прозрачный, но кликабельный
             }
+
+            val fullPath = mediaManager.getFullPhotoPath(inspectionId, equipmentName, photo.fileName)
 
             val imageView = ImageView(requireContext()).apply {
                 layoutParams = LinearLayout.LayoutParams(200, 200)
                 scaleType = ImageView.ScaleType.CENTER_CROP
+                // 🔧 Отключаем кликабельность imageView, чтобы container мог перехватить long click
+                isClickable = false
+                isLongClickable = false
+                isFocusable = false
 
-                val fullPath = mediaManager.getFullPhotoPath(inspectionId, equipmentName, photo.fileName)
                 val bitmap = BitmapFactory.decodeFile(fullPath)
                 if (bitmap != null) {
                     setImageBitmap(bitmap)
-                }
-
-                setOnClickListener {
-                    showFullscreenPhoto(fullPath)
                 }
             }
             container.addView(imageView)
@@ -225,10 +230,19 @@ class MediaDialogFragment : DialogFragment() {
                 gravity = android.view.Gravity.CENTER
                 setPadding(0, 4, 0, 0)
                 setTextColor(android.graphics.Color.GRAY)
+                // 🔧 Отключаем кликабельность текста
+                isClickable = false
+                isLongClickable = false
+                isFocusable = false
             }
             container.addView(dateLabel)
 
-            // Долгое нажатие → удаление
+            // 🔧 Обычное нажатие → открыть фото
+            container.setOnClickListener {
+                showFullscreenPhoto(fullPath)
+            }
+
+            // 🔧 Долгое нажатие → удалить фото
             container.setOnLongClickListener {
                 AlertDialog.Builder(requireContext())
                     .setTitle("Удалить фото?")
@@ -249,7 +263,7 @@ class MediaDialogFragment : DialogFragment() {
                     }
                     .setNegativeButton("Отмена", null)
                     .show()
-                true
+                true  // возвращаем true — событие обработано
             }
 
             gridLayout.addView(container)

@@ -80,6 +80,9 @@ class ExcelExportService(private val context: Context) {
         }
     }
 
+    // 🔧 Кэш для стиля с выравниванием по центру
+    private var centerCellStyle: CellStyle? = null
+
     // Унифицированный метод сохранения
     private fun saveWorkbook(workbook: Workbook): Uri? {
         val dateFormat = SimpleDateFormat("dd-MM-yyyy_HH-mm", Locale.getDefault())
@@ -302,6 +305,14 @@ class ExcelExportService(private val context: Context) {
         inspectorName: String = "",
         inspectorPosition: String = ""
     ) {
+
+        // 🔧 Создаём стиль ОДИН раз в начале
+        if (centerCellStyle == null) {
+            centerCellStyle = sheet.workbook.createCellStyle().apply {
+                alignment = HorizontalAlignment.CENTER
+                verticalAlignment = VerticalAlignment.CENTER
+            }
+        }
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
 
@@ -747,6 +758,9 @@ class ExcelExportService(private val context: Context) {
             val row = sheet.getRow(rowNum) ?: sheet.createRow(rowNum)
             val cell = row.getCell(colNum) ?: row.createCell(colNum)
             cell.setCellValue(value)
+
+            // 🔧 Применяем стиль из кэша
+            centerCellStyle?.let { cell.cellStyle = it }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -1381,6 +1395,12 @@ class ExcelExportService(private val context: Context) {
                 "Подвал обогрев" to buildingsData.basementHeating,
                 "Подвал темп" to buildingsData.basementTemp
             )
+
+            val keys = data.keys.toList()
+            val values = data.values.toList()
+            Log.d("GoogleSheets", "Отправляю значений: ${values.size}, ключей: ${keys.size}")
+            Log.d("GoogleSheets", "Первые 3: ${keys.take(3)}, значения: ${values.take(3)}")
+            Log.d("GoogleSheets", "Последние 3: ${keys.takeLast(3)}, значения: ${values.takeLast(3)}")
 
             CoroutineScope(Dispatchers.IO).launch {
                 val success = sheetsService.uploadInspection(data)

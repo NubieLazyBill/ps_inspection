@@ -7,13 +7,13 @@ import com.example.ps_inspection.data.models.InspectionORU220Data
 import com.example.ps_inspection.data.models.InspectionORU35Data
 import com.example.ps_inspection.data.models.InspectionORU500Data
 import com.example.ps_inspection.data.utils.getFillStatus
+import com.example.ps_inspection.data.utils.ProgressCalculator
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-// ✅ Оставляем ТОЛЬКО ОДНО определение ArchiveItem
 data class ArchiveItem(
     val fileName: String,
     val displayDate: String,
@@ -27,7 +27,12 @@ data class ArchiveItem(
     val photoCount: Int = 0,
     val hasComments: Boolean = false,
     val hasPhotos: Boolean = false,
-    val inspectorName: String = ""
+    val inspectorName: String = "",
+    val progressOru35: Int = 0,
+    val progressOru220: Int = 0,
+    val progressOru500: Int = 0,
+    val progressAtg: Int = 0,
+    val progressBuildings: Int = 0
 )
 
 class InspectionArchiveManager(private val context: Context) {
@@ -89,7 +94,12 @@ class InspectionArchiveManager(private val context: Context) {
                         hasComments = hasComments,
                         hasPhotos = hasPhotos,
                         timestamp = data.timestamp,
-                        inspectorName = data.inspectorName
+                        inspectorName = data.inspectorName,
+                        progressOru35 = ProgressCalculator.calculateORU35(data.oru35),
+                        progressOru220 = ProgressCalculator.calculateORU220(data.oru220),
+                        progressOru500 = ProgressCalculator.calculateORU500(data.oru500),
+                        progressAtg = ProgressCalculator.calculateATG(data.atg),
+                        progressBuildings = ProgressCalculator.calculateBuildings(data.buildings)
                     ))
                 } catch (e: Exception) { e.printStackTrace() }
             }
@@ -141,34 +151,27 @@ class InspectionArchiveManager(private val context: Context) {
         return comments.any { it.isNotBlank() }
     }
 
-    // Вспомогательный метод для определения типа осмотра
     private fun detectEquipmentType(fileName: String, data: InspectionArchiveData): String {
-        // Проверяем, какие данные заполнены
         return when {
             data.oru35.getFillStatus() != FillStatus.EMPTY &&
                     data.oru220.getFillStatus() == FillStatus.EMPTY &&
                     data.oru500.getFillStatus() == FillStatus.EMPTY -> "ОРУ-35"
-
             data.oru220.getFillStatus() != FillStatus.EMPTY &&
                     data.oru35.getFillStatus() == FillStatus.EMPTY &&
                     data.oru500.getFillStatus() == FillStatus.EMPTY -> "ОРУ-220"
-
             data.oru500.getFillStatus() != FillStatus.EMPTY &&
                     data.oru35.getFillStatus() == FillStatus.EMPTY &&
                     data.oru220.getFillStatus() == FillStatus.EMPTY -> "ОРУ-500"
-
             data.atg.getFillStatus() != FillStatus.EMPTY &&
                     data.oru35.getFillStatus() == FillStatus.EMPTY &&
                     data.oru220.getFillStatus() == FillStatus.EMPTY &&
                     data.oru500.getFillStatus() == FillStatus.EMPTY -> "АТГ"
-
             data.buildings.getFillStatus() != FillStatus.EMPTY &&
                     data.oru35.getFillStatus() == FillStatus.EMPTY &&
                     data.oru220.getFillStatus() == FillStatus.EMPTY &&
                     data.oru500.getFillStatus() == FillStatus.EMPTY &&
                     data.atg.getFillStatus() == FillStatus.EMPTY -> "Здания"
-
-            else -> "Полный осмотр"  // Если заполнено несколько секций
+            else -> "Полный осмотр"
         }
     }
 
@@ -179,6 +182,7 @@ class InspectionArchiveManager(private val context: Context) {
             gson.fromJson(file.readText(), InspectionArchiveData::class.java)
         } catch (e: Exception) { e.printStackTrace(); null }
     }
+    fun getArchiveDir(): File = archiveDir
 
     fun deleteArchive(fileName: String): Boolean = try { File(archiveDir, fileName).delete() } catch (e: Exception) { false }
     fun clearAllArchives(): Int { var count = 0; archiveDir.listFiles()?.forEach { if (it.isFile && it.delete()) count++ }; return count }

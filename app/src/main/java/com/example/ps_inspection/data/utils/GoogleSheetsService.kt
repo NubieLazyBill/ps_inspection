@@ -1,7 +1,9 @@
 package com.example.ps_inspection.data.services
 
 import android.content.Context
+import android.util.Log
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+import com.google.api.client.http.HttpRequestInitializer
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.model.ValueRange
@@ -9,19 +11,19 @@ import com.google.auth.http.HttpCredentialsAdapter
 import com.google.auth.oauth2.GoogleCredentials
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.InputStreamReader
 import com.google.api.services.sheets.v4.model.*
-import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest
-import com.google.api.services.sheets.v4.model.DeleteDimensionRequest
-import com.google.api.services.sheets.v4.model.DimensionRange
-import com.google.api.services.sheets.v4.model.Request
+import java.io.IOException
 
 class GoogleSheetsService(private val context: Context) {
 
     companion object {
         private const val SPREADSHEET_ID = "1nLCzhELUrG2crhIzrBmCitXIGFJGf5Tl0PQuLNSy5cI"
         private const val SHEET_NAME = "Осмотры"
-        private const val CREDENTIALS_FILE = "service_account.json" // ← Положить в assets/
+        private const val CREDENTIALS_FILE = "service_account.json"
+
+        // 🔧 Таймауты в миллисекундах
+        private const val CONNECT_TIMEOUT_MS = 30000  // 30 секунд
+        private const val READ_TIMEOUT_MS = 30000     // 30 секунд
     }
 
     private fun getSheetsService(): Sheets {
@@ -32,7 +34,15 @@ class GoogleSheetsService(private val context: Context) {
         val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
         val jsonFactory = GsonFactory.getDefaultInstance()
 
-        return Sheets.Builder(httpTransport, jsonFactory, HttpCredentialsAdapter(credentials))
+        // 🔧 Создаём инициализатор запросов с таймаутами
+        val requestInitializer = HttpRequestInitializer { request ->
+            val adapter = HttpCredentialsAdapter(credentials)
+            adapter.initialize(request)
+            request.connectTimeout = CONNECT_TIMEOUT_MS
+            request.readTimeout = READ_TIMEOUT_MS
+        }
+
+        return Sheets.Builder(httpTransport, jsonFactory, requestInitializer)
             .setApplicationName("PS Inspection")
             .build()
     }
@@ -45,7 +55,7 @@ class GoogleSheetsService(private val context: Context) {
                 val body = ValueRange().setValues(values)
 
                 sheetsService.spreadsheets().values()
-                    .append(SPREADSHEET_ID, "$SHEET_NAME!A:Z", body)
+                    .append(SPREADSHEET_ID, "$SHEET_NAME!A:MP", body)
                     .setValueInputOption("RAW")
                     .execute()
                 true
@@ -61,21 +71,36 @@ class GoogleSheetsService(private val context: Context) {
             try {
                 val sheetsService = getSheetsService()
                 val result = sheetsService.spreadsheets().values()
-                    .get(SPREADSHEET_ID, "$SHEET_NAME!A:IY")
+                    .get(SPREADSHEET_ID, "$SHEET_NAME!A:MP")
                     .execute()
 
-                val values = result.getValues() ?: return@withContext null
-                if (values.isEmpty()) return@withContext null
+                val values = result.getValues() ?: run {
+                    Log.d("SHEETS_DEBUG", "values == null")
+                    return@withContext emptyList()
+                }
+
+                if (values.isEmpty()) {
+                    Log.d("SHEETS_DEBUG", "values пустой")
+                    return@withContext emptyList()
+                }
 
                 val headers = values[0].map { it.toString() }
+                Log.d("SHEETS_DEBUG", "Заголовков: ${headers.size}")
 
-                values.drop(1).map { row ->
+                // Данные
+                val data = values.drop(1).map { row ->
                     headers.mapIndexed { index, header ->
                         header to (row.getOrNull(index)?.toString() ?: "")
                     }.toMap()
                 }
+
+                Log.d("SHEETS_DEBUG", "Осмотров загружено: ${data.size}")
+                data
+            } catch (e: IOException) {
+                Log.e("SHEETS_DEBUG", "Ошибка сети: ${e.message}", e)
+                null
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e("SHEETS_DEBUG", "Ошибка загрузки", e)
                 null
             }
         }
@@ -85,23 +110,25 @@ class GoogleSheetsService(private val context: Context) {
         return withContext(Dispatchers.IO) {
             try {
                 val sheetsService = getSheetsService()
-
-                // Сначала получаем sheetId
                 val spreadsheet = sheetsService.spreadsheets().get(SPREADSHEET_ID).execute()
-                val sheetId = spreadsheet.sheets.first { it.properties.title == SHEET_NAME }.properties.sheetId
+                val sheet = spreadsheet.sheets.firstOrNull { it.properties.title == SHEET_NAME }
+                    ?: return@withContext false
+                val sheetId = sheet.properties.sheetId
 
-                // Удаляем строку (rowIndex = номер строки, которую нужно удалить)
-                val request = DeleteDimensionRequest()
-                    .setRange(
-                        DimensionRange()
-                            .setSheetId(sheetId)
-                            .setDimension("ROWS")
-                            .setStartIndex(rowIndex)
-                            .setEndIndex(rowIndex + 1)
+                val request = com.google.api.services.sheets.v4.model.Request()
+                    .setDeleteDimension(
+                        com.google.api.services.sheets.v4.model.DeleteDimensionRequest()
+                            .setRange(
+                                com.google.api.services.sheets.v4.model.DimensionRange()
+                                    .setSheetId(sheetId)
+                                    .setDimension("ROWS")
+                                    .setStartIndex(rowIndex)
+                                    .setEndIndex(rowIndex + 1)
+                            )
                     )
 
-                val batchRequest = BatchUpdateSpreadsheetRequest()
-                    .setRequests(listOf(Request().setDeleteDimension(request)))
+                val batchRequest = com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest()
+                    .setRequests(listOf(request))
 
                 sheetsService.spreadsheets().batchUpdate(SPREADSHEET_ID, batchRequest).execute()
                 true
