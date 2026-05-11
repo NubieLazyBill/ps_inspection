@@ -273,7 +273,7 @@ class ExcelExportService(private val context: Context) {
                     }
                     row.createCell(3).apply {
                         // 🔧 Безопасная проверка author
-                        setCellValue(comment.author?.ifBlank { inspectorName } ?: inspectorName)
+                        setCellValue(comment.author ?: inspectorName)
                         cellStyle = commentStyle
                     }
                 }
@@ -1461,7 +1461,7 @@ class ExcelExportService(private val context: Context) {
                     commentsData.add(mapOf(
                         "Дата" to currentDate,
                         "Время" to currentTime,
-                        "ФИО дежурного" to (comment.author?.ifBlank { inspectorName } ?: inspectorName),
+                        "ФИО дежурного" to (comment.author ?: inspectorName),
                         "Секция" to section,
                         "Оборудование" to equipment,
                         "Комментарий" to comment.text,

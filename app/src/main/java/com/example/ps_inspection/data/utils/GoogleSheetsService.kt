@@ -275,14 +275,6 @@ class GoogleSheetsService(private val context: Context) {
      */
     private fun ensureCommentsSheetExists(sheetsService: Sheets) {
         try {
-
-            val headers = listOf(listOf("Дата", "Время", "ФИО дежурного", "Секция", "Оборудование", "Комментарий", "Timestamp"))
-            val body = ValueRange().setValues(headers)
-            sheetsService.spreadsheets().values()
-                .update(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A1:G1", body)
-                .setValueInputOption("RAW")
-                .execute()
-
             val spreadsheet = sheetsService.spreadsheets().get(SPREADSHEET_ID).execute()
             val hasCommentsSheet = spreadsheet.sheets.any {
                 it.properties.title == COMMENTS_SHEET_NAME
@@ -291,7 +283,7 @@ class GoogleSheetsService(private val context: Context) {
             if (!hasCommentsSheet) {
                 Log.d("COMMENTS_DEBUG", "Создаю лист Комментарии...")
 
-                // Создаём лист
+                // 🔧 СНАЧАЛА создаём лист
                 val addSheetRequest = Request()
                     .setAddSheet(
                         AddSheetRequest()
@@ -306,12 +298,12 @@ class GoogleSheetsService(private val context: Context) {
 
                 sheetsService.spreadsheets().batchUpdate(SPREADSHEET_ID, batchRequest).execute()
 
-                // Добавляем заголовки
-                val headers = listOf(listOf("Дата", "Время", "ФИО дежурного", "Секция", "Оборудование", "Комментарий"))
+                // 🔧 ПОТОМ добавляем заголовки
+                val headers = listOf(listOf("Дата", "Время", "ФИО дежурного", "Секция", "Оборудование", "Комментарий", "Timestamp"))
                 val body = ValueRange().setValues(headers)
 
                 sheetsService.spreadsheets().values()
-                    .update(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A1:F1", body)
+                    .update(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A1:G1", body)
                     .setValueInputOption("RAW")
                     .execute()
 

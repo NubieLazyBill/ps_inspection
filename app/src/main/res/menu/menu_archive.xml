@@ -20,4 +20,10 @@
         android:icon="@drawable/ic_delete_outline"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_clear_comments"
+        android:title="Сбросить комментарии"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="never" />
+
 </menu>

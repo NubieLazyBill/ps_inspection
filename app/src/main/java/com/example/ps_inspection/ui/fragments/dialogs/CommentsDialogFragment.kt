@@ -159,7 +159,7 @@ class CommentsDialogFragment : DialogFragment() {
         if (currentComments.isNotEmpty()) {
             // Форматируем с датой и автором
             val formatted = currentComments.map { comment ->
-                val authorStr = if (comment.author.isNotBlank()) " (${comment.author})" else ""
+                val authorStr = if (!comment.author.isNullOrBlank()) "\nАвтор: ${comment.author}" else ""
                 "${comment.getFormattedTimeShort()}$authorStr\n${comment.text}"
             }
             commentsList.addAll(formatted)
@@ -221,7 +221,7 @@ class CommentsDialogFragment : DialogFragment() {
             gravity = Gravity.TOP
         }
 
-        val authorStr = if (comment.author.isNotBlank()) "\nАвтор: ${comment.author}" else ""
+        val authorStr = if (!comment.author.isNullOrBlank()) " (${comment.author})" else ""
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("✏️ Редактировать (${comment.getFormattedTimeShort()})$authorStr")

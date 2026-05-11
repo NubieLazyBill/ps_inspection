@@ -87,6 +87,10 @@ class ArchiveFragment : Fragment() {
                     showClearAllDialog()
                     true
                 }
+                R.id.action_clear_comments -> {  // 🔧 НОВЫЙ ПУНКТ
+                    showClearCommentsDialog()
+                    true
+                }
                 else -> false
             }
         }
@@ -95,6 +99,19 @@ class ArchiveFragment : Fragment() {
             menu.findItem(R.id.action_global_photos)?.icon?.setTint(android.graphics.Color.parseColor("#4CAF50"))
             menu.findItem(R.id.action_global_comments)?.icon?.setTint(android.graphics.Color.parseColor("#4CAF50"))
         }
+    }
+
+    private fun showClearCommentsDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("🗑️ Сброс комментариев")
+            .setMessage("Удалить ВСЕ локальные комментарии?\n\nЭто не удалит осмотры и фото.\nПри следующей синхронизации комментарии загрузятся с сервера заново.")
+            .setPositiveButton("Удалить") { _, _ ->
+                val commentStorage = CommentStorageManager(requireContext())
+                commentStorage.clearAllComments()
+                Toast.makeText(requireContext(), "Комментарии удалены локально", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
     }
 
     override fun onCreateView(
@@ -312,10 +329,11 @@ class ArchiveFragment : Fragment() {
 
                             val existing = existingComments[key] ?: mutableListOf()
                             val isDuplicate = existing.any { it.text == commentText }
+                            val author = comment["ФИО дежурного"] ?: ""
 
                             if (!isDuplicate) {
                                 val list = existing.toMutableList()
-                                list.add(Comment(text = commentText, timestamp = timestamp))
+                                list.add(Comment(text = commentText, timestamp = timestamp, author = author))
                                 existingComments[key] = list
                                 addedCount++
                                 Log.d("COMMENTS_DEBUG", "✅ [$key] = '$commentText'")
