@@ -178,7 +178,8 @@ class GoogleSheetsService(private val context: Context) {
                 }
 
                 if (!hasCommentsSheet) {
-                    Log.d("COMMENTS_DEBUG", "Лист комментариев не существует")
+                    Log.d("COMMENTS_DEBUG", "Лист комментариев не существует, создаю...")
+                    ensureCommentsSheetExists(sheetsService)
                     return@withContext emptyList()
                 }
 
@@ -273,7 +274,7 @@ class GoogleSheetsService(private val context: Context) {
     /**
      * Создаёт лист "Комментарии" если его ещё нет
      */
-    private fun ensureCommentsSheetExists(sheetsService: Sheets) {
+    private suspend fun ensureCommentsSheetExists(sheetsService: Sheets) {
         try {
             val spreadsheet = sheetsService.spreadsheets().get(SPREADSHEET_ID).execute()
             val hasCommentsSheet = spreadsheet.sheets.any {
@@ -283,7 +284,6 @@ class GoogleSheetsService(private val context: Context) {
             if (!hasCommentsSheet) {
                 Log.d("COMMENTS_DEBUG", "Создаю лист Комментарии...")
 
-                // 🔧 СНАЧАЛА создаём лист
                 val addSheetRequest = Request()
                     .setAddSheet(
                         AddSheetRequest()
@@ -298,15 +298,18 @@ class GoogleSheetsService(private val context: Context) {
 
                 sheetsService.spreadsheets().batchUpdate(SPREADSHEET_ID, batchRequest).execute()
 
-                // 🔧 ПОТОМ добавляем заголовки
-                val headers = listOf(listOf("Секция", "Оборудование", "Комментарий", "Дата", "Автор"))
+                // 🔧 Небольшая задержка чтобы лист точно создался
+                kotlinx.coroutines.delay(500)
+
+                val headers = listOf(listOf("Секция", "Оборудование", "Комментарий", "Дата создания", "Автор", "Timestamp"))
                 val body = ValueRange().setValues(headers)
+
                 sheetsService.spreadsheets().values()
-                    .update(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A1:E1", body)
+                    .update(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A1:F1", body)
                     .setValueInputOption("RAW")
                     .execute()
 
-                Log.d("COMMENTS_DEBUG", "Лист Комментарии создан")
+                Log.d("COMMENTS_DEBUG", "Лист Комментарии создан с заголовками")
             }
         } catch (e: Exception) {
             Log.e("COMMENTS_DEBUG", "Ошибка создания листа комментариев", e)

@@ -81,9 +81,6 @@ class ExcelExportService(private val context: Context) {
         }
     }
 
-    // 🔧 Кэш для стиля с выравниванием по центру
-    private var centerCellStyle: CellStyle? = null
-
     // Унифицированный метод сохранения
     private fun saveWorkbook(workbook: Workbook): Uri? {
         val dateFormat = SimpleDateFormat("dd-MM-yyyy_HH-mm", Locale.getDefault())
@@ -306,13 +303,6 @@ class ExcelExportService(private val context: Context) {
         inspectorPosition: String = ""
     ) {
 
-        // 🔧 Создаём стиль ОДИН раз в начале
-        if (centerCellStyle == null) {
-            centerCellStyle = sheet.workbook.createCellStyle().apply {
-                alignment = HorizontalAlignment.CENTER
-                verticalAlignment = VerticalAlignment.CENTER
-            }
-        }
         val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
 
@@ -759,8 +749,13 @@ class ExcelExportService(private val context: Context) {
             val cell = row.getCell(colNum) ?: row.createCell(colNum)
             cell.setCellValue(value)
 
-            // 🔧 Применяем стиль из кэша
-            centerCellStyle?.let { cell.cellStyle = it }
+            // 🔧 Копируем существующий стиль ячейки и меняем только выравнивание
+            val originalStyle = cell.cellStyle
+            val newStyle = sheet.workbook.createCellStyle()
+            newStyle.cloneStyleFrom(originalStyle)  // копируем всё из шаблона
+            newStyle.alignment = HorizontalAlignment.CENTER
+            newStyle.verticalAlignment = VerticalAlignment.CENTER
+            cell.cellStyle = newStyle
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -1417,15 +1412,7 @@ class ExcelExportService(private val context: Context) {
         }
     }
 
-    /**
-     * Собирает и отправляет комментарии на сервер
-     */
-    /**
-     * Отправляет ВСЕ комментарии из локального хранилища на сервер
-     */
-    /**
-     * Отправляет ВСЕ комментарии из локального хранилища на сервер
-     */
+
     /**
      * Отправляет ВСЕ комментарии из локального хранилища на сервер
      * Проверяет дубликаты по timestamp перед отправкой
@@ -1465,9 +1452,9 @@ class ExcelExportService(private val context: Context) {
                         "Секция" to section,
                         "Оборудование" to equipment,
                         "Комментарий" to comment.text,
-                        "Дата создания" to comment.getFormattedTime(),  // читаемая дата
+                        "Дата создания" to comment.getFormattedTime(),
                         "Автор" to (comment.author ?: inspectorName),
-                        "Timestamp" to comment.timestamp.toString()     // для уникальности
+                        "Timestamp" to comment.timestamp.toString()
                     ))
                 }
             }
@@ -1477,10 +1464,10 @@ class ExcelExportService(private val context: Context) {
 
         if (commentsData.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
-                // 🔧 Загружаем существующие timestamp с сервера для проверки дубликатов
+                // 🔧 Загружаем существующие timestamp с сервера
                 val existingTimestamps = try {
                     sheetsService.getAllComments()?.mapNotNull {
-                        it["Дата"]?.toLongOrNull()
+                        it["Timestamp"]?.toLongOrNull()
                     }?.toSet() ?: emptySet()
                 } catch (e: Exception) {
                     Log.e("COMMENTS_DEBUG", "Ошибка загрузки существующих timestamp", e)
@@ -1489,12 +1476,12 @@ class ExcelExportService(private val context: Context) {
 
                 Log.d("COMMENTS_DEBUG", "Существующих timestamp на сервере: ${existingTimestamps.size}")
 
-                // 🔧 Фильтруем: отправляем только новые (по timestamp)
+                // 🔧 Отправляем только новые (по Timestamp)
                 val newComments = commentsData.filter {
-                    val ts = it["Дата"]?.toLongOrNull()
+                    val ts = it["Timestamp"]?.toLongOrNull()
                     val isNew = ts != null && ts !in existingTimestamps
                     if (!isNew) {
-                        Log.d("COMMENTS_DEBUG", "⏭️ Пропущен дубликат: [${it["Секция"]}] ${it["Оборудование"]} = '${it["Комментарий"]}' (ts=${it["Дата"]})")
+                        Log.d("COMMENTS_DEBUG", "⏭️ Дубликат: [${it["Секция"]}] ${it["Оборудование"]} (ts=$ts)")
                     }
                     isNew
                 }

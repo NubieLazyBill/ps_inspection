@@ -134,6 +134,7 @@ class ArchiveFragment : Fragment() {
         binding.btnRefreshServer.setOnClickListener {
             Log.d("ARCHIVE_DEBUG", "Кнопка нажата!")
             viewLifecycleOwner.lifecycleScope.launch {
+                Log.d("ARCHIVE_DEBUG", "Корутина запущена, вызываю loadServerArchives...")
                 Log.d("ARCHIVE_DEBUG", "Запускаю загрузку с сервера...")
                 binding.btnRefreshServer.text = "⏳ Загрузка..."
                 binding.btnRefreshServer.isEnabled = false
@@ -193,9 +194,13 @@ class ArchiveFragment : Fragment() {
     }
 
     private suspend fun loadServerArchives() {
+        Log.d("ARCHIVE_DEBUG", "=== loadServerArchives START ===")  // ← добавить
         try {
+            Log.d("ARCHIVE_DEBUG", "Создаю GoogleSheetsService...")  // ← добавить
             val sheetsService = GoogleSheetsService(requireContext())
+            Log.d("ARCHIVE_DEBUG", "Вызываю getAllInspections...")   // ← добавить
             var serverData = sheetsService.getAllInspections()
+            Log.d("ARCHIVE_DEBUG", "getAllInspections вернул: ${serverData?.size}")
 
             // Если пусто — пробуем ещё раз через 2 секунды
             if (serverData == null || serverData.isEmpty()) {
@@ -297,74 +302,68 @@ class ArchiveFragment : Fragment() {
 
                 allArchives = (allArchives + newServerArchives).sortedByDescending { it.displayDate }
                 Log.d("ARCHIVE_DEBUG", "Всего после объединения: ${allArchives.size}")
-
-                // 💬 Загружаем комментарии с сервера в общее хранилище
-                try {
-                    val serverComments = sheetsService.getAllComments()
-                    if (serverComments != null && serverComments.isNotEmpty()) {
-                        Log.d("COMMENTS_DEBUG", "Загружено ${serverComments.size} комментариев с сервера")
-
-                        val commentStorage = CommentStorageManager(requireContext())
-                        // 🔧 Вместо загрузки существующих — создаём новую мапу
-                        val newComments = mutableMapOf<String, MutableList<Comment>>()
-                        var addedCount = 0
-
-                        for (comment in serverComments) {
-                            val section = comment["Секция"] ?: ""
-                            val equipment = comment["Оборудование"] ?: ""
-                            val commentText = comment["Комментарий"] ?: ""
-                            // 🔧 Берём Timestamp для уникальности
-                            val timestamp = comment["Timestamp"]?.toLongOrNull() ?: System.currentTimeMillis()
-                            val author = comment["Автор"] ?: ""
-
-                            if (commentText.isBlank()) continue
-
-                            // Формируем ключ
-                            val prefix = when (section) {
-                                "ОРУ-35" -> "ORU35"
-                                "ОРУ-220" -> "ORU220"
-                                "ОРУ-500" -> "ORU500"
-                                "АТГ" -> "ATG"
-                                "Здания" -> "BUILDINGS"
-                                else -> continue
-                            }
-                            val key = "${prefix}_${equipment}"
-
-                            val list = newComments.getOrPut(key) { mutableListOf() }
-
-                            // 🔧 Проверка дубликата ТОЛЬКО по timestamp
-                            val isDuplicate = list.any { it.timestamp == timestamp }
-
-                            if (!isDuplicate) {
-                                list.add(Comment(text = commentText, timestamp = timestamp, author = author))
-                                addedCount++
-                                Log.d("COMMENTS_DEBUG", "✅ [$key] = '$commentText' (автор: $author)")
-                            } else {
-                                Log.d("COMMENTS_DEBUG", "⏭️ Дубликат по timestamp: [$key] = '$commentText'")
-                            }
-                        }
-
-                        if (addedCount > 0) {
-                            commentStorage.saveAllComments(newComments)
-                            Log.d("COMMENTS_DEBUG", "Сохранено $addedCount комментариев (полная перезапись)")
-
-                            // 🔧 Обновляем SharedViewModel чтобы комментарии отобразились сразу
-                            sharedViewModel.initCommentStorage(requireContext())
-                        }
-                    } else {
-                        Log.d("COMMENTS_DEBUG", "Нет комментариев на сервере")
-                    }
-                } catch (e: Exception) {
-                    Log.e("COMMENTS_DEBUG", "Ошибка загрузки комментариев", e)
-                }
-
-                if (allArchives.isNotEmpty() && _binding != null) {
-                    binding.emptyState.visibility = View.GONE
-                    binding.recyclerViewArchives.visibility = View.VISIBLE
-                    adapter.updateData(allArchives)
-                }
             } else {
                 Log.d("ARCHIVE_DEBUG", "serverData пустой или null после двух попыток")
+            }
+
+            // 🔧 💬 Загружаем комментарии с сервера (ВСЕГДА, даже если нет новых осмотров)
+            try {
+                val serverComments = sheetsService.getAllComments()
+                if (serverComments != null && serverComments.isNotEmpty()) {
+                    Log.d("COMMENTS_DEBUG", "Загружено ${serverComments.size} комментариев с сервера")
+
+                    val commentStorage = CommentStorageManager(requireContext())
+                    val newComments = mutableMapOf<String, MutableList<Comment>>()
+                    var addedCount = 0
+
+                    for (comment in serverComments) {
+                        val section = comment["Секция"] ?: ""
+                        val equipment = comment["Оборудование"] ?: ""
+                        val commentText = comment["Комментарий"] ?: ""
+                        val timestamp = comment["Timestamp"]?.toLongOrNull() ?: System.currentTimeMillis()
+                        val author = comment["Автор"] ?: ""
+
+                        if (commentText.isBlank()) continue
+
+                        val prefix = when (section) {
+                            "ОРУ-35" -> "ORU35"
+                            "ОРУ-220" -> "ORU220"
+                            "ОРУ-500" -> "ORU500"
+                            "АТГ" -> "ATG"
+                            "Здания" -> "BUILDINGS"
+                            else -> continue
+                        }
+                        val key = "${prefix}_${equipment}"
+
+                        val list = newComments.getOrPut(key) { mutableListOf() }
+                        val isDuplicate = list.any { it.timestamp == timestamp }
+
+                        if (!isDuplicate) {
+                            list.add(Comment(text = commentText, timestamp = timestamp, author = author))
+                            addedCount++
+                            Log.d("COMMENTS_DEBUG", "✅ [$key] = '$commentText' (автор: $author)")
+                        } else {
+                            Log.d("COMMENTS_DEBUG", "⏭️ Дубликат по timestamp: [$key] = '$commentText'")
+                        }
+                    }
+
+                    if (addedCount > 0) {
+                        commentStorage.saveAllComments(newComments)
+                        Log.d("COMMENTS_DEBUG", "Сохранено $addedCount комментариев (полная перезапись)")
+                        sharedViewModel.initCommentStorage(requireContext())
+                    }
+                } else {
+                    Log.d("COMMENTS_DEBUG", "Нет комментариев на сервере")
+                }
+            } catch (e: Exception) {
+                Log.e("COMMENTS_DEBUG", "Ошибка загрузки комментариев", e)
+            }
+
+            // 🔧 Обновляем UI
+            if (allArchives.isNotEmpty() && _binding != null) {
+                binding.emptyState.visibility = View.GONE
+                binding.recyclerViewArchives.visibility = View.VISIBLE
+                adapter.updateData(allArchives)
             }
         } catch (e: Exception) {
             Log.e("ARCHIVE_DEBUG", "Ошибка загрузки с сервера", e)
