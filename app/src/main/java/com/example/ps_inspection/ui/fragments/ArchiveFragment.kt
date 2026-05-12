@@ -313,11 +313,13 @@ class ArchiveFragment : Fragment() {
                             val section = comment["Секция"] ?: ""
                             val equipment = comment["Оборудование"] ?: ""
                             val commentText = comment["Комментарий"] ?: ""
+                            // 🔧 Берём Timestamp для уникальности
                             val timestamp = comment["Timestamp"]?.toLongOrNull() ?: System.currentTimeMillis()
-                            val author = comment["ФИО дежурного"] ?: ""
+                            val author = comment["Автор"] ?: ""
 
                             if (commentText.isBlank()) continue
 
+                            // Формируем ключ
                             val prefix = when (section) {
                                 "ОРУ-35" -> "ORU35"
                                 "ОРУ-220" -> "ORU220"
@@ -329,21 +331,25 @@ class ArchiveFragment : Fragment() {
                             val key = "${prefix}_${equipment}"
 
                             val list = newComments.getOrPut(key) { mutableListOf() }
-                            // 🔧 Проверяем дубликат по тексту И timestamp
-                            val isDuplicate = list.any { it.text == commentText && it.timestamp == timestamp }
+
+                            // 🔧 Проверка дубликата ТОЛЬКО по timestamp
+                            val isDuplicate = list.any { it.timestamp == timestamp }
 
                             if (!isDuplicate) {
                                 list.add(Comment(text = commentText, timestamp = timestamp, author = author))
                                 addedCount++
                                 Log.d("COMMENTS_DEBUG", "✅ [$key] = '$commentText' (автор: $author)")
                             } else {
-                                Log.d("COMMENTS_DEBUG", "⏭️ Дубликат: [$key] = '$commentText'")
+                                Log.d("COMMENTS_DEBUG", "⏭️ Дубликат по timestamp: [$key] = '$commentText'")
                             }
                         }
 
                         if (addedCount > 0) {
                             commentStorage.saveAllComments(newComments)
                             Log.d("COMMENTS_DEBUG", "Сохранено $addedCount комментариев (полная перезапись)")
+
+                            // 🔧 Обновляем SharedViewModel чтобы комментарии отобразились сразу
+                            sharedViewModel.initCommentStorage(requireContext())
                         }
                     } else {
                         Log.d("COMMENTS_DEBUG", "Нет комментариев на сервере")

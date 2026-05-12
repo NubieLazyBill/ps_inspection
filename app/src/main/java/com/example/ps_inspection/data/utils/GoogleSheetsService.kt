@@ -148,7 +148,7 @@ class GoogleSheetsService(private val context: Context) {
                 val body = ValueRange().setValues(values)
 
                 val response = sheetsService.spreadsheets().values()
-                    .append(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A:G", body)
+                    .append(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A:E", body)
                     .setValueInputOption("RAW")
                     .execute()
 
@@ -183,7 +183,7 @@ class GoogleSheetsService(private val context: Context) {
                 }
 
                 val result = sheetsService.spreadsheets().values()
-                    .get(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A:G")
+                    .get(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A:E")
                     .execute()
 
                 val values = result.getValues() ?: return@withContext emptyList()
@@ -299,11 +299,10 @@ class GoogleSheetsService(private val context: Context) {
                 sheetsService.spreadsheets().batchUpdate(SPREADSHEET_ID, batchRequest).execute()
 
                 // 🔧 ПОТОМ добавляем заголовки
-                val headers = listOf(listOf("Дата", "Время", "ФИО дежурного", "Секция", "Оборудование", "Комментарий", "Timestamp"))
+                val headers = listOf(listOf("Секция", "Оборудование", "Комментарий", "Дата", "Автор"))
                 val body = ValueRange().setValues(headers)
-
                 sheetsService.spreadsheets().values()
-                    .update(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A1:G1", body)
+                    .update(SPREADSHEET_ID, "$COMMENTS_SHEET_NAME!A1:E1", body)
                     .setValueInputOption("RAW")
                     .execute()
 

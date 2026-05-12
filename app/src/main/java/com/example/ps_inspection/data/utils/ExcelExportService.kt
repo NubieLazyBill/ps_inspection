@@ -1426,6 +1426,10 @@ class ExcelExportService(private val context: Context) {
     /**
      * Отправляет ВСЕ комментарии из локального хранилища на сервер
      */
+    /**
+     * Отправляет ВСЕ комментарии из локального хранилища на сервер
+     * Проверяет дубликаты по timestamp перед отправкой
+     */
     private fun uploadCommentsToServer(
         sheetsService: GoogleSheetsService,
         currentDate: String,
@@ -1442,10 +1446,9 @@ class ExcelExportService(private val context: Context) {
             return
         }
 
-        val commentsData = mutableListOf<Map<String, String>>()  // 🔧 ПЕРЕМЕСТИЛ СЮДА
+        val commentsData = mutableListOf<Map<String, String>>()
 
         for ((key, comments) in allComments) {
-            // key = "ORU35_ТСН", "ATG_2 АТГ ф.С" и т.д.
             val section = when {
                 key.startsWith("ORU35_") -> "ОРУ-35"
                 key.startsWith("ORU220_") -> "ОРУ-220"
@@ -1457,15 +1460,14 @@ class ExcelExportService(private val context: Context) {
             val equipment = key.substringAfter("_")
 
             for (comment in comments) {
-                if (!comment.text.isNullOrBlank()) {  // 🔧 ! перед условием
+                if (!comment.text.isNullOrBlank()) {
                     commentsData.add(mapOf(
-                        "Дата" to currentDate,
-                        "Время" to currentTime,
-                        "ФИО дежурного" to (comment.author ?: inspectorName),
                         "Секция" to section,
                         "Оборудование" to equipment,
                         "Комментарий" to comment.text,
-                        "Timestamp" to comment.timestamp.toString()
+                        "Дата создания" to comment.getFormattedTime(),  // читаемая дата
+                        "Автор" to (comment.author ?: inspectorName),
+                        "Timestamp" to comment.timestamp.toString()     // для уникальности
                     ))
                 }
             }
@@ -1475,8 +1477,36 @@ class ExcelExportService(private val context: Context) {
 
         if (commentsData.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
-                val success = sheetsService.uploadComments(commentsData)
-                Log.d("COMMENTS_DEBUG", if (success) "✅ Отправлены на сервер" else "❌ Ошибка отправки")
+                // 🔧 Загружаем существующие timestamp с сервера для проверки дубликатов
+                val existingTimestamps = try {
+                    sheetsService.getAllComments()?.mapNotNull {
+                        it["Дата"]?.toLongOrNull()
+                    }?.toSet() ?: emptySet()
+                } catch (e: Exception) {
+                    Log.e("COMMENTS_DEBUG", "Ошибка загрузки существующих timestamp", e)
+                    emptySet()
+                }
+
+                Log.d("COMMENTS_DEBUG", "Существующих timestamp на сервере: ${existingTimestamps.size}")
+
+                // 🔧 Фильтруем: отправляем только новые (по timestamp)
+                val newComments = commentsData.filter {
+                    val ts = it["Дата"]?.toLongOrNull()
+                    val isNew = ts != null && ts !in existingTimestamps
+                    if (!isNew) {
+                        Log.d("COMMENTS_DEBUG", "⏭️ Пропущен дубликат: [${it["Секция"]}] ${it["Оборудование"]} = '${it["Комментарий"]}' (ts=${it["Дата"]})")
+                    }
+                    isNew
+                }
+
+                Log.d("COMMENTS_DEBUG", "Новых для отправки: ${newComments.size} (из ${commentsData.size})")
+
+                if (newComments.isNotEmpty()) {
+                    val success = sheetsService.uploadComments(newComments)
+                    Log.d("COMMENTS_DEBUG", if (success) "✅ Отправлены на сервер" else "❌ Ошибка отправки")
+                } else {
+                    Log.d("COMMENTS_DEBUG", "📝 Все комментарии уже есть на сервере")
+                }
             }
         }
     }
