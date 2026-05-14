@@ -12,7 +12,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 24
-        versionName = "2.4.8"
+        versionName = "2.4.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -89,4 +89,7 @@ dependencies {
     implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
 
     implementation("com.github.chrisbanes:PhotoView:2.3.0")
+
+    // Графики
+    implementation("com.androidplot:androidplot-core:1.5.10")
 }

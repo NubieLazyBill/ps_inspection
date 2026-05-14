@@ -85,5 +85,14 @@
         android:name="com.example.ps_inspection.ui.fragments.ArchiveFragment"
         android:label="Архив осмотров" />
 
+    <fragment
+        android:id="@+id/graphsFragment"
+        android:name="com.example.ps_inspection.ui.fragments.GraphsFragment"
+        android:label="Графики" />
+
+    <action
+        android:id="@+id/action_mainMenu_to_graphsFragment"
+        app:destination="@id/graphsFragment" />
+
 
 </navigation>

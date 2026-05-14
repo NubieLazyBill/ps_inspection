@@ -61,8 +61,7 @@ class MainMenuFragment : Fragment() {
 
 
         binding.cardGraphs.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("1716443098"))
-            startActivity(intent)
+            findNavController().navigate(R.id.action_mainMenu_to_graphsFragment)
         }
     }
 
