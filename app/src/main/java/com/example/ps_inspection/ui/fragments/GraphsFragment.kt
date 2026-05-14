@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
-import androidx.compose.material3.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.androidplot.xy.LineAndPointFormatter
@@ -22,7 +22,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.core.graphics.toColorInt
-import androidx.wear.compose.material.Button
 
 class GraphsFragment : Fragment() {
 

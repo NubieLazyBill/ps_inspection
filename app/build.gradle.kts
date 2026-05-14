@@ -12,7 +12,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 24
-        versionName = "2.4.9"
+        versionName = "2.5.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -35,7 +35,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        buildConfig = true  // ← ДОБАВЛЕНО
+        buildConfig = true
     }
     packaging {
         resources {
@@ -53,7 +53,6 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-    // Lifecycle
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -61,37 +60,25 @@ dependencies {
     implementation(libs.navigation.ui.ktx)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.material)
+    implementation(libs.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Для работы с Excel
     implementation(libs.poi)
     implementation(libs.poi.ooxml)
 
-    implementation(libs.gson)
     implementation("androidx.activity:activity-ktx:1.8.2")
-    implementation("com.google.android.material:material:1.11.0")
-
-    // Для HTTP-запросов
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    // Для парсинга JSON
-    implementation("com.google.code.gson:gson:2.10.1")
-    
 
-    // PhotoView для зума фото (используем jitpack)
     implementation("com.github.chrisbanes:PhotoView:2.3.0") {
         exclude(group = "androidx.appcompat", module = "appcompat")
     }
 
-    // Google Sheets API
     implementation("com.google.api-client:google-api-client-android:2.2.0")
     implementation("com.google.apis:google-api-services-sheets:v4-rev20230815-2.0.0")
     implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
 
-    implementation("com.github.chrisbanes:PhotoView:2.3.0")
-
-    // Графики
     implementation("com.androidplot:androidplot-core:1.5.10")
 }
