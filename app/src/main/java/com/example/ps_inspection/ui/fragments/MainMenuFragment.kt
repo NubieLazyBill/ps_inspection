@@ -4,25 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.ps_inspection.BuildConfig
 import com.example.ps_inspection.R
 import com.example.ps_inspection.databinding.FragmentMainMenuBinding
+import com.example.ps_inspection.data.repositories.AutoSaveManager
+import com.example.ps_inspection.data.repositories.LastInspectionManager
 import com.example.ps_inspection.data.repositories.UserManager
 import android.content.DialogInterface
-import android.content.Intent
-import android.net.Uri
 import android.widget.Button
+import androidx.lifecycle.ViewModelProvider
+import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 
 class MainMenuFragment : Fragment() {
     private var _binding: FragmentMainMenuBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var userManager: UserManager  // ← Добавить
+    private lateinit var userManager: UserManager
+    private lateinit var autoSaveManager: AutoSaveManager
+    private lateinit var lastInspectionManager: LastInspectionManager
+    private lateinit var sharedViewModel: SharedInspectionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,14 +41,29 @@ class MainMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userManager = UserManager(requireContext())
+        autoSaveManager = AutoSaveManager(requireContext())
+        lastInspectionManager = LastInspectionManager(requireContext())
+        sharedViewModel = ViewModelProvider(requireActivity())[SharedInspectionViewModel::class.java]
+
         updateUserDisplay()
 
-        binding.cardUserSelect.setOnClickListener {
-            showUserSelectionDialog()
+        // При первом запуске показываем диалог выбора пользователя
+        if (userManager.isFirstLaunch()) {
+            showUserSelectionWithPasswordDialog(isFirstLaunch = true)
         }
 
+        binding.cardUserSelect.setOnClickListener {
+            showUserSelectionWithPasswordDialog(isFirstLaunch = false)
+        }
+
+        // КНОПКА "ПРОДОЛЖИТЬ ОСМОТР"
         binding.cardStartInspection.setOnClickListener {
             findNavController().navigate(R.id.action_mainMenu_to_homeScreen)
+        }
+
+        // НОВАЯ КНОПКА "НОВЫЙ ОСМОТР"
+        binding.cardNewInspection.setOnClickListener {
+            showNewInspectionConfirmDialog()
         }
 
         binding.cardArchive.setOnClickListener {
@@ -59,15 +78,106 @@ class MainMenuFragment : Fragment() {
             showAboutDialog()
         }
 
-
         binding.cardGraphs.setOnClickListener {
             findNavController().navigate(R.id.action_mainMenu_to_graphsFragment)
         }
     }
 
+    private fun showUserSelectionWithPasswordDialog(isFirstLaunch: Boolean = false) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_user_selection_with_password, null)
+        val spinnerUser = dialogView.findViewById<Spinner>(R.id.spinnerUser)
+        val etPassword = dialogView.findViewById<EditText>(R.id.etPassword)
+        val tvError = dialogView.findViewById<TextView>(R.id.tvError)
+        val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirm)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancel)
+
+        val users = userManager.getUsers()
+        val userNames = users.map { "${it.name} (${it.position})" }.toTypedArray()
+        var selectedUser = users.first()
+
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, userNames)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerUser.adapter = adapter
+
+        spinnerUser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedUser = users[position]
+                tvError.visibility = View.GONE
+                etPassword.text?.clear()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(!isFirstLaunch)  // При первом запуске нельзя закрыть
+            .create()
+
+        btnConfirm.setOnClickListener {
+            val password = etPassword.text.toString().trim()
+            if (password.isEmpty()) {
+                tvError.text = "Введите пароль"
+                tvError.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+
+            if (userManager.checkPassword(selectedUser, password)) {
+                userManager.saveCurrentUser(selectedUser)
+                updateUserDisplay()
+                dialog.dismiss()
+                if (isFirstLaunch) {
+                    Toast.makeText(requireContext(), "Добро пожаловать, ${selectedUser.name}!", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(requireContext(), "Выбран: ${selectedUser.name}", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                tvError.text = "Неверный пароль! Попробуйте снова."
+                tvError.visibility = View.VISIBLE
+                etPassword.text?.clear()
+            }
+        }
+
+        btnCancel.setOnClickListener {
+            if (!isFirstLaunch) {
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showNewInspectionConfirmDialog() {
+        val hasAutoSave = autoSaveManager.hasAutoSave()
+        val hasLastInspection = lastInspectionManager.hasSavedInspection()
+
+        val message = if (hasAutoSave) {
+            "⚠️ ВНИМАНИЕ!\n\nОбнаружены несохранённые данные текущего осмотра.\n\nПри начале нового осмотра все несохранённые данные будут УТЕРЯНЫ безвозвратно!\n\nВы уверены, что хотите начать новый осмотр?"
+        } else {
+            "⚠️ Вы уверены, что хотите начать новый осмотр?\n\nТекущие данные будут сброшены."
+        }
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("🔄 Новый осмотр")
+            .setMessage(message)
+            .setPositiveButton("✅ Да, начать новый") { _, _ ->
+                autoSaveManager.clearAutoSave()
+                lastInspectionManager.clearLastInspection()
+                sharedViewModel.clearAllData()
+                sharedViewModel.initCommentStorage(requireContext())
+
+                Toast.makeText(requireContext(), "Начат новый осмотр", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_mainMenu_to_homeScreen)
+            }
+            .setNegativeButton("❌ Отмена", null)
+            .create()
+
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(requireContext().getColor(R.color.teal_700))
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(requireContext().getColor(R.color.gray_600))
+    }
+
     private fun showAboutDialog() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_about, null)
-
         val tvVersion = dialogView.findViewById<TextView>(R.id.tvVersion)
         tvVersion.text = "Версия ${BuildConfig.VERSION_NAME} (сборка ${BuildConfig.VERSION_CODE})"
 
@@ -92,24 +202,6 @@ class MainMenuFragment : Fragment() {
             .joinToString("") { it.first().uppercase() }
         binding.tvUserInitials.text = initials
         binding.tvUserName.text = user.name.split(" ").first()
-    }
-
-    private fun showUserSelectionDialog() {
-        val users = userManager.getUsers()
-        val currentUser = userManager.getCurrentUser()
-        val names = users.map { "${it.name} (${it.position})" }.toTypedArray()
-        val checkedIndex = users.indexOfFirst { it.name == currentUser.name }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("👤 Выберите дежурного")
-            .setSingleChoiceItems(names, checkedIndex) { dialog: DialogInterface, which: Int ->
-                userManager.saveCurrentUser(users[which])
-                updateUserDisplay()
-                dialog.dismiss()
-                Toast.makeText(requireContext(), "Выбран: ${users[which].name}", Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton("Отмена", null)
-            .show()
     }
 
     override fun onDestroyView() {

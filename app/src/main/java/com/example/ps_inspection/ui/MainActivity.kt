@@ -3,6 +3,7 @@ package com.example.ps_inspection.ui
 import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsetsController
 import android.widget.TextView
 import android.widget.Toast
@@ -64,8 +65,8 @@ class MainActivity : AppCompatActivity() {
         // Связываем ActionBar с NavController (для кнопки "Назад")
         setupActionBarWithNavController(navController)
 
-        // Проверяем наличие автосохранения
-        checkForAutoSave()
+        // ✅ ТИХО восстанавливаем автосохранение (БЕЗ ДИАЛОГА)
+        restoreAutoSaveSilently()
     }
 
     override fun onPause() {
@@ -99,74 +100,20 @@ class MainActivity : AppCompatActivity() {
         // Оно удалится только когда пользователь ЯВНО начнёт новый осмотр
     }
 
-    private fun checkForAutoSave() {
+    /**
+     * Тихое восстановление автосохранения — БЕЗ ДИАЛОГА
+     */
+    private fun restoreAutoSaveSilently() {
         if (autoSaveManager.hasAutoSave()) {
             val autoSave = autoSaveManager.loadAllData()
             if (autoSave != null) {
-                // Кастомный диалог восстановления
-                val dialogView = layoutInflater.inflate(R.layout.dialog_restore_inspection, null)
-                val tvMessage = dialogView.findViewById<TextView>(R.id.tvRestoreMessage)
-                val btnRestore = dialogView.findViewById<Button>(R.id.btnRestore)
-                val btnNew = dialogView.findViewById<Button>(R.id.btnNewInspection)
-
-                tvMessage.text = "Обнаружены несохранённые данные осмотра\nот ${autoSave.displayDate}"
-
-                val dialog = AlertDialog.Builder(this, R.style.TransparentDialog)
-                    .setView(dialogView)
-                    .setCancelable(false)
-                    .create()
-
-                btnRestore.setOnClickListener {
-                    dialog.dismiss()
-                    restoreAutoSave(autoSave)
-                    sharedViewModel.initCommentStorage(this)
-                    Toast.makeText(this, "✅ Данные восстановлены", Toast.LENGTH_LONG).show()
-                }
-
-                btnNew.setOnClickListener {
-                    dialog.dismiss()
-                    // Открываем диалог подтверждения
-                    showNewInspectionConfirmDialog()
-                }
-
-                dialog.show()
+                restoreAutoSave(autoSave)
+                sharedViewModel.initCommentStorage(this)
+                Log.d("MainActivity", "✅ Автосохранение восстановлено тихо от ${autoSave.displayDate}")
             }
         } else {
             sharedViewModel.initCommentStorage(this)
         }
-    }
-
-    /**
-     * Показывает диалог подтверждения нового осмотра
-     */
-    private fun showNewInspectionConfirmDialog() {
-        val confirmView = layoutInflater.inflate(R.layout.dialog_confirm_new_inspection, null)
-        val btnConfirmYes = confirmView.findViewById<Button>(R.id.btnConfirmYes)
-        val btnConfirmNo = confirmView.findViewById<Button>(R.id.btnConfirmNo)
-
-        // Меняем текст на "Назад"
-        btnConfirmNo.text = "↩ Назад"
-
-        val confirmDialog = AlertDialog.Builder(this, R.style.TransparentDialog)
-            .setView(confirmView)
-            .setCancelable(false)
-            .create()
-
-        btnConfirmYes.setOnClickListener {
-            confirmDialog.dismiss()
-            autoSaveManager.clearAutoSave()
-            sharedViewModel.clearAllData()
-            sharedViewModel.initCommentStorage(this)
-            Toast.makeText(this, "Начат новый осмотр", Toast.LENGTH_SHORT).show()
-        }
-
-        btnConfirmNo.setOnClickListener {
-            confirmDialog.dismiss()
-            // Открываем снова диалог восстановления
-            checkForAutoSave()
-        }
-
-        confirmDialog.show()
     }
 
     private fun restoreAutoSave(autoSave: AutoSaveManager.AutoSaveData) {
@@ -174,7 +121,6 @@ class MainActivity : AppCompatActivity() {
         // Восстанавливаем температуру
         sharedViewModel.updateOutdoorTemp(autoSave.outdoorTemp)
 
-        sharedViewModel.updateOutdoorTemp(autoSave.outdoorTemp)
         // Восстанавливаем ORU35 данные
         sharedViewModel.updateORU35Data {
             tsn2 = autoSave.oru35.tsn2
@@ -615,7 +561,6 @@ class MainActivity : AppCompatActivity() {
             commentArtesianWell = autoSave.buildings.commentArtesianWell
             commentRoomAb = autoSave.buildings.commentRoomAb
             commentBasement = autoSave.buildings.commentBasement
-
         }
     }
 

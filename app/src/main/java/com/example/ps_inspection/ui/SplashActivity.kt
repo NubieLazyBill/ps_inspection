@@ -26,6 +26,20 @@ class SplashActivity : AppCompatActivity() {
         R.drawable.splash_kustovaya4,
         R.drawable.splash_kustovaya5,
         R.drawable.splash_kustovaya6,
+        R.drawable.splash_kustovaya7,
+        R.drawable.splash_kustovaya8,
+        R.drawable.splash_kustovaya9,
+        R.drawable.splash_kustovaya10,
+        R.drawable.splash_kustovaya11,
+        R.drawable.splash_kustovaya12,
+        R.drawable.splash_kustovaya13,
+        R.drawable.splash_kustovaya14,
+        R.drawable.splash_kustovaya15,
+        R.drawable.splash_kustovaya16,
+        R.drawable.splash_kustovaya17,
+        R.drawable.splash_kustovaya18,
+        R.drawable.splash_kustovaya19,
+        R.drawable.splash_kustovaya20,
         // Добавьте все ваши картинки
     )
 
