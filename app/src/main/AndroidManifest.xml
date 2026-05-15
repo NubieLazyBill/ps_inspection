@@ -11,9 +11,10 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <!-- ❌ READ_MEDIA_IMAGES УДАЛЕН, так как используется Photo Picker -->
+    <!-- ДОБАВЛЕНЫ оба разрешения для FINE LOCATION -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -25,18 +26,23 @@
         tools:ignore="MissingMonochromeIcon">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Ps_inspection.NoActionBar"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            android:theme="@style/Theme.Ps_inspection.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Провайдер для доступа к файлам (Камера + Excel) -->
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Ps_inspection.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
