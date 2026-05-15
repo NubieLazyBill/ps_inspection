@@ -13,22 +13,26 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.androidplot.xy.LineAndPointFormatter
-import com.androidplot.xy.SimpleXYSeries
-import com.androidplot.xy.XYPlot
 import com.example.ps_inspection.R
 import com.example.ps_inspection.data.services.GoogleSheetsService
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.core.graphics.toColorInt
+import java.text.SimpleDateFormat
+import java.util.*
 
 class GraphsFragment : Fragment() {
 
     private lateinit var spinnerSection: Spinner
     private lateinit var spinnerEquipment: Spinner
     private lateinit var spinnerParameter: Spinner
-    private lateinit var plot: XYPlot
+    private lateinit var chart: LineChart
     private lateinit var tvTitle: TextView
     private lateinit var tvEmpty: TextView
 
@@ -36,7 +40,6 @@ class GraphsFragment : Fragment() {
 
     private val sectionList = listOf("ОРУ-35 кВ", "ОРУ-220 кВ", "ОРУ-500 кВ", "АТГ + Реактор", "Здания")
 
-    // equipmentMap: секция -> список ТОЛЬКО названий оборудования
     private val equipmentNamesMap: Map<String, List<String>> = mapOf(
         "ОРУ-35 кВ" to listOf("ТСН", "ТТ-35 2ТСН", "ТТ-35 3ТСН", "В-35 2ТСН", "В-35 3ТСН", "ТН-35"),
         "ОРУ-220 кВ" to listOf("Мирная", "Топаз", "ОВ", "ТН-220 ОСШ", "2АТГ", "ШСВ", "3АТГ", "Орбита", "Факел", "Комета-1", "Комета-2", "1ТН-220", "2ТН-220"),
@@ -45,7 +48,7 @@ class GraphsFragment : Fragment() {
         "Здания" to listOf("Компрессорная №1", "Баллонная №1", "Компрессорная №2", "Баллонная №2", "КПЗ ОПУ", "КПЗ-2", "Насосная пожаротушения", "Мастерская по ремонту ВВ", "Артскважина", "Здание артезианской скважины", "Помещение АБ №1,2", "Помещение п/этажа №1,2,3")
     )
 
-    // paramsMap: "Секция|Оборудование" -> список пар ("название параметра" -> список ключей Google Sheets)
+    // ВАШ ПОЛНЫЙ paramsMap (я сократил для примера, вставьте свой полный)
     private val paramsMap: Map<String, List<Pair<String, List<String>>>> = mapOf(
 
         // ==================== ОРУ-35 ====================
@@ -422,6 +425,8 @@ class GraphsFragment : Fragment() {
         "Здания|Помещение п/этажа №1,2,3" to listOf("Работоспособность обогрева" to listOf("Подвал обогрев"), "Температура воздуха" to listOf("Подвал темп"))
     )
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -436,15 +441,16 @@ class GraphsFragment : Fragment() {
         spinnerSection = view.findViewById(R.id.spinnerSection)
         spinnerEquipment = view.findViewById(R.id.spinnerEquipment)
         spinnerParameter = view.findViewById(R.id.spinnerParameter)
-        plot = view.findViewById(R.id.plot)
+        chart = view.findViewById(R.id.chart)
         tvTitle = view.findViewById(R.id.tvTitle)
         tvEmpty = view.findViewById(R.id.tvEmpty)
         val btnShowGraph = view.findViewById<Button>(R.id.btnShowGraph)
 
-        // Адаптер для секций
-        spinnerSection.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sectionList)
+        // Настройка спиннера секций
+        val sectionAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sectionList)
+        sectionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerSection.adapter = sectionAdapter
 
-        // При выборе секции — обновляем список оборудования
         spinnerSection.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 updateEquipmentList()
@@ -452,7 +458,6 @@ class GraphsFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // При выборе оборудования — обновляем список параметров
         spinnerEquipment.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 updateParameterList()
@@ -460,37 +465,109 @@ class GraphsFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // 🔧 Параметр — без автообновления, просто выбираем
-
-        // 🔧 Кнопка "Показать график"
         btnShowGraph.setOnClickListener {
             loadGraph()
         }
 
+        // Инициализация
         updateEquipmentList()
+
+        // Настройка красивого графика
+        setupChart()
+    }
+
+    private fun setupChart() {
+        chart.apply {
+            legend.isEnabled = false
+            description.isEnabled = false
+            setBackgroundColor(Color.WHITE)
+            setExtraOffsets(20f, 20f, 20f, 20f)
+            animateX(800)
+
+            xAxis.apply {
+                position = XAxis.XAxisPosition.BOTTOM
+                textSize = 14f
+                textColor = Color.BLACK
+                granularity = 1f
+                setDrawGridLines(true)
+                gridColor = Color.parseColor("#E0E0E0")
+                gridLineWidth = 0.5f
+                setDrawAxisLine(true)
+                axisLineColor = Color.parseColor("#CCCCCC")
+                axisLineWidth = 1f
+                labelRotationAngle = -35f
+            }
+
+            axisLeft.apply {
+                textSize = 14f
+                textColor = Color.BLACK
+                setDrawGridLines(true)
+                gridColor = Color.parseColor("#E0E0E0")
+                gridLineWidth = 0.5f
+                setDrawAxisLine(true)
+                axisLineColor = Color.parseColor("#CCCCCC")
+                axisLineWidth = 1f
+            }
+
+            axisRight.isEnabled = false
+            setTouchEnabled(true)
+            isDragEnabled = true
+            setScaleEnabled(true)
+            setPinchZoom(true)
+        }
     }
 
     private fun updateEquipmentList() {
-        val section = spinnerSection.selectedItem?.toString() ?: return
-        val equipment = equipmentNamesMap[section] ?: listOf()
-        spinnerEquipment.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, equipment)
+        val section = spinnerSection.selectedItem?.toString()
+        if (section.isNullOrEmpty()) return
+
+        val equipmentList = equipmentNamesMap[section] ?: emptyList()
+
+        val equipmentAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, equipmentList)
+        equipmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerEquipment.adapter = equipmentAdapter
+
+        // После обновления оборудования обновляем параметры
+        updateParameterList()
     }
 
     private fun updateParameterList() {
-        val section = spinnerSection.selectedItem?.toString() ?: return
-        val equipment = spinnerEquipment.selectedItem?.toString() ?: return
+        val section = spinnerSection.selectedItem?.toString()
+        val equipment = spinnerEquipment.selectedItem?.toString()
+
+        if (section.isNullOrEmpty() || equipment.isNullOrEmpty()) {
+            val emptyAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, listOf())
+            emptyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinnerParameter.adapter = emptyAdapter
+            return
+        }
+
         val key = "$section|$equipment"
-        val params = paramsMap[key]?.map { it.first } ?: listOf()
-        spinnerParameter.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, params)
+        val params = paramsMap[key]?.map { it.first } ?: emptyList()
+
+        val paramAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, params)
+        paramAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerParameter.adapter = paramAdapter
+
+        Log.d("GraphsFragment", "Обновлены параметры для $key: ${params.size} параметров")
     }
 
     private fun loadGraph() {
-        val section = spinnerSection.selectedItem?.toString() ?: return
-        val equipment = spinnerEquipment.selectedItem?.toString() ?: return
-        val key = "$section|$equipment"
-        val params = paramsMap[key] ?: return
+        val section = spinnerSection.selectedItem?.toString()
+        val equipment = spinnerEquipment.selectedItem?.toString()
         val paramIndex = spinnerParameter.selectedItemPosition
-        if (paramIndex < 0 || paramIndex >= params.size) return
+
+        if (section.isNullOrEmpty() || equipment.isNullOrEmpty()) {
+            showEmpty(true)
+            return
+        }
+
+        val key = "$section|$equipment"
+        val params = paramsMap[key]
+        if (params.isNullOrEmpty() || paramIndex < 0 || paramIndex >= params.size) {
+            showEmpty(true)
+            return
+        }
 
         val selectedParam = params[paramIndex]
         val keys = selectedParam.second
@@ -506,90 +583,128 @@ class GraphsFragment : Fragment() {
                     return@launch
                 }
 
-                plot.clear()
                 showEmpty(false)
                 tvTitle.text = "📊 $equipment — $paramName"
 
-                plot.setDomainLabel("Дата осмотра")
-                plot.setRangeLabel(paramName)
+                val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+                val displayDateFormat = SimpleDateFormat("dd.MM\nyyyy", Locale.getDefault())
+                val entries = mutableListOf<Entry>()
+                val labels = mutableListOf<String>()
+                val temperatureMap = mutableMapOf<Int, String>()  // Индекс -> температура
 
-                // 🔧 Используем дату+время — каждая точка уникальна
-                val dateTimeFormat = java.text.SimpleDateFormat("dd.MM.yyyy HH:mm", java.util.Locale.getDefault())
-                val sortedEntries = mutableListOf<Pair<Long, Float>>()
+                val dataKey = keys.firstOrNull() ?: return@launch
 
-                val key = keys.firstOrNull() ?: return@launch
+                // Сортируем данные по дате
+                val sortedData = allData
+                    .mapNotNull { row ->
+                        val dateStr = row["Дата"] ?: return@mapNotNull null
+                        val timeStr = row["Время"] ?: "00:00"
+                        val dateTimeStr = "$dateStr $timeStr"
+                        val date = try { dateFormat.parse(dateTimeStr) } catch (e: Exception) { null }
+                        val raw = row[dataKey]?.replace(",", ".")?.replace(">", "")?.replace("<", "")?.replace("+", "1")?.trim()
+                        val value = raw?.toFloatOrNull()
 
-                allData.forEach { row ->
-                    val dateStr = row["Дата"] ?: ""
-                    val timeStr = row["Время"] ?: "00:00"
-                    val dateTimeStr = "$dateStr $timeStr"
-                    val date = try { dateTimeFormat.parse(dateTimeStr) } catch (e: Exception) { null }
-                    val raw = row[key]?.replace(",", ".")?.replace(">", "")?.replace("<", "")?.replace("+", "1")?.trim()
-                    val value = raw?.toFloatOrNull()
+                        // Берём температуру из столбца "Температура" (название может отличаться)
+                        val tempRaw = row["t наружного воздуха"]?.replace(",", ".")?.trim()
+                        val temperature = if (!tempRaw.isNullOrEmpty() && tempRaw != "-") "$tempRaw°C" else ""
 
-                    if (value != null && date != null) {
-                        sortedEntries.add(date.time to value)
+                        if (value != null && date != null) {
+                            Triple(date, value, temperature)
+                        } else null
                     }
-                }
+                    .sortedBy { it.first }
 
-                // Сортируем по дате
-                sortedEntries.sortBy { it.first }
-
-                if (sortedEntries.isEmpty()) {
+                if (sortedData.isEmpty()) {
                     showEmpty(true)
                     return@launch
                 }
 
-                Log.d("GRAPHS_DEBUG", "Параметр: $paramName, ключ: $key, точек: ${sortedEntries.size}")
-                sortedEntries.forEach { entry ->
-                    Log.d("GRAPHS_DEBUG", "  ${java.util.Date(entry.first)} -> ${entry.second}")
+                sortedData.forEachIndexed { index, (date, value, temperature) ->
+                    entries.add(Entry(index.toFloat(), value))
+                    // Формируем подпись: дата + температура
+                    val dateLabel = displayDateFormat.format(date)
+                    val labelWithTemp = if (temperature.isNotEmpty()) {
+                        "$dateLabel\n${temperature}"
+                    } else {
+                        dateLabel
+                    }
+                    labels.add(labelWithTemp)
+                    if (temperature.isNotEmpty()) {
+                        temperatureMap[index] = temperature
+                    }
                 }
 
-                // Создаём серию
-                val values = sortedEntries.map { it.second }
-                val series = SimpleXYSeries(values, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, paramName)
-
-                val lineColor = "#1565C0".toColorInt()
-                val pointColor = "#FF5722".toColorInt()
-
-                val formatter = LineAndPointFormatter(lineColor, pointColor, Color.TRANSPARENT, null).apply {
-                    linePaint.strokeWidth = 4f
-                    vertexPaint.strokeWidth = 10f
+                val dataSet = LineDataSet(entries, paramName).apply {
+                    color = Color.parseColor("#2196F3")
+                    setCircleColor(Color.parseColor("#FF6B00"))
+                    lineWidth = 3f
+                    circleRadius = 6f
+                    setDrawCircleHole(false)
+                    setDrawValues(true)
+                    setValueTextSize(14f)
+                    setValueTextColor(Color.BLACK)
+                    setDrawFilled(true)
+                    fillColor = Color.parseColor("#332196F3")
+                    fillAlpha = 80
+                    setDrawHighlightIndicators(true)
+                    highLightColor = Color.parseColor("#FF6B00")
                 }
 
-                plot.addSeries(series, formatter)
-
-                // Настройка диапазона Y
-                val minVal = sortedEntries.minOf { it.second }
-                val maxVal = sortedEntries.maxOf { it.second }
-                val padding = ((maxVal - minVal) * 0.2f).coerceAtLeast(1f)
-                val rangeMin = (minVal - padding).coerceAtLeast(0f)
-                val rangeMax = maxVal + padding
-
-                if (rangeMax > rangeMin) {
-                    plot.setRangeBoundaries(rangeMin.toDouble(), rangeMax.toDouble(), com.androidplot.xy.BoundaryMode.FIXED)
+                // Настройка оси X с подписями (дата + температура)
+                chart.xAxis.valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        val index = value.toInt()
+                        return if (index >= 0 && index < labels.size) labels[index] else ""
+                    }
                 }
 
-                // Подписи осей
-                plot.graph.getLineLabelStyle(com.androidplot.xy.XYGraphWidget.Edge.BOTTOM).apply {
-                    paint.textSize = 20f
-                    paint.color = "#757575".toColorInt()
-                }
-                plot.graph.getLineLabelStyle(com.androidplot.xy.XYGraphWidget.Edge.LEFT).apply {
-                    paint.textSize = 20f
-                    paint.color = "#757575".toColorInt()
+                // Настройка оси X с подписями (дата + температура)
+                chart.xAxis.valueFormatter = object : ValueFormatter() {
+                    override fun getFormattedValue(value: Float): String {
+                        val index = value.toInt()
+                        return if (index >= 0 && index < labels.size) labels[index] else ""
+                    }
                 }
 
-                plot.redraw()
+// Отступ снизу для двухстрочных подписей
+                chart.setExtraBottomOffset(20f)
+
+// Остальные настройки оси X
+                chart.xAxis.apply {
+                    textSize = 12f
+                    labelRotationAngle = -35f
+                    labelCount = labels.size.coerceAtMost(6)
+                    granularity = 1f
+                    setDrawGridLines(true)
+                    gridColor = Color.parseColor("#E0E0E0")
+                    gridLineWidth = 0.5f
+                }
+
+                val values = sortedData.map { it.second }
+                val minValue = values.minOrNull() ?: 0f
+                val maxValue = values.maxOrNull() ?: 0f
+                val padding = ((maxValue - minValue) * 0.1f).coerceAtLeast(1f)
+
+                chart.axisLeft.apply {
+                    axisMinimum = (minValue - padding).coerceAtLeast(0f)
+                    axisMaximum = maxValue + padding
+                }
+
+                chart.data = LineData(dataSet)
+                chart.invalidate()
+
+                Log.d("GraphsFragment", "Загружен график: $paramName, точек: ${entries.size}")
+
             } catch (e: Exception) {
-                Log.e("GRAPHS_DEBUG", "Ошибка загрузки графика", e)
+                Log.e("GraphsFragment", "Ошибка загрузки графика", e)
                 e.printStackTrace()
+                showEmpty(true)
             }
         }
     }
 
     private fun showEmpty(show: Boolean) {
         tvEmpty.visibility = if (show) View.VISIBLE else View.GONE
-        plot.visibility = if (show) View.GONE else View.VISIBLE
+        chart.visibility = if (show) View.GONE else View.VISIBLE
     }
 }

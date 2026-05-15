@@ -12,7 +12,7 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 24
-        versionName = "2.5.0"
+        versionName = "2.5.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -81,4 +81,7 @@ dependencies {
     implementation("com.google.auth:google-auth-library-oauth2-http:1.19.0")
 
     implementation("com.androidplot:androidplot-core:1.5.10")
+
+    // MPAndroidChart для красивых графиков
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

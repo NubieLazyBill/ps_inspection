@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="8dp"
     android:background="#F5F5F5">
 
     <TextView
@@ -11,9 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="📊 Графики показаний"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textColor="#1565C0"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="8dp"
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="match_parent"
@@ -21,14 +22,14 @@
         android:text="Маршрутная карта:"
         android:textSize="12sp"
         android:textColor="#757575"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="4dp" />
 
     <Spinner
         android:id="@+id/spinnerSection"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:background="#FFFFFF"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -40,9 +41,9 @@
     <Spinner
         android:id="@+id/spinnerEquipment"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:background="#FFFFFF"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -54,35 +55,32 @@
     <Spinner
         android:id="@+id/spinnerParameter"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:background="#FFFFFF"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="12dp" />
 
-    <!-- 🔧 Кнопка ПОКАЗАТЬ -->
     <Button
         android:id="@+id/btnShowGraph"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:text="📊 Показать график"
         android:textColor="#FFFFFF"
         android:backgroundTint="#1565C0"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="12dp" />
 
-    <!-- ТОЛЬКО ОДИН ГРАФИК -->
-    <com.androidplot.xy.XYPlot
-        android:id="@+id/plot"
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:background="#FFFFFF"
-        android:padding="8dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:id="@+id/tvEmpty"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:gravity="center"
         android:text="Выберите параметр для отображения графика"
         android:textSize="16sp"
