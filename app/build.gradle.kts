@@ -84,4 +84,6 @@ dependencies {
 
     // MPAndroidChart для красивых графиков
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    implementation("androidx.palette:palette-ktx:1.0.0")
 }
