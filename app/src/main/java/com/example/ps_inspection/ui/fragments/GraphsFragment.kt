@@ -590,7 +590,6 @@ class GraphsFragment : Fragment() {
                 val displayDateFormat = SimpleDateFormat("dd.MM\nyyyy", Locale.getDefault())
                 val entries = mutableListOf<Entry>()
                 val labels = mutableListOf<String>()
-                val temperatureMap = mutableMapOf<Int, String>()  // Индекс -> температура
 
                 val dataKey = keys.firstOrNull() ?: return@launch
 
@@ -604,7 +603,7 @@ class GraphsFragment : Fragment() {
                         val raw = row[dataKey]?.replace(",", ".")?.replace(">", "")?.replace("<", "")?.replace("+", "1")?.trim()
                         val value = raw?.toFloatOrNull()
 
-                        // Берём температуру из столбца "Температура" (название может отличаться)
+                        // Берём температуру из столбца
                         val tempRaw = row["t наружного воздуха"]?.replace(",", ".")?.trim()
                         val temperature = if (!tempRaw.isNullOrEmpty() && tempRaw != "-") "$tempRaw°C" else ""
 
@@ -621,7 +620,6 @@ class GraphsFragment : Fragment() {
 
                 sortedData.forEachIndexed { index, (date, value, temperature) ->
                     entries.add(Entry(index.toFloat(), value))
-                    // Формируем подпись: дата + температура
                     val dateLabel = displayDateFormat.format(date)
                     val labelWithTemp = if (temperature.isNotEmpty()) {
                         "$dateLabel\n${temperature}"
@@ -629,9 +627,6 @@ class GraphsFragment : Fragment() {
                         dateLabel
                     }
                     labels.add(labelWithTemp)
-                    if (temperature.isNotEmpty()) {
-                        temperatureMap[index] = temperature
-                    }
                 }
 
                 val dataSet = LineDataSet(entries, paramName).apply {
@@ -650,7 +645,7 @@ class GraphsFragment : Fragment() {
                     highLightColor = Color.parseColor("#FF6B00")
                 }
 
-                // Настройка оси X с подписями (дата + температура)
+                // Настройка оси X (только один раз!)
                 chart.xAxis.valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
                         val index = value.toInt()
@@ -658,18 +653,10 @@ class GraphsFragment : Fragment() {
                     }
                 }
 
-                // Настройка оси X с подписями (дата + температура)
-                chart.xAxis.valueFormatter = object : ValueFormatter() {
-                    override fun getFormattedValue(value: Float): String {
-                        val index = value.toInt()
-                        return if (index >= 0 && index < labels.size) labels[index] else ""
-                    }
-                }
-
-// Отступ снизу для двухстрочных подписей
+                // Отступ снизу для двухстрочных подписей
                 chart.setExtraBottomOffset(20f)
 
-// Остальные настройки оси X
+                // Остальные настройки оси X
                 chart.xAxis.apply {
                     textSize = 12f
                     labelRotationAngle = -35f
