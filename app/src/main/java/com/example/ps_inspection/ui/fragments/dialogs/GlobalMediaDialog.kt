@@ -322,7 +322,7 @@ class GlobalMediaDialog : DialogFragment() {
             return
         }
 
-        filteredPhotos.forEach { photo ->
+        filteredPhotos.forEachIndexed { index, photo ->
             val container = LinearLayout(requireContext()).apply {
                 orientation = LinearLayout.VERTICAL
                 layoutParams = GridLayout.LayoutParams().apply {
@@ -341,9 +341,9 @@ class GlobalMediaDialog : DialogFragment() {
                     setImageBitmap(bitmap)
                 }
 
-                // Короткое нажатие - просмотр
+                // Короткое нажатие - просмотр с возможностью листать
                 setOnClickListener {
-                    showFullscreenPhoto(photo.path)
+                    showFullscreenPhoto(photo.path, index)  // передаём позицию
                 }
 
                 // Долгое нажатие - сразу отправка
@@ -408,8 +408,11 @@ class GlobalMediaDialog : DialogFragment() {
         }
     }
 
-    private fun showFullscreenPhoto(photoPath: String) {
-        val dialog = FullscreenPhotoDialog.newInstance(photoPath)
+    private fun showFullscreenPhoto(photoPath: String, position: Int = 0) {
+        // Собираем пути всех отфильтрованных фото
+        val allPhotoPaths = filteredPhotos.map { it.path }
+        val actualPosition = filteredPhotos.indexOfFirst { it.path == photoPath }.coerceAtLeast(0)
+        val dialog = FullscreenPhotoDialog.newInstance(allPhotoPaths, actualPosition)
         dialog.show(childFragmentManager, "fullscreen_photo")
     }
 }

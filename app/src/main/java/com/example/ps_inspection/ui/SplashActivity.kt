@@ -1,6 +1,7 @@
 package com.example.ps_inspection
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
@@ -8,16 +9,16 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.palette.graphics.Palette
 import com.example.ps_inspection.ui.MainActivity
+import java.util.Calendar
 
 class SplashActivity : AppCompatActivity() {
 
     private val splashDelay = 2500L
+    private lateinit var prefs: SharedPreferences
 
-    // Список всех splash-картинок
     private val splashImages = listOf(
         R.drawable.splash_kustovaya,
         R.drawable.splash_kustovaya1,
@@ -40,93 +41,108 @@ class SplashActivity : AppCompatActivity() {
         R.drawable.splash_kustovaya18,
         R.drawable.splash_kustovaya19,
         R.drawable.splash_kustovaya20,
-        // Добавьте все ваши картинки
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
 
-        // Выбираем случайную картинку
-        val randomImageId = splashImages.random()
+        prefs = getSharedPreferences("splash_prefs", MODE_PRIVATE)
 
-        // Устанавливаем картинку
-        val ivSplash = findViewById<ImageView>(R.id.ivSplash)
-        ivSplash.setImageResource(randomImageId)
+        // Проверяем, нужно ли показывать сплеш сегодня
+        if (shouldShowSplashToday()) {
+            // Показываем сплеш
+            setContentView(R.layout.activity_splash)
 
-        // Анализируем цвета картинки и меняем фон
-        extractColorsAndSetBackground(randomImageId)
+            val randomImageId = splashImages.random()
+            val ivSplash = findViewById<ImageView>(R.id.ivSplash)
+            ivSplash.setImageResource(randomImageId)
 
-        // Задержка перед переходом
-        Handler(Looper.getMainLooper()).postDelayed({
+            extractColorsAndSetBackground(randomImageId)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                // Сохраняем дату показа
+                saveSplashShownToday()
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }, splashDelay)
+        } else {
+            // Сегодня сплеш уже показывали — сразу переходим в MainActivity
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }, splashDelay)
+        }
+    }
+
+    /**
+     * Проверяет, нужно ли показывать сплеш сегодня
+     */
+    private fun shouldShowSplashToday(): Boolean {
+        val lastShownDate = prefs.getString("last_splash_date", null)
+        val today = getCurrentDate()
+
+        return lastShownDate != today
+    }
+
+    /**
+     * Сохраняет дату сегодняшнего показа
+     */
+    private fun saveSplashShownToday() {
+        val today = getCurrentDate()
+        prefs.edit().putString("last_splash_date", today).apply()
+    }
+
+    /**
+     * Возвращает текущую дату в формате "yyyy-MM-dd"
+     */
+    private fun getCurrentDate(): String {
+        val calendar = Calendar.getInstance()
+        return "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH) + 1}-${calendar.get(Calendar.DAY_OF_MONTH)}"
     }
 
     private fun extractColorsAndSetBackground(imageResId: Int) {
         try {
-            // Загружаем картинку в Bitmap
             val bitmap = BitmapFactory.decodeResource(resources, imageResId)
 
-            // Анализируем палитру цветов
             Palette.from(bitmap).generate { palette ->
                 if (palette != null) {
-                    // Выбираем подходящий цвет фона
                     val backgroundColor = selectBestBackgroundColor(palette)
-
-                    // Применяем фон
                     val rootLayout = findViewById<RelativeLayout>(R.id.rootLayout)
                     rootLayout.setBackgroundColor(backgroundColor)
                 }
             }
         } catch (e: Exception) {
-            // В случае ошибки используем чёрный фон
             findViewById<RelativeLayout>(R.id.rootLayout).setBackgroundColor(Color.BLACK)
         }
     }
 
     private fun selectBestBackgroundColor(palette: Palette): Int {
-        // Пробуем получить разные цвета из палитры в порядке приоритета
-
-        // 1. Тёмный цвет (светлая картинка -> тёмный фон)
         val darkVibrantColor = palette.getDarkVibrantColor(0)
         if (darkVibrantColor != 0 && isDarkColor(darkVibrantColor)) {
             return darkVibrantColor
         }
 
-        // 2. Тёмный мягкий цвет
         val darkMutedColor = palette.getDarkMutedColor(0)
         if (darkMutedColor != 0 && isDarkColor(darkMutedColor)) {
             return darkMutedColor
         }
 
-        // 3. Яркий цвет (если картинка тёмная)
         val vibrantColor = palette.getVibrantColor(0)
         if (vibrantColor != 0 && !isDarkColor(vibrantColor)) {
             return vibrantColor
         }
 
-        // 4. Мягкий цвет
         val mutedColor = palette.getMutedColor(0)
         if (mutedColor != 0) {
             return mutedColor
         }
 
-        // 5. По умолчанию — чёрный
         return Color.BLACK
     }
 
-    // Функция для определения тёмный ли цвет
     private fun isDarkColor(color: Int): Boolean {
         val red = Color.red(color)
         val green = Color.green(color)
         val blue = Color.blue(color)
-
-        // Формула яркости (стандартная)
         val brightness = (0.299 * red + 0.587 * green + 0.114 * blue)
-
-        // Если яркость < 128, цвет тёмный
         return brightness < 128
     }
 }

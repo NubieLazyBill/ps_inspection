@@ -239,7 +239,8 @@ class MediaDialogFragment : DialogFragment() {
 
             // 🔧 Обычное нажатие → открыть фото
             container.setOnClickListener {
-                showFullscreenPhoto(fullPath)
+                val position = currentPhotos.indexOf(photo)
+                showFullscreenPhoto(fullPath, position)
             }
 
             // 🔧 Долгое нажатие → удалить фото
@@ -270,8 +271,12 @@ class MediaDialogFragment : DialogFragment() {
         }
     }
 
-    private fun showFullscreenPhoto(photoPath: String) {
-        val dialog = FullscreenPhotoDialog.Companion.newInstance(photoPath)
+    private fun showFullscreenPhoto(photoPath: String, position: Int = 0) {
+        // Собираем пути всех фото
+        val allPhotoPaths = currentPhotos.map {
+            mediaManager.getFullPhotoPath(inspectionId, equipmentName, it.fileName)
+        }
+        val dialog = FullscreenPhotoDialog.newInstance(allPhotoPaths, position)
         dialog.show(childFragmentManager, "fullscreen_photo")
     }
 
