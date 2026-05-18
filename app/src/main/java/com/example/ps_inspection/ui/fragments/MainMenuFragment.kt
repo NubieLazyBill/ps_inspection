@@ -121,7 +121,17 @@ class MainMenuFragment : Fragment() {
 
         // Обработчики кнопок ДО показа диалога
         btnConfirm.setOnClickListener {
-            val password = etPassword.text.toString().trim()
+            val rawPassword = etPassword.text.toString()
+            // Очищаем от пробелов, переносов строк и других скрытых символов
+            val password = rawPassword
+                .trim()
+                .replace("\n", "")
+                .replace("\r", "")
+                .replace("\t", "")
+
+            // Отладочный тост — показывает, что реально введено
+            Toast.makeText(requireContext(), "Введено: '$password'", Toast.LENGTH_SHORT).show()
+
             if (password.isEmpty()) {
                 tvError.text = "Введите пароль"
                 tvError.visibility = View.VISIBLE

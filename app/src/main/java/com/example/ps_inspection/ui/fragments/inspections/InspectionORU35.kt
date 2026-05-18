@@ -4,18 +4,22 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ps_inspection.R
 import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionORU35Data
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
+import com.example.ps_inspection.data.repositories.LastInspectionManager
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionORU35Binding
 import com.example.ps_inspection.ui.fragments.dialogs.CommentsDialogFragment
@@ -62,6 +66,11 @@ class InspectionORU35 : Fragment() {
         setupInputListeners()
         setupMediaButtons()
         updatePhotoButtonsState()
+        setupValueHints()
+
+        val lastManager = LastInspectionManager(requireContext())
+        val testData = lastManager.getLastOru35Data()
+        Toast.makeText(requireContext(), "Last data: ${testData?.tsn2 ?: "null"}", Toast.LENGTH_SHORT).show()
     }
 
     fun updateCommentButtonsState(comments: Map<String, List<Comment>>) {
@@ -267,6 +276,75 @@ class InspectionORU35 : Fragment() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
+
+    private fun setupValueHints() {
+        val lastInspectionManager = LastInspectionManager(requireContext())
+        val lastData = lastInspectionManager.getLastOru35Data()
+
+        Log.d("ORU35_HINTS", "lastData = $lastData")  // ← добавить
+
+        if (lastData == null) {
+            // Нет данных о прошлом осмотре
+            return
+        }
+
+        Log.d("ORU35_HINTS", "tsn2 = ${lastData.tsn2}")  // ← добавить
+
+        // Настраиваем подсказки для каждого поля
+        setupHintForEditText(binding.tsn2Input, lastData.tsn2, "2ТСН уровень масла")
+        setupHintForEditText(binding.tsn3Input, lastData.tsn3, "3ТСН уровень масла")
+        setupHintForEditText(binding.tsn4Input, lastData.tsn4, "4ТСН уровень масла")
+
+        // Для Spinner — показываем подсказку при фокусе
+        setupHintForSpinner(binding.tt352TsnAInput, lastData.tt352tsnA, "ТТ-35 2ТСН ф.А")
+        setupHintForSpinner(binding.tt352TsnBInput, lastData.tt352tsnB, "ТТ-35 2ТСН ф.В")
+        setupHintForSpinner(binding.tt352TsnCInput, lastData.tt352tsnC, "ТТ-35 2ТСН ф.С")
+        setupHintForSpinner(binding.tt353TsnAInput, lastData.tt353tsnA, "ТТ-35 3ТСН ф.А")
+        setupHintForSpinner(binding.tt353TsnBInput, lastData.tt353tsnB, "ТТ-35 3ТСН ф.В")
+        setupHintForSpinner(binding.tt353TsnCInput, lastData.tt353tsnC, "ТТ-35 3ТСН ф.С")
+        setupHintForSpinner(binding.v352TsnAInput, lastData.v352tsnA, "В-35 2ТСН ф.А")
+        setupHintForSpinner(binding.v352TsnBInput, lastData.v352tsnB, "В-35 2ТСН ф.В")
+        setupHintForSpinner(binding.v352TsnCInput, lastData.v352tsnC, "В-35 2ТСН ф.С")
+        setupHintForSpinner(binding.v353TsnAInput, lastData.v353tsnA, "В-35 3ТСН ф.А")
+        setupHintForSpinner(binding.v353TsnBInput, lastData.v353tsnB, "В-35 3ТСН ф.В")
+        setupHintForSpinner(binding.v353TsnCInput, lastData.v353tsnC, "В-35 3ТСН ф.С")
+    }
+
+    private fun setupHintForEditText(editText: EditText, lastValue: String, paramName: String) {
+        Log.d("ORU35_HINTS", "setupHintForEditText: $paramName, lastValue='$lastValue'")
+
+        if (lastValue.isNotBlank() && lastValue != "○" && lastValue != "-") {
+            Log.d("ORU35_HINTS", "Устанавливаем слушатель для $paramName")
+            editText.setOnFocusChangeListener { _, hasFocus ->
+                Log.d("ORU35_HINTS", "Фокус на $paramName: hasFocus=$hasFocus, текст=${editText.text}")
+                if (hasFocus && editText.text.toString().isEmpty()) {
+                    showLastValueHint(editText, lastValue, paramName)
+                }
+            }
+        } else {
+            Log.d("ORU35_HINTS", "Пропускаем $paramName (пустое значение или прочерк)")
+        }
+    }
+
+    private fun setupHintForSpinner(spinner: Spinner, lastValue: String, paramName: String) {
+        if (lastValue.isNotBlank() && lastValue != "○" && lastValue != "-") {
+            spinner.setOnTouchListener { _, _ ->
+                if (spinner.selectedItemPosition == 0) { // Если ничего не выбрано
+                    Toast.makeText(requireContext(), "$paramName: последнее было '$lastValue'", Toast.LENGTH_SHORT).show()
+                }
+                false // передаём событие дальше
+            }
+        }
+    }
+
+    private fun showLastValueHint(currentEditText: EditText, lastValue: String, paramName: String) {
+        Toast.makeText(requireContext(), "📌 $paramName: последнее $lastValue", Toast.LENGTH_LONG).show()
+        // Подсветка поля
+        currentEditText.setBackgroundResource(R.drawable.edittext_border_hint)
+        currentEditText.postDelayed({
+            currentEditText.setBackgroundResource(R.drawable.edittext_border)
+        }, 2000)
     }
 
     override fun onDestroyView() {

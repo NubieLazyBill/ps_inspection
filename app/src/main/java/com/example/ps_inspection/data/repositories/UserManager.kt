@@ -104,20 +104,27 @@ class UserManager(private val context: Context) {
     }
 
     fun checkPassword(user: User, inputPassword: String): Boolean {
-        val trimmedPassword = inputPassword.trim()  // ← обрезаем пробелы
+        // Очищаем от всех непечатных символов (перенос строки, табуляция и т.д.)
+        val cleanedPassword = inputPassword
+            .trim()
+            .replace("\n", "")
+            .replace("\r", "")
+            .replace("\t", "")
+            .replace(" ", "")
+
         val expectedPassword = user.getPassword()
 
         val isEmulator = Build.PRODUCT.contains("sdk") || Build.FINGERPRINT.contains("vbox")
         if (isEmulator) {
-            if (user.name.contains("Давыдова") && trimmedPassword.lowercase() == "div123") {
+            if (user.name.contains("Давыдова") && cleanedPassword.lowercase() == "div123") {
                 return true
             }
-            if (trimmedPassword.lowercase() == "admin123") {
+            if (cleanedPassword.lowercase() == "admin123") {
                 return true
             }
         }
 
-        return expectedPassword.equals(trimmedPassword.lowercase(), ignoreCase = false)
+        return expectedPassword.equals(cleanedPassword.lowercase(), ignoreCase = false)
     }
 
     fun addNewUsersIfNeeded() {
