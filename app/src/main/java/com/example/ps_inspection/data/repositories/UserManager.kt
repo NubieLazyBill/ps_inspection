@@ -39,6 +39,8 @@ class UserManager(private val context: Context) {
     }
 
     private val defaultUsers = listOf(
+        User("Ивашкевич А.Е.", "Начальник ПС"),
+        User("Бегун К.В.", "Начальник ГПС"),
         User("Арютина Е.А.", "ДИП"),
         User("Давыдова И.В.", "ДИП"),
         User("Костенюк К.С.", "ДИП"),
@@ -49,17 +51,31 @@ class UserManager(private val context: Context) {
         User("Шристолюбский А.В.", "ДЭМ"),
         User("Таранухин А.С.", "ДЭМ"),
         User("Светличный И.А.", "ДЭМ"),
-        User("Журавлёв В.А.", "ДИП Сибирская")
-    )
+        User("Журавлёв В.А.", "ДИП Сибирская"),
+            )
 
     fun getUsers(): List<User> {
         val json = prefs.getString(KEY_USERS, null)
-        if (json != null) {
+        val users = if (json != null) {
             val type = object : TypeToken<List<User>>() {}.type
-            return gson.fromJson(json, type)
+            gson.fromJson(json, type)
+        } else {
+            defaultUsers
         }
-        saveUsers(defaultUsers)
-        return defaultUsers
+
+        // Сортируем в том же порядке, что и в defaultUsers
+        val sortedUsers = users.sortedBy { user ->
+            defaultUsers.indexOfFirst { it.name == user.name }.let {
+                if (it == -1) Int.MAX_VALUE else it
+            }
+        }
+
+        // Если порядок изменился — сохраняем отсортированный
+        if (sortedUsers != users) {
+            saveUsers(sortedUsers)
+        }
+
+        return sortedUsers
     }
 
     private fun saveUsers(users: List<User>) {
@@ -88,22 +104,32 @@ class UserManager(private val context: Context) {
     }
 
     fun checkPassword(user: User, inputPassword: String): Boolean {
+        val trimmedPassword = inputPassword.trim()  // ← обрезаем пробелы
         val expectedPassword = user.getPassword()
 
-        // 🔧 СПЕЦИАЛЬНЫЕ ПАРОЛИ ДЛЯ ЭМУЛЯТОРА
         val isEmulator = Build.PRODUCT.contains("sdk") || Build.FINGERPRINT.contains("vbox")
         if (isEmulator) {
-            // Давыдова И.В. -> div123
-            if (user.name.contains("Давыдова") && inputPassword.lowercase() == "div123") {
+            if (user.name.contains("Давыдова") && trimmedPassword.lowercase() == "div123") {
                 return true
             }
-            // Универсальный пароль для всех на эмуляторе (на случай проблем с русской раскладкой)
-            if (inputPassword.lowercase() == "admin123") {
+            if (trimmedPassword.lowercase() == "admin123") {
                 return true
             }
         }
 
-        return expectedPassword.equals(inputPassword.lowercase(), ignoreCase = false)
+        return expectedPassword.equals(trimmedPassword.lowercase(), ignoreCase = false)
+    }
+
+    fun addNewUsersIfNeeded() {
+        val currentUsers = getUsers()
+        val newUsers = defaultUsers.filter { newUser ->
+            currentUsers.none { it.name == newUser.name }
+        }
+
+        if (newUsers.isNotEmpty()) {
+            val updatedUsers = currentUsers + newUsers
+            saveUsers(updatedUsers)
+        }
     }
 
     // Удалить эту функцию или оставить, но не использовать

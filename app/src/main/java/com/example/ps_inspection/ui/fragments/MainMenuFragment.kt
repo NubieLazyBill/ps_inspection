@@ -8,7 +8,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.ps_inspection.BuildConfig
 import com.example.ps_inspection.R
 import com.example.ps_inspection.databinding.FragmentMainMenuBinding
 import com.example.ps_inspection.data.repositories.AutoSaveManager
@@ -18,6 +17,7 @@ import android.content.DialogInterface
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
+
 
 class MainMenuFragment : Fragment() {
     private var _binding: FragmentMainMenuBinding? = null
@@ -41,6 +41,7 @@ class MainMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userManager = UserManager(requireContext())
+        userManager.addNewUsersIfNeeded()  // ← ДОБАВИТЬ ЭТУ СТРОКУ
         autoSaveManager = AutoSaveManager(requireContext())
         lastInspectionManager = LastInspectionManager(requireContext())
         sharedViewModel = ViewModelProvider(requireActivity())[SharedInspectionViewModel::class.java]
@@ -104,15 +105,21 @@ class MainMenuFragment : Fragment() {
                 selectedUser = users[position]
                 tvError.visibility = View.GONE
                 etPassword.text?.clear()
+                // Динамическая подсказка
+                etPassword.hint = "Пароль (например: ${selectedUser.getPassword()})"
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
+        // Устанавливаем подсказку для первого пользователя
+        etPassword.hint = "Пароль (например: ${users.first().getPassword()})"
+
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
-            .setCancelable(!isFirstLaunch)  // При первом запуске нельзя закрыть
+            .setCancelable(!isFirstLaunch)
             .create()
 
+        // Обработчики кнопок ДО показа диалога
         btnConfirm.setOnClickListener {
             val password = etPassword.text.toString().trim()
             if (password.isEmpty()) {
@@ -179,7 +186,15 @@ class MainMenuFragment : Fragment() {
     private fun showAboutDialog() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_about, null)
         val tvVersion = dialogView.findViewById<TextView>(R.id.tvVersion)
-        tvVersion.text = "Версия ${BuildConfig.VERSION_NAME} (сборка ${BuildConfig.VERSION_CODE})"
+
+        // Получаем версию через PackageManager
+        val versionName = try {
+            context?.packageManager?.getPackageInfo(context?.packageName ?: "", 0)?.versionName ?: "2.5.4"
+        } catch (e: Exception) {
+            "2.5.4"
+        }
+
+        tvVersion.text = "Версия $versionName"
 
         val dialog = AlertDialog.Builder(requireContext(), R.style.TransparentDialog)
             .setView(dialogView)
