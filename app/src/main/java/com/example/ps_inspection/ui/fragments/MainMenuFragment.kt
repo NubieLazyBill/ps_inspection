@@ -47,8 +47,8 @@ class MainMenuFragment : Fragment() {
 
         updateUserDisplay()
 
-        // При первом запуске показываем диалог выбора пользователя
-        if (userManager.isFirstLaunch()) {
+        // ✅ ИСПРАВЛЕНО: проверяем, есть ли выбранный пользователь
+        if (!userManager.hasSelectedUser()) {
             showUserSelectionWithPasswordDialog(isFirstLaunch = true)
         }
 

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.ps_inspection.data.repositories.AutoSaveManager
 import com.example.ps_inspection.data.utils.ExcelExportService
 import com.example.ps_inspection.R
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
@@ -28,6 +29,7 @@ class HomeScreen : Fragment() {
     private val binding get() = _binding!!
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
+    private lateinit var autoSaveManager: AutoSaveManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,10 +43,11 @@ class HomeScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Получаем погоду для ПС Кустовая (примерные координаты)
-// Нужно заменить на реальные координаты вашей ПС!
-        sharedViewModel.fetchWeather(61.22, 76.64) // ← Заменить на координаты ПС
+        // Инициализация AutoSaveManager
+        autoSaveManager = AutoSaveManager(requireContext())
 
+        // Получаем погоду для ПС Кустовая (примерные координаты)
+        sharedViewModel.fetchWeather(61.22, 76.64)
 
         // Наблюдаем за изменениями погоды
         viewLifecycleOwner.lifecycleScope.launch {
@@ -66,6 +69,7 @@ class HomeScreen : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 sharedViewModel.updateOutdoorTemp(s?.toString() ?: "")
+                saveCurrentData() // Сохраняем при изменении температуры
             }
             override fun afterTextChanged(s: android.text.Editable?) {}
         })
@@ -75,40 +79,61 @@ class HomeScreen : Fragment() {
 
         // Подписываемся на обновление данных для прогресса
         viewLifecycleOwner.lifecycleScope.launch {
-            sharedViewModel.oru35Data.collectLatest { updateProgressIndicators() }
+            sharedViewModel.oru35Data.collectLatest {
+                updateProgressIndicators()
+                saveCurrentData() // Сохраняем при изменении данных ОРУ-35
+            }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            sharedViewModel.oru220Data.collectLatest { updateProgressIndicators() }
+            sharedViewModel.oru220Data.collectLatest {
+                updateProgressIndicators()
+                saveCurrentData() // Сохраняем при изменении данных ОРУ-220
+            }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            sharedViewModel.oru500Data.collectLatest { updateProgressIndicators() }
+            sharedViewModel.oru500Data.collectLatest {
+                updateProgressIndicators()
+                saveCurrentData() // Сохраняем при изменении данных ОРУ-500
+            }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            sharedViewModel.atgData.collectLatest { updateProgressIndicators() }
+            sharedViewModel.atgData.collectLatest {
+                updateProgressIndicators()
+                saveCurrentData() // Сохраняем при изменении данных АТГ
+            }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            sharedViewModel.buildingsData.collectLatest { updateProgressIndicators() }
+            sharedViewModel.buildingsData.collectLatest {
+                updateProgressIndicators()
+                saveCurrentData() // Сохраняем при изменении данных Зданий
+            }
         }
 
         // Навигация по карточкам
         binding.cardOru35.setOnClickListener {
+            saveCurrentData() // Сохраняем перед переходом
             findNavController().navigate(R.id.action_homeScreen_to_inspectionORU35)
         }
         binding.cardOru220.setOnClickListener {
+            saveCurrentData() // Сохраняем перед переходом
             findNavController().navigate(R.id.action_homeScreen_to_inspectionORU2202)
         }
         binding.cardOru500.setOnClickListener {
+            saveCurrentData() // Сохраняем перед переходом
             findNavController().navigate(R.id.action_homeScreen_to_inspectionORU500)
         }
         binding.cardAtg.setOnClickListener {
+            saveCurrentData() // Сохраняем перед переходом
             findNavController().navigate(R.id.action_homeScreen_to_inspectionATG)
         }
         binding.cardBuildings.setOnClickListener {
+            saveCurrentData() // Сохраняем перед переходом
             findNavController().navigate(R.id.action_homeScreen_to_inspectionBuildings)
         }
 
         // Кнопки нижней панели
         binding.btnBottomArchive.setOnClickListener {
+            saveCurrentData() // Сохраняем перед переходом
             findNavController().navigate(R.id.action_homeScreen_to_archiveFragment)
         }
 
@@ -122,6 +147,40 @@ class HomeScreen : Fragment() {
 
         // Первоначальное обновление
         updateProgressIndicators()
+    }
+
+    /**
+     * Сохраняет текущие данные в AutoSaveManager
+     */
+    private fun saveCurrentData() {
+        val oru35 = sharedViewModel.oru35Data.value
+        val oru220 = sharedViewModel.oru220Data.value
+        val atg = sharedViewModel.atgData.value
+        val oru500 = sharedViewModel.oru500Data.value
+        val buildings = sharedViewModel.buildingsData.value
+
+        autoSaveManager.saveAllData(
+            oru35,
+            oru220,
+            atg,
+            oru500,
+            buildings,
+            sharedViewModel.outdoorTemp.value
+        )
+        Log.d("HomeScreen", "✅ Данные автосохранены")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveCurrentData()
+        Log.d("HomeScreen", "onPause: данные сохранены")
+    }
+
+    override fun onDestroyView() {
+        saveCurrentData()
+        Log.d("HomeScreen", "onDestroyView: данные сохранены")
+        super.onDestroyView()
+        _binding = null
     }
 
     /**
@@ -262,47 +321,34 @@ class HomeScreen : Fragment() {
     private fun calculateATGProgress(): Int {
         val data = sharedViewModel.atgData.value
         val fields = listOf(
-            // 2 АТГ ф.С
             data.atg2_c_oil_tank, data.atg2_c_oil_rpn, data.atg2_c_pressure_500,
             data.atg2_c_pressure_220, data.atg2_c_temp_ts1, data.atg2_c_temp_ts2,
             data.atg2_c_pump_group1, data.atg2_c_pump_group2, data.atg2_c_pump_group3, data.atg2_c_pump_group4,
-            // 2 АТГ ф.В
             data.atg2_b_oil_tank, data.atg2_b_oil_rpn, data.atg2_b_pressure_500,
             data.atg2_b_pressure_220, data.atg2_b_temp_ts1, data.atg2_b_temp_ts2,
             data.atg2_b_pump_group1, data.atg2_b_pump_group2, data.atg2_b_pump_group3, data.atg2_b_pump_group4,
-            // 2 АТГ ф.А
-            data.atg2_a_oil_tank, data.atg2_a_oil_rpn, /*data.atg2_a_pressure_500,
-            data.atg2_a_pressure_220,*/ data.atg2_a_temp_ts1, data.atg2_a_temp_ts2,
+            data.atg2_a_oil_tank, data.atg2_a_oil_rpn, data.atg2_a_temp_ts1, data.atg2_a_temp_ts2,
             data.atg2_a_pump_group1, data.atg2_a_pump_group2, data.atg2_a_pump_group3, data.atg2_a_pump_group4,
-            // АТГ резерв
             data.atg_reserve_oil_tank, data.atg_reserve_oil_rpn, data.atg_reserve_pressure_500,
             data.atg_reserve_pressure_220, data.atg_reserve_temp_ts1, data.atg_reserve_temp_ts2,
             data.atg_reserve_pump_group1, data.atg_reserve_pump_group2,
             data.atg_reserve_pump_group3, data.atg_reserve_pump_group4,
-            // ТН-35
             data.tn352atg, data.tn353atg,
-            // 3 АТГ ф.С
-            data.atg3_c_oil_tank, data.atg3_c_oil_rpn, /*data.atg3_c_pressure_500,
-            data.atg3_c_pressure_220,*/ data.atg3_c_temp_ts1, data.atg3_c_temp_ts2,
+            data.atg3_c_oil_tank, data.atg3_c_oil_rpn, data.atg3_c_temp_ts1, data.atg3_c_temp_ts2,
             data.atg3_c_pump_group1, data.atg3_c_pump_group2, data.atg3_c_pump_group3, data.atg3_c_pump_group4,
-            // 3 АТГ ф.В
-            data.atg3_b_oil_tank, data.atg3_b_oil_rpn, /*data.atg3_b_pressure_500,*/
+            data.atg3_b_oil_tank, data.atg3_b_oil_rpn,
             data.atg3_b_pressure_220, data.atg3_b_temp_ts1, data.atg3_b_temp_ts2,
             data.atg3_b_pump_group1, data.atg3_b_pump_group2, data.atg3_b_pump_group3, data.atg3_b_pump_group4,
-            // 3 АТГ ф.А
-            data.atg3_a_oil_tank, data.atg3_a_oil_rpn, /*data.atg3_a_pressure_500,*/
+            data.atg3_a_oil_tank, data.atg3_a_oil_rpn,
             data.atg3_a_pressure_220, data.atg3_a_temp_ts1, data.atg3_a_temp_ts2,
             data.atg3_a_pump_group1, data.atg3_a_pump_group2, data.atg3_a_pump_group3, data.atg3_a_pump_group4,
-            // Реактор ф.С
             data.reactor_c_oil_tank, data.reactor_c_pressure_500, data.reactor_c_temp_ts,
             data.reactor_c_pump_group1, data.reactor_c_pump_group2, data.reactor_c_pump_group3,
             data.reactor_c_tt_neutral,
-            // Реактор ф.В
             data.reactor_b_oil_tank, data.reactor_b_pressure_500, data.reactor_b_temp_ts,
             data.reactor_b_pump_group1, data.reactor_b_pump_group2, data.reactor_b_pump_group3,
             data.reactor_b_tt_neutral,
-            // Реактор ф.А
-            data.reactor_a_oil_tank, /*data.reactor_a_pressure_500,*/ data.reactor_a_temp_ts,
+            data.reactor_a_oil_tank, data.reactor_a_temp_ts,
             data.reactor_a_pump_group1, data.reactor_a_pump_group2, data.reactor_a_pump_group3,
             data.reactor_a_tt_neutral
         )
@@ -330,7 +376,6 @@ class HomeScreen : Fragment() {
 
     private fun calculatePercent(fields: List<String>): Int {
         if (fields.isEmpty()) return 0
-        // Считаем заполненными только реальные значения (не "○")
         val filled = fields.count { it.isNotBlank() && it != "○" }
         return (filled * 100 / fields.size)
     }
@@ -345,7 +390,6 @@ class HomeScreen : Fragment() {
             val buildingsData = sharedViewModel.buildingsData.value
             val temp = sharedViewModel.outdoorTemp.value
 
-            // Считаем проценты заполнения
             val progressOru35 = calculateORU35Progress()
             val progressOru220 = calculateORU220Progress()
             val progressOru500 = calculateORU500Progress()
@@ -365,8 +409,6 @@ class HomeScreen : Fragment() {
 
             if (fileUri != null) {
                 Toast.makeText(requireContext(), "✅ Осмотр сохранён в Excel", Toast.LENGTH_LONG).show()
-
-
             } else {
                 Toast.makeText(requireContext(), "❌ Ошибка при сохранении", Toast.LENGTH_SHORT).show()
             }
@@ -385,10 +427,5 @@ class HomeScreen : Fragment() {
             }
             .setNegativeButton("Отмена", null)
             .show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -48,7 +48,6 @@ class GraphsFragment : Fragment() {
         "Здания" to listOf("Компрессорная №1", "Баллонная №1", "Компрессорная №2", "Баллонная №2", "КПЗ ОПУ", "КПЗ-2", "Насосная пожаротушения", "Мастерская по ремонту ВВ", "Артскважина", "Здание артезианской скважины", "Помещение АБ №1,2", "Помещение п/этажа №1,2,3")
     )
 
-    // ВАШ ПОЛНЫЙ paramsMap (я сократил для примера, вставьте свой полный)
     private val paramsMap: Map<String, List<Pair<String, List<String>>>> = mapOf(
 
         // ==================== ОРУ-35 ====================
@@ -446,6 +445,11 @@ class GraphsFragment : Fragment() {
         tvEmpty = view.findViewById(R.id.tvEmpty)
         val btnShowGraph = view.findViewById<Button>(R.id.btnShowGraph)
 
+        btnShowGraph.setOnClickListener {
+            Log.d("GRAPHS_DEBUG", "Кнопка нажата!")
+            loadGraph()
+        }
+
         // Настройка спиннера секций
         val sectionAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sectionList)
         sectionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -465,14 +469,8 @@ class GraphsFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        btnShowGraph.setOnClickListener {
-            loadGraph()
-        }
-
         // Инициализация
         updateEquipmentList()
-
-        // Настройка красивого графика
         setupChart()
     }
 
@@ -483,20 +481,6 @@ class GraphsFragment : Fragment() {
             setBackgroundColor(Color.WHITE)
             setExtraOffsets(20f, 20f, 20f, 20f)
             animateX(800)
-
-            xAxis.apply {
-                position = XAxis.XAxisPosition.BOTTOM
-                textSize = 14f
-                textColor = Color.BLACK
-                granularity = 1f
-                setDrawGridLines(true)
-                gridColor = Color.parseColor("#E0E0E0")
-                gridLineWidth = 0.5f
-                setDrawAxisLine(true)
-                axisLineColor = Color.parseColor("#CCCCCC")
-                axisLineWidth = 1f
-                labelRotationAngle = -35f
-            }
 
             axisLeft.apply {
                 textSize = 14f
@@ -527,7 +511,6 @@ class GraphsFragment : Fragment() {
         equipmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerEquipment.adapter = equipmentAdapter
 
-        // После обновления оборудования обновляем параметры
         updateParameterList()
     }
 
@@ -564,6 +547,7 @@ class GraphsFragment : Fragment() {
 
         val key = "$section|$equipment"
         val params = paramsMap[key]
+
         if (params.isNullOrEmpty() || paramIndex < 0 || paramIndex >= params.size) {
             showEmpty(true)
             return
@@ -584,16 +568,14 @@ class GraphsFragment : Fragment() {
                 }
 
                 showEmpty(false)
-                tvTitle.text = "📊 $equipment — $paramName"
 
                 val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-                val displayDateFormat = SimpleDateFormat("dd.MM\nyyyy", Locale.getDefault())
+                val dateLabelFormat = SimpleDateFormat("dd.MM", Locale.getDefault())
                 val entries = mutableListOf<Entry>()
                 val labels = mutableListOf<String>()
 
                 val dataKey = keys.firstOrNull() ?: return@launch
 
-                // Сортируем данные по дате
                 val sortedData = allData
                     .mapNotNull { row ->
                         val dateStr = row["Дата"] ?: return@mapNotNull null
@@ -603,9 +585,8 @@ class GraphsFragment : Fragment() {
                         val raw = row[dataKey]?.replace(",", ".")?.replace(">", "")?.replace("<", "")?.replace("+", "1")?.trim()
                         val value = raw?.toFloatOrNull()
 
-                        // Берём температуру из столбца
                         val tempRaw = row["t наружного воздуха"]?.replace(",", ".")?.trim()
-                        val temperature = if (!tempRaw.isNullOrEmpty() && tempRaw != "-") "$tempRaw°C" else ""
+                        val temperature = if (!tempRaw.isNullOrEmpty() && tempRaw != "-") tempRaw else null
 
                         if (value != null && date != null) {
                             Triple(date, value, temperature)
@@ -620,13 +601,14 @@ class GraphsFragment : Fragment() {
 
                 sortedData.forEachIndexed { index, (date, value, temperature) ->
                     entries.add(Entry(index.toFloat(), value))
-                    val dateLabel = displayDateFormat.format(date)
-                    val labelWithTemp = if (temperature.isNotEmpty()) {
-                        "$dateLabel\n${temperature}"
+                    val datePart = dateLabelFormat.format(date)
+                    val label = if (temperature != null) {
+                        val rounded = kotlin.math.round(temperature.toFloat()).toInt()
+                        "$datePart ${rounded}°"
                     } else {
-                        dateLabel
+                        datePart
                     }
-                    labels.add(labelWithTemp)
+                    labels.add(label)
                 }
 
                 val dataSet = LineDataSet(entries, paramName).apply {
@@ -636,7 +618,7 @@ class GraphsFragment : Fragment() {
                     circleRadius = 6f
                     setDrawCircleHole(false)
                     setDrawValues(true)
-                    setValueTextSize(14f)
+                    setValueTextSize(12f)
                     setValueTextColor(Color.BLACK)
                     setDrawFilled(true)
                     fillColor = Color.parseColor("#332196F3")
@@ -645,7 +627,6 @@ class GraphsFragment : Fragment() {
                     highLightColor = Color.parseColor("#FF6B00")
                 }
 
-                // Настройка оси X (только один раз!)
                 chart.xAxis.valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
                         val index = value.toInt()
@@ -653,38 +634,42 @@ class GraphsFragment : Fragment() {
                     }
                 }
 
-                // Отступ снизу для двухстрочных подписей
-                chart.setExtraBottomOffset(20f)
+                chart.setExtraBottomOffset(15f)
 
-                // Остальные настройки оси X
                 chart.xAxis.apply {
-                    textSize = 12f
-                    labelRotationAngle = -35f
+                    position = XAxis.XAxisPosition.BOTTOM
+                    textSize = 11f
+                    labelRotationAngle = -30f
                     labelCount = labels.size.coerceAtMost(6)
                     granularity = 1f
                     setDrawGridLines(true)
                     gridColor = Color.parseColor("#E0E0E0")
                     gridLineWidth = 0.5f
+                    setDrawAxisLine(true)
+                    axisLineColor = Color.parseColor("#CCCCCC")
+                    axisLineWidth = 1f
                 }
 
                 val values = sortedData.map { it.second }
                 val minValue = values.minOrNull() ?: 0f
                 val maxValue = values.maxOrNull() ?: 0f
-                val padding = ((maxValue - minValue) * 0.1f).coerceAtLeast(1f)
+                val padding = ((maxValue - minValue) * 0.1f).coerceAtLeast(0.5f)
 
                 chart.axisLeft.apply {
                     axisMinimum = (minValue - padding).coerceAtLeast(0f)
                     axisMaximum = maxValue + padding
+                    textSize = 12f
+                    setDrawGridLines(true)
+                    gridColor = Color.parseColor("#E0E0E0")
+                    gridLineWidth = 0.5f
                 }
 
+                chart.axisRight.isEnabled = false
                 chart.data = LineData(dataSet)
                 chart.invalidate()
 
-                Log.d("GraphsFragment", "Загружен график: $paramName, точек: ${entries.size}")
-
             } catch (e: Exception) {
-                Log.e("GraphsFragment", "Ошибка загрузки графика", e)
-                e.printStackTrace()
+                Log.e("GRAPHS_DEBUG", "Ошибка загрузки", e)
                 showEmpty(true)
             }
         }

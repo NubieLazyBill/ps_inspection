@@ -6,15 +6,7 @@
     android:padding="8dp"
     android:background="#F5F5F5">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="📊 Графики показаний"
-        android:textSize="18sp"
-        android:textColor="#1565C0"
-        android:layout_marginBottom="8dp"
-        android:textStyle="bold" />
+    <!-- Убираем старый tvTitle -->
 
     <TextView
         android:layout_width="match_parent"
