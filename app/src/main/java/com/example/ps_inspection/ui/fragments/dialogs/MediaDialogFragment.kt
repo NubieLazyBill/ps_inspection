@@ -1,6 +1,6 @@
 package com.example.ps_inspection.ui.fragments.dialogs
 
-import android.R
+//import android.R
 import android.app.AlertDialog
 import android.graphics.BitmapFactory
 import android.graphics.Typeface
@@ -29,6 +29,10 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import android.content.Intent
+import android.util.Log
+import com.example.ps_inspection.R
+
 
 class MediaDialogFragment : DialogFragment() {
     private var inspectionId: String = ""
@@ -68,7 +72,7 @@ class MediaDialogFragment : DialogFragment() {
         inspectionId = arguments?.getString("INSPECTION_ID") ?: return
         equipmentName = arguments?.getString("EQUIPMENT") ?: return
         mediaManager = InspectionMediaManager(requireContext())
-        setStyle(STYLE_NORMAL, R.style.Theme_Material_Light_Dialog_NoActionBar_MinWidth)
+        setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_Dialog)
     }
 
     override fun onCreateView(
@@ -245,26 +249,13 @@ class MediaDialogFragment : DialogFragment() {
 
             // 🔧 Долгое нажатие → удалить фото
             container.setOnLongClickListener {
-                AlertDialog.Builder(requireContext())
-                    .setTitle("Удалить фото?")
-                    .setMessage("${photo.getFormattedTime()}\n\nУдалить это фото?")
-                    .setPositiveButton("Удалить") { _, _ ->
-                        mediaManager.deletePhoto(inspectionId, equipmentName, photo.fileName)
-                        loadPhotosToGrid()
-
-                        when (parentFragment) {
-                            is InspectionATG -> (parentFragment as InspectionATG).refreshPhotoButtonsState()
-                            is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
-                            is InspectionORU220 -> (parentFragment as InspectionORU220).refreshPhotoButtonsState()
-                            is InspectionORU500 -> (parentFragment as InspectionORU500).refreshAllStates()
-                            is InspectionBuildings -> (parentFragment as InspectionBuildings).refreshAllStates()
-                        }
-
-                        Toast.makeText(requireContext(), "Фото удалено", Toast.LENGTH_SHORT).show()
+                showPhotoActionDialog(photo) { action ->
+                    when (action) {
+                        "share" -> sharePhoto(fullPath)
+                        "delete" -> deletePhoto(photo)
                     }
-                    .setNegativeButton("Отмена", null)
-                    .show()
-                true  // возвращаем true — событие обработано
+                }
+                true
             }
 
             gridLayout.addView(container)
@@ -282,5 +273,85 @@ class MediaDialogFragment : DialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+    }
+
+    private fun showPhotoActionDialog(photo: Photo, onAction: (String) -> Unit) {
+        Log.d("MediaDialogFragment", "showPhotoActionDialog вызван! photo: ${photo.fileName}")
+
+        // Временно убираем R.style.CustomDialogStyle
+        androidx.appcompat.app.AlertDialog.Builder(requireActivity())
+            .setTitle("📷 Действие с фото")
+            .setMessage(photo.getFormattedTime())
+            .setPositiveButton("📤 Отправить") { _, _ ->
+                onAction("share")
+            }
+            .setNegativeButton("🗑️ Удалить") { _, _ ->
+                showDeleteConfirmation(photo, onAction)
+            }
+            .setNeutralButton("❌ Отмена", null)
+            .show()
+    }
+
+    private fun showDeleteConfirmation(photo: Photo, onAction: (String) -> Unit) {
+        androidx.appcompat.app.AlertDialog.Builder(requireActivity())
+            .setTitle("🗑️ Удалить фото?")
+            .setMessage("Фото будет удалено безвозвратно. Продолжить?")
+            .setPositiveButton("Да, удалить") { _, _ ->
+                onAction("delete")
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
+    }
+
+    private fun sharePhoto(photoPath: String) {
+        try {
+            val photoFile = File(photoPath)
+            if (!photoFile.exists()) {
+                Toast.makeText(requireContext(), "Файл не найден", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val uri = FileProvider.getUriForFile(
+                requireContext(),
+                "${requireContext().packageName}.fileprovider",
+                photoFile
+            )
+
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "image/jpeg"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            startActivity(Intent.createChooser(shareIntent, "Поделиться фото"))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(requireContext(), "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun deletePhoto(photo: Photo) {
+        try {
+            val success = mediaManager.deletePhoto(inspectionId, equipmentName, photo.fileName)
+            if (success) {
+                loadPhotosToGrid()
+
+                // Обновляем состояние кнопок фото
+                when (parentFragment) {
+                    is InspectionATG -> (parentFragment as InspectionATG).refreshPhotoButtonsState()
+                    is InspectionORU35 -> (parentFragment as InspectionORU35).refreshPhotoButtonsState()
+                    is InspectionORU220 -> (parentFragment as InspectionORU220).refreshPhotoButtonsState()
+                    is InspectionORU500 -> (parentFragment as InspectionORU500).refreshAllStates()
+                    is InspectionBuildings -> (parentFragment as InspectionBuildings).refreshAllStates()
+                }
+
+                Toast.makeText(requireContext(), "Фото удалено", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Ошибка при удалении", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(requireContext(), "Ошибка: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
     }
 }

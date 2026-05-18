@@ -28,6 +28,8 @@ import androidx.fragment.app.DialogFragment
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.google.android.material.card.MaterialCardView
 import java.io.File
+import androidx.appcompat.app.AlertDialog
+import com.example.ps_inspection.R
 
 class GlobalMediaDialog : DialogFragment() {
 
@@ -348,7 +350,12 @@ class GlobalMediaDialog : DialogFragment() {
 
                 // Долгое нажатие - сразу отправка
                 setOnLongClickListener {
-                    sharePhoto(photo.path)
+                    showPhotoActionDialog(photo.path, photo.equipment, photo.timestamp) { action ->
+                        when (action) {
+                            "share" -> sharePhoto(photo.path)
+                            "delete" -> deletePhoto(photo)
+                        }
+                    }
                     true
                 }
             }
@@ -414,5 +421,59 @@ class GlobalMediaDialog : DialogFragment() {
         val actualPosition = filteredPhotos.indexOfFirst { it.path == photoPath }.coerceAtLeast(0)
         val dialog = FullscreenPhotoDialog.newInstance(allPhotoPaths, actualPosition)
         dialog.show(childFragmentManager, "fullscreen_photo")
+    }
+
+    private fun showPhotoActionDialog(
+        photoPath: String,
+        equipment: String,
+        timestamp: Long,
+        onAction: (String) -> Unit
+    ) {
+        Log.d("GlobalMediaDialog", "showPhotoActionDialog вызван! equipment: $equipment")
+        val formattedTime = formatTime(timestamp)
+
+        // Временно убираем R.style.CustomDialogStyle
+        androidx.appcompat.app.AlertDialog.Builder(requireActivity())
+            .setTitle("📷 Фото: $equipment")
+            .setMessage(formattedTime)
+            .setPositiveButton("📤 Отправить") { _, _ ->
+                onAction("share")
+            }
+            .setNegativeButton("🗑️ Удалить") { _, _ ->
+                showDeleteConfirmation(photoPath, equipment, timestamp, onAction)
+            }
+            .setNeutralButton("❌ Отмена", null)
+            .show()
+    }
+
+    private fun showDeleteConfirmation(
+        photoPath: String,
+        equipment: String,
+        timestamp: Long,
+        onAction: (String) -> Unit
+    ) {
+        androidx.appcompat.app.AlertDialog.Builder(requireActivity())
+            .setTitle("🗑️ Удалить фото?")
+            .setMessage("Фото будет удалено безвозвратно. Продолжить?")
+            .setPositiveButton("Да, удалить") { _, _ ->
+                onAction("delete")
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
+    }
+
+    private fun deletePhoto(photo: PhotoItem) {
+        try {
+            val file = File(photo.path)
+            if (file.exists()) {
+                file.delete()
+                allPhotos.remove(photo)
+                filteredPhotos.remove(photo)
+                applyFilters()
+                Toast.makeText(requireContext(), "Фото удалено", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Ошибка при удалении", Toast.LENGTH_SHORT).show()
+        }
     }
 }
