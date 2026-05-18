@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException
 
+
 class GoogleSheetsService(private val context: Context) {
 
     companion object {
@@ -334,6 +335,31 @@ class GoogleSheetsService(private val context: Context) {
             } catch (e: Exception) {
                 e.printStackTrace()
                 false
+            }
+        }
+    }
+
+    suspend fun getLastValuesForParameters(parameterKeys: List<String>): Map<String, String> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val allData = getAllInspections()
+                if (allData.isNullOrEmpty()) return@withContext emptyMap()
+
+                // Сортируем по дате (последний осмотр будет последним)
+                val sortedData = allData.sortedBy { it["Дата"] + " " + it["Время"] }
+                val lastInspection = sortedData.lastOrNull() ?: return@withContext emptyMap()
+
+                val result = mutableMapOf<String, String>()
+                for (key in parameterKeys) {
+                    val value = lastInspection[key]?.trim()
+                    if (!value.isNullOrBlank() && value != "-" && value != "○") {
+                        result[key] = value
+                    }
+                }
+                result
+            } catch (e: Exception) {
+                e.printStackTrace()
+                emptyMap()
             }
         }
     }

@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        // ✅ ИНИЦИАЛИЗИРУЕМ GoogleSheetsService
+        sharedViewModel.init(this)
+
         // ОТКЛЮЧАЕМ стандартный заголовок ActionBar
         supportActionBar?.setDisplayShowTitleEnabled(false)
 

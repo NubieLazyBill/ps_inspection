@@ -1,6 +1,7 @@
 package com.example.ps_inspection.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.ps_inspection.data.repositories.AutoSaveManager
 import com.example.ps_inspection.data.repositories.CommentStorageManager
@@ -16,10 +17,22 @@ import com.example.ps_inspection.data.services.WeatherService
 import androidx.lifecycle.viewModelScope
 import com.example.ps_inspection.data.services.WeatherData
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.asStateFlow
+import com.example.ps_inspection.data.services.GoogleSheetsService
+
 
 class SharedInspectionViewModel : ViewModel() {
 
     private val weatherService = WeatherService()
+    private lateinit var sheetsService: GoogleSheetsService
+    private lateinit var appContext: Context
+
+    // Инициализация (вызвать из Activity)
+    fun init(context: Context) {
+        appContext = context.applicationContext
+        sheetsService = GoogleSheetsService(appContext)
+        Log.d("SharedViewModel", "GoogleSheetsService инициализирован")
+    }
 
     // Переменная для хранения погоды
     private val _weatherData = MutableStateFlow<WeatherData?>(null)
@@ -667,6 +680,27 @@ class SharedInspectionViewModel : ViewModel() {
         val filtered = saved.filterKeys { it.startsWith("BUILDINGS_") }
             .mapKeys { it.key.removePrefix("BUILDINGS_") }
         _buildingsComments.value = filtered
+    }
+
+    private val _lastValues = MutableStateFlow<Map<String, String>>(emptyMap())
+    val lastValues: StateFlow<Map<String, String>> = _lastValues.asStateFlow()
+
+    fun loadLastValues(parameterKeys: List<String>) {
+        viewModelScope.launch {
+            val result = sheetsService.getLastValuesForParameters(parameterKeys)
+            _lastValues.value = result
+        }
+    }
+
+    private val _lastValuesFromSheets = MutableStateFlow<Map<String, String>>(emptyMap())
+    val lastValuesFromSheets: StateFlow<Map<String, String>> = _lastValuesFromSheets.asStateFlow()
+
+    fun loadLastValuesFromSheets(parameterKeys: List<String>) {
+        viewModelScope.launch {
+            val result = sheetsService.getLastValuesForParameters(parameterKeys)
+            _lastValuesFromSheets.value = result
+            Log.d("LastValues", "Загружено ${result.size} значений из Google Sheets")
+        }
     }
 
     // Температура наружного воздуха
