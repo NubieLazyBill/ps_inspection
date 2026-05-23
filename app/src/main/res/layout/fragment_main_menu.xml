@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Фоновое изображение на весь экран -->
     <ImageView
         android:id="@+id/ivBackground"
         android:layout_width="match_parent"
@@ -15,305 +13,181 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- ЛОГОТИП - отдельно, привязан к верху -->
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:alpha="0.95"
+        android:src="@drawable/img_logo"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp" />  <!-- Здесь регулируется отступ сверху -->
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/ivLogo"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:padding="24dp">
+            android:padding="24dp"
+            android:paddingTop="48dp"
+            android:layout_marginTop="80dp">
 
-            <!-- Логотип -->
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginTop="48dp"
-                android:alpha="0.9"
-                android:src="@drawable/img_logo"
-                android:scaleType="fitCenter" />
+            <!-- Все кнопки остаются здесь, они будут под логотипом -->
 
-            <!-- Название ПС -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="ПС 500кВ «Кустовая»"
-                android:textColor="#FFFFFF"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:shadowColor="#000000"
-                android:shadowRadius="4"
-                android:layout_marginTop="16dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="#CCCCCC"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:shadowColor="#000000"
-                android:shadowRadius="3"
-                android:layout_marginBottom="48dp" />
-
-            <!-- Кнопка НАЧАТЬ ОСМОТР -->
-            <!-- Кнопка ПРОДОЛЖИТЬ ОСМОТР (бывшая Перейти к осмотру) -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardStartInspection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="24dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="8dp"
-                app:cardBackgroundColor="#4CAF50"
+                app:cardBackgroundColor="#CC4CAF50"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground">
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="72dp"
                     android:orientation="horizontal"
-                    android:gravity="center"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🔍"
-                        android:textSize="32sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Продолжить осмотр"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginStart="16dp" />
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="20dp">
+                    <TextView android:layout_width="36dp" android:layout_height="wrap_content" android:text="🔍" android:textSize="28sp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Продолжить осмотр" android:textSize="18sp" android:textStyle="bold" android:textColor="#FFFFFF" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Продолжить текущий осмотр" android:textSize="12sp" android:textColor="#DDFFFFFF" />
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="→" android:textSize="28sp" android:textColor="#FFFFFF" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Новая кнопка НОВЫЙ ОСМОТР -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardNewInspection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:cardCornerRadius="24dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="6dp"
-                app:cardBackgroundColor="#FF9800"
+                app:cardBackgroundColor="#CCFF9800"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground">
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="72dp"
                     android:orientation="horizontal"
-                    android:gravity="center"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="✨"
-                        android:textSize="28sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Новый осмотр"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="→"
-                        android:textSize="24sp"
-                        android:textColor="#AAAAAA" />
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="20dp">
+                    <TextView android:layout_width="36dp" android:layout_height="wrap_content" android:text="✨" android:textSize="28sp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Новый осмотр" android:textSize="18sp" android:textStyle="bold" android:textColor="#FFFFFF" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Начать осмотр с чистого листа" android:textSize="12sp" android:textColor="#DDFFFFFF" />
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="→" android:textSize="28sp" android:textColor="#FFFFFF" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Кнопка АРХИВ -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardArchive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="24dp"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="6dp"
-                app:cardBackgroundColor="#1E293B"
+                app:cardBackgroundColor="#CC1E293B"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground">
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="72dp"
                     android:orientation="horizontal"
-                    android:gravity="center"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📂"
-                        android:textSize="28sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Архив осмотров"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="→"
-                        android:textSize="24sp"
-                        android:textColor="#AAAAAA" />
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="20dp">
+                    <TextView android:layout_width="36dp" android:layout_height="wrap_content" android:text="📂" android:textSize="28sp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Архив осмотров" android:textSize="18sp" android:textStyle="bold" android:textColor="#FFFFFF" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="История всех осмотров" android:textSize="12sp" android:textColor="#DDFFFFFF" />
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="→" android:textSize="28sp" android:textColor="#FFFFFF" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Кнопка ГРАФИКИ -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardGraphs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="24dp"
+                android:layout_marginBottom="32dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="6dp"
-                app:cardBackgroundColor="#1E293B"
+                app:cardBackgroundColor="#CC1E293B"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground">
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="72dp"
                     android:orientation="horizontal"
-                    android:gravity="center"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="📊"
-                        android:textSize="28sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Графики"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:layout_marginStart="16dp"
-                        android:layout_weight="1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="→"
-                        android:textSize="24sp"
-                        android:textColor="#AAAAAA" />
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="20dp">
+                    <TextView android:layout_width="36dp" android:layout_height="wrap_content" android:text="📊" android:textSize="28sp" />
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Графики" android:textSize="18sp" android:textStyle="bold" android:textColor="#FFFFFF" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Аналитика" android:textSize="12sp" android:textColor="#DDFFFFFF" />
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="→" android:textSize="28sp" android:textColor="#FFFFFF" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <!-- Нижние кнопки -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="48dp"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/btnSettings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="⚙️ Настройки"
-                    android:textColor="#CCCCCC"
-                    android:textSize="14sp"
-                    android:padding="12dp"
-                    android:shadowColor="#000000"
-                    android:shadowRadius="3"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="20dp"
-                    android:background="#777777"
-                    android:layout_marginHorizontal="8dp" />
-
-                <TextView
-                    android:id="@+id/btnAbout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ℹ️ О программе"
-                    android:textColor="#CCCCCC"
-                    android:textSize="14sp"
-                    android:padding="12dp"
-                    android:shadowColor="#000000"
-                    android:shadowRadius="3"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground" />
-            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Кнопка выбора дежурного (поверх всего) -->
+    <!-- Кнопка выбора пользователя (слева) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardUserSelect"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_margin="16dp"
-        app:cardCornerRadius="24dp"
+        app:cardCornerRadius="28dp"
         app:cardElevation="8dp"
-        app:cardBackgroundColor="#4CAF50"
+        app:cardBackgroundColor="#CC4CAF50"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless">
 
         <TextView
             android:id="@+id/tvUserInitials"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="👤"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:gravity="center"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
-    <!-- Имя дежурного под иконкой -->
     <TextView
         android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Дежурный"
         android:textColor="#FFFFFF"
-        android:textSize="10sp"
+        android:textSize="12sp"
+        android:textStyle="bold"
         android:gravity="center"
-        android:shadowColor="#000000"
-        android:shadowRadius="2"
+        android:layout_marginTop="4dp"
         app:layout_constraintTop_toBottomOf="@id/cardUserSelect"
-        app:layout_constraintEnd_toEndOf="@id/cardUserSelect"
-        app:layout_constraintStart_toStartOf="@id/cardUserSelect" />
+        app:layout_constraintStart_toStartOf="@id/cardUserSelect"
+        app:layout_constraintEnd_toEndOf="@id/cardUserSelect" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

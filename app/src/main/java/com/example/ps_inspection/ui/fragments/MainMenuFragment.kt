@@ -14,9 +14,14 @@ import com.example.ps_inspection.data.repositories.AutoSaveManager
 import com.example.ps_inspection.data.repositories.LastInspectionManager
 import com.example.ps_inspection.data.repositories.UserManager
 import android.content.DialogInterface
+import android.view.Menu
+import android.view.MenuInflater
 import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
+import android.widget.PopupMenu
+import androidx.appcompat.widget.Toolbar
+import android.view.MenuItem
 
 
 class MainMenuFragment : Fragment() {
@@ -69,14 +74,6 @@ class MainMenuFragment : Fragment() {
 
         binding.cardArchive.setOnClickListener {
             findNavController().navigate(R.id.action_mainMenu_to_archiveFragment)
-        }
-
-        binding.btnSettings.setOnClickListener {
-            Toast.makeText(requireContext(), "Настройки (в разработке)", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.btnAbout.setOnClickListener {
-            showAboutDialog()
         }
 
         binding.cardGraphs.setOnClickListener {
@@ -227,6 +224,30 @@ class MainMenuFragment : Fragment() {
             .joinToString("") { it.first().uppercase() }
         binding.tvUserInitials.text = initials
         binding.tvUserName.text = user.name.split(" ").first()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true) // Включаем меню во фрагменте
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_menu_options, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_settings -> {
+                Toast.makeText(requireContext(), "Настройки (в разработке)", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.menu_about -> {
+                showAboutDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onDestroyView() {
