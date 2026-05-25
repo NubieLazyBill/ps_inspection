@@ -30,7 +30,7 @@
 
 | Главный экран | Бланк осмотра | Архив осмотров | Графики |
 |:---:|:---:|:---:|:---:|
-| ![main](screens/main.png) | ![inspection](screens/inspection.png) | ![archive](screens/archive.png) | ![graphs](screens/graphs.png) |
+| ![main](Screenshot1.webp) | ![inspection](Screenshot2.webp) | ![archive](Screenshot4.webp) | ![graphs](Screenshot5.webp) |
 
 ## 🚀 Установка
 
