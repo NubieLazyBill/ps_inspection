@@ -1,188 +1,44 @@
-# ОсмотрПС - Приложение для технических инспекций подстанций
+# ⚡ Осмотр ПС
 
-<div align="center">
+Мобильное приложение для цифровизации оперативных осмотров оборудования подстанции 500 кВ.
 
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.0-blue.svg)](https://kotlinlang.org)
-[![Android](https://img.shields.io/badge/Android-12%2B-brightgreen.svg)](https://www.android.com)
-[![Min SDK](https://img.shields.io/badge/Min%20SDK-26-orange.svg)](https://developer.android.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-1.0.5-important.svg)](https://github.com/NubieLazyBill/ps_inspection)
+## 🎯 Назначение
 
-**Профессиональное решение для проведения технических инспекций на подстанциях 500кВ**
+Замена бумажных бланков осмотров на электронный формат с синхронизацией в облаке, построением графиков и экспортом в Excel.
 
-</div>
+## 📱 Возможности
 
-## 📱 О проекте
+- **Электронные бланки** всех маршрутных карт (ОРУ-35/220/500, АТГ, Реактор, Здания)
+- **Облачная синхронизация** через Google Sheets — данные доступны всем дежурным сразу
+- **Графики показателей** — изменение температуры, давления, уровня масла по времени
+- **Комментарии** к оборудованию с фиксацией автора и времени
+- **Фотофиксация** дефектов с привязкой к единице оборудования и автору
+- **Экспорт в Excel** с сохранением форматирования бланка
+- **Разграничение доступа** (ДИП / ДЭМ)
+- **Автозаполнение** прочерков в ячейках, не предусмотренных картой, оборудования в ремонте
 
-**ОсмотрПС** - специализированное мобильное приложение для проведения полномасштабных технических инспекций оборудования подстанций. Приложение позволяет инженерам и техническому персоналу эффективно фиксировать параметры оборудования, сохранять данные и экспортировать их в удобном формате.
+## 🛠 Технологии
 
-## ✨ Возможности
-
-### 🔍 Комплексный осмотр оборудования
-- **ОРУ-35, ОРУ-220, ОРУ-500** - полный осмотр открытых распределительных устройств
-- **АТГ и Реакторы** - контроль силовых трансформаторов и реакторного оборудования  
-- **Здания и помещения** - инспекция вспомогательных сооружений
-
-### 📊 Структурированный сбор данных
-- Ввод технических параметров (уровни масла, давления, температуры)
-- Пофазный учет данных для трехфазного оборудования
-- Валидация вводимых значений
-
-### 💾 Надежное хранение и экспорт
-- Локальное сохранение всех данных инспекций
-- Экспорт в Excel для дальнейшего анализа и отчетности
-- Функция полной очистки данных
-
-## 🛠 Технологический стек
-
-**Основные технологии:**
 - **Язык:** Kotlin
-- **UI:** XML Layouts + ViewBinding
-- **Архитектура:** MVVM
-- **Навигация:** Android Navigation Component
-- **Асинхронность:** Kotlin Coroutines, LiveData
-- **Работа с данными:** Shared ViewModel
+- **Платформа:** Android (min SDK 26)
+- **Облако:** Google Sheets API
+- **Графики:** AndroidPlot
+- **Excel:** Apache POI
+- **Архитектура:** MVVM + ViewBinding + Navigation Component
 
-**Библиотеки:**
-```kotlin
-// Android Jetpack
-implementation(libs.androidx.core.ktx)
-implementation(libs.androidx.appcompat)
-implementation(libs.material)
-implementation(libs.androidx.navigation.fragment.ktx)
-implementation(libs.androidx.navigation.ui.ktx)
+## 📸 Скриншоты
 
-// Architecture Components
-implementation(libs.androidx.lifecycle.viewmodel.ktx)
-implementation(libs.androidx.lifecycle.livedata.ktx)
-implementation(libs.androidx.lifecycle.runtime.ktx)
+| Главный экран | Бланк осмотра | Архив осмотров | Графики |
+|:---:|:---:|:---:|:---:|
+| ![main](screens/main.png) | ![inspection](screens/inspection.png) | ![archive](screens/archive.png) | ![graphs](screens/graphs.png) |
 
-// Excel export
-implementation(libs.poi)
-implementation(libs.poi.ooxml)
-```
-## 📸 Интерфейс приложения
+## 🚀 Установка
 
-<div align="center">
-
-### Главный экран
-<img src="Screenshot_1.jpg" width="30%" alt="Главный экран" />
-<br><br>
-
-### Экран осмотра ОРУ-35
-<img src="Screenshot_2.jpg" width="30%" alt="Экран осмотра ОРУ-35" />
-<br><br>
-
-### Экран осмотра ОРУ-220  
-<img src="Screenshot_3.jpg" width="30%" alt="Экран осмотра ОРУ-220" />
-<br><br>
-
-## 🎥 Демонстрация работы приложения
-
-
-### 📱 Основные функции в действии
-<img src="App-demo-psInspection.gif" width="30%" alt="Демонстрация работы приложения ОсмотрПС" />
-
-<br>
-
-**Навигация по разделам • Ввод технических параметров • Экспорт в Excel**
-
-[![GIF Demo](https://img.shields.io/badge/🔄-Повторить_просмотр-blue.svg)](#демонстрация-работы-приложения)
-
-</div>
-## 🏗 Архитектура проекта
-
-```text
-app/
-├── src/main/
-│   ├── java/com/example/ps_inspection/
-│   │   ├── ui/
-│   │   │   ├── fragments/          # Фрагменты с XML layout
-│   │   │   └── adapters/           # Адаптеры для списков
-│   │   ├── viewmodel/              # SharedInspectionViewModel
-│   │   ├── data/                   # Модели данных
-│   │   └── excel/                  # Логика экспорта в Excel
-│   ├── res/
-│   │   ├── layout/                 # XML макеты
-│   │   ├── values/                 # Ресурсы, строки
-│   │   └── navigation/             # Навигационный граф
-│   └── assets/                     # Шаблоны Excel
-
-```
-
-### Ключевые компоненты:
-SharedInspectionViewModel - централизованное управление данными инспекций
-
-Fragment-based UI - модульная архитектура экранов
-
-Excel Export Service - генерация отчетов в формате XLSX
-
-
-### 🚀 Установка и сборка
-Предварительные требования
-Android Studio Arctic Fox или новее
-
-Android SDK 26+
-
-Kotlin 1.9.0+
-
-Сборка проекта
-bash
+1. Склонируйте репозиторий:
 git clone https://github.com/NubieLazyBill/ps_inspection.git
-cd ps_inspection
-./gradlew assembleDebug
-Установка на устройство
-bash
-./gradlew installDebug
-### 📖 Как пользоваться
-Запустите приложение на Android устройстве
 
-Выберите тип оборудования для инспекции
+2. Откройте проект в Android Studio
 
-Заполните параметры согласно техническим требованиям
+3. Добавьте файл service_account.json в папку app/src/main/assets/
 
-Сохраните данные - автоматическое сохранение в локальную БД
-
-Экспортируйте в Excel для создания отчетов
-
-### 🔧 Для разработчиков
-Структура данных
-Приложение использует отдельные data-классы для каждого типа оборудования:
-
-InspectionORU35Data, InspectionORU220Data, InspectionORU500Data
-
-InspectionATGData - данные по АТГ и реакторам
-
-Расширение функциональности
-Для добавления нового типа оборудования:
-
-Создать соответствующий data-класс
-
-Добавить фрагмент с XML layout
-
-Обновить SharedViewModel
-
-Добавить навигацию в граф
-
-## 📄 Лицензия
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-Этот проект распространяется под лицензией MIT. Подробнее см. в файле [LICENSE](LICENSE).
-
-## 👤 Автор
-
-**Алексей Петрович Плотников**  
-📧 Email: pit2007@inbox.ru  
-💼 GitHub: [@NubieLazyBill](https://github.com/NubieLazyBill)  
-📱 Telegram: @LazyBill
-
----
-
-<div align="center">
-
-### ⭐ Если проект был полезен, поставьте звезду!
-
-**ОсмотрПС - профессиональный инструмент для энергетиков** ⚡
-
-</div>
+4. Соберите и запустите
