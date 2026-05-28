@@ -1,8 +1,12 @@
 package com.example.ps_inspection.ui.fragments.inspections
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -11,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,18 +25,17 @@ import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionORU35Data
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.data.repositories.LastInspectionManager
+import com.example.ps_inspection.data.utils.InputValidator
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionORU35Binding
 import com.example.ps_inspection.ui.fragments.dialogs.CommentsDialogFragment
 import com.example.ps_inspection.ui.fragments.dialogs.MediaDialogFragment
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import android.widget.TextView
 
 class InspectionORU35 : Fragment() {
 
     private var currentToast: Toast? = null
-
     private lateinit var layoutInflater: LayoutInflater
 
     private var _binding: FragmentInspectionORU35Binding? = null
@@ -45,7 +49,6 @@ class InspectionORU35 : Fragment() {
         LastInspectionManager(requireContext())
     }
 
-    // Маппинг параметров для подсказок (будет инициализирован в onViewCreated)
     private lateinit var hintMapping: Map<String, View>
     private lateinit var paramNames: Map<String, String>
 
@@ -62,24 +65,20 @@ class InspectionORU35 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Инициализируем маппинги ТОЛЬКО ПОСЛЕ создания binding
         initMappings()
 
-        // Подписка на данные осмотра
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.oru35Data.collectLatest { data ->
                 updateUIFromData(data)
             }
         }
 
-        // Подписка на комментарии
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.oru35Comments.collectLatest { comments ->
                 updateCommentButtonsState(comments)
             }
         }
 
-        // ПОДПИСКА НА ПОДСКАЗКИ ИЗ GOOGLE SHEETS
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.lastValuesFromSheets.collect { lastValues ->
                 applyHintsFromSheets(lastValues)
@@ -90,7 +89,6 @@ class InspectionORU35 : Fragment() {
         setupMediaButtons()
         updatePhotoButtonsState()
 
-        // Загружаем подсказки из Google Sheets
         loadHintsFromSheets()
     }
 
@@ -190,7 +188,6 @@ class InspectionORU35 : Fragment() {
         if (lastValue.isNotBlank() && lastValue != "○" && lastValue != "-" && lastValue != "null") {
             editText.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus && editText.text.toString().isEmpty()) {
-                    // Показываем сразу, без проверки флага
                     showLastValueHint(editText, lastValue, paramName)
                 }
             }
@@ -203,7 +200,6 @@ class InspectionORU35 : Fragment() {
             spinner.setOnTouchListener { _, event ->
                 if (event.action == android.view.MotionEvent.ACTION_UP) {
                     if (spinner.selectedItemPosition == 0) {
-                        // Показываем сразу, без проверки флага
                         showSpinnerHint(paramName, lastValue)
                     }
                 }
@@ -343,11 +339,58 @@ class InspectionORU35 : Fragment() {
         }
     }
 
-    private fun setupInputListeners() {
-        setupEditTextListener(binding.tsn2Input) { text -> sharedViewModel.updateORU35Data { tsn2 = text } }
-        setupEditTextListener(binding.tsn3Input) { text -> sharedViewModel.updateORU35Data { tsn3 = text } }
-        setupEditTextListener(binding.tsn4Input) { text -> sharedViewModel.updateORU35Data { tsn4 = text } }
+    // ==================== ВАЛИДАЦИЯ ====================
 
+    private fun validateEditText(editText: EditText, paramName: String, min: Double, max: Double): Boolean {
+        val value = editText.text.toString()
+        if (value.isBlank()) return true
+
+        if (!InputValidator.isInRange(value, min, max)) {
+            showValidationError(InputValidator.getRangeMessage(paramName, min, max))
+            editText.setBackgroundResource(R.drawable.edittext_border_error)
+            editText.requestFocus()
+            return false
+        }
+        editText.setBackgroundResource(R.drawable.edittext_border)
+        return true
+    }
+
+    private fun showValidationError(message: String) {
+        currentToast?.cancel()
+
+        val layout = layoutInflater.inflate(R.layout.custom_toast, null)
+        val text = layout.findViewById<TextView>(R.id.toast_text)
+        text.text = message
+        text.setTextColor(Color.parseColor("#FF4444"))
+
+        val toast = Toast(requireContext())
+        toast.duration = Toast.LENGTH_LONG
+        toast.view = layout
+        toast.setGravity(android.view.Gravity.TOP, 0, 100)
+        toast.show()
+
+        currentToast = toast
+    }
+
+
+    // ==================== НАСТРОЙКА СЛУШАТЕЛЕЙ ====================
+
+    private fun setupInputListeners() {
+        // Уровни масла ТСН (с валидацией)
+        setupEditTextListenerWithValidation(binding.tsn2Input, "2ТСН",
+            InputValidator.ORU35.OIL_LEVEL_MIN, InputValidator.ORU35.OIL_LEVEL_MAX) { text ->
+            sharedViewModel.updateORU35Data { tsn2 = text }
+        }
+        setupEditTextListenerWithValidation(binding.tsn3Input, "3ТСН",
+            InputValidator.ORU35.OIL_LEVEL_MIN, InputValidator.ORU35.OIL_LEVEL_MAX) { text ->
+            sharedViewModel.updateORU35Data { tsn3 = text }
+        }
+        setupEditTextListenerWithValidation(binding.tsn4Input, "4ТСН",
+            InputValidator.ORU35.OIL_LEVEL_MIN, InputValidator.ORU35.OIL_LEVEL_MAX) { text ->
+            sharedViewModel.updateORU35Data { tsn4 = text }
+        }
+
+        // Спиннеры (без валидации)
         setupSpinnerListener(binding.tt352TsnAInput) { sharedViewModel.updateORU35Data { tt352tsnA = it.toString() } }
         setupSpinnerListener(binding.tt352TsnBInput) { sharedViewModel.updateORU35Data { tt352tsnB = it.toString() } }
         setupSpinnerListener(binding.tt352TsnCInput) { sharedViewModel.updateORU35Data { tt352tsnC = it.toString() } }
@@ -362,12 +405,22 @@ class InspectionORU35 : Fragment() {
         setupSpinnerListener(binding.v353TsnCInput) { sharedViewModel.updateORU35Data { v353tsnC = it.toString() } }
     }
 
-    private fun setupEditTextListener(editText: EditText, onTextChanged: (String) -> Unit) {
+    private fun setupEditTextListenerWithValidation(
+        editText: EditText,
+        paramName: String,
+        min: Double,
+        max: Double,
+        onTextChanged: (String) -> Unit
+    ) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (isUpdatingUIFromViewModel) return
-                onTextChanged(s?.toString() ?: "")
+                val newText = s?.toString() ?: ""
+
+                if (validateEditText(editText, paramName, min, max)) {
+                    onTextChanged(newText)
+                }
             }
             override fun afterTextChanged(s: Editable?) {}
         })
@@ -376,14 +429,15 @@ class InspectionORU35 : Fragment() {
     private fun setupSpinnerListener(spinner: Spinner, onItemSelected: (Any?) -> Unit) {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if (position > 0) onItemSelected(parent?.getItemAtPosition(position))
+                if (position > 0 && !isUpdatingUIFromViewModel) {
+                    onItemSelected(parent?.getItemAtPosition(position))
+                }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
     private fun showCustomToast(message: String) {
-        // Отменяем предыдущий Toast, если он есть
         currentToast?.cancel()
 
         val layout = layoutInflater.inflate(R.layout.custom_toast, null)
@@ -396,7 +450,6 @@ class InspectionORU35 : Fragment() {
         toast.setGravity(android.view.Gravity.TOP, 0, 100)
         toast.show()
 
-        // Сохраняем текущий Toast
         currentToast = toast
     }
 

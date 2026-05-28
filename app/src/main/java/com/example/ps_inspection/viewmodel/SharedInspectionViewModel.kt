@@ -215,7 +215,7 @@ class SharedInspectionViewModel : ViewModel() {
 
         val currentMap = _atgComments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
+        currentList.add(Comment(text = commentText, author = author))
         currentMap[equipmentKey] = currentList
         _atgComments.value = currentMap
 
@@ -223,8 +223,8 @@ class SharedInspectionViewModel : ViewModel() {
         allComments[prefixedKey] = currentList
         commentStorage.saveAllComments(allComments)
 
-        saveATGCommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()
+        // ✅ Не сохраняем в Data class — только в CommentStorageManager
+        // autoSave() вызывать не нужно, так как автосохранение не касается комментариев
     }
 
     fun removeATGComment(equipmentKey: String, commentIndex: Int) {
@@ -247,9 +247,6 @@ class SharedInspectionViewModel : ViewModel() {
                 allComments[prefixedKey] = currentList
             }
             commentStorage.saveAllComments(allComments)
-
-            saveATGCommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
         }
     }
 
@@ -267,28 +264,7 @@ class SharedInspectionViewModel : ViewModel() {
             val prefixedKey = "ATG_$equipmentKey"
             allComments[prefixedKey] = currentList
             commentStorage.saveAllComments(allComments)
-
-            saveATGCommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
         }
-    }
-
-    private fun saveATGCommentsToData(equipmentKey: String, comments: List<String>) {
-        val commentString = comments.joinToString("|||")
-        val currentData = _atgData.value
-        _atgData.value = currentData.copy(
-            commentAtg2C = if (equipmentKey == "2 АТГ ф.С") commentString else currentData.commentAtg2C,
-            commentAtg2B = if (equipmentKey == "2 АТГ ф.В") commentString else currentData.commentAtg2B,
-            commentAtg2A = if (equipmentKey == "2 АТГ ф.А") commentString else currentData.commentAtg2A,
-            commentAtgReserve = if (equipmentKey == "АТГ резервная") commentString else currentData.commentAtgReserve,
-            commentAtg3C = if (equipmentKey == "3 АТГ ф.С") commentString else currentData.commentAtg3C,
-            commentAtg3B = if (equipmentKey == "3 АТГ ф.В") commentString else currentData.commentAtg3B,
-            commentAtg3A = if (equipmentKey == "3 АТГ ф.А") commentString else currentData.commentAtg3A,
-            commentReactorC = if (equipmentKey == "Реактор ф.С") commentString else currentData.commentReactorC,
-            commentReactorB = if (equipmentKey == "Реактор ф.В") commentString else currentData.commentReactorB,
-            commentReactorA = if (equipmentKey == "Реактор ф.А") commentString else currentData.commentReactorA,
-            commentTn35 = if (equipmentKey == "ТН-35") commentString else currentData.commentTn35
-        )
     }
 
     private fun loadATGCommentsFromStorage() {
@@ -305,16 +281,13 @@ class SharedInspectionViewModel : ViewModel() {
 
         val currentMap = _oru35Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
+        currentList.add(Comment(text = commentText, author = author))
         currentMap[equipmentKey] = currentList
         _oru35Comments.value = currentMap
 
         val allComments = commentStorage.loadAllComments().toMutableMap()
         allComments[prefixedKey] = currentList
         commentStorage.saveAllComments(allComments)
-
-        saveORU35CommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()
     }
 
     fun removeORU35Comment(equipmentKey: String, commentIndex: Int) {
@@ -337,9 +310,6 @@ class SharedInspectionViewModel : ViewModel() {
                 allComments[prefixedKey] = currentList
             }
             commentStorage.saveAllComments(allComments)
-
-            saveORU35CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
         }
     }
 
@@ -357,22 +327,6 @@ class SharedInspectionViewModel : ViewModel() {
             val prefixedKey = "ORU35_$equipmentKey"
             allComments[prefixedKey] = currentList
             commentStorage.saveAllComments(allComments)
-
-            saveORU35CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
-        }
-    }
-
-    private fun saveORU35CommentsToData(equipmentKey: String, comments: List<String>) {
-        val commentString = comments.joinToString("|||")
-        updateORU35Data {
-            when (equipmentKey) {
-                "ТСН" -> commentTsn = commentString
-                "ТТ-35 2ТСН" -> commentTt352 = commentString
-                "ТТ-35 3ТСН" -> commentTt353 = commentString
-                "В-35 2ТСН" -> commentV352 = commentString
-                "В-35 3ТСН" -> commentV353 = commentString
-            }
         }
     }
 
@@ -390,16 +344,13 @@ class SharedInspectionViewModel : ViewModel() {
 
         val currentMap = _oru220Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
+        currentList.add(Comment(text = commentText, author = author))
         currentMap[equipmentKey] = currentList
         _oru220Comments.value = currentMap
 
         val allComments = commentStorage.loadAllComments().toMutableMap()
         allComments[prefixedKey] = currentList
         commentStorage.saveAllComments(allComments)
-
-        saveORU220CommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()
     }
 
     fun removeORU220Comment(equipmentKey: String, commentIndex: Int) {
@@ -422,9 +373,6 @@ class SharedInspectionViewModel : ViewModel() {
                 allComments[prefixedKey] = currentList
             }
             commentStorage.saveAllComments(allComments)
-
-            saveORU220CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
         }
     }
 
@@ -442,40 +390,6 @@ class SharedInspectionViewModel : ViewModel() {
             val prefixedKey = "ORU220_$equipmentKey"
             allComments[prefixedKey] = currentList
             commentStorage.saveAllComments(allComments)
-
-            saveORU220CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
-        }
-    }
-
-    private fun saveORU220CommentsToData(equipmentKey: String, comments: List<String>) {
-        val commentString = comments.joinToString("|||")
-        updateORU220Data {
-            when (equipmentKey) {
-                "Мирная" -> commentMirnaya = commentString
-                "Мирная ТТ" -> commentMirnayaTT = commentString
-                "Топаз" -> commentTopaz = commentString
-                "Топаз ТТ" -> commentTopazTT = commentString
-                "ОВ" -> commentOv = commentString
-                "ОВ ТТ" -> commentOvTT = commentString
-                "ТН-220 ОСШ" -> commentOssh = commentString
-                "2АТГ" -> commentV2atg = commentString
-                "2АТГ ТТ" -> commentV2atgTT = commentString
-                "ШСВ" -> commentShsv = commentString
-                "ШСВ ТТ" -> commentShsvTT = commentString
-                "3АТГ" -> commentV3atg = commentString
-                "3АТГ ТТ" -> commentV3atgTT = commentString
-                "Орбита" -> commentOrbita = commentString
-                "Орбита ТТ" -> commentOrbitaTT = commentString
-                "Факел" -> commentFakel = commentString
-                "Факел ТТ" -> commentFakelTT = commentString
-                "Комета-1" -> commentCometa1 = commentString
-                "Комета-1 ТТ" -> commentCometa1TT = commentString
-                "Комета-2" -> commentCometa2 = commentString
-                "Комета-2 ТТ" -> commentCometa2TT = commentString
-                "1ТН-220" -> commentTn1 = commentString
-                "2ТН-220" -> commentTn2 = commentString
-            }
         }
     }
 
@@ -493,16 +407,13 @@ class SharedInspectionViewModel : ViewModel() {
 
         val currentMap = _oru500Comments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
+        currentList.add(Comment(text = commentText, author = author))
         currentMap[equipmentKey] = currentList
         _oru500Comments.value = currentMap
 
         val allComments = commentStorage.loadAllComments().toMutableMap()
         allComments[prefixedKey] = currentList
         commentStorage.saveAllComments(allComments)
-
-        saveORU500CommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()
     }
 
     fun removeORU500Comment(equipmentKey: String, commentIndex: Int) {
@@ -525,9 +436,6 @@ class SharedInspectionViewModel : ViewModel() {
                 allComments[prefixedKey] = currentList
             }
             commentStorage.saveAllComments(allComments)
-
-            saveORU500CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
         }
     }
 
@@ -545,41 +453,6 @@ class SharedInspectionViewModel : ViewModel() {
             val prefixedKey = "ORU500_$equipmentKey"
             allComments[prefixedKey] = currentList
             commentStorage.saveAllComments(allComments)
-
-            saveORU500CommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
-        }
-    }
-
-    private fun saveORU500CommentsToData(equipmentKey: String, comments: List<String>) {
-        val commentString = comments.joinToString("|||")
-        updateORU500Data {
-            when (equipmentKey) {
-                "В-500 Р-500 2С" -> commentR5002s = commentString
-                "В-500 ВШТ-31" -> commentVsht31 = commentString
-                "В-500 ВЛТ-30" -> commentVlt30 = commentString
-                "В-500 ВШЛ-32" -> commentVshl32 = commentString
-                "В-500 ВШЛ-21" -> commentVshl21 = commentString
-                "В-500 ВШТ-22" -> commentVsht22 = commentString
-                "В-500 ВЛТ-20" -> commentVlt20 = commentString
-                "В-500 ВШТ-11" -> commentVsht11 = commentString
-                "В-500 ВШЛ-12" -> commentVshl12 = commentString
-                "ТТ-500 ВШТ-31" -> commentTtVsht31 = commentString
-                "ТТ-500 ВЛТ-30" -> commentTtVlt30 = commentString
-                "ТТ-500 ВШЛ-32" -> commentTtVshl32 = commentString
-                "ТТ-500 ВШЛ-21" -> commentTtVshl21 = commentString
-                "ТТ-500 ВШТ-22" -> commentTtVsht22 = commentString
-                "ТТ-500 ВЛТ-20" -> commentTtVlt20 = commentString
-                "ТТ-500 ВШТ-11" -> commentTtVsht11 = commentString
-                "ТТ-500 ВШЛ-12" -> commentTtVshl12 = commentString
-                "1ТН-500" -> commentTn1500 = commentString
-                "2ТН-500" -> commentTn2500 = commentString
-                "ТН-500 СГРЭС-1" -> commentTn500Sgres1 = commentString
-                "Трачуковская ТТ" -> commentTrachukovskayaTt = commentString
-                "Трачуковская 2ТН" -> commentTrachukovskaya2tn = commentString
-                "Трачуковская 1ТН" -> commentTrachukovskaya1tn = commentString
-                "Белозёрная 2ТН" -> commentBelozernaya2tn = commentString
-            }
         }
     }
 
@@ -597,16 +470,13 @@ class SharedInspectionViewModel : ViewModel() {
 
         val currentMap = _buildingsComments.value.toMutableMap()
         val currentList = currentMap[equipmentKey]?.toMutableList() ?: mutableListOf()
-        currentList.add(Comment(text = commentText, author = author))  // 🔧 Добавлен author
+        currentList.add(Comment(text = commentText, author = author))
         currentMap[equipmentKey] = currentList
         _buildingsComments.value = currentMap
 
         val allComments = commentStorage.loadAllComments().toMutableMap()
         allComments[prefixedKey] = currentList
         commentStorage.saveAllComments(allComments)
-
-        saveBuildingsCommentsToData(equipmentKey, currentList.map { it.text })
-        autoSave()
     }
 
     fun removeBuildingsComment(equipmentKey: String, commentIndex: Int) {
@@ -629,9 +499,6 @@ class SharedInspectionViewModel : ViewModel() {
                 allComments[prefixedKey] = currentList
             }
             commentStorage.saveAllComments(allComments)
-
-            saveBuildingsCommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
         }
     }
 
@@ -649,29 +516,6 @@ class SharedInspectionViewModel : ViewModel() {
             val prefixedKey = "BUILDINGS_$equipmentKey"
             allComments[prefixedKey] = currentList
             commentStorage.saveAllComments(allComments)
-
-            saveBuildingsCommentsToData(equipmentKey, currentList.map { it.text })
-            autoSave()
-        }
-    }
-
-    private fun saveBuildingsCommentsToData(equipmentKey: String, comments: List<String>) {
-        val commentString = comments.joinToString("|||")
-        updateBuildingsData {
-            when (equipmentKey) {
-                "Компрессорная №1" -> commentCompressor1 = commentString
-                "Баллоная №1" -> commentBallroom1 = commentString
-                "Компрессорная №2" -> commentCompressor2 = commentString
-                "Баллоная №2" -> commentBallroom2 = commentString
-                "КПЗ ОПУ" -> commentKpzOpu = commentString
-                "КПЗ-2" -> commentKpz2 = commentString
-                "Насосная пожаротушения" -> commentFirePump = commentString
-                "Мастерская по ремонту ВВ" -> commentWorkshop = commentString
-                "Артскважина" -> commentArtWell = commentString
-                "Здание артезианской скважины" -> commentArtesianWell = commentString
-                "Помещение 1 (2) АБ" -> commentRoomAb = commentString
-                "Помещение п/этажа №1,2,3" -> commentBasement = commentString
-            }
         }
     }
 

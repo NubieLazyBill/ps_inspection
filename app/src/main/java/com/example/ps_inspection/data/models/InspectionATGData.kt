@@ -113,26 +113,49 @@ data class InspectionATGData(
     var reactor_a_pump_group3: String = "",
     var reactor_a_tt_neutral: String = "",
 
-    // ⭐ НОВЫЕ ПОЛЯ для сохранения
-    var atgComment: String = "",
+    // ⭐ ТОЛЬКО ФОТО (комментарии удалены)
     var atgPhotoFiles: List<String> = emptyList(),
 
-    // 💬 Комментарии по секциям
-    var commentAtg2C: String = "",
-    var commentAtg2B: String = "",
-    var commentAtg2A: String = "",
-    var commentAtgReserve: String = "",
-    var commentAtg3C: String = "",
-    var commentAtg3B: String = "",
-    var commentAtg3A: String = "",
-    var commentReactorC: String = "",
-    var commentReactorB: String = "",
-    var commentReactorA: String = "",
-
-    //ТН-35:
+    // ТН-35:
     var tn352atg: String = "",
     var tn353atg: String = "",
 
-    var commentTn35: String = ""  // комментарий для ТН-35
-
+    // ⭐ Фото для манометров (комментарии удалены)
+    var atg2cGroup1Photos: List<String> = emptyList(),
+    var atg2cGroup2Photos: List<String> = emptyList(),
+    var atg2cGroup3Photos: List<String> = emptyList(),
+    var atg2cGroup4Photos: List<String> = emptyList(),
+    var atg2bGroup1Photos: List<String> = emptyList(),
+    var atg2bGroup2Photos: List<String> = emptyList(),
+    var atg2bGroup3Photos: List<String> = emptyList(),
+    var atg2bGroup4Photos: List<String> = emptyList(),
+    var atg2aGroup1Photos: List<String> = emptyList(),
+    var atg2aGroup2Photos: List<String> = emptyList(),
+    var atg2aGroup3Photos: List<String> = emptyList(),
+    var atg2aGroup4Photos: List<String> = emptyList(),
+    var atgReserveGroup1Photos: List<String> = emptyList(),
+    var atgReserveGroup2Photos: List<String> = emptyList(),
+    var atgReserveGroup3Photos: List<String> = emptyList(),
+    var atgReserveGroup4Photos: List<String> = emptyList(),
+    var atg3cGroup1Photos: List<String> = emptyList(),
+    var atg3cGroup2Photos: List<String> = emptyList(),
+    var atg3cGroup3Photos: List<String> = emptyList(),
+    var atg3cGroup4Photos: List<String> = emptyList(),
+    var atg3bGroup1Photos: List<String> = emptyList(),
+    var atg3bGroup2Photos: List<String> = emptyList(),
+    var atg3bGroup3Photos: List<String> = emptyList(),
+    var atg3bGroup4Photos: List<String> = emptyList(),
+    var atg3aGroup1Photos: List<String> = emptyList(),
+    var atg3aGroup2Photos: List<String> = emptyList(),
+    var atg3aGroup3Photos: List<String> = emptyList(),
+    var atg3aGroup4Photos: List<String> = emptyList(),
+    var reactorCGroup1Photos: List<String> = emptyList(),
+    var reactorCGroup2Photos: List<String> = emptyList(),
+    var reactorCGroup3Photos: List<String> = emptyList(),
+    var reactorBGroup1Photos: List<String> = emptyList(),
+    var reactorBGroup2Photos: List<String> = emptyList(),
+    var reactorBGroup3Photos: List<String> = emptyList(),
+    var reactorAGroup1Photos: List<String> = emptyList(),
+    var reactorAGroup2Photos: List<String> = emptyList(),
+    var reactorAGroup3Photos: List<String> = emptyList(),
 )

@@ -238,7 +238,6 @@ class ArchiveFragment : Fragment() {
                                 statusBuildings = archiveData.buildings.getFillStatus(),
                                 timestamp = System.currentTimeMillis(),
                                 photoCount = 0,
-                                hasComments = false,
                                 hasPhotos = false,
                                 inspectorName = row["ФИО дежурного"] ?: "",
                                 progressOru35 = ProgressCalculator.calculateORU35(archiveData.oru35),

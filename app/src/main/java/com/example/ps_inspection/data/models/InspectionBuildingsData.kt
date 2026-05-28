@@ -42,18 +42,5 @@ data class InspectionBuildingsData(
     var basementHeating: String = "○",
     var basementTemp: String = "",
 
-    var buildingsPhotoFiles: List<String> = emptyList(),
-
-    var commentCompressor1: String = "",
-    var commentBallroom1: String = "",
-    var commentCompressor2: String = "",
-    var commentBallroom2: String = "",
-    var commentKpzOpu: String = "",
-    var commentKpz2: String = "",
-    var commentFirePump: String = "",
-    var commentWorkshop: String = "",
-    var commentArtWell: String = "",
-    var commentArtesianWell: String = "",
-    var commentRoomAb: String = "",
-    var commentBasement: String = "",
+    var buildingsPhotoFiles: List<String> = emptyList()
 )

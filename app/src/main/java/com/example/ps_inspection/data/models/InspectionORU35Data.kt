@@ -27,12 +27,5 @@ data class InspectionORU35Data(
     var v353tsnC: String = "",
 
     // Фото ОРУ-35
-    var oru35PhotoFiles: List<String> = emptyList(),
-
-    // 💬 Комментарии по блокам
-    var commentTsn: String = "",           // комментарий для блока ТСН
-    var commentTt352: String = "",         // комментарий для ТТ-35 2ТСН
-    var commentTt353: String = "",         // комментарий для ТТ-35 3ТСН
-    var commentV352: String = "",          // комментарий для В-35 2ТСН
-    var commentV353: String = ""           // комментарий для В-35 3ТСН
+    var oru35PhotoFiles: List<String> = emptyList()
 )

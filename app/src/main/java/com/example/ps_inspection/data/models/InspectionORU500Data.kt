@@ -183,40 +183,5 @@ data class InspectionORU500Data(
     var photoTrachukovskaya1tn: List<String> = emptyList(),
 
     // Фото для Белозёрной
-    var photoBelozernaya2tn: List<String> = emptyList(),
-
-    // ========== КОММЕНТАРИИ (с разделителем |||) ==========
-    // В-500 (выключатели)
-    var commentR5002s: String = "",
-    var commentVsht31: String = "",
-    var commentVlt30: String = "",
-    var commentVshl32: String = "",
-    var commentVshl21: String = "",
-    var commentVsht22: String = "",
-    var commentVlt20: String = "",
-    var commentVsht11: String = "",
-    var commentVshl12: String = "",
-
-    // ТТ-500
-    var commentTtVsht31: String = "",
-    var commentTtVlt30: String = "",
-    var commentTtVshl32: String = "",
-    var commentTtVshl21: String = "",
-    var commentTtVsht22: String = "",
-    var commentTtVlt20: String = "",
-    var commentTtVsht11: String = "",
-    var commentTtVshl12: String = "",
-
-    // ТН-500 (трансформаторы напряжения)
-    var commentTn1500: String = "",
-    var commentTn2500: String = "",
-    var commentTn500Sgres1: String = "",
-
-    // Трачуковская
-    var commentTrachukovskayaTt: String = "",
-    var commentTrachukovskaya2tn: String = "",
-    var commentTrachukovskaya1tn: String = "",
-
-    // Белозёрная
-    var commentBelozernaya2tn: String = ""
+    var photoBelozernaya2tn: List<String> = emptyList()
 )

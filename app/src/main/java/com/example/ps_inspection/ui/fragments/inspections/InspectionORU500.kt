@@ -1,6 +1,11 @@
 package com.example.ps_inspection.ui.fragments.inspections
 
+import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -10,6 +15,7 @@ import android.widget.AdapterView
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -19,6 +25,7 @@ import com.example.ps_inspection.R
 import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionORU500Data
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
+import com.example.ps_inspection.data.utils.InputValidator
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionORU500Binding
 import com.example.ps_inspection.ui.fragments.dialogs.CommentsDialogFragment
@@ -30,9 +37,11 @@ class InspectionORU500 : Fragment() {
 
     private var _binding: FragmentInspectionORU500Binding? = null
     private val binding get() = _binding!!
+    private var currentToast: Toast? = null
 
     private val sharedViewModel: SharedInspectionViewModel by activityViewModels()
     private lateinit var mediaManager: InspectionMediaManager
+    private lateinit var layoutInflater: LayoutInflater
 
     private var isUpdatingUIFromViewModel = false
 
@@ -51,6 +60,7 @@ class InspectionORU500 : Fragment() {
     ): View {
         _binding = FragmentInspectionORU500Binding.inflate(inflater, container, false)
         mediaManager = InspectionMediaManager(requireContext())
+        layoutInflater = inflater
         return binding.root
     }
 
@@ -79,6 +89,39 @@ class InspectionORU500 : Fragment() {
         // Обновляем состояние всех кнопок
         updatePhotoButtonsState()
         refreshAllStates()
+    }
+
+    // ==================== ВАЛИДАЦИЯ ====================
+
+    private fun validateEditText(editText: EditText, paramName: String, min: Double, max: Double): Boolean {
+        val value = editText.text.toString()
+        if (value.isBlank()) return true
+
+        if (!InputValidator.isInRange(value, min, max)) {
+            showValidationError(InputValidator.getRangeMessage(paramName, min, max))
+            editText.setBackgroundResource(R.drawable.edittext_border_error)
+            editText.requestFocus()
+            return false
+        }
+        editText.setBackgroundResource(R.drawable.edittext_border)
+        return true
+    }
+
+    private fun showValidationError(message: String) {
+        currentToast?.cancel()
+
+        val layout = layoutInflater.inflate(R.layout.custom_toast, null)
+        val text = layout.findViewById<TextView>(R.id.toast_text)
+        text.text = message
+        text.setTextColor(Color.parseColor("#FF4444"))
+
+        val toast = Toast(requireContext())
+        toast.duration = Toast.LENGTH_LONG
+        toast.view = layout
+        toast.setGravity(android.view.Gravity.TOP, 0, 100)
+        toast.show()
+
+        currentToast = toast
     }
 
     private fun setupMediaButtons() {
@@ -178,7 +221,6 @@ class InspectionORU500 : Fragment() {
         }
     }
 
-    // ИСПРАВЛЕНО: тип изменён с Map<String, List<String>> на Map<String, List<Comment>>
     fun updateCommentButtonsState(commentsMap: Map<String, List<Comment>>) {
         commentButtons.forEach { (button, key) ->
             val hasComments = commentsMap[key]?.isNotEmpty() == true
@@ -582,25 +624,34 @@ class InspectionORU500 : Fragment() {
     }
 
     private fun setupInputListeners() {
-        setupEditTextListener(binding.gasPressureVsht31A) { text ->
+        // Давление элегаза (с валидацией)
+        setupEditTextListenerWithValidation(binding.gasPressureVsht31A, "ВШТ-31 давление элегаза A",
+            InputValidator.ORU500.SF6_PRESSURE_MIN, InputValidator.ORU500.SF6_PRESSURE_MAX) { text ->
             sharedViewModel.updateORU500Data { gasPressureVsht31A = text }
         }
-        setupEditTextListener(binding.gasPressureVsht31B) { text ->
+        setupEditTextListenerWithValidation(binding.gasPressureVsht31B, "ВШТ-31 давление элегаза B",
+            InputValidator.ORU500.SF6_PRESSURE_MIN, InputValidator.ORU500.SF6_PRESSURE_MAX) { text ->
             sharedViewModel.updateORU500Data { gasPressureVsht31B = text }
         }
-        setupEditTextListener(binding.gasPressureVsht31C) { text ->
+        setupEditTextListenerWithValidation(binding.gasPressureVsht31C, "ВШТ-31 давление элегаза C",
+            InputValidator.ORU500.SF6_PRESSURE_MIN, InputValidator.ORU500.SF6_PRESSURE_MAX) { text ->
             sharedViewModel.updateORU500Data { gasPressureVsht31C = text }
         }
-        setupEditTextListener(binding.gasPressureVlt30A) { text ->
+
+        setupEditTextListenerWithValidation(binding.gasPressureVlt30A, "ВЛТ-30 давление элегаза A",
+            InputValidator.ORU500.SF6_PRESSURE_MIN, InputValidator.ORU500.SF6_PRESSURE_MAX) { text ->
             sharedViewModel.updateORU500Data { gasPressureVlt30A = text }
         }
-        setupEditTextListener(binding.gasPressureVlt30B) { text ->
+        setupEditTextListenerWithValidation(binding.gasPressureVlt30B, "ВЛТ-30 давление элегаза B",
+            InputValidator.ORU500.SF6_PRESSURE_MIN, InputValidator.ORU500.SF6_PRESSURE_MAX) { text ->
             sharedViewModel.updateORU500Data { gasPressureVlt30B = text }
         }
-        setupEditTextListener(binding.gasPressureVlt30C) { text ->
+        setupEditTextListenerWithValidation(binding.gasPressureVlt30C, "ВЛТ-30 давление элегаза C",
+            InputValidator.ORU500.SF6_PRESSURE_MIN, InputValidator.ORU500.SF6_PRESSURE_MAX) { text ->
             sharedViewModel.updateORU500Data { gasPressureVlt30C = text }
         }
 
+        // Остальные спиннеры без валидации
         setupSpinnerListener(binding.purgingR5002sA1) { selectedItem ->
             sharedViewModel.updateORU500Data { purgingR5002sA1 = selectedItem.toString() }
         }
@@ -956,13 +1007,22 @@ class InspectionORU500 : Fragment() {
         }
     }
 
-    private fun setupEditTextListener(editText: EditText, onTextChanged: (String) -> Unit) {
+    private fun setupEditTextListenerWithValidation(
+        editText: EditText,
+        paramName: String,
+        min: Double,
+        max: Double,
+        onTextChanged: (String) -> Unit
+    ) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (isUpdatingUIFromViewModel) return
                 val newText = s?.toString() ?: ""
-                onTextChanged(newText)
+
+                if (validateEditText(editText, paramName, min, max)) {
+                    onTextChanged(newText)
+                }
             }
             override fun afterTextChanged(s: Editable?) {}
         })
@@ -986,6 +1046,8 @@ class InspectionORU500 : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        currentToast?.cancel()
+        currentToast = null
         _binding = null
     }
 
