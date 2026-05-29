@@ -25,6 +25,7 @@ import com.example.ps_inspection.data.models.Comment
 import com.example.ps_inspection.data.models.InspectionORU35Data
 import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.data.repositories.LastInspectionManager
+import com.example.ps_inspection.data.repositories.SettingsManager
 import com.example.ps_inspection.data.utils.InputValidator
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionORU35Binding
@@ -34,6 +35,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class InspectionORU35 : Fragment() {
+
+    private lateinit var settingsManager: SettingsManager
 
     private var currentToast: Toast? = null
     private lateinit var layoutInflater: LayoutInflater
@@ -67,6 +70,9 @@ class InspectionORU35 : Fragment() {
 
         initMappings()
 
+        // 🔧 Инициализируем settingsManager ПЕРВЫМ
+        settingsManager = SettingsManager(requireContext())
+
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.oru35Data.collectLatest { data ->
                 updateUIFromData(data)
@@ -81,7 +87,7 @@ class InspectionORU35 : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.lastValuesFromSheets.collect { lastValues ->
-                applyHintsFromSheets(lastValues)
+                applyHintsFromSheets(lastValues)  // теперь settingsManager уже инициализирован
             }
         }
 
@@ -137,6 +143,9 @@ class InspectionORU35 : Fragment() {
     }
 
     private fun applyHintsFromSheets(lastValues: Map<String, String>) {
+        // Проверяем, включены ли подсказки в настройках
+        if (!settingsManager.areHintsEnabled()) return
+
         if (!::hintMapping.isInitialized || !::paramNames.isInitialized) return
 
         if (lastValues.isEmpty()) {
@@ -160,6 +169,9 @@ class InspectionORU35 : Fragment() {
     }
 
     private fun loadLocalHints() {
+        // Проверяем, включены ли подсказки в настройках
+        if (!settingsManager.areHintsEnabled()) return
+
         val lastData = lastInspectionManager.getLastOru35Data()
         if (lastData == null) {
             Toast.makeText(requireContext(), "Нет данных о прошлых осмотрах", Toast.LENGTH_SHORT).show()
@@ -185,6 +197,9 @@ class InspectionORU35 : Fragment() {
     }
 
     private fun setupEditTextHint(editText: EditText, lastValue: String, paramName: String) {
+        // Проверяем, включены ли подсказки в настройках
+        if (!settingsManager.areHintsEnabled()) return
+
         if (lastValue.isNotBlank() && lastValue != "○" && lastValue != "-" && lastValue != "null") {
             editText.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus && editText.text.toString().isEmpty()) {
@@ -196,6 +211,9 @@ class InspectionORU35 : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupSpinnerHint(spinner: Spinner, lastValue: String, paramName: String) {
+        // Проверяем, включены ли подсказки в настройках
+        if (!settingsManager.areHintsEnabled()) return
+
         if (lastValue.isNotBlank() && lastValue != "○" && lastValue != "-" && lastValue != "null") {
             spinner.setOnTouchListener { _, event ->
                 if (event.action == android.view.MotionEvent.ACTION_UP) {

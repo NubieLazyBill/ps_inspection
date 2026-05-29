@@ -22,6 +22,7 @@ import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import android.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
+import com.example.ps_inspection.data.repositories.SettingsManager
 
 
 class MainMenuFragment : Fragment() {
@@ -239,7 +240,7 @@ class MainMenuFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_settings -> {
-                Toast.makeText(requireContext(), "Настройки (в разработке)", Toast.LENGTH_SHORT).show()
+                showSettingsDialog()  // ← ВЫЗЫВАЕМ ДИАЛОГ НАСТРОЕК
                 true
             }
             R.id.menu_about -> {
@@ -248,6 +249,28 @@ class MainMenuFragment : Fragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showSettingsDialog() {
+        val settingsManager = SettingsManager(requireContext())
+        val isEnabled = settingsManager.areHintsEnabled()
+
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_settings, null)
+        val switchHints = dialogView.findViewById<androidx.appcompat.widget.SwitchCompat>(R.id.switchHints)
+
+        switchHints.isChecked = isEnabled
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("⚙️ Настройки")
+            .setView(dialogView)
+            .setPositiveButton("Сохранить") { _, _ ->
+                settingsManager.setHintsEnabled(switchHints.isChecked)
+                Toast.makeText(requireContext(),
+                    if (switchHints.isChecked) "Включено" else "Отключено",
+                    Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
     }
 
     override fun onDestroyView() {
