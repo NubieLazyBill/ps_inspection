@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="4dp"
-                        android:text="Уровень масла в баке, мм"
+                        android:text="Уровень масла в баке"
                         android:textSize="12sp" />
                     <EditText
                         android:id="@+id/atg2_c_oil_tank"
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="4dp"
-                        android:text="Уровень масла в РПН, мм"
+                        android:text="Уровень масла в РПН"
                         android:textSize="12sp" />
                     <EditText
                         android:id="@+id/atg2_c_oil_rpn"
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="4dp"
-                        android:text="Давление элегаза 500 кВ, МПа"
+                        android:text="Ввод 500кВ"
                         android:textSize="12sp" />
                     <EditText
                         android:id="@+id/atg2_c_pressure_500"
@@ -131,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="4dp"
-                        android:text="Давление элегаза 220 кВ, МПа"
+                        android:text="Ввод 220кВ"
                         android:textSize="12sp" />
                     <EditText
                         android:id="@+id/atg2_c_pressure_220"
@@ -150,7 +150,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="4dp"
-                        android:text="Температура ТS-1, °C"
+                        android:text="Температура ТС1"
                         android:textSize="12sp" />
                     <EditText
                         android:id="@+id/atg2_c_temp_ts1"
@@ -169,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="4dp"
-                        android:text="Температура ТS-2, °C"
+                        android:text="Температура ТС2"
                         android:textSize="12sp" />
                     <EditText
                         android:id="@+id/atg2_c_temp_ts2"
@@ -191,7 +191,7 @@
                         android:background="#F5F5F5"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Давление маслонасосов, МПа"
+                        android:text="Давление в маслонасосах"
                         android:textSize="14sp"
                         android:textStyle="bold" />
                 </TableRow>
@@ -208,7 +208,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -263,7 +263,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -318,7 +318,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -373,7 +373,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №4"
+                        android:text="4 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -481,38 +481,38 @@
                 android:shrinkColumns="*">
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_b_oil_tank" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_b_oil_rpn" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 500 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 500кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_b_pressure_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 220 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 220кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_b_pressure_220" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-1, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС1" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_b_temp_ts1" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-2, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС2" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_b_temp_ts2" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <!-- Манометры маслонасосов -->
                 <TableRow>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление маслонасосов, МПа" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление в маслонасосах" android:textSize="14sp" android:textStyle="bold" />
                 </TableRow>
 
                 <!-- Группа 1 -->
@@ -527,7 +527,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -582,7 +582,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -637,7 +637,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -692,7 +692,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №4"
+                        android:text="4 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -799,38 +799,38 @@
                 android:shrinkColumns="*">
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_a_oil_tank" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_a_oil_rpn" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 500 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 500кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_a_pressure_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="none" android:text="—" android:gravity="center" android:textSize="14sp" android:enabled="false" android:focusable="false" android:clickable="false" android:background="@android:color/transparent" android:textColor="#666" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 220 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 220кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_a_pressure_220" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="none" android:text="—" android:gravity="center" android:textSize="14sp" android:enabled="false" android:focusable="false" android:clickable="false" android:background="@android:color/transparent" android:textColor="#666" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-1, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС1" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_a_temp_ts1" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-2, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС2" android:textSize="12sp" />
                     <EditText android:id="@+id/atg2_a_temp_ts2" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <!-- Манометры маслонасосов -->
                 <TableRow>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление маслонасосов, МПа" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление в маслонасосах" android:textSize="14sp" android:textStyle="bold" />
                 </TableRow>
 
                 <!-- Группа 1 -->
@@ -845,7 +845,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -900,7 +900,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -955,7 +955,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1010,7 +1010,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №4"
+                        android:text="4 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1062,7 +1062,7 @@
             android:background="#DDD"
             android:layout_marginVertical="8dp" />
 
-        <!-- ==================== АТГ резервная ==================== -->
+        <!-- ==================== АТГ резервная фаза ==================== -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -1083,7 +1083,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="АТГ резервная"
+                    android:text="АТГ резерв(3АТГ ф.А)"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -1117,38 +1117,38 @@
                 android:shrinkColumns="*">
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке" android:textSize="12sp" />
                     <EditText android:id="@+id/atg_reserve_oil_tank" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН" android:textSize="12sp" />
                     <EditText android:id="@+id/atg_reserve_oil_rpn" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 500 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 500кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg_reserve_pressure_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 220 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 220кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg_reserve_pressure_220" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-1, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС1" android:textSize="12sp" />
                     <EditText android:id="@+id/atg_reserve_temp_ts1" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-2, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС2" android:textSize="12sp" />
                     <EditText android:id="@+id/atg_reserve_temp_ts2" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <!-- Манометры маслонасосов -->
                 <TableRow>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление маслонасосов, МПа" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление в маслонасосах" android:textSize="14sp" android:textStyle="bold" />
                 </TableRow>
 
                 <!-- Группа 1 -->
@@ -1163,7 +1163,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1218,7 +1218,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1273,7 +1273,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1328,7 +1328,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №4"
+                        android:text="4 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1510,38 +1510,38 @@
                 android:shrinkColumns="*">
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_c_oil_tank" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_c_oil_rpn" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 500 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 500кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_c_pressure_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="none" android:text="—" android:gravity="center" android:textSize="14sp" android:enabled="false" android:focusable="false" android:clickable="false" android:background="@android:color/transparent" android:textColor="#666" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 220 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 220кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_c_pressure_220" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="none" android:text="—" android:gravity="center" android:textSize="14sp" android:enabled="false" android:focusable="false" android:clickable="false" android:background="@android:color/transparent" android:textColor="#666" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-1, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС1" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_c_temp_ts1" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-2, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС2" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_c_temp_ts2" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <!-- Манометры маслонасосов -->
                 <TableRow>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление маслонасосов, МПа" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление в маслонасосах" android:textSize="14sp" android:textStyle="bold" />
                 </TableRow>
 
                 <!-- Группа 1 -->
@@ -1556,7 +1556,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1611,7 +1611,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1666,7 +1666,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1721,7 +1721,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №4"
+                        android:text="4 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1828,38 +1828,38 @@
                 android:shrinkColumns="*">
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_b_oil_tank" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_b_oil_rpn" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 500 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 500кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_b_pressure_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="none" android:text="—" android:gravity="center" android:textSize="14sp" android:enabled="false" android:focusable="false" android:clickable="false" android:background="@android:color/transparent" android:textColor="#666" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 220 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 220кВ" android:textSize="12sp" />
                     <Spinner android:id="@+id/atg3_b_pressure_220" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:gravity="center" android:textSize="14sp" android:textAlignment="center" android:paddingStart="36dp" android:entries="@array/pressure_220_3ATG_B"/>
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-1, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС1" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_b_temp_ts1" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-2, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС2" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_b_temp_ts2" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <!-- Манометры маслонасосов -->
                 <TableRow>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление маслонасосов, МПа" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление в маслонасосах" android:textSize="14sp" android:textStyle="bold" />
                 </TableRow>
 
                 <!-- Группа 1 -->
@@ -1874,7 +1874,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1929,7 +1929,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -1984,7 +1984,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2039,7 +2039,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №4"
+                        android:text="4 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2147,38 +2147,38 @@
                 android:shrinkColumns="*">
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_a_oil_tank" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в РПН" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_a_oil_rpn" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 500 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 500кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_a_pressure_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="none" android:text="—" android:gravity="center" android:textSize="14sp" android:enabled="false" android:focusable="false" android:clickable="false" android:background="@android:color/transparent" android:textColor="#666" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 220 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 220кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_a_pressure_220" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-1, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС1" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_a_temp_ts1" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS-2, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС2" android:textSize="12sp" />
                     <EditText android:id="@+id/atg3_a_temp_ts2" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <!-- Манометры маслонасосов -->
                 <TableRow>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление маслонасосов, МПа" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление в маслонасосах" android:textSize="14sp" android:textStyle="bold" />
                 </TableRow>
 
                 <!-- Группа 1 -->
@@ -2193,7 +2193,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2248,7 +2248,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2303,7 +2303,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2358,7 +2358,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №4"
+                        android:text="4 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2465,23 +2465,23 @@
                 android:shrinkColumns="*">
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке" android:textSize="12sp" />
                     <EditText android:id="@+id/reactor_c_oil_tank" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 500 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 500кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/reactor_c_pressure_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС, °C" android:textSize="12sp" />
                     <EditText android:id="@+id/reactor_c_temp_ts" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <!-- Манометры маслонасосов -->
                 <TableRow>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление маслонасосов, МПа" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление в маслонасосах" android:textSize="14sp" android:textStyle="bold" />
                 </TableRow>
 
                 <!-- Группа 1 -->
@@ -2496,7 +2496,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2551,7 +2551,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2606,7 +2606,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2719,23 +2719,23 @@
                 android:shrinkColumns="*">
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке, мм" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке" android:textSize="12sp" />
                     <EditText android:id="@+id/reactor_b_oil_tank" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 500 кВ, МПа" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Ввод 500кВ" android:textSize="12sp" />
                     <EditText android:id="@+id/reactor_b_pressure_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS, °C" android:textSize="12sp" />
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТС, °C" android:textSize="12sp" />
                     <EditText android:id="@+id/reactor_b_temp_ts" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
                 </TableRow>
 
                 <!-- Манометры маслонасосов -->
                 <TableRow>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление маслонасосов, МПа" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление в маслонасосах" android:textSize="14sp" android:textStyle="bold" />
                 </TableRow>
 
                 <!-- Группа 1 -->
@@ -2750,7 +2750,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2805,7 +2805,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2860,7 +2860,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -2973,23 +2973,82 @@
                 android:shrinkColumns="*">
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Уровень масла в баке, мм" android:textSize="12sp" />
-                    <EditText android:id="@+id/reactor_a_oil_tank" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="number|numberSigned" android:hint="0" android:gravity="center" android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="Уровень масла в баке"
+                        android:textSize="12sp" />
+                    
+                    <EditText
+                        android:id="@+id/reactor_a_oil_tank"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="number|numberSigned"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Давление элегаза 500 кВ, МПа" android:textSize="12sp" />
-                    <EditText android:id="@+id/reactor_a_pressure_500" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="none" android:text="—" android:gravity="center" android:textSize="14sp" android:enabled="false" android:focusable="false" android:clickable="false" android:background="@android:color/transparent" android:textColor="#666" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="Ввод 500кВ"
+                        android:textSize="12sp" />
+                    
+                    <EditText
+                        android:id="@+id/reactor_a_pressure_500"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="none"
+                        android:text="—"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:background="@android:color/transparent"
+                        android:textColor="#666" />
                 </TableRow>
 
                 <TableRow>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="4dp" android:text="Температура ТS, °C" android:textSize="12sp" />
-                    <EditText android:id="@+id/reactor_a_temp_ts" android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:inputType="numberDecimal" android:hint="0" android:gravity="center" android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="Температура ТС, °C"
+                        android:textSize="12sp" />
+
+                    <EditText
+                        android:id="@+id/reactor_a_temp_ts"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:gravity="center"
+                        android:textSize="14sp" />
                 </TableRow>
 
                 <!-- Манометры маслонасосов -->
                 <TableRow>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_span="3" android:background="#F5F5F5" android:gravity="center" android:padding="8dp" android:text="Давление маслонасосов, МПа" android:textSize="14sp" android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_span="3"
+                        android:background="#F5F5F5"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:text="Давление в маслонасосах"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </TableRow>
 
                 <!-- Группа 1 -->
@@ -3004,7 +3063,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №1"
+                        android:text="1 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -3059,7 +3118,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №2"
+                        android:text="2 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText
@@ -3114,7 +3173,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Группа №3"
+                        android:text="3 гр.охл"
                         android:textSize="12sp" />
 
                     <EditText

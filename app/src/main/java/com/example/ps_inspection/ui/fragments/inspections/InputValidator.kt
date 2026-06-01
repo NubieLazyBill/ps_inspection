@@ -5,19 +5,19 @@ object InputValidator {
     // Граничные значения для ОРУ-35
     object ORU35 {
         const val OIL_LEVEL_MIN = -60.0
-        const val OIL_LEVEL_MAX = 45.0
+        const val OIL_LEVEL_MAX = 40.0
     }
 
     // Граничные значения для ОРУ-500
     object ORU500 {
-        const val SF6_PRESSURE_MIN = 0.4
-        const val SF6_PRESSURE_MAX = 0.8
+        const val SF6_PRESSURE_MIN = 0.7
+        const val SF6_PRESSURE_MAX = 0.9
     }
 
     // Граничные значения для АТГ и Реакторов
     object ATG {
         // Уровень масла в баке и РПН (мм)
-        const val OIL_LEVEL_MIN = -100.0
+        const val OIL_LEVEL_MIN = -60.0
         const val OIL_LEVEL_MAX = 100.0
 
         // Давление на вводах (МПа)
