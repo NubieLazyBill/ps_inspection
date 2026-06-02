@@ -7,45 +7,61 @@ data class VoiceParsedResult(
 
 object ORU35MassVoiceParser {
 
-    // Маппинг ключевых слов на поля (для точных совпадений)
-    private val fieldMapping = listOf(
+    // Маппинг оборудования с фазами
+    private val phaseEquipmentMapping = listOf(
         // ТТ-35 2ТСН
-        mapOf("patterns" to listOf("ТТ-35 2ТСН А", "тт 35 2 тсн а", "2 тсн тт а", "тт 2 тсн а", "тт 35 2 тсн а", "тт 35 2а", "тт 2а"), "field" to "tt352tsnA"),
-        mapOf("patterns" to listOf("ТТ-35 2ТСН В", "тт 35 2 тсн в", "2 тсн тт в", "тт 2 тсн в", "тт 35 2 тсн в", "тт 35 2в", "тт 2в"), "field" to "tt352tsnB"),
-        mapOf("patterns" to listOf("ТТ-35 2ТСН С", "тт 35 2 тсн с", "2 тсн тт с", "тт 2 тсн с", "тт 35 2 тсн с", "тт 35 2с", "тт 2с"), "field" to "tt352tsnC"),
-
+        mapOf(
+            "name" to "ТТ-35 2ТСН",
+            "patterns" to listOf("ТТ-35 2ТСН", "тт 35 2 тсн", "2 тсн тт", "тт 2 тсн", "тт 35 2", "тт 2"),
+            "fields" to mapOf("А" to "tt352tsnA", "В" to "tt352tsnB", "С" to "tt352tsnC")
+        ),
         // ТТ-35 3ТСН
-        mapOf("patterns" to listOf("ТТ-35 3ТСН А", "тт 35 3 тсн а", "3 тсн тт а", "тт 3 тсн а", "тт 35 3 тсн а", "тт 35 3а", "тт 3а"), "field" to "tt353tsnA"),
-        mapOf("patterns" to listOf("ТТ-35 3ТСН В", "тт 35 3 тсн в", "3 тсн тт в", "тт 3 тсн в", "тт 35 3 тсн в", "тт 35 3в", "тт 3в"), "field" to "tt353tsnB"),
-        mapOf("patterns" to listOf("ТТ-35 3ТСН С", "тт 35 3 тсн с", "3 тсн тт с", "тт 3 тсн с", "тт 35 3 тсн с", "тт 35 3с", "тт 3с"), "field" to "tt353tsnC"),
-
+        mapOf(
+            "name" to "ТТ-35 3ТСН",
+            "patterns" to listOf("ТТ-35 3ТСН", "тт 35 3 тсн", "3 тсн тт", "тт 3 тсн", "тт 35 3", "тт 3"),
+            "fields" to mapOf("А" to "tt353tsnA", "В" to "tt353tsnB", "С" to "tt353tsnC")
+        ),
         // В-35 2ТСН
-        mapOf("patterns" to listOf("В-35 2ТСН А", "в 35 2 тсн а", "2 тсн в а", "в 2 тсн а", "в 35 2 тсн а", "в 35 2а", "в 2а"), "field" to "v352tsnA"),
-        mapOf("patterns" to listOf("В-35 2ТСН В", "в 35 2 тсн в", "2 тсн в в", "в 2 тсн в", "в 35 2 тсн в", "в 35 2в", "в 2в"), "field" to "v352tsnB"),
-        mapOf("patterns" to listOf("В-35 2ТСН С", "в 35 2 тсн с", "2 тсн в с", "в 2 тсн с", "в 35 2 тсн с", "в 35 2с", "в 2с"), "field" to "v352tsnC"),
-
+        mapOf(
+            "name" to "В-35 2ТСН",
+            "patterns" to listOf("В-35 2ТСН", "в 35 2 тсн", "2 тсн в", "в 2 тсн", "в 35 2", "в 2"),
+            "fields" to mapOf("А" to "v352tsnA", "В" to "v352tsnB", "С" to "v352tsnC")
+        ),
         // В-35 3ТСН
-        mapOf("patterns" to listOf("В-35 3ТСН А", "в 35 3 тсн а", "3 тсн в а", "в 3 тсн а", "в 35 3 тсн а", "в 35 3а", "в 3а"), "field" to "v353tsnA"),
-        mapOf("patterns" to listOf("В-35 3ТСН В", "в 35 3 тсн в", "3 тсн в в", "в 3 тсн в", "в 35 3 тсн в", "в 35 3в", "в 3в"), "field" to "v353tsnB"),
-        mapOf("patterns" to listOf("В-35 3ТСН С", "в 35 3 тсн с", "3 тсн в с", "в 3 тсн с", "в 35 3 тсн с", "в 35 3с", "в 3с"), "field" to "v353tsnC")
+        mapOf(
+            "name" to "В-35 3ТСН",
+            "patterns" to listOf("В-35 3ТСН", "в 35 3 тсн", "3 тсн в", "в 3 тсн", "в 35 3", "в 3"),
+            "fields" to mapOf("А" to "v353tsnA", "В" to "v353tsnB", "С" to "v353tsnC")
+        )
     )
 
-    // Паттерн для поиска значения после оборудования
+    // Фазы и их варианты произношения
+    private val phaseMapping = mapOf(
+        "А" to listOf("а", "фаза а", "а фаза", "а."),
+        "В" to listOf("б", "бэ", "в", "фаза б", "фаза бэ", "фаза в", "б фаза", "бэ фаза", "в фаза", "б.", "в."),
+        "С" to listOf("с", "эс", "ц", "фаза с", "фаза эс", "фаза ц", "с фаза", "эс фаза", "ц фаза", "с.", "ц.")
+    )
+
+    // Паттерн для поиска значения
     private val valuePattern = Regex(
         """(-?\d+(?:[.,]\d+)?)|(\d+/\d+)|(полтора|ноль\s*пять|пол|минус\s*полтора)""",
         RegexOption.IGNORE_CASE
     )
 
-    // Динамический паттерн для ТСН (любая цифра или слово перед ТСН)
+    // Динамический паттерн для ТСН
     private val tsnPattern = Regex(
         """(?:два|три|четыре|2|3|4|второй|третий|четвертый|четвёртый)\s*(?:тсн|ТСН|тэсэн)""",
         RegexOption.IGNORE_CASE
     )
 
-    // Конвертер словесных и дробных значений в число
+    // Паттерн для поиска фразы "фаза Х значение"
+    private val phaseValuePattern = Regex(
+        """(?:фаза\s*)?([А-Яа-яA-Za-z])(?:\s*[-–—]?\s*)?(\d+(?:[.,]\d+)?|\d+/\d+|полтора|ноль\s*пять|пол)""",
+        RegexOption.IGNORE_CASE
+    )
+
     private fun convertToNumber(raw: String): String? {
         val lower = raw.lowercase().trim()
-
         return when {
             lower.contains("/") -> {
                 val parts = lower.split("/")
@@ -69,20 +85,19 @@ object ORU35MassVoiceParser {
         }
     }
 
-    // Нормализация текста (цифры словами → цифрами)
     private fun normalizeText(text: String): String {
-        var result = text
+        var result = text.lowercase().trim()
         result = result.replace(Regex("\\bдва\\b"), "2")
         result = result.replace(Regex("\\bтри\\b"), "3")
         result = result.replace(Regex("\\bчетыре\\b"), "4")
         result = result.replace(Regex("\\bвторой\\b"), "2")
         result = result.replace(Regex("\\bтретий\\b"), "3")
         result = result.replace(Regex("\\bчетвертый\\b|\\bчетвёртый\\b"), "4")
-        result = result.replace(Regex("тэсэн", RegexOption.IGNORE_CASE), "тсн")
+        result = result.replace(Regex("тэсэн"), "тсн")
+        result = result.replace(Regex("\\s+"), " ")
         return result
     }
 
-    // Определение поля для ТСН по номеру
     private fun getTsnField(number: String): String? {
         return when (number) {
             "2", "два", "второй" -> "tsn2"
@@ -92,12 +107,40 @@ object ORU35MassVoiceParser {
         }
     }
 
+    private fun normalizePhase(input: String): String? {
+        val lower = input.lowercase()
+        for ((phase, variants) in phaseMapping) {
+            if (variants.contains(lower) || variants.any { lower.contains(it) }) {
+                return phase
+            }
+        }
+        return null
+    }
+
+    private fun parsePhaseValues(text: String, afterEquipment: String): List<Pair<String, String>> {
+        val results = mutableListOf<Pair<String, String>>()
+        val searchText = afterEquipment.lowercase()
+
+        // Ищем паттерны "А 0.7", "фаза Б 0.5", "С 0.6"
+        val matches = phaseValuePattern.findAll(searchText)
+        for (match in matches) {
+            val phaseRaw = match.groupValues[1]
+            val valueRaw = match.groupValues[2]
+            val phase = normalizePhase(phaseRaw)
+            val converted = convertToNumber(valueRaw)
+            if (phase != null && converted != null) {
+                results.add(Pair(phase, converted))
+            }
+        }
+
+        return results
+    }
+
     fun parse(spokenText: String): List<VoiceParsedResult> {
         val results = mutableListOf<VoiceParsedResult>()
-        var normalized = spokenText.lowercase().trim()
-        normalized = normalizeText(normalized)
+        var normalized = normalizeText(spokenText)
 
-        // ========== ОБРАБОТКА ТСН (динамическая) ==========
+        // ========== ОБРАБОТКА ТСН ==========
         val tsnMatch = tsnPattern.find(normalized)
         if (tsnMatch != null) {
             val tsnText = tsnMatch.value
@@ -117,10 +160,11 @@ object ORU35MassVoiceParser {
             }
         }
 
-        // ========== ОБРАБОТКА ОСТАЛЬНОГО ОБОРУДОВАНИЯ ==========
-        for (mapping in fieldMapping) {
-            val patterns = mapping["patterns"] as List<String>
-            val field = mapping["field"] as String
+        // ========== ОБРАБОТКА ПОФАЗНОГО ОБОРУДОВАНИЯ ==========
+        for (equipment in phaseEquipmentMapping) {
+            val name = equipment["name"] as String
+            val patterns = equipment["patterns"] as List<String>
+            val fields = equipment["fields"] as Map<String, String>
 
             for (pattern in patterns) {
                 val patternLower = pattern.lowercase()
@@ -132,11 +176,12 @@ object ORU35MassVoiceParser {
                         ""
                     }
 
-                    val valueMatch = valuePattern.find(afterText)
-                    if (valueMatch != null) {
-                        val converted = convertToNumber(valueMatch.value)
-                        if (converted != null) {
-                            results.add(VoiceParsedResult(field, converted))
+                    // Парсим фазы и значения
+                    val phaseResults = parsePhaseValues(normalized, afterText)
+                    for ((phase, value) in phaseResults) {
+                        val field = fields[phase]
+                        if (field != null) {
+                            results.add(VoiceParsedResult(field, value))
                         }
                     }
                     break
@@ -144,7 +189,7 @@ object ORU35MassVoiceParser {
             }
         }
 
-        return results
+        return results.distinctBy { it.fieldName }
     }
 
     fun formatConfirmationMessage(results: List<VoiceParsedResult>): String {
