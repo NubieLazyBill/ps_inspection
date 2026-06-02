@@ -10,6 +10,9 @@ import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -17,8 +20,10 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.ps_inspection.R
 import com.example.ps_inspection.data.models.Comment
@@ -27,6 +32,9 @@ import com.example.ps_inspection.data.repositories.InspectionMediaManager
 import com.example.ps_inspection.data.repositories.LastInspectionManager
 import com.example.ps_inspection.data.repositories.SettingsManager
 import com.example.ps_inspection.data.utils.InputValidator
+import com.example.ps_inspection.data.utils.ORU35MassVoiceParser
+import com.example.ps_inspection.data.utils.VoiceInputManager
+import com.example.ps_inspection.data.utils.VoiceParsedResult
 import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionORU35Binding
 import com.example.ps_inspection.ui.fragments.dialogs.CommentsDialogFragment
@@ -36,6 +44,7 @@ import kotlinx.coroutines.launch
 
 class InspectionORU35 : Fragment() {
 
+    private lateinit var voiceManager: VoiceInputManager
     private lateinit var settingsManager: SettingsManager
 
     private var currentToast: Toast? = null
@@ -70,8 +79,11 @@ class InspectionORU35 : Fragment() {
 
         initMappings()
 
-        // 🔧 Инициализируем settingsManager ПЕРВЫМ
+        // Инициализируем settingsManager
         settingsManager = SettingsManager(requireContext())
+
+        // Инициализация голосового ввода
+        voiceManager = VoiceInputManager(this)
 
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.oru35Data.collectLatest { data ->
@@ -87,9 +99,26 @@ class InspectionORU35 : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             sharedViewModel.lastValuesFromSheets.collect { lastValues ->
-                applyHintsFromSheets(lastValues)  // теперь settingsManager уже инициализирован
+                applyHintsFromSheets(lastValues)
             }
         }
+
+        // Включение меню в тулбаре
+        requireActivity().addMenuProvider(object : androidx.core.view.MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_inspection_oru35, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_voice_input -> {
+                        startMassVoiceInput()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         setupInputListeners()
         setupMediaButtons()
@@ -97,6 +126,61 @@ class InspectionORU35 : Fragment() {
 
         loadHintsFromSheets()
     }
+
+    // ==================== ГОЛОСОВОЙ ВВОД ====================
+
+    private fun startMassVoiceInput() {
+        voiceManager.startVoiceRecognition { spokenText ->
+            if (spokenText.isBlank()) {
+                Toast.makeText(requireContext(), "Не удалось распознать речь", Toast.LENGTH_SHORT).show()
+                return@startVoiceRecognition
+            }
+
+            android.util.Log.d("VoiceInput", "Распознано: $spokenText")
+
+            val results = ORU35MassVoiceParser.parse(spokenText)
+            if (results.isEmpty()) {
+                Toast.makeText(requireContext(), "Не удалось распознать показания для ОРУ-35", Toast.LENGTH_SHORT).show()
+                return@startVoiceRecognition
+            }
+
+            // Показываем диалог со всеми распознанными значениями
+            AlertDialog.Builder(requireContext())
+                .setTitle("🎤 Подтвердите ввод")
+                .setMessage(ORU35MassVoiceParser.formatConfirmationMessage(results))
+                .setPositiveButton("Применить всё") { _, _ ->
+                    applyMassVoiceResults(results)
+                    Toast.makeText(requireContext(), "✅ Показания обновлены", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("Отмена", null)
+                .show()
+        }
+    }
+
+    private fun applyMassVoiceResults(results: List<VoiceParsedResult>) {
+        for (result in results) {
+            android.util.Log.d("VoiceInput", "Применяем: ${result.fieldName} = ${result.value}")
+            when (result.fieldName) {
+                "tsn2" -> sharedViewModel.updateORU35Data { tsn2 = result.value }
+                "tsn3" -> sharedViewModel.updateORU35Data { tsn3 = result.value }
+                "tsn4" -> sharedViewModel.updateORU35Data { tsn4 = result.value }
+                "tt352tsnA" -> sharedViewModel.updateORU35Data { tt352tsnA = result.value }
+                "tt352tsnB" -> sharedViewModel.updateORU35Data { tt352tsnB = result.value }
+                "tt352tsnC" -> sharedViewModel.updateORU35Data { tt352tsnC = result.value }
+                "tt353tsnA" -> sharedViewModel.updateORU35Data { tt353tsnA = result.value }
+                "tt353tsnB" -> sharedViewModel.updateORU35Data { tt353tsnB = result.value }
+                "tt353tsnC" -> sharedViewModel.updateORU35Data { tt353tsnC = result.value }
+                "v352tsnA" -> sharedViewModel.updateORU35Data { v352tsnA = result.value }
+                "v352tsnB" -> sharedViewModel.updateORU35Data { v352tsnB = result.value }
+                "v352tsnC" -> sharedViewModel.updateORU35Data { v352tsnC = result.value }
+                "v353tsnA" -> sharedViewModel.updateORU35Data { v353tsnA = result.value }
+                "v353tsnB" -> sharedViewModel.updateORU35Data { v353tsnB = result.value }
+                "v353tsnC" -> sharedViewModel.updateORU35Data { v353tsnC = result.value }
+            }
+        }
+    }
+
+    // ==================== ОСТАЛЬНОЙ КОД (без изменений) ====================
 
     private fun initMappings() {
         hintMapping = mapOf(
@@ -143,9 +227,7 @@ class InspectionORU35 : Fragment() {
     }
 
     private fun applyHintsFromSheets(lastValues: Map<String, String>) {
-        // Проверяем, включены ли подсказки в настройках
         if (!settingsManager.areHintsEnabled()) return
-
         if (!::hintMapping.isInitialized || !::paramNames.isInitialized) return
 
         if (lastValues.isEmpty()) {
@@ -169,7 +251,6 @@ class InspectionORU35 : Fragment() {
     }
 
     private fun loadLocalHints() {
-        // Проверяем, включены ли подсказки в настройках
         if (!settingsManager.areHintsEnabled()) return
 
         val lastData = lastInspectionManager.getLastOru35Data()
@@ -197,7 +278,6 @@ class InspectionORU35 : Fragment() {
     }
 
     private fun setupEditTextHint(editText: EditText, lastValue: String, paramName: String) {
-        // Проверяем, включены ли подсказки в настройках
         if (!settingsManager.areHintsEnabled()) return
 
         if (lastValue.isNotBlank() && lastValue != "○" && lastValue != "-" && lastValue != "null") {
@@ -211,7 +291,6 @@ class InspectionORU35 : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupSpinnerHint(spinner: Spinner, lastValue: String, paramName: String) {
-        // Проверяем, включены ли подсказки в настройках
         if (!settingsManager.areHintsEnabled()) return
 
         if (lastValue.isNotBlank() && lastValue != "○" && lastValue != "-" && lastValue != "null") {
@@ -390,11 +469,9 @@ class InspectionORU35 : Fragment() {
         currentToast = toast
     }
 
-
     // ==================== НАСТРОЙКА СЛУШАТЕЛЕЙ ====================
 
     private fun setupInputListeners() {
-        // Уровни масла ТСН (с валидацией)
         setupEditTextListenerWithValidation(binding.tsn2Input, "2ТСН",
             InputValidator.ORU35.OIL_LEVEL_MIN, InputValidator.ORU35.OIL_LEVEL_MAX) { text ->
             sharedViewModel.updateORU35Data { tsn2 = text }
@@ -408,7 +485,6 @@ class InspectionORU35 : Fragment() {
             sharedViewModel.updateORU35Data { tsn4 = text }
         }
 
-        // Спиннеры (без валидации)
         setupSpinnerListener(binding.tt352TsnAInput) { sharedViewModel.updateORU35Data { tt352tsnA = it.toString() } }
         setupSpinnerListener(binding.tt352TsnBInput) { sharedViewModel.updateORU35Data { tt352tsnB = it.toString() } }
         setupSpinnerListener(binding.tt352TsnCInput) { sharedViewModel.updateORU35Data { tt352tsnC = it.toString() } }

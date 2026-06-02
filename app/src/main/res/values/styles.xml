@@ -22,4 +22,5 @@
     <style name="NeutralButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/gray_600</item>
     </style>
+
 </resources>

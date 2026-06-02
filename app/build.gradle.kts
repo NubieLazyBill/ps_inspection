@@ -12,9 +12,19 @@ android {
         minSdk = 26
         targetSdk = 36
         versionCode = 24
-        versionName = "2.6.0"
+        versionName = "2.6.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    // 🔧 НАСТРОЙКА ПОДПИСИ
+    signingConfigs {
+        create("release") {
+            storeFile = file("key_ps_inspection")
+            storePassword = "258025"
+            keyAlias = "key0"
+            keyPassword = "258025"
+        }
     }
 
     buildTypes {
@@ -25,6 +35,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
+        }
+        debug {
+            signingConfig = signingConfigs.getByName("release")  // ← debug использует релизный ключ
         }
     }
 
