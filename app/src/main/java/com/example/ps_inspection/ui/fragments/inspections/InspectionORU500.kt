@@ -97,14 +97,17 @@ class InspectionORU500 : Fragment() {
         val value = editText.text.toString()
         if (value.isBlank()) return true
 
-        if (!InputValidator.isInRange(value, min, max)) {
-            showValidationError(InputValidator.getRangeMessage(paramName, min, max))
+        val isInRange = InputValidator.isInRange(value, min, max)
+
+        if (!isInRange) {
+            // Только подсветка, без блокировки!
             editText.setBackgroundResource(R.drawable.edittext_border_error)
-            editText.requestFocus()
-            return false
+            showValidationError(InputValidator.getRangeMessage(paramName, min, max))
+        } else {
+            editText.setBackgroundResource(R.drawable.edittext_border)
         }
-        editText.setBackgroundResource(R.drawable.edittext_border)
-        return true
+
+        return true // Всегда возвращаем true, чтобы значение сохранилось
     }
 
     private fun showValidationError(message: String) {
@@ -1020,9 +1023,9 @@ class InspectionORU500 : Fragment() {
                 if (isUpdatingUIFromViewModel) return
                 val newText = s?.toString() ?: ""
 
-                if (validateEditText(editText, paramName, min, max)) {
-                    onTextChanged(newText)
-                }
+                // Валидируем, подсвечиваем, но сохраняем всегда
+                validateEditText(editText, paramName, min, max)
+                onTextChanged(newText) // ← Всегда сохраняем
             }
             override fun afterTextChanged(s: Editable?) {}
         })

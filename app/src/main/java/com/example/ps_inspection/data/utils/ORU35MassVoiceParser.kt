@@ -1,9 +1,13 @@
 package com.example.ps_inspection.data.utils
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class VoiceParsedResult(
     val fieldName: String,
     val value: String
-)
+) : Parcelable
 
 object ORU35MassVoiceParser {
 

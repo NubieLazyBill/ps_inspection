@@ -33,9 +33,14 @@ class VoiceInputManager(private val fragment: Fragment) {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
             putExtra(RecognizerIntent.EXTRA_PROMPT, "Скажите показания для ОРУ-35")
             putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-            // 🔧 Увеличиваем время ожидания
-            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 5000L)  // 5 секунд тишины до завершения
-            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 3000L)  // минимум 3 секунды записи
+
+            // 🔧 Увеличиваем время ожидания (работает на большинстве устройств)
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 5000L)
+            putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, 3000L)
+
+            // 🔧 Дополнительный параметр для некоторых устройств
+            putExtra("android.speech.extra.GET_AUDIO_FORMAT", 2)
+            putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, false)
         }
         voiceContract.launch(intent)
     }

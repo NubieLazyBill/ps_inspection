@@ -9,6 +9,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -39,6 +40,7 @@ import com.example.ps_inspection.viewmodel.SharedInspectionViewModel
 import com.example.ps_inspection.databinding.FragmentInspectionORU35Binding
 import com.example.ps_inspection.ui.fragments.dialogs.CommentsDialogFragment
 import com.example.ps_inspection.ui.fragments.dialogs.MediaDialogFragment
+import com.example.ps_inspection.ui.fragments.dialogs.VoiceConfirmDialog
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -136,7 +138,7 @@ class InspectionORU35 : Fragment() {
                 return@startVoiceRecognition
             }
 
-            android.util.Log.d("VoiceInput", "Распознано: $spokenText")
+            Log.d("VoiceInput", "Распознано: $spokenText")
 
             val results = ORU35MassVoiceParser.parse(spokenText)
             if (results.isEmpty()) {
@@ -144,16 +146,13 @@ class InspectionORU35 : Fragment() {
                 return@startVoiceRecognition
             }
 
-            // Показываем диалог со всеми распознанными значениями
-            AlertDialog.Builder(requireContext())
-                .setTitle("🎤 Подтвердите ввод")
-                .setMessage(ORU35MassVoiceParser.formatConfirmationMessage(results))
-                .setPositiveButton("Применить всё") { _, _ ->
-                    applyMassVoiceResults(results)
-                    Toast.makeText(requireContext(), "✅ Показания обновлены", Toast.LENGTH_SHORT).show()
-                }
-                .setNegativeButton("Отмена", null)
-                .show()
+            // Показываем диалог с возможностью выбора
+            val dialog = VoiceConfirmDialog.newInstance(results)
+            dialog.setOnConfirmListener { selectedResults ->
+                applyMassVoiceResults(selectedResults)
+                Toast.makeText(requireContext(), "✅ ${selectedResults.size} показаний обновлено", Toast.LENGTH_SHORT).show()
+            }
+            dialog.show(childFragmentManager, "voice_confirm")
         }
     }
 
@@ -442,13 +441,15 @@ class InspectionORU35 : Fragment() {
         val value = editText.text.toString()
         if (value.isBlank()) return true
 
-        if (!InputValidator.isInRange(value, min, max)) {
-            showValidationError(InputValidator.getRangeMessage(paramName, min, max))
+        val isInRange = InputValidator.isInRange(value, min, max)
+
+        if (!isInRange) {
             editText.setBackgroundResource(R.drawable.edittext_border_error)
-            editText.requestFocus()
-            return false
+            showValidationError(InputValidator.getRangeMessage(paramName, min, max))
+        } else {
+            editText.setBackgroundResource(R.drawable.edittext_border)
         }
-        editText.setBackgroundResource(R.drawable.edittext_border)
+
         return true
     }
 
@@ -512,9 +513,8 @@ class InspectionORU35 : Fragment() {
                 if (isUpdatingUIFromViewModel) return
                 val newText = s?.toString() ?: ""
 
-                if (validateEditText(editText, paramName, min, max)) {
-                    onTextChanged(newText)
-                }
+                validateEditText(editText, paramName, min, max)
+                onTextChanged(newText)
             }
             override fun afterTextChanged(s: Editable?) {}
         })

@@ -891,18 +891,23 @@ class InspectionATG : Fragment() {
 
     // ==================== ВАЛИДАЦИЯ ====================
 
+    // ==================== ВАЛИДАЦИЯ ====================
+
     private fun validateEditText(editText: EditText, paramName: String, min: Double, max: Double): Boolean {
         val value = editText.text.toString()
         if (value.isBlank()) return true
 
-        if (!InputValidator.isInRange(value, min, max)) {
-            showValidationError(InputValidator.getRangeMessage(paramName, min, max))
+        val isInRange = InputValidator.isInRange(value, min, max)
+
+        if (!isInRange) {
+            // Только подсветка, без блокировки!
             editText.setBackgroundResource(R.drawable.edittext_border_error)
-            editText.requestFocus()
-            return false
+            showValidationError(InputValidator.getRangeMessage(paramName, min, max))
+        } else {
+            editText.setBackgroundResource(R.drawable.edittext_border)
         }
-        editText.setBackgroundResource(R.drawable.edittext_border)
-        return true
+
+        return true // Всегда возвращаем true, чтобы значение сохранилось
     }
 
     private fun showValidationError(message: String) {

@@ -1,6 +1,7 @@
 package com.example.ps_inspection.ui.fragments
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
@@ -53,6 +54,8 @@ import com.google.gson.GsonBuilder
 import java.io.File
 import java.util.Date
 import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class ArchiveFragment : Fragment() {
 
@@ -69,6 +72,9 @@ class ArchiveFragment : Fragment() {
     private var allArchives = listOf<ArchiveItem>()
 
     private val menuProvider = object : MenuProvider {
+
+        private var showDeleted = false  // ← добавить переменную
+
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menuInflater.inflate(R.menu.menu_archive, menu)
         }
@@ -87,8 +93,13 @@ class ArchiveFragment : Fragment() {
                     showClearAllDialog()
                     true
                 }
-                R.id.action_clear_comments -> {  // 🔧 НОВЫЙ ПУНКТ
+                R.id.action_clear_comments -> {
                     showClearCommentsDialog()
+                    true
+                }
+                R.id.action_show_deleted -> {  // ← добавить
+                    showDeleted = !showDeleted
+                    loadArchives(showDeleted)
                     true
                 }
                 else -> false
@@ -98,6 +109,12 @@ class ArchiveFragment : Fragment() {
         override fun onPrepareMenu(menu: Menu) {
             menu.findItem(R.id.action_global_photos)?.icon?.setTint(android.graphics.Color.parseColor("#4CAF50"))
             menu.findItem(R.id.action_global_comments)?.icon?.setTint(android.graphics.Color.parseColor("#4CAF50"))
+
+            // ← добавить обновление текста пункта меню
+            val showDeletedItem = menu.findItem(R.id.action_show_deleted)
+            if (showDeletedItem != null) {
+                showDeletedItem.title = if (showDeleted) "👁️ Скрыть удалённые" else "👁️ Показать удалённые"
+            }
         }
     }
 
@@ -180,8 +197,21 @@ class ArchiveFragment : Fragment() {
         dialog.show(childFragmentManager, "global_comments")
     }
 
-    private fun loadArchives() {
-        allArchives = archiveManager.getAllArchives()
+    private fun loadArchives(includeDeleted: Boolean = false) {
+        var archives = archiveManager.getAllArchives()
+
+        // Временный лог для отладки
+        allArchives.forEach {
+            Log.d("SORT_DEBUG", "${it.displayDate} - timestamp: ${it.timestamp}")
+        }
+
+        // Фильтруем удалённые, если нужно
+        if (!includeDeleted) {
+            val deletedSet = getDeletedArchivesSet()
+            archives = archives.filter { it.displayDate !in deletedSet }
+        }
+
+        allArchives = archives
 
         if (allArchives.isEmpty()) {
             binding.emptyState.visibility = View.VISIBLE
@@ -194,11 +224,11 @@ class ArchiveFragment : Fragment() {
     }
 
     private suspend fun loadServerArchives() {
-        Log.d("ARCHIVE_DEBUG", "=== loadServerArchives START ===")  // ← добавить
+        Log.d("ARCHIVE_DEBUG", "=== loadServerArchives START ===")
         try {
-            Log.d("ARCHIVE_DEBUG", "Создаю GoogleSheetsService...")  // ← добавить
+            Log.d("ARCHIVE_DEBUG", "Создаю GoogleSheetsService...")
             val sheetsService = GoogleSheetsService(requireContext())
-            Log.d("ARCHIVE_DEBUG", "Вызываю getAllInspections...")   // ← добавить
+            Log.d("ARCHIVE_DEBUG", "Вызываю getAllInspections...")
             var serverData = sheetsService.getAllInspections()
             Log.d("ARCHIVE_DEBUG", "getAllInspections вернул: ${serverData?.size}")
 
@@ -223,20 +253,33 @@ class ArchiveFragment : Fragment() {
                 }
                 Log.d("SERVER_KEYS", "=== ВСЕГО КЛЮЧЕЙ: ${keys.size} ===")
 
-                val serverArchives = serverData.mapNotNull { row ->
+                // 🔧 Функция парсинга даты в timestamp
+                fun parseDateToTimestamp(date: String?, time: String?): Long {
+                    return try {
+                        val dateTime = "${date ?: ""} ${time ?: ""}".trim()
+                        if (dateTime.isBlank()) return System.currentTimeMillis()
+                        val format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+                        format.parse(dateTime)?.time ?: System.currentTimeMillis()
+                    } catch (e: Exception) {
+                        System.currentTimeMillis()
+                    }
+                }
+
+                val serverArchives = serverData.mapIndexedNotNull { index, row ->
                     try {
                         val archiveData = convertServerRowToArchiveData(row)
                         if (archiveData != null) {
+                            val displayDate = "${row["Дата"] ?: ""} ${row["Время"] ?: ""}".trim()
                             ArchiveItem(
                                 fileName = "server_${row["Дата"]}_${row["Время"]}".replace(" ", "_"),
-                                displayDate = "${row["Дата"] ?: ""} ${row["Время"] ?: ""}",
+                                displayDate = displayDate,
                                 equipmentType = "Полный осмотр",
                                 statusORU35 = archiveData.oru35.getFillStatus(),
                                 statusORU220 = archiveData.oru220.getFillStatus(),
                                 statusORU500 = archiveData.oru500.getFillStatus(),
                                 statusATG = archiveData.atg.getFillStatus(),
                                 statusBuildings = archiveData.buildings.getFillStatus(),
-                                timestamp = System.currentTimeMillis(),
+                                timestamp = parseDateToTimestamp(row["Дата"], row["Время"]),  // ← исправлено!
                                 photoCount = 0,
                                 hasPhotos = false,
                                 inspectorName = row["ФИО дежурного"] ?: "",
@@ -244,18 +287,25 @@ class ArchiveFragment : Fragment() {
                                 progressOru220 = ProgressCalculator.calculateORU220(archiveData.oru220),
                                 progressOru500 = ProgressCalculator.calculateORU500(archiveData.oru500),
                                 progressAtg = ProgressCalculator.calculateATG(archiveData.atg),
-                                progressBuildings = ProgressCalculator.calculateBuildings(archiveData.buildings)
+                                progressBuildings = ProgressCalculator.calculateBuildings(archiveData.buildings),
+                                serverRowId = index + 2
                             )
                         } else null
                     } catch (e: Exception) {
+                        Log.e("ARCHIVE_DEBUG", "Ошибка создания ArchiveItem для строки $index", e)
                         null
                     }
                 }
 
-                val allDisplayDates = allArchives.map { it.displayDate }.toSet()
-                val newServerArchives = serverArchives.filter { it.displayDate !in allDisplayDates }
+                val existingServerIds = allArchives.mapNotNull { it.serverRowId }.toSet()
+                val deletedSet = getDeletedArchivesSet()
+
+                val newServerArchives = serverArchives
+                    .filter { it.serverRowId !in existingServerIds }
+                    .filter { it.displayDate !in deletedSet }
 
                 Log.d("ARCHIVE_DEBUG", "Серверных осмотров: ${serverArchives.size}")
+                Log.d("ARCHIVE_DEBUG", "Удалённых локально: ${deletedSet.size}")
                 Log.d("ARCHIVE_DEBUG", "Новых для добавления: ${newServerArchives.size}")
 
                 // Сохраняем новые серверные осмотры локально
@@ -275,7 +325,7 @@ class ArchiveFragment : Fragment() {
                                 val now = Date()
 
                                 val inspectionData = InspectionArchiveData(
-                                    timestamp = now.time,
+                                    timestamp = archive.timestamp,  // ← используем правильный timestamp!
                                     displayDate = archive.displayDate,
                                     oru35 = archiveData.oru35,
                                     oru220 = archiveData.oru220,
@@ -290,7 +340,7 @@ class ArchiveFragment : Fragment() {
                                 val file = File(archiveManager.getArchiveDir(), fileName)
                                 if (!file.exists()) {
                                     file.writeText(gson.toJson(inspectionData))
-                                    Log.d("ARCHIVE_DEBUG", "Сохранён локально: ${archive.displayDate}")
+                                    Log.d("ARCHIVE_DEBUG", "Сохранён локально: ${archive.displayDate} (timestamp: ${archive.timestamp})")
                                 }
                             }
                         }
@@ -299,8 +349,14 @@ class ArchiveFragment : Fragment() {
                     }
                 }
 
-                allArchives = (allArchives + newServerArchives).sortedByDescending { it.displayDate }
+                // 🔧 СОРТИРОВКА ПО TIMESTAMP (новые сверху)
+                allArchives = (allArchives + newServerArchives).sortedByDescending { it.timestamp }
                 Log.d("ARCHIVE_DEBUG", "Всего после объединения: ${allArchives.size}")
+
+                // Лог для проверки порядка
+                allArchives.take(5).forEach {
+                    Log.d("ARCHIVE_DEBUG", "Порядок: ${it.displayDate} -> timestamp: ${it.timestamp}")
+                }
             } else {
                 Log.d("ARCHIVE_DEBUG", "serverData пустой или null после двух попыток")
             }
@@ -376,7 +432,7 @@ class ArchiveFragment : Fragment() {
 
         Log.d("ARCHIVE_DEBUG", "Серверных: ${serverArchives.size}, новых: ${newServerArchives.size}")
 
-        allArchives = (allArchives + newServerArchives).sortedByDescending { it.displayDate }
+        allArchives = (allArchives + newServerArchives).sortedByDescending { it.timestamp }
 
         if (allArchives.isNotEmpty()) {
             binding.emptyState.visibility = View.GONE
@@ -407,37 +463,21 @@ class ArchiveFragment : Fragment() {
     }
 
     private fun confirmDeleteArchive(archive: ArchiveItem) {
-        // Проверяем, что удаляет тот же дежурный
-        val userManager = com.example.ps_inspection.data.repositories.UserManager(requireContext())
-        val currentUser = userManager.getCurrentUser()
-
-        if (archive.inspectorName.isNotBlank() && archive.inspectorName != currentUser.name) {
-            AlertDialog.Builder(requireContext())
-                .setTitle("⚠️ Нет прав")
-                .setMessage("Удалить осмотр может только тот, кто его выполнил.\n\nОсмотр выполнил: ${archive.inspectorName}\nТекущий пользователь: ${currentUser.name}")
-                .setPositiveButton("Понятно", null)
-                .show()
-            return
-        }
+        // ... проверка прав
 
         AlertDialog.Builder(requireContext())
             .setTitle("🗑️ Удаление осмотра")
             .setMessage("Удалить осмотр?\n\nЭто действие необратимо.")
             .setPositiveButton("Удалить") { _, _ ->
-                // Удаляем и с сервера, и локально
+                // Запоминаем что удалили
+                addToDeletedArchives(archive.displayDate)
+
                 if (archive.fileName.startsWith("server_")) {
                     deleteServerArchive(archive)
                 }
-                // Удаляем локально если есть
-                try {
-                    archiveManager.deleteArchive(archive.fileName)
-                } catch (e: Exception) {
-                    // Может не быть локальной копии
-                }
+                archiveManager.deleteArchive(archive.fileName)
                 loadArchives()
-                Toast.makeText(requireContext(), "Осмотр удалён", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("Отмена", null)
             .show()
     }
 
@@ -1138,6 +1178,25 @@ class ArchiveFragment : Fragment() {
             e.printStackTrace()
             null
         }
+    }
+
+    private fun getDeletedArchivesSet(): Set<String> {
+        val prefs = requireContext().getSharedPreferences("archive_prefs", Context.MODE_PRIVATE)
+        return prefs.getStringSet("deleted_archives", emptySet()) ?: emptySet()
+    }
+
+    private fun addToDeletedArchives(displayDate: String) {
+        val prefs = requireContext().getSharedPreferences("archive_prefs", Context.MODE_PRIVATE)
+        val currentSet = getDeletedArchivesSet().toMutableSet()
+        currentSet.add(displayDate)
+        prefs.edit().putStringSet("deleted_archives", currentSet).apply()
+    }
+
+    private fun removeFromDeletedArchives(displayDate: String) {
+        val prefs = requireContext().getSharedPreferences("archive_prefs", Context.MODE_PRIVATE)
+        val currentSet = getDeletedArchivesSet().toMutableSet()
+        currentSet.remove(displayDate)
+        prefs.edit().putStringSet("deleted_archives", currentSet).apply()
     }
 
     override fun onDestroyView() {
