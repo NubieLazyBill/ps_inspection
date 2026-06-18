@@ -61,6 +61,15 @@ class ArchiveAdapter(
             binding.btnMenu.setOnClickListener { view ->
                 onMenuClick(record, view)
             }
+
+            if (record.isLocallyDeleted) {
+                binding.root.alpha = 0.5f
+                binding.tvTitle.text = "🗑️ Удалён"
+                // Для заглушек показываем "Восстановить" в меню
+            } else {
+                binding.root.alpha = 1.0f
+                binding.tvTitle.text = "Осмотр"
+            }
         }
 
         private fun updateProgressBadge(textView: TextView, progress: Int) {

@@ -33,7 +33,8 @@ data class ArchiveItem(
     val progressOru500: Int = 0,
     val progressAtg: Int = 0,
     val progressBuildings: Int = 0,
-    val serverRowId: Int? = null
+    val serverRowId: Int? = null,
+    val isLocallyDeleted: Boolean = false
 )
 
 class InspectionArchiveManager(private val context: Context) {
